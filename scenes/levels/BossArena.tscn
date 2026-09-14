@@ -1,0 +1,85 @@
+[gd_scene load_steps=5 format=3 uid="uid://bossarena001"]
+
+[ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://faisca001" path="res://scenes/companion/Faisca.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://javali001" path="res://scenes/bosses/Boss_Javali.tscn" id="3"]
+[ext_resource type="Script" path="res://scripts/world/TransitionTrigger.cs" id="4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_arena_floor"]
+size = Vector2(800, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_arena_wall_left"]
+size = Vector2(40, 300)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_arena_wall_right"]
+size = Vector2(40, 300)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_arena_ceiling"]
+size = Vector2(800, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_return_shape"]
+size = Vector2(60, 100)
+
+[node name="BossArena" type="Node2D"]
+
+[node name="Background" type="ColorRect" parent="."]
+offset_left = -500.0
+offset_top = -300.0
+offset_right = 500.0
+offset_bottom = 300.0
+color = Color(0.1, 0.1, 0.15, 1)
+
+[node name="Player" parent="." instance=ExtResource("1")]
+position = Vector2(-300, 200)
+
+[node name="Faisca" parent="." instance=ExtResource("2")]
+position = Vector2(-340, 170)
+
+[node name="ArenaFloor" type="StaticBody2D" parent="."]
+position = Vector2(0, 220)
+collision_layer = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArenaFloor"]
+shape = SubResource("RectangleShape2D_arena_floor")
+
+[node name="ArenaWallLeft" type="StaticBody2D" parent="."]
+position = Vector2(-400, 100)
+collision_layer = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArenaWallLeft"]
+shape = SubResource("RectangleShape2D_arena_wall_left")
+
+[node name="ArenaWallRight" type="StaticBody2D" parent="."]
+position = Vector2(400, 100)
+collision_layer = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArenaWallRight"]
+shape = SubResource("RectangleShape2D_arena_wall_right")
+
+[node name="ArenaCeiling" type="StaticBody2D" parent="."]
+position = Vector2(0, -100)
+collision_layer = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArenaCeiling"]
+shape = SubResource("RectangleShape2D_arena_ceiling")
+
+[node name="Boss_Javali" parent="." instance=ExtResource("3")]
+position = Vector2(200, 120)
+
+[node name="ReturnTrigger" type="Area2D" parent="."]
+position = Vector2(-350, 150)
+collision_layer = 32
+collision_mask = 2
+script = ExtResource("4")
+TargetScene = "res://scenes/levels/TestLevel.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ReturnTrigger"]
+shape = SubResource("RectangleShape2D_return_shape")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+position_smoothing_speed = 5.0
+limit_left = -400
+limit_right = 400
+limit_top = -200
+limit_bottom = 250

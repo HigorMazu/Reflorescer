@@ -1,0 +1,151 @@
+[gd_scene load_steps=9 format=3 uid="uid://enemy001"]
+
+[ext_resource type="Script" path="res://scripts/enemies/EnemyBase.cs" id="1"]
+[ext_resource type="Script" path="res://scripts/enemies/EnemyStateMachine.cs" id="2"]
+[ext_resource type="Script" path="res://scripts/combat/Health.cs" id="3"]
+[ext_resource type="Script" path="res://scripts/combat/CombatController.cs" id="4"]
+[ext_resource type="Script" path="res://scripts/combat/Hitbox.cs" id="5"]
+[ext_resource type="Script" path="res://scripts/combat/Hurtbox.cs" id="6"]
+[ext_resource type="Resource" path="res://resources/enemies/BasicEnemyStats.tres" id="7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(28, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hitbox"]
+size = Vector2(24, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
+size = Vector2(24, 28)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_enemy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": null
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": null
+}],
+"loop": true,
+"name": &"walk",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"detect",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"attack",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"dead",
+"speed": 5.0
+}]
+
+[node name="Enemy_Base" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1")
+StatsResource = ExtResource("7")
+SpritePath = NodePath("AnimatedSprite2D")
+CombatControllerPath = NodePath("CombatController")
+EnemyId = "enemy_basic"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="Body" type="ColorRect" parent="."]
+offset_left = -14.0
+offset_top = -32.0
+offset_right = 14.0
+offset_bottom = 0.0
+color = Color(0.7, 0.2, 0.2, 1)
+
+[node name="EyeLeft" type="ColorRect" parent="."]
+offset_left = -10.0
+offset_top = -28.0
+offset_right = -4.0
+offset_bottom = -22.0
+color = Color(1, 1, 0.2, 1)
+
+[node name="EyeRight" type="ColorRect" parent="."]
+offset_left = 4.0
+offset_top = -28.0
+offset_right = 10.0
+offset_bottom = -22.0
+color = Color(1, 1, 0.2, 1)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -16)
+sprite_frames = SubResource("SpriteFrames_enemy")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("3")
+MaxHealth = 75
+InvulnerabilityDuration = 0.0
+
+[node name="CombatController" type="Node" parent="."]
+script = ExtResource("4")
+HealthPath = NodePath("../Health")
+HitboxPath = NodePath("../AttackHitbox")
+HurtboxPath = NodePath("../Hurtbox")
+
+[node name="AttackHitbox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("5")
+Damage = 10
+KnockbackForce = 150.0
+Active = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitbox"]
+position = Vector2(20, 0)
+shape = SubResource("RectangleShape2D_hitbox")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("6")
+Active = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_hurtbox")
+
+[node name="EnemyStateMachine" type="Node" parent="."]
+script = ExtResource("2")
+
+[node name="PatrolStart" type="Marker2D" parent="."]
+position = Vector2(-80, 0)
+
+[node name="PatrolEnd" type="Marker2D" parent="."]
+position = Vector2(80, 0)

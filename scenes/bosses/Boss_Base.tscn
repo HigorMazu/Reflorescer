@@ -1,0 +1,78 @@
+[gd_scene load_steps=8 format=3 uid="uid://boss001"]
+
+[ext_resource type="Script" path="res://scripts/bosses/BossBase.cs" id="1"]
+[ext_resource type="Script" path="res://scripts/bosses/BossStateMachine.cs" id="2"]
+[ext_resource type="Script" path="res://scripts/combat/Health.cs" id="3"]
+[ext_resource type="Script" path="res://scripts/combat/CombatController.cs" id="4"]
+[ext_resource type="Script" path="res://scripts/combat/Hitbox.cs" id="5"]
+[ext_resource type="Script" path="res://scripts/combat/Hurtbox.cs" id="6"]
+[ext_resource type="Resource" path="res://resources/bosses/BaseBossStats.tres" id="7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(60, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hitbox"]
+size = Vector2(40, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
+size = Vector2(50, 50)
+
+[node name="Boss_Base" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1")
+StatsResource = ExtResource("7")
+SpritePath = NodePath("AnimatedSprite2D")
+CombatControllerPath = NodePath("CombatController")
+HealthBarPath = NodePath("../CanvasLayer/HealthBar")
+BossId = "boss_base"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -30)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -30)
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("3")
+MaxHealth = 500
+InvulnerabilityDuration = 0.5
+
+[node name="CombatController" type="Node" parent="."]
+script = ExtResource("4")
+HealthPath = NodePath("../Health")
+HitboxPath = NodePath("../AttackHitbox")
+HurtboxPath = NodePath("../Hurtbox")
+
+[node name="AttackHitbox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("5")
+Damage = 30
+KnockbackForce = 300.0
+Active = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitbox"]
+position = Vector2(40, 0)
+shape = SubResource("RectangleShape2D_hitbox")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("6")
+Active = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -30)
+shape = SubResource("RectangleShape2D_hurtbox")
+
+[node name="BossStateMachine" type="Node" parent="."]
+script = ExtResource("2")
+
+[node name="BossTrigger" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BossTrigger"]
+shape = SubResource("RectangleShape2D_body")

@@ -1,0 +1,137 @@
+[gd_scene load_steps=4 format=3 uid="uid://hud001"]
+
+[ext_resource type="Script" path="res://scripts/ui/HUDController.cs" id="1"]
+[ext_resource type="Script" path="res://scripts/ui/HealthBar.cs" id="2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_healthbg"]
+bg_color = Color(0.2, 0.2, 0.2, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_healthfill"]
+bg_color = Color(0.8, 0.1, 0.1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="HUD" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1")
+HealthBarPath = NodePath("MarginContainer/VBoxContainer/TopRow/HealthSection/HealthBar")
+HealthLabelPath = NodePath("MarginContainer/VBoxContainer/TopRow/HealthSection/HealthLabel")
+InteractionPromptPath = NodePath("MarginContainer/VBoxContainer/BottomRow/InteractionPrompt")
+AbilityDisplayPath = NodePath("MarginContainer/VBoxContainer/TopRow/AbilitySection/AbilityDisplay")
+PauseMenuPath = NodePath("PauseMenu")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TopRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 20
+
+[node name="HealthSection" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TopRow"]
+layout_mode = 2
+
+[node name="HealthLabel" type="Label" parent="MarginContainer/VBoxContainer/TopRow/HealthSection"]
+layout_mode = 2
+text = "100 / 100"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+
+[node name="HealthBar" type="TextureProgressBar" parent="MarginContainer/VBoxContainer/TopRow/HealthSection"]
+layout_mode = 2
+custom_minimum_size = Vector2(200, 20)
+max_value = 100.0
+value = 100.0
+tint_progress = Color(0.8, 0.1, 0.1, 1)
+script = ExtResource("2")
+TweenDuration = 0.3
+AnimateOnDamage = true
+
+[node name="AbilitySection" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TopRow"]
+layout_mode = 2
+
+[node name="AbilityDisplay" type="Label" parent="MarginContainer/VBoxContainer/TopRow/AbilitySection"]
+layout_mode = 2
+text = ""
+visible = false
+theme_override_colors/font_color = Color(0.5, 0.8, 1, 1)
+
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BottomRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 1
+
+[node name="InteractionPrompt" type="Label" parent="MarginContainer/VBoxContainer/BottomRow"]
+layout_mode = 2
+text = ""
+visible = false
+theme_override_colors/font_color = Color(1, 1, 0.5, 1)
+
+[node name="PauseMenu" type="Control" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+mouse_filter = 0
+
+[node name="Background" type="ColorRect" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.7)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="PauseMenu/VBoxContainer"]
+layout_mode = 2
+text = "PAUSED"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 32
+
+[node name="ResumeButton" type="Button" parent="PauseMenu/VBoxContainer"]
+layout_mode = 2
+text = "Resume"
+
+[node name="SaveButton" type="Button" parent="PauseMenu/VBoxContainer"]
+layout_mode = 2
+text = "Save Game"
+
+[node name="MainMenuButton" type="Button" parent="PauseMenu/VBoxContainer"]
+layout_mode = 2
+text = "Main Menu"

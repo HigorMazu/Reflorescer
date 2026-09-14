@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://main001"]
+
+[ext_resource type="Script" path="res://scripts/world/AreaController.cs" id="1"]
+[ext_resource type="PackedScene" uid="uid://testlevel001" path="res://scenes/levels/TestLevel.tscn" id="2"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1")
+AreaName = "Area_01"
+
+[node name="TestLevel" parent="." instance=ExtResource("2")]
