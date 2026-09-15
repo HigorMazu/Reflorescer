@@ -1,0 +1,120 @@
+[gd_resource type="SpriteFrames" load_steps=16 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/korrag/korrag_idle_00.png" id="1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/korrag/korrag_idle_01.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/korrag/korrag_walk_00.png" id="3"]
+[ext_resource type="Texture2D" path="res://assets/sprites/korrag/korrag_walk_01.png" id="4"]
+[ext_resource type="Texture2D" path="res://assets/sprites/korrag/korrag_intro_00.png" id="5"]
+[ext_resource type="Texture2D" path="res://assets/sprites/korrag/korrag_attack_00.png" id="6"]
+[ext_resource type="Texture2D" path="res://assets/sprites/korrag/korrag_attack_01.png" id="7"]
+[ext_resource type="Texture2D" path="res://assets/sprites/korrag/korrag_attack_02.png" id="8"]
+[ext_resource type="Texture2D" path="res://assets/sprites/korrag/korrag_charge_windup_00.png" id="9"]
+[ext_resource type="Texture2D" path="res://assets/sprites/korrag/korrag_hurt_00.png" id="10"]
+[ext_resource type="Texture2D" path="res://assets/sprites/korrag/korrag_dead_00.png" id="11"]
+[ext_resource type="Texture2D" path="res://assets/sprites/korrag/korrag_phase1_idle_00.png" id="12"]
+[ext_resource type="Texture2D" path="res://assets/sprites/korrag/korrag_phase2_transition_00.png" id="13"]
+[ext_resource type="Texture2D" path="res://assets/sprites/korrag/korrag_enraged_transition_00.png" id="14"]
+[ext_resource type="Texture2D" path="res://assets/sprites/korrag/korrag_defeated_00.png" id="15"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5")
+}],
+"loop": false,
+"name": &"intro",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9")
+}],
+"loop": false,
+"name": &"charge_windup",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11")
+}],
+"loop": false,
+"name": &"dead",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12")
+}],
+"loop": true,
+"name": &"phase1_idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13")
+}],
+"loop": false,
+"name": &"phase2_transition",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14")
+}],
+"loop": true,
+"name": &"enraged_transition",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("15")
+}],
+"loop": false,
+"name": &"defeated",
+"speed": 4.0
+}]

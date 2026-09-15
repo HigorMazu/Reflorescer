@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://javali001"]
+[gd_scene load_steps=10 format=3 uid="uid://javali001"]
 
 [ext_resource type="Script" path="res://scripts/bosses/JavaliBoss.cs" id="1"]
 [ext_resource type="Script" path="res://scripts/bosses/BossStateMachine.cs" id="2"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/combat/Hitbox.cs" id="5"]
 [ext_resource type="Script" path="res://scripts/combat/Hurtbox.cs" id="6"]
 [ext_resource type="Resource" path="res://resources/bosses/JavaliStatsResource.tres" id="7"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/korrag/KorragSpriteFrames.tres" id="8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(80, 60)
@@ -129,6 +130,7 @@ position = Vector2(0, -30)
 shape = SubResource("RectangleShape2D_body")
 
 [node name="Body" type="ColorRect" parent="."]
+visible = false
 offset_left = -40.0
 offset_top = -60.0
 offset_right = 40.0
@@ -136,6 +138,7 @@ offset_bottom = 0.0
 color = Color(0.35, 0.25, 0.15, 1)
 
 [node name="Head" type="ColorRect" parent="."]
+visible = false
 offset_left = -30.0
 offset_top = -75.0
 offset_right = 30.0
@@ -143,6 +146,7 @@ offset_bottom = -50.0
 color = Color(0.4, 0.3, 0.2, 1)
 
 [node name="TuskLeft" type="ColorRect" parent="."]
+visible = false
 offset_left = -25.0
 offset_top = -55.0
 offset_right = -15.0
@@ -150,6 +154,7 @@ offset_bottom = -40.0
 color = Color(0.9, 0.9, 0.8, 1)
 
 [node name="TuskRight" type="ColorRect" parent="."]
+visible = false
 offset_left = 15.0
 offset_top = -55.0
 offset_right = 25.0
@@ -157,6 +162,7 @@ offset_bottom = -40.0
 color = Color(0.9, 0.9, 0.8, 1)
 
 [node name="EyeLeft" type="ColorRect" parent="."]
+visible = false
 offset_left = -20.0
 offset_top = -68.0
 offset_right = -10.0
@@ -164,6 +170,7 @@ offset_bottom = -60.0
 color = Color(0.9, 0.2, 0.1, 1)
 
 [node name="EyeRight" type="ColorRect" parent="."]
+visible = false
 offset_left = 10.0
 offset_top = -68.0
 offset_right = 20.0
@@ -171,6 +178,7 @@ offset_bottom = -60.0
 color = Color(0.9, 0.2, 0.1, 1)
 
 [node name="Spikes" type="ColorRect" parent="."]
+visible = false
 offset_left = -35.0
 offset_top = -70.0
 offset_right = 35.0
@@ -178,10 +186,12 @@ offset_bottom = -55.0
 color = Color(0.25, 0.2, 0.12, 1)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -35)
-sprite_frames = SubResource("SpriteFrames_javali")
+position = Vector2(-85, -117)
+scale = Vector2(0.65, 0.65)
+sprite_frames = ExtResource("8")
 animation = &"idle"
 autoplay = "idle"
+centered = false
 
 [node name="Health" type="Node" parent="."]
 script = ExtResource("3")

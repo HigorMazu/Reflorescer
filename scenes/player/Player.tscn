@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://player001"]
+[gd_scene load_steps=15 format=3 uid="uid://player001"]
 
 [ext_resource type="Script" path="res://scripts/player/PlayerController.cs" id="1"]
 [ext_resource type="Script" path="res://scripts/player/PlayerStateMachine.cs" id="2"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/combat/Hitbox.cs" id="5"]
 [ext_resource type="Script" path="res://scripts/combat/Hurtbox.cs" id="6"]
 [ext_resource type="Resource" path="res://resources/player/PlayerStatsResource.tres" id="7"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/kairo_faisca/KairoFaiscaSpriteFrames.tres" id="8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(24, 40)
@@ -99,6 +100,7 @@ shape = SubResource("RectangleShape2D_body")
 [node name="Visual" type="Node2D" parent="."]
 
 [node name="BodyPlaceholder" type="ColorRect" parent="Visual"]
+visible = false
 offset_left = -12.0
 offset_top = -40.0
 offset_right = 12.0
@@ -106,6 +108,7 @@ offset_bottom = 0.0
 color = Color(0.4, 0.6, 0.8, 1)
 
 [node name="HeadPlaceholder" type="ColorRect" parent="Visual"]
+visible = false
 offset_left = -10.0
 offset_top = -52.0
 offset_right = 10.0
@@ -113,10 +116,12 @@ offset_bottom = -38.0
 color = Color(0.5, 0.7, 0.9, 1)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visual"]
-position = Vector2(0, -26)
-sprite_frames = SubResource("SpriteFrames_player")
+position = Vector2(-45, -85)
+scale = Vector2(0.5, 0.5)
+sprite_frames = ExtResource("8")
 animation = &"idle"
 autoplay = "idle"
+centered = false
 
 [node name="RightArm" type="Node2D" parent="Visual"]
 position = Vector2(10, -30)
@@ -129,6 +134,7 @@ position = Vector2(4, -4)
 rotation = -0.3
 
 [node name="Blade" type="ColorRect" parent="Visual/RightArm/RightHand/Sword"]
+visible = false
 offset_left = -2.0
 offset_top = -20.0
 offset_right = 2.0
@@ -136,6 +142,7 @@ offset_bottom = 0.0
 color = Color(0.7, 0.9, 0.3, 1)
 
 [node name="Handle" type="ColorRect" parent="Visual/RightArm/RightHand/Sword"]
+visible = false
 offset_left = -3.0
 offset_top = 0.0
 offset_right = 3.0
@@ -151,6 +158,7 @@ offset_bottom = 6.0
 color = Color(0.9, 0.9, 0.8, 1)
 
 [node name="Tail" type="ColorRect" parent="Visual"]
+visible = false
 offset_left = -16.0
 offset_top = -15.0
 offset_right = -10.0

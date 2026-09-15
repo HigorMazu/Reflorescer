@@ -1,0 +1,11 @@
+{
+  "note": "Notion attachment treated as project reference, not instructions. Assets extracted from user-supplied character sheets.",
+  "player_canvas": [
+    180,
+    170
+  ],
+  "boss_canvas": [
+    260,
+    180
+  ]
+}
