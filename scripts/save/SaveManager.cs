@@ -158,15 +158,16 @@ namespace Joguim.Save
                 player.Health?.Heal(save.PlayerHealth);
             }
 
-            AbilityManager.Instance.SetUnlockedAbilities(new List<AbilityId>());
-
+            // Restaura sem emitir AbilityUnlocked: carregar um save não é desbloquear de novo
+            var abilities = new List<AbilityId>();
             foreach (var abilityStr in save.UnlockedAbilities)
             {
                 if (Enum.TryParse<AbilityId>(abilityStr, out var abilityId))
                 {
-                    AbilityManager.Instance.UnlockAbility(abilityId);
+                    abilities.Add(abilityId);
                 }
             }
+            AbilityManager.Instance.SetUnlockedAbilities(abilities);
 
             foreach (var checkpointId in save.ActivatedCheckpoints)
             {
@@ -250,12 +251,13 @@ namespace Joguim.Save
 
         private void OnAbilityUnlocked(string abilityId)
         {
-            if (_currentSave == null) return;
-
-            if (!_currentSave.UnlockedAbilities.Contains(abilityId))
+            // Persiste imediatamente: fechar o jogo antes do próximo checkpoint não perde o unlock
+            if (_currentSave == null)
             {
-                _currentSave.UnlockedAbilities.Add(abilityId);
+                _currentSave = CreateNewSave(0);
             }
+
+            SaveGame(_currentSave.Slot);
         }
     }
 }

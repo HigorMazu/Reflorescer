@@ -37,6 +37,7 @@ Status: 🔴 falha — Input Map real não bate com a documentação confirmada.
 - [ ] Apertar ataque uma única vez → `PerformAttack()`/`EnableHitbox()` executa **1 vez só**.
 - **Achado da auditoria (15/09):** os 7 primeiros casos passam hoje. O último é risco real — `PlayerController.HandlePrototypeMovement()` e a `PlayerStateMachine`/`PlayerStates.cs` antiga rodam em paralelo, e `AttackState.Enter()` também chama `Player.PerformAttack()`, então um único input pode disparar o ataque 2x.
 - [ ] Depois da `EPIC-C01-T2` do Dev (remoção do sistema duplicado): repetir todos os casos acima — nada pode ter regredido.
+- **Achado (28/09) — os 7 casos de física não rodavam com esses valores:** a state machine antiga também chamava `ApplyGravity` + `MoveAndSlide`, então a física rodava 2x por frame (deslocamento e gravidade dobrados). A `EPIC-C01-T2` do Dev removeu isso. Os números acima (200px/s, -460, 650) passam a valer de verdade só agora, e o movimento vai parecer mais lento que no playtest antigo. Repetir todos os casos.
 
 Status: 🟡 parcial — física de movimento passa, mas ataque duplicado é risco real enquanto os dois sistemas coexistirem.
 
@@ -423,7 +424,9 @@ Status: 🔴 falha — spawn direcional não implementado.
 - [x] 1s depois de morrer → respawna no último checkpoint ativado (ou perto de onde morreu, se nenhum ativado).
 - [x] Respawn → HP restaurado ao máximo, `Velocity` zerada, volta a processar input.
 
-Status: ✅ passa — ciclo completo de save/checkpoint/respawn funciona de ponta a ponta.
+- **Achado (28/09) — dois casos acima não passavam:** (1) apertar E perto de um checkpoint não fazia nada, porque `TryInteract` só procurava o `IInteractable` no pai da área, e o `Checkpoint` é a própria área; (2) o respawn usava o primeiro checkpoint do grupo, ativado ou não. Os dois foram corrigidos no código (ver `ROADMAP_DEV.md` C09-T0). Repetir a Task inteira.
+
+Status: 🟡 parcial — a auditoria de 15/09 marcou ✅ sem rodar; dois bugs corrigidos em 28/09, aguardando reteste no Godot.
 
 </details>
 

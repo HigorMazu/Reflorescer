@@ -34,6 +34,8 @@ namespace Joguim.Bosses
 
         public float HealthPercentage => Health != null ? (float)Health.CurrentHealth / Health.MaxHealth : 1f;
         public bool IsActive => _isActive;
+        // Ocupado com um ataque especial (windup/execução): não persegue e não é interrompido por dano (super armor)
+        public virtual bool IsBusy => false;
 
         public override void _Ready()
         {
@@ -85,7 +87,7 @@ namespace Joguim.Bosses
             {
                 _bossFloatingBar = new ProgressBar();
                 _bossFloatingBar.Name = "FloatingHealthBar";
-                _bossFloatingBar.Position = new Vector2(-40, -90);
+                _bossFloatingBar.Position = new Vector2(-40, -132);
                 _bossFloatingBar.Size = new Vector2(80, 8);
                 _bossFloatingBar.MinValue = 0;
                 _bossFloatingBar.MaxValue = Health != null ? Health.MaxHealth : 200;
@@ -98,7 +100,7 @@ namespace Joguim.Bosses
                 AddChild(_bossFloatingBar);
                 _bossHpLabel = new Label();
                 _bossHpLabel.HorizontalAlignment = HorizontalAlignment.Center;
-                _bossHpLabel.Position = new Vector2(-40, -105);
+                _bossHpLabel.Position = new Vector2(-40, -147);
                 _bossHpLabel.Size = new Vector2(80, 12);
                 _bossHpLabel.AddThemeFontSizeOverride("font_size", 8);
                 _bossHpLabel.AddThemeColorOverride("font_color", Colors.White);
@@ -151,12 +153,26 @@ namespace Joguim.Bosses
             }
         }
 
+        // Chamado pelos estados de fase quando o timer de ataque zera. Subclasses escolhem entre os ataques.
+        public virtual void ChooseAttack() => PerformAttack();
+
         public void PerformAttack()
         {
             if (CombatController?.Hitbox != null)
             {
-                CombatController.Hitbox.SetDamage(GetCurrentPhaseDamage());
+                var hitbox = CombatController.Hitbox;
+                // vira a hitbox pro lado do jogador (o shape fica à direita por padrão)
+                bool playerOnLeft = _player != null && _player.GlobalPosition.X < GlobalPosition.X;
+                hitbox.Scale = new Vector2(playerOnLeft ? -1 : 1, 1);
+                hitbox.SetDamage(GetCurrentPhaseDamage());
                 CombatController.EnableHitbox();
+                PlayAnimation("attack");
+                GetTree().CreateTimer(0.25).Timeout += () =>
+                {
+                    if (!GodotObject.IsInstanceValid(this)) return;
+                    CombatController?.DisableHitbox();
+                    if (!_isBossDead) PlayAnimation("walk");
+                };
             }
         }
 
@@ -242,10 +258,14 @@ namespace Joguim.Bosses
             // flash
             Modulate = new Color(1.4f, 0.6f, 0.6f);
             GetTree().CreateTimer(0.12).Timeout += () => { if (GodotObject.IsInstanceValid(this)) Modulate = Colors.White; };
-            if (StateMachine != null && StateMachine.CurrentStateType != BossStateType.Dead)
-                StateMachine.ChangeState(BossStateType.Hurt);
-            Vector2 knockback = knockbackDirection * 150f * (1f - StatsResource.KnockbackResistance);
-            Velocity = knockback;
+            // super armor: durante Charge/Stomp o dano entra, mas não interrompe nem empurra
+            if (!IsBusy)
+            {
+                if (StateMachine != null && StateMachine.CurrentStateType != BossStateType.Dead)
+                    StateMachine.ChangeState(BossStateType.Hurt);
+                Vector2 knockback = knockbackDirection * 150f * (1f - StatsResource.KnockbackResistance);
+                Velocity = knockback;
+            }
             Engine.TimeScale = 0.2f;
             GetTree().CreateTimer(0.05, true, false, true).Timeout += () => Engine.TimeScale = 1f;
         }
@@ -271,9 +291,8 @@ namespace Joguim.Bosses
             var col = GetNodeOrNull<CollisionShape2D>("CollisionShape2D");
             if (col != null) col.Disabled = true;
 
+            // BossDeadState.Enter() emite BossDefeated — fonte única do evento
             if (StateMachine != null) StateMachine.ChangeState(BossStateType.Dead);
-
-            EmitDefeated();
 
             GetTree().CreateTimer(0.3).Timeout += () =>
             {

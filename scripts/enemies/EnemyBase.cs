@@ -32,6 +32,9 @@ namespace Joguim.Enemies
         private float _contactCooldown = 1.0f;
         private int _contactDamage = 12;
 
+        private const float EdgeCheckDistance = 20f;
+        private const uint WorldCollisionMask = 1; // layer 1 = World
+
         public override void _Ready()
         {
             Sprite = GetNodeOrNull<AnimatedSprite2D>(SpritePath);
@@ -135,7 +138,7 @@ namespace Joguim.Enemies
             _patrolEnd = patrolEnd != null ? patrolEnd.GlobalPosition : GlobalPosition + Vector2.Right * 80f;
         }
 
-        public void ApplyGravity(double delta)
+        public virtual void ApplyGravity(double delta)
         {
             if (!IsOnFloor())
                 Velocity += new Vector2(0, StatsResource.Gravity * (float)delta);
@@ -153,9 +156,18 @@ namespace Joguim.Enemies
             else if (GlobalPosition.X <= _patrolStart.X && _patrolDirection < 0) { _patrolDirection = 1; Flip(); }
         }
 
-        public bool AtPatrolEdge() => false;
+        // Beira de plataforma: sem chão logo à frente na direção da patrulha
+        public virtual bool AtPatrolEdge()
+        {
+            if (!IsOnFloor()) return false;
 
-        public void ChasePlayer(double delta)
+            Vector2 from = GlobalPosition + new Vector2(_patrolDirection * EdgeCheckDistance, -4f);
+            var query = PhysicsRayQueryParameters2D.Create(from, from + Vector2.Down * 40f, WorldCollisionMask);
+            query.Exclude = new Godot.Collections.Array<Rid> { GetRid() };
+            return GetWorld2D().DirectSpaceState.IntersectRay(query).Count == 0;
+        }
+
+        public virtual void ChasePlayer(double delta)
         {
             if (_player == null) { _player = GetTree().GetFirstNodeInGroup("Player") as Node2D; if (_player == null) return; }
             Vector2 direction = (_player.GlobalPosition - GlobalPosition).Normalized();
@@ -211,8 +223,10 @@ namespace Joguim.Enemies
 
             Modulate = new Color(1.5f, 0.5f, 0.5f);
             GetTree().CreateTimer(0.12).Timeout += () => { if (GodotObject.IsInstanceValid(this)) Modulate = Colors.White; };
+            AudioManager.Instance?.PlaySfx("enemy_hit.wav");
 
-            if (StateMachine != null && StateMachine.CurrentStateType != EnemyStateType.Dead)
+            // Inimigos com InterruptOnHit = false (Robusto) tomam dano sem entrar em Hurt
+            if (StatsResource.InterruptOnHit && StateMachine != null && StateMachine.CurrentStateType != EnemyStateType.Dead)
                 StateMachine.ChangeState(EnemyStateType.Hurt);
 
             Vector2 knockback = knockbackDirection * 220f * (1f - StatsResource.KnockbackResistance);
@@ -246,6 +260,7 @@ namespace Joguim.Enemies
             if (StateMachine != null) StateMachine.ChangeState(EnemyStateType.Dead);
 
             EventBus.Instance?.EmitSignal("EnemyDefeated", EnemyId);
+            AudioManager.Instance?.PlaySfx("enemy_death.wav");
 
             GetTree().CreateTimer(0.3).Timeout += () =>
             {

@@ -13,14 +13,9 @@ namespace Joguim.Abilities
         public override void _Ready()
         {
             Instance = this;
-            // Prototype: libera DoubleJump imediatamente para testar plataformas
-            CallDeferred(MethodName.UnlockPrototypeAbilities);
-        }
-
-        private void UnlockPrototypeAbilities()
-        {
-            UnlockAbility(AbilityId.DoubleJump);
-            // Dash pode ser liberado depois facilmente
+            // Habilidades iniciais da demo: DoubleJump já vem liberado.
+            // Entram direto no conjunto, sem emitir AbilityUnlocked (não é um desbloqueio de gameplay).
+            _unlockedAbilities.Add(AbilityId.DoubleJump);
         }
 
         public bool HasAbility(AbilityId abilityId)

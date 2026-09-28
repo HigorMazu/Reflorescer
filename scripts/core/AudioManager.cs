@@ -15,6 +15,9 @@ namespace Joguim.Core
         private const string MusicPath = "res://assets/audio/music/";
         private const string SfxPath = "res://assets/audio/sfx/";
 
+        // Arquivos que faltam são logados uma vez só, senão cada ataque/pulo polui o console
+        private readonly HashSet<string> _missingLogged = new();
+
         public override void _Ready()
         {
             Instance = this;
@@ -37,7 +40,7 @@ namespace Joguim.Core
             string path = MusicPath + fileName;
             if (!ResourceLoader.Exists(path))
             {
-                GD.PrintErr($"AudioManager: Music not found at {path}");
+                if (_missingLogged.Add(path)) GD.PrintErr($"AudioManager: Music not found at {path}");
                 return;
             }
 
@@ -78,7 +81,7 @@ namespace Joguim.Core
             string path = SfxPath + fileName;
             if (!ResourceLoader.Exists(path))
             {
-                GD.PrintErr($"AudioManager: SFX not found at {path}");
+                if (_missingLogged.Add(path)) GD.PrintErr($"AudioManager: SFX not found at {path}");
                 return;
             }
 

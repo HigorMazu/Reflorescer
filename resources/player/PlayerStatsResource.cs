@@ -11,6 +11,9 @@ namespace Joguim.Resources
         [Export] public float Deceleration = 1500.0f;
         [Export] public float AirAcceleration = 1000.0f;
         [Export] public float JumpVelocity = -400.0f;
+        // Variante "espada desativada": +velocidade, +pulo, sem ataque
+        [Export] public float MoveSpeedNoSword = 240.0f;
+        [Export] public float JumpVelocityNoSword = -520.0f;
         [Export] public float Gravity = 980.0f;
         [Export] public float FallGravityMultiplier = 1.5f;
         [Export] public float MaxFallSpeed = 600.0f;

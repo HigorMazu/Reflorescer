@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bossarena001"]
+[gd_scene load_steps=6 format=3 uid="uid://bossarena001"]
 
 [ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://faisca001" path="res://scenes/companion/Faisca.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://javali001" path="res://scenes/bosses/Boss_Javali.tscn" id="3"]
 [ext_resource type="Script" path="res://scripts/world/TransitionTrigger.cs" id="4"]
+[ext_resource type="PackedScene" uid="uid://hud001" path="res://scenes/ui/HUD.tscn" id="5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_arena_floor"]
 size = Vector2(800, 40)
@@ -72,9 +73,15 @@ collision_layer = 32
 collision_mask = 2
 script = ExtResource("4")
 TargetScene = "res://scenes/levels/TestLevel.tscn"
+TargetArea = "SpawnFromBossArena"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ReturnTrigger"]
 shape = SubResource("RectangleShape2D_return_shape")
+
+[node name="SpawnFromTestLevel" type="Marker2D" parent="." groups=["SpawnPoints"]]
+position = Vector2(-290, 190)
+
+[node name="HUD" parent="." instance=ExtResource("5")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position_smoothing_enabled = true

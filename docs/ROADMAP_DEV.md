@@ -4,6 +4,8 @@ Backlog de execução da demo: Épicos (fases, ordenados pela dependência real 
 
 Cada Épico aqui tem um Épico **gêmeo de mesmo ID** no `ROADMAP_QA_CODIGO.md` (ex: `EPIC-C03`), com os casos de teste que definem "pronto" de cada Task. Fluxo: implementar as sub-tasks de uma Task → rodar as sub-tasks de verificação da Task equivalente no QA → escrever a linha `Status:` → seguir pra próxima.
 
+Marcação de disponibilidade na linha `Status:` de cada Task (avaliação de 28/09, após o pull do commit `6153f13`): 🟢 liberado — dá pra começar agora · 🟡 aguarda — depende de outra Task deste roadmap · ⛔ bloqueado — depende de decisão de design, arte/cena ou áudio fora deste roadmap.
+
 Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `EPIC-C03` → `EPIC-C05` → `EPIC-C07` → `EPIC-C08` → `EPIC-C09` → `EPIC-C10` → `EPIC-C11` → `EPIC-C12`. C03, C05 e C07 não têm dependência forte entre si — dá pra reordenar ou paralelizar, desde que C01 já esteja fechado.
 
 ---
@@ -18,33 +20,37 @@ Bloqueante — fazer antes de tudo. O Input Map real não bate com a documentaç
 <details>
 <summary>Task C01-T1 — Corrigir o Input Map</summary>
 
-- [ ] Remapear em Project Settings → Input Map pra bater com a seção 7 do Notion: A/D mover, Espaço pular, Shift dash, Q espada, E interagir, K ataque básico, segurar J especial.
-- [ ] Grep em `scripts/` por `IsActionJustPressed`/`IsActionPressed` com os nomes antigos de ação e corrigir qualquer referência que sobrar.
+- [x] Remapear em Project Settings → Input Map pra bater com a seção 7 do Notion: A/D mover, Espaço pular, Shift dash, Q espada, E interagir, K ataque básico, segurar J especial.
+- [x] Grep em `scripts/` por `IsActionJustPressed`/`IsActionPressed` com os nomes antigos de ação e corrigir qualquer referência que sobrar.
 - **Achado da auditoria (15/09):** hoje `attack`=J+clique, `dash`=K+seta-baixo, `jump`=Espaço/W/seta-cima, `ability`=L (sem uso). Sem S nem Q mapeados.
+- **Nota (28/09) — mapeamento aplicado:** `move_left`=A, `move_right`=D, `jump`=Espaço, `dash`=Shift, `interact`=E, `attack`=K, `toggle_sword`=Q (nova), `special`=J (nova, segurar), `pause`=Esc. Saíram as teclas extras (setas, W, clique, Ctrl) e a ação `ability` (L, sem uso). Nenhum script lia `ability`; `toggle_sword` e `special` ainda não têm consumidor (C03-T1 e futuro especial).
 
-Status: não iniciado.
+Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot.
 
 </details>
 
 <details>
 <summary>Task C01-T2 — Unificar o sistema de movimento</summary>
 
-- [ ] Decidir: manter o caminho direto (`HandlePrototypeMovement`, já testado) e apagar `PlayerStateMachine`/`PlayerStates.cs`, **ou** migrar de vez pra state machine e remover o caminho direto.
-- [ ] Executar a remoção/migração escolhida.
+- [x] Decidir: manter o caminho direto (`HandlePrototypeMovement`, já testado) e apagar `PlayerStateMachine`/`PlayerStates.cs`, **ou** migrar de vez pra state machine e remover o caminho direto.
+- [x] Executar a remoção/migração escolhida.
 - [ ] Rodar a Task C01-T2 do `ROADMAP_QA_CODIGO.md` (regressão completa de movimento e física) antes de seguir.
 - **Recomendação:** manter o caminho direto — é o de menor risco a essa altura do projeto.
+- **Decisão do Gustavo (28/09):** mantido o caminho direto (`HandlePrototypeMovement`). Removidos `PlayerStateMachine.cs`, `PlayerStates.cs` (+ `.uid`), o nó `PlayerStateMachine` do `Player.tscn` e o `ApplyHorizontalMovement` (só os estados usavam). Animações `hurt`/`dead` passaram pro `PlayerController` (`_hurtTimer` e `OnDied`).
+- **Bugfix CRÍTICO (28/09) — física rodava 2x por frame:** além do ataque duplicado, cada estado antigo chamava `ApplyGravity` + `MoveAndSlide`, então o Kairo andava/caía com o dobro de deslocamento e gravidade por frame. Na prática, o jogo testado até hoje rodava ~2x mais rápido que os valores do `PlayerStatsResource`. Depois da remoção os valores documentados (200px/s, -460, etc.) passam a ser reais, e o movimento vai parecer **mais lento**. Pra recuperar a sensação antiga: velocidades ×2 e gravidade/acelerações ×4 no `.tres` — decisão de tuning, não aplicada.
 
-Status: não iniciado.
+Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot.
 
 </details>
 
 <details>
 <summary>Task C01-T3 — Fonte única de verdade pro Double Jump</summary>
 
-- [ ] Escolher uma fonte entre `PlayerController.InitDoubleJump()` (fallback hardcoded) e `AbilityManager.UnlockPrototypeAbilities()` — recomendo `AbilityManager`, é o sistema que vai crescer com o Dash.
-- [ ] Remover o fallback duplicado do `PlayerController`.
+- [x] Escolher uma fonte entre `PlayerController.InitDoubleJump()` (fallback hardcoded) e `AbilityManager.UnlockPrototypeAbilities()` — recomendo `AbilityManager`, é o sistema que vai crescer com o Dash.
+- [x] Remover o fallback duplicado do `PlayerController`.
+- **Nota (28/09):** fonte única = `AbilityManager`. O `PlayerController` consulta `AbilityManager.Instance.HasAbility(DoubleJump)` na hora do pulo (sem cache, sem fallback). O `AbilityManager` já nasce com `DoubleJump` no conjunto, sem emitir `AbilityUnlocked` (não é um desbloqueio de gameplay, então não dispara notificação nem save).
 
-Status: não iniciado.
+Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot.
 
 </details>
 
@@ -60,10 +66,11 @@ Prioridade máxima de conteúdo — sem isso a demo perde a conexão com o pitch
 <details>
 <summary>Task C02-T1 — Definir e implementar a interação</summary>
 
-- [ ] Decidir se a restauração é o próprio `Checkpoint` reaproveitado (com um estado temático a mais) ou uma classe nova (`RestorationPoint : IInteractable`) separada do save point.
-- [ ] Implementar a interação escolhida.
+- [x] Decidir se a restauração é o próprio `Checkpoint` reaproveitado (com um estado temático a mais) ou uma classe nova (`RestorationPoint : IInteractable`) separada do save point.
+- [x] Implementar a interação escolhida.
+- **Decisão do Gustavo (28/09) — classe separada:** `RestorationPoint : Area2D, IInteractable` (`scripts/world/RestorationPoint.cs`), independente do `Checkpoint`. Restaurar não é salvar, então cada um tem evento e persistência próprios. Interage uma vez (`Restored`), prompt "Restaurar". Os ganchos de C02-T2 (efeito) e C02-T3 (evento/save) estão marcados no `Interact()`. **Replicar no Notion.**
 
-Status: não iniciado.
+Status: implementado (28/09), compila — ⏳ aguarda QA no Godot. Um ponto de teste (`RestorationPoint1`) está no `TestLevel`, perto do spawn.
 
 </details>
 
@@ -72,7 +79,7 @@ Status: não iniciado.
 
 - [ ] Implementar o efeito da restauração (mesmo simples pra demo: partícula + mudança de cor no tile ao redor, ou sprite "antes/depois").
 
-Status: não iniciado.
+Status: não iniciado — 🟢 liberado (C02-T1 implementado).
 
 </details>
 
@@ -82,7 +89,7 @@ Status: não iniciado.
 - [ ] Emitir um evento próprio no `EventBus` (ex: `AreaRestored(string pointId)`) — não reaproveitar `CheckpointActivated`.
 - [ ] Persistir pontos restaurados no save, igual `ActivatedCheckpoints` já persiste.
 
-Status: não iniciado.
+Status: não iniciado — 🟢 liberado (C02-T1 implementado).
 
 </details>
 
@@ -91,7 +98,7 @@ Status: não iniciado.
 
 - [ ] Definir quantos pontos por área (mínimo 1 por bioma) e posicionar nas cenas de Floresta Tropical, Deserto e Tundra.
 
-Status: não iniciado.
+Status: não iniciado — ⛔ bloqueado: as cenas de Floresta Tropical, Deserto e Tundra não existem (só `TestLevel` e `BossArena`) — depende do `ROADMAP_ARTE.md` `EPIC-A05`.
 
 </details>
 
@@ -107,7 +114,7 @@ Status: não iniciado.
 
 - [ ] Rodar a Task C03-T0 do `ROADMAP_QA_CODIGO.md` (ataque, hitbox/hurtbox, cooldown, invulnerabilidade) pra confirmar a base antes de alterar.
 
-Status: não iniciado.
+Status: não iniciado — 🟢 liberado. Rodar agora: depois da C01-T2 o ataque sai 1 vez só e a física ficou diferente.
 
 </details>
 
@@ -115,18 +122,20 @@ Status: não iniciado.
 <summary>Task C03-T1 — Wire do input Q (ativar/desativar)</summary>
 
 - [ ] Ligar a ação `Q` (pós `EPIC-C01-T1`) a um método novo `ToggleSword()` em `PlayerController`, chamando `HasSword = !HasSword` e `SetSwordVisible(HasSword)`.
+- **Achado (28/09, pós-pull) — sprite do Kairo sem variante de espada:** os `ColorRect` placeholder da espada (`Blade`/`Handle`) foram escondidos no commit `6153f13`, e o sprite novo (`KairoFaiscaSpriteFrames.tres`) não tem espada visível nem variante com e sem espada. O toggle de lógica funciona, mas o visual precisa de arte nova (ou de uma camada separada da espada). Também: a Faísca está desenhada dentro do sprite do Kairo e duplica com o `Faisca.tscn` — levar pro Higor (`ROADMAP_ARTE.md` `EPIC-A01`).
 
-Status: não iniciado.
+Status: não iniciado — 🟢 liberado pra lógica (a ação `toggle_sword`/Q já existe). O visual depende de arte (ver nota acima).
 
 </details>
 
 <details>
 <summary>Task C03-T2 — Stats duplos (ativada/desativada)</summary>
 
-- [ ] Criar a variante "espada desativada": +velocidade, +pulo, sem ataque.
+- [x] Criar a variante "espada desativada": +velocidade, +pulo, sem ataque.
 - **Opção simples:** dois blocos de valores no `PlayerStatsResource` (`MoveSpeedSwordOn`/`Off`, etc.) ou um segundo `.tres`.
+- **Nota (28/09):** opção simples aplicada: `MoveSpeedNoSword` (240) e `JumpVelocityNoSword` (-520) no `PlayerStatsResource`. O `PlayerController` usa `CurrentMoveSpeed`/`CurrentJumpVelocity`, que leem `HasSword`. O "sem ataque" já vem do `CanAttack()`. **Os valores são chute (+20% e +13%): decidir os definitivos e registrar no Notion.**
 
-Status: não iniciado.
+Status: implementado (28/09), compila — ⏳ só dá pra testar no Godot depois do toggle (C03-T1).
 
 </details>
 
@@ -137,7 +146,7 @@ Status: não iniciado.
 - [ ] Testar a troca em pleno combate/movimento — sem travar animação/input no meio da troca.
 - [ ] Rodar de novo a Task C03-T0 pra garantir que nada regrediu.
 
-Status: não iniciado.
+Status: não iniciado — 🟡 aguarda C03-T1/T2.
 
 </details>
 
@@ -153,11 +162,12 @@ Depende de `EPIC-C01` (Input Map correto).
 <details>
 <summary>Task C04-T1 — Corrigir o evento BossDefeated duplicado</summary>
 
-- [ ] `BossBase.OnDied()` chama `EmitDefeated()` diretamente **e** `BossDeadState.Enter()` chama de novo — remover uma das duas (sugestão: manter só a de `BossDeadState.Enter()`).
+- [x] `BossBase.OnDied()` chama `EmitDefeated()` diretamente **e** `BossDeadState.Enter()` chama de novo — remover uma das duas (sugestão: manter só a de `BossDeadState.Enter()`).
 - **Fazer antes da Task C04-T3**, senão o dash pode ser "desbloqueado" duas vezes sem causar bug visível, mas é sujeira desnecessária.
 - Mesma correção referenciada em `EPIC-C06-T2` — fazer uma vez só.
+- **Nota (28/09):** removido o `EmitDefeated()` de `BossBase.OnDied()`. A fonte única agora é `BossDeadState.Enter()`.
 
-Status: não iniciado.
+Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot.
 
 </details>
 
@@ -166,7 +176,7 @@ Status: não iniciado.
 
 - [ ] Impulso horizontal rápido na direção que o Kairo está olhando, com cooldown e talvez i-frames curtos (típico de Metroidvania).
 
-Status: não iniciado.
+Status: não iniciado — 🟢 liberado (Shift mapeado e movimento unificado).
 
 </details>
 
@@ -176,16 +186,17 @@ Status: não iniciado.
 - [ ] Input: `Input.IsActionJustPressed("dash") && AbilityManager.Instance.HasAbility(AbilityId.Dash)`.
 - [ ] Assinar `EventBus.BossDefeated` (sugestão: no próprio `AbilityManager`, ou um `DemoProgressionManager` novo) e chamar `UnlockAbility(AbilityId.Dash)` quando `bossId == "boss_javali"`.
 
-Status: não iniciado.
+Status: não iniciado — 🟡 aguarda C04-T1 e C04-T2.
 
 </details>
 
 <details>
 <summary>Task C04-T4 — Notificação de habilidade desbloqueada</summary>
 
-- [ ] Dar um retorno visual mínimo (texto na tela por 2-3s) — hoje `HUDController.ShowAbilityUnlockNotification` só imprime no console.
+- [x] Dar um retorno visual mínimo (texto na tela por 2-3s) — hoje `HUDController.ShowAbilityUnlockNotification` só imprime no console.
+- **Nota (28/09):** `HUDController` cria um `Label` centralizado no topo ("Nova habilidade: X"), 2.5s na tela e 0.4s de fade. A `BossArena` não tinha HUD, então ganhou uma instância de `HUD.tscn`: é lá que o dash vai ser desbloqueado.
 
-Status: não iniciado.
+Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot.
 
 </details>
 
@@ -201,7 +212,7 @@ Status: não iniciado.
 
 - [ ] Detectar colisão lateral com parede no ar (`IsOnWall()` do Godot ou raycast lateral) em `PlayerController`.
 
-Status: não iniciado.
+Status: não iniciado — 🟢 liberado (movimento unificado).
 
 </details>
 
@@ -210,7 +221,7 @@ Status: não iniciado.
 
 - [ ] Enquanto segurando A/D contra a parede no ar, reduzir a velocidade de queda (não necessariamente travar em 0).
 
-Status: não iniciado.
+Status: não iniciado — 🟡 aguarda C05-T1.
 
 </details>
 
@@ -219,7 +230,7 @@ Status: não iniciado.
 
 - [ ] Pular estando agarrado empurra pro lado oposto da parede, impulso vertical semelhante ao pulo normal.
 
-Status: não iniciado.
+Status: não iniciado — 🟡 aguarda C05-T2.
 
 </details>
 
@@ -228,7 +239,7 @@ Status: não iniciado.
 
 - [ ] Decidir se é liberado desde o início ou gated por uma `AbilityId` (`WallJump` já existe no enum) — **pendência a decidir com o Higor/documentar no Notion** antes de travar o design final.
 
-Status: não iniciado.
+Status: não iniciado — ⛔ bloqueado: decisão de design pendente (Higor + Notion).
 
 </details>
 
@@ -246,35 +257,39 @@ Status: não iniciado.
 
 - [ ] Rodar a Task C06-T0 do `ROADMAP_QA_CODIGO.md` (ativação, intro, fases automáticas, contato, morte em 8 hits).
 
-Status: não iniciado.
+Status: não iniciado — 🟢 liberado (rodar de novo agora que o sprite real do Korrag entrou, com novo posicionamento/escala).
 
 </details>
 
 <details>
 <summary>Task C06-T1 — Loop de decisão de ataque</summary>
 
-- [ ] Em `BossPhase1State`/`BossPhase2State`/`BossEnragedState`, trocar a chamada genérica `Boss.PerformAttack()` por uma decisão entre `PerformAttack()` (melee), `StartCharge()` (investida) e `PerformStomp()` (pisada em área).
+- [x] Em `BossPhase1State`/`BossPhase2State`/`BossEnragedState`, trocar a chamada genérica `Boss.PerformAttack()` por uma decisão entre `PerformAttack()` (melee), `StartCharge()` (investida) e `PerformStomp()` (pisada em área).
 - **Sugestão de implementação:** método virtual `ChooseAttack()` em `BossBase`, sobrescrito por `JavaliBoss` — pode começar simples (sorteio ponderado ou por distância).
+- **Nota (28/09) — implementação:** `BossBase.ChooseAttack()` virtual, sobrescrito em `JavaliBoss`. Stomp (35%, 50% no enraged) quando o jogador está a até `StompRadius`; Charge (60% na fase 1, 80% depois) a partir de `ChargeMinDistance` (180px); no meio-termo, 40% Charge e o resto melee. O Charge agora tem fim (`ChargeDuration` 0.9s ou bater na parede) e aplica `ChargeDamage`. O Stomp ganhou windup de 0.4s. O `MoveAndSlide` saiu do `ExecuteCharge` (o estado já chama). O melee vira a hitbox pro lado do jogador (antes só acertava à direita) e desliga depois de 0.25s.
+- **Decisão do Gustavo (28/09) — super armor e timers:** o boss tem `InvulnerabilityDuration = 0` e todo golpe o jogava em `Hurt`, o que zerava o timer de ataque e cancelava o windup do Charge. Na prática, batendo sem parar, ele nunca atacava. Agora: (1) durante Charge/Stomp (`IsBusy`) o dano entra, mas não interrompe nem empurra; (2) o timer de ataque sobrevive às idas ao `Hurt`; (3) as transições de fase 2/enraged tocam uma vez só (antes repetiam a cada hit). **Replicar no Notion.**
+- **Achado (28/09), não corrigido:** o enraged chama `SetPhase(2)`, mas `JavaliStatsResource` só tem 2 fases (índices 0 e 1), então no enraged o boss cai nos defaults (cooldown 1.5, velocidade 100, dano 20). Fica mais fraco que na fase 2. Precisa de um `JavaliPhase3.tres` ou de ajuste no índice.
 
-Status: não iniciado.
+Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot.
 
 </details>
 
 <details>
 <summary>Task C06-T2 — Corrigir o evento BossDefeated duplicado</summary>
 
-- [ ] Mesma correção da `EPIC-C04-T1` — fazer uma vez só, referenciar aqui.
+- [x] Mesma correção da `EPIC-C04-T1` — fazer uma vez só, referenciar aqui.
 
-Status: não iniciado.
+Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot. Mesma correção da C04-T1.
 
 </details>
 
 <details>
 <summary>Task C06-T3 — Corrigir o nome oficial</summary>
 
-- [ ] Atualizar `BossName` em `resources/bosses/JavaliStatsResource.tres` de `"Javali das Ruínas"` para `"Korrag, o Javali"`.
+- [x] Atualizar `BossName` em `resources/bosses/JavaliStatsResource.tres` de `"Javali das Ruínas"` para `"Korrag, o Javali"`.
+- **Nota (28/09):** trocado no `.tres` e no fallback hardcoded do `JavaliBoss._Ready()`.
 
-Status: não iniciado.
+Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot.
 
 </details>
 
@@ -282,8 +297,9 @@ Status: não iniciado.
 <summary>Task C06-T4 — Ajustar timing com a arte real</summary>
 
 - [ ] Testar o `charge_windup` (1s) contra a animação real assim que a arte chegar (cruza com `ROADMAP_QA_INTEGRACAO.md` `EPIC-A04`).
+- **Nota (28/09, pós-pull):** `KorragSpriteFrames.tres` já tem `charge_windup` (1 frame, 5 fps) e todos os nomes de animação chamados em `BossStateMachine.cs`/`JavaliBoss.cs` existem no recurso (`walk` existe mas nenhum script chama ainda).
 
-Status: não iniciado.
+Status: não iniciado — 🟢 liberado (C06-T1 implementado e arte do `charge_windup` no repo).
 
 </details>
 
@@ -299,34 +315,37 @@ Status: não iniciado.
 
 - [ ] Rodar a Task C07-T0 do `ROADMAP_QA_CODIGO.md` (idle/patrol/detect/chase/attack/hurt/dead do `EnemyBase` genérico).
 
-Status: não iniciado.
+Status: não iniciado — 🟢 liberado.
 
 </details>
 
 <details>
 <summary>Task C07-T1 — Voador</summary>
 
-- [ ] Criar `EnemyVoador : EnemyBase` — sobrescrever gravidade/colisão pra voar (ignorar `ApplyGravity` ou usar versão sem gravidade, `Y` fixo/oscilante).
+- [x] Criar `EnemyVoador : EnemyBase` — sobrescrever gravidade/colisão pra voar (ignorar `ApplyGravity` ou usar versão sem gravidade, `Y` fixo/oscilante).
+- **Nota (28/09):** `EnemyVoador : EnemyBase` (`MotionMode = Floating`). Sobrescreve `ApplyGravity` (flutua oscilando em Y), `ChasePlayer` (persegue nos dois eixos) e `AtPatrolEdge` (sempre `false`). No `EnemyBase`, `ApplyGravity`, `ChasePlayer` e `AtPatrolEdge` viraram `virtual`. Cena herdada `Enemy_Voador.tscn` + `EnemyVoadorStats.tres`.
 
-Status: não iniciado.
+Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot. `Voador1` está no `TestLevel` sobre o vão entre `Floor1` e `Platform1`.
 
 </details>
 
 <details>
 <summary>Task C07-T2 — Rápido</summary>
 
-- [ ] Avaliar se basta um `.tres` novo (`ChaseSpeed`/`PatrolSpeed` mais altos, já 100% data-driven) ou se precisa de subclasse de código.
+- [x] Avaliar se basta um `.tres` novo (`ChaseSpeed`/`PatrolSpeed` mais altos, já 100% data-driven) ou se precisa de subclasse de código.
+- **Nota (28/09) — avaliação:** basta `.tres`, sem subclasse. `EnemyRapidoStats.tres` (Chase 190, Patrol 90, HP 50, cooldown 0.6) + cena herdada `Enemy_Rapido.tscn`.
 
-Status: não iniciado.
+Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot. `Rapido1` está no `TestLevel` (Floor2).
 
 </details>
 
 <details>
 <summary>Task C07-T3 — Robusto</summary>
 
-- [ ] `.tres` com `MaxHealth`/`KnockbackResistance` mais altos; avaliar se precisa de código extra (ex: ignorar knockback abaixo de um threshold).
+- [x] `.tres` com `MaxHealth`/`KnockbackResistance` mais altos; avaliar se precisa de código extra (ex: ignorar knockback abaixo de um threshold).
+- **Nota (28/09) — avaliação:** sem subclasse. Um campo novo no `EnemyStatsResource`, `InterruptOnHit` (`false` = não entra em `Hurt` ao tomar dano), mantém tudo data-driven. `EnemyRobustoStats.tres` (HP 150, KnockbackResistance 0.9, `InterruptOnHit = false`) + cena herdada `Enemy_Robusto.tscn`. **Os valores dos 3 arquétipos são chute: validar no Notion.**
 
-Status: não iniciado.
+Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot. `Robusto1` está no `TestLevel` (Floor1).
 
 </details>
 
@@ -335,16 +354,17 @@ Status: não iniciado.
 
 - [ ] Criar os `.tres` de `EnemyStatsResource` pra cada arquétipo × cada uma das 3 áreas (Floresta Tropical primeiro).
 
-Status: não iniciado.
+Status: não iniciado — 🟡 aguarda C07-T1/T2/T3 e os valores por área no Notion (os `.tres` não dependem das cenas existirem).
 
 </details>
 
 <details>
 <summary>Task C07-T5 — (baixa prioridade) AtPatrolEdge()</summary>
 
-- [ ] Hoje sempre retorna `false` — corrigir só se o comportamento "parar depois de patrulhar" for desejado. Aceitável pra demo como está.
+- [x] Hoje sempre retorna `false` — corrigir só se o comportamento "parar depois de patrulhar" for desejado. Aceitável pra demo como está.
+- **Nota (28/09):** `AtPatrolEdge()` faz um raycast pra baixo 20px à frente (máscara World). No `EnemyPatrolState`, na beira o inimigo vira (`Flip`) e entra em `Idle`, retomando a patrulha no sentido oposto.
 
-Status: não iniciado.
+Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot.
 
 </details>
 
@@ -360,17 +380,18 @@ Status: não iniciado.
 
 - [ ] Rodar a Task C08-T0 do `ROADMAP_QA_CODIGO.md` (trigger carrega a cena, erro tratado se a cena não existe).
 
-Status: não iniciado.
+Status: não iniciado — 🟢 liberado.
 
 </details>
 
 <details>
 <summary>Task C08-T1 — Spawn direcional</summary>
 
-- [ ] **Opção A:** implementar o uso de `TargetArea`/`SpawnOffset` (já existem exportados em `TransitionTrigger`, não são lidos) pra posicionar o jogador no spawn correspondente.
+- [x] **Opção A:** implementar o uso de `TargetArea`/`SpawnOffset` (já existem exportados em `TransitionTrigger`, não são lidos) pra posicionar o jogador no spawn correspondente.
 - [ ] **Opção B** (mais simples se o tempo apertar): nomear spawn points por origem (`SpawnFromFlorestaTropical`, `SpawnFromDeserto`) e escolher pelo nome de onde o jogador veio.
+- **Nota (28/09) — Opção A aplicada:** `TargetArea` = nome de um `Marker2D` no grupo `SpawnPoints` da cena de destino; `SpawnOffset` soma na posição. `SceneManager.LoadSceneAtSpawn()` guarda o destino, e o `PlayerController` consome no `_Ready` (deferred) e reseta a câmera. Markers criados: `SpawnFromBossArena` (TestLevel, perto do portal) e `SpawnFromTestLevel` (BossArena).
 
-Status: não iniciado.
+Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot. Testável indo e voltando entre `TestLevel` e `BossArena`.
 
 </details>
 
@@ -385,17 +406,20 @@ Status: não iniciado.
 <summary>Task C09-T0 — Regressão básica (antes de mexer)</summary>
 
 - [ ] Rodar a Task C09-T0 do `ROADMAP_QA_CODIGO.md` (ativar checkpoint, salvar, morrer/respawnar).
+- **Bugfix CRÍTICO (28/09) — E não ativava checkpoint:** `TryInteract` procurava o `IInteractable` no *pai* da área sobreposta, mas o `Checkpoint` é a própria `Area2D`. Agora testa a área e depois o pai. A auditoria de 15/09 marcou esse caso como ✅ sem rodar.
+- **Bugfix (28/09) — respawn no checkpoint errado:** `OnDied` pegava o primeiro nó do grupo `Checkpoints`, ativado ou não. Agora o `PlayerController` guarda a posição do último `CheckpointActivated` e, se não houver, respawna perto de onde morreu.
 
-Status: não iniciado.
+Status: não iniciado — 🟢 liberado. Dois bugs da baseline foram corrigidos no código (ver notas); rodar de novo.
 
 </details>
 
 <details>
 <summary>Task C09-T1 — Persistir unlock de habilidade imediatamente</summary>
 
-- [ ] Hoje só atualiza a lista em memória até o próximo save por checkpoint/boss/item — garantir `SaveGame()` também no unlock, ou documentar a decisão de não fazer isso pra demo.
+- [x] Hoje só atualiza a lista em memória até o próximo save por checkpoint/boss/item — garantir `SaveGame()` também no unlock, ou documentar a decisão de não fazer isso pra demo.
+- **Nota (28/09):** `SaveManager.OnAbilityUnlocked` chama `SaveGame()` na hora (cria o save do slot 0 se ainda não existir). `ApplySaveData` passou a restaurar as habilidades sem emitir `AbilityUnlocked`, pra carregar um save não disparar notificação nem um save extra.
 
-Status: não iniciado.
+Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot.
 
 </details>
 
@@ -405,7 +429,7 @@ Status: não iniciado.
 - [ ] Se a demo tiver esse menu: chamar `SaveManager.LoadGame(slot)` e, em `ApplySaveData`, trocar de cena pra `save.CurrentScene` antes de restaurar posição/HP (hoje não troca).
 - [ ] Se a demo **não** vai ter esse menu (sempre começa do zero): documentar essa decisão no Notion.
 
-Status: não iniciado.
+Status: não iniciado — ⛔ bloqueado: decisão pendente (a demo terá menu Continuar?).
 
 </details>
 
@@ -421,7 +445,7 @@ Status: não iniciado.
 
 - [ ] Rodar a Task C10-T0 do `ROADMAP_QA_CODIGO.md` (barra de vida, pausa).
 
-Status: não iniciado.
+Status: não iniciado — 🟢 liberado.
 
 </details>
 
@@ -430,7 +454,7 @@ Status: não iniciado.
 
 - [ ] Fazer o `PlayerController` (ou um `InteractionDetector` dedicado) chamar `HUDController.ShowInteractionPrompt()`/`HideInteractionPrompt()` continuamente com base em estar ou não sobrepondo um `IInteractable` — hoje só reage ao apertar E.
 
-Status: não iniciado.
+Status: não iniciado — 🟢 liberado (movimento unificado).
 
 </details>
 
@@ -439,7 +463,7 @@ Status: não iniciado.
 
 - [ ] Decidir se a demo precisa de tela de Game Over real ou se o respawn automático (já funcional) basta. Se precisar, implementar o que `ShowGameOver()` deveria de fato disparar.
 
-Status: não iniciado.
+Status: não iniciado — ⛔ bloqueado: decisão pendente (tela de Game Over ou só respawn?).
 
 </details>
 
@@ -455,10 +479,11 @@ Responsabilidade do Gustavo.
 <details>
 <summary>Task C11-T1 — Estrutura de pastas e buses</summary>
 
-- [ ] Criar `res://assets/audio/music/` e `res://assets/audio/sfx/`.
-- [ ] Configurar os buses "Music" e "SFX" no Godot (Audio → Buses) — o código já assume que existem.
+- [x] Criar `res://assets/audio/music/` e `res://assets/audio/sfx/`.
+- [x] Configurar os buses "Music" e "SFX" no Godot (Audio → Buses) — o código já assume que existem.
+- **Nota (28/09):** pastas criadas com `.gitkeep`. Buses em `res://default_bus_layout.tres` (Master → Music, SFX). Conferir em Audio → Buses no editor.
 
-Status: não iniciado.
+Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot.
 
 </details>
 
@@ -467,17 +492,18 @@ Status: não iniciado.
 
 - [ ] Produzir/conseguir os 3 arquivos já chamados no código (nomes exatos, case-sensitive): `checkpoint_activate.wav`, `boss_stomp.wav`, `boss_defeat.wav`.
 
-Status: não iniciado.
+Status: não iniciado — ⛔ bloqueado: arquivos de áudio ainda não existem. Lista completa esperada pelo código agora (em `sfx/`): `checkpoint_activate.wav`, `boss_stomp.wav`, `boss_defeat.wav`, `player_attack.wav`, `player_jump.wav`, `player_hurt.wav`, `enemy_hit.wav`, `enemy_death.wav`.
 
 </details>
 
 <details>
 <summary>Task C11-T3 — Chamadas que faltam</summary>
 
-- [ ] Adicionar `AudioManager.PlaySfx(...)` pro ataque do jogador, hit em inimigo/jogador, morte de inimigo comum, pulo (opcional).
+- [x] Adicionar `AudioManager.PlaySfx(...)` pro ataque do jogador, hit em inimigo/jogador, morte de inimigo comum, pulo (opcional).
 - [ ] Música de fundo por bioma via `AudioManager.PlayMusic(...)` (fade in/out já pronto no código).
+- **Nota (28/09):** `PlaySfx` no ataque, pulo e dano do Kairo e no hit/morte de inimigo comum. `AreaController` ganhou `MusicTrack` (exportado, vazio por padrão), tocado no `_Ready` via `PlayMusic`. O `AudioManager` passou a logar arquivo faltando uma vez só por caminho.
 
-Status: não iniciado.
+Status: parcial (28/09) — chamadas de SFX implementadas e gancho de música pronto; som real aguarda C11-T2.
 
 </details>
 
@@ -495,7 +521,7 @@ Só começa depois que todos os épicos 🔴/🟠 acima estiverem concluídos.
 
 - [ ] Rodar o `ROADMAP_QA_CODIGO.md` inteiro, de ponta a ponta, e corrigir qualquer regressão.
 
-Status: não iniciado.
+Status: não iniciado — ⛔ bloqueado: só depois dos épicos 🔴/🟠.
 
 </details>
 
@@ -504,7 +530,7 @@ Status: não iniciado.
 
 - [ ] Entregar os blocos de mecânica que faltavam pra ele terminar a arte condicional (ex: como fica visualmente o wall grab, pra desenhar a animação certa).
 
-Status: não iniciado.
+Status: não iniciado — ⛔ bloqueado: só depois dos épicos 🔴/🟠.
 
 </details>
 
@@ -513,7 +539,7 @@ Status: não iniciado.
 
 - [ ] Rodar o `ROADMAP_QA_INTEGRACAO.md` junto com o Higor assim que a arte de cada bloco chegar — não esperar tudo pronto pra testar.
 
-Status: não iniciado.
+Status: não iniciado — 🟡 pode começar por bloco: Kairo e Korrag já têm arte no repo.
 
 </details>
 

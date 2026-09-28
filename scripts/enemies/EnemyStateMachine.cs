@@ -132,6 +132,8 @@ namespace Joguim.Enemies
 
             if (Enemy.AtPatrolEdge())
             {
+                // vira antes de parar, pra retomar a patrulha na direção oposta
+                Enemy.Flip();
                 StateMachine.ChangeState(EnemyStateType.Idle);
                 return;
             }

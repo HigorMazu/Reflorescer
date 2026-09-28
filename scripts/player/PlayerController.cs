@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using Joguim.Abilities;
 using Joguim.Combat;
 using Joguim.Core;
 using Joguim.Resources;
@@ -27,23 +28,27 @@ namespace Joguim.Player
         public Node2D RightArm { get; private set; }
         public Node2D RightHand { get; private set; }
 
-        public PlayerStateMachine StateMachine { get; private set; }
         public Health Health { get; private set; }
 
         public Vector2 LastFacingDirection { get; private set; } = Vector2.Right;
         public bool HasSword { get; set; } = true;
         public int CurrentAttackDamage => StatsResource?.AttackDamage ?? 25;
+        // Stats duplos: sem a espada o Kairo é mais rápido e pula mais alto
+        public float CurrentMoveSpeed => HasSword ? StatsResource.MoveSpeed : StatsResource.MoveSpeedNoSword;
+        public float CurrentJumpVelocity => HasSword ? StatsResource.JumpVelocity : StatsResource.JumpVelocityNoSword;
+        // Fonte única de verdade do double jump: AbilityManager
+        public bool HasDoubleJump => AbilityManager.Instance?.HasAbility(AbilityId.DoubleJump) ?? false;
 
         private bool _isDead = false;
         private float _attackTimer = 0f;
+        private float _hurtTimer = 0f;
         private float _coyoteTime = 0.15f;
         private float _coyoteCounter = 0f;
         private float _jumpBufferTime = 0.12f;
         private float _jumpBufferCounter = 0f;
-        private bool _useDirectMovement = true; // prototype: direct control guarantees playability
-        private bool _hasDoubleJump = false;
         private bool _doubleJumpUsed = false;
         private int _jumpCount = 0;
+        private Vector2? _lastCheckpointPosition;
 
         public override void _Ready()
         {
@@ -56,7 +61,6 @@ namespace Joguim.Player
             RightArm = GetNodeOrNull<Node2D>(RightArmPath);
             RightHand = GetNodeOrNull<Node2D>(RightHandPath);
 
-            StateMachine = GetNodeOrNull<PlayerStateMachine>("PlayerStateMachine");
             Health = GetNodeOrNull<Health>("Health");
 
             var camera = GetNodeOrNull<Camera2D>("Camera2D");
@@ -84,37 +88,24 @@ namespace Joguim.Player
                 CallDeferred(nameof(EmitInitialHealth));
             }
 
-            if (StateMachine != null)
-            {
-                StateMachine.Initialize(this);
-                StateMachine.ChangeState(PlayerStateType.Idle);
-            }
-
             if (EventBus.Instance != null) EventBus.Instance.CheckpointActivated += OnCheckpointActivated;
             else GD.PrintErr("PlayerController: EventBus not ready yet.");
 
-            // DoubleJump fica disponível automaticamente no prototype
-            CallDeferred(MethodName.InitDoubleJump);
+            // Spawn direcional: se viemos de um TransitionTrigger, reposiciona no ponto de entrada
+            CallDeferred(MethodName.ApplyPendingSpawn);
         }
 
-        private void InitDoubleJump()
+        public override void _ExitTree()
         {
-            // Tenta pegar do AbilityManager; se ainda não existir, habilita direto
-            var am = GetNodeOrNull<Joguim.Abilities.AbilityManager>("/root/AbilityManager");
-            if (am != null && am.HasAbility(Joguim.Abilities.AbilityId.DoubleJump))
-            {
-                _hasDoubleJump = true;
-            }
-            else
-            {
-                _hasDoubleJump = true; // prototype fallback - sempre permite
-            }
-            if (EventBus.Instance != null) EventBus.Instance.AbilityUnlocked += OnAbilityUnlocked;
+            if (EventBus.Instance != null) EventBus.Instance.CheckpointActivated -= OnCheckpointActivated;
         }
 
-        private void OnAbilityUnlocked(string abilityId)
+        private void ApplyPendingSpawn()
         {
-            if (abilityId == Joguim.Abilities.AbilityId.DoubleJump.ToString()) _hasDoubleJump = true;
+            if (SceneManager.Instance == null || !SceneManager.Instance.TryConsumePendingSpawn(out Vector2 spawnPosition)) return;
+            GlobalPosition = spawnPosition;
+            Velocity = Vector2.Zero;
+            GetNodeOrNull<Camera2D>("Camera2D")?.ResetSmoothing();
         }
 
         public override void _PhysicsProcess(double delta)
@@ -123,14 +114,11 @@ namespace Joguim.Player
 
             // Timers
             if (_attackTimer > 0) _attackTimer -= (float)delta;
+            if (_hurtTimer > 0) _hurtTimer -= (float)delta;
             if (_coyoteCounter > 0) _coyoteCounter -= (float)delta;
             if (_jumpBufferCounter > 0) _jumpBufferCounter -= (float)delta;
 
-            if (_useDirectMovement)
-            {
-                HandlePrototypeMovement(delta);
-            }
-            // StateMachine still ticks via its own _PhysicsProcess; keep for animation
+            HandlePrototypeMovement(delta);
             UpdatePrototypeAnimation();
         }
 
@@ -155,7 +143,7 @@ namespace Joguim.Player
                 _coyoteCounter = 0;
                 _jumpCount = 1;
             }
-            else if (wantsJump && _hasDoubleJump && !_doubleJumpUsed && !IsOnFloor())
+            else if (wantsJump && HasDoubleJump && !_doubleJumpUsed && !IsOnFloor())
             {
                 DoubleJump();
                 _doubleJumpUsed = true;
@@ -179,6 +167,7 @@ namespace Joguim.Player
             {
                 PerformAttack();
                 _attackTimer = StatsResource.AttackCooldown;
+                AudioManager.Instance?.PlaySfx("player_attack.wav");
 
                 // flash + lean forward
                 if (Visual != null)
@@ -212,7 +201,7 @@ namespace Joguim.Player
             if (Mathf.Abs(inputDir) > 0.01f) LastFacingDirection = inputDir > 0 ? Vector2.Right : Vector2.Left;
 
             float accel = IsOnFloor() ? StatsResource.Acceleration : StatsResource.AirAcceleration;
-            float targetSpeed = inputDir * StatsResource.MoveSpeed;
+            float targetSpeed = inputDir * CurrentMoveSpeed;
             if (Mathf.Abs(inputDir) > 0.01f)
                 Velocity = new Vector2(Mathf.MoveToward(Velocity.X, targetSpeed, accel * (float)delta), Velocity.Y);
             else
@@ -234,7 +223,8 @@ namespace Joguim.Player
             if (Visual == null) return;
             // Simple squash/stretch based on state for placeholder prototype
             string anim = "idle";
-            if (_attackTimer > 0) anim = "attack";
+            if (_hurtTimer > 0) anim = "hurt";
+            else if (_attackTimer > 0) anim = "attack";
             else if (!IsOnFloor()) anim = Velocity.Y < 0 ? "jump" : "fall";
             else if (Mathf.Abs(Velocity.X) > 10f) anim = "run";
 
@@ -248,12 +238,6 @@ namespace Joguim.Player
                 else if (anim == "run") Visual.Scale = new Vector2(LastFacingDirection.X > 0 ? 1 : -1, 1);
                 else Visual.Scale = new Vector2(LastFacingDirection.X > 0 ? 1 : -1, 1);
             }
-
-            // StateMachine animation fallback
-            if (StateMachine != null && StateMachine.CurrentStateType.ToString().ToLower() != anim)
-            {
-                // keep StateMachine in sync for compatibility
-            }
         }
 
         private void TryInteract()
@@ -261,11 +245,12 @@ namespace Joguim.Player
             if (InteractionDetector == null) return;
             foreach (var area in InteractionDetector.GetOverlappingAreas())
             {
-                var parent = area.GetParent();
-                if (parent is Joguim.Interaction.IInteractable interactable && interactable.CanInteract())
+                // O interagível pode ser a própria Area2D (Checkpoint) ou o pai dela
+                Node candidate = area is Joguim.Interaction.IInteractable ? area : area.GetParent();
+                if (candidate is Joguim.Interaction.IInteractable interactable && interactable.CanInteract())
                 {
                     interactable.Interact(this);
-                    GD.Print($"Interagiu com {parent.Name}");
+                    GD.Print($"Interagiu com {candidate.Name}");
                     break;
                 }
             }
@@ -282,19 +267,6 @@ namespace Joguim.Player
             }
         }
 
-        public void ApplyHorizontalMovement(double delta)
-        {
-            float inputDirection = Input.GetAxis("move_left", "move_right");
-            if (Mathf.Abs(inputDirection) > 0.01f) LastFacingDirection = inputDirection > 0 ? Vector2.Right : Vector2.Left;
-            float accel = IsOnFloor() ? StatsResource.Acceleration : StatsResource.AirAcceleration;
-            float targetSpeed = inputDirection * StatsResource.MoveSpeed;
-            if (Mathf.Abs(inputDirection) > 0.1f)
-                Velocity = new Vector2(Mathf.MoveToward(Velocity.X, targetSpeed, accel * (float)delta), Velocity.Y);
-            else
-                Velocity = new Vector2(Mathf.MoveToward(Velocity.X, 0, StatsResource.Deceleration * (float)delta), Velocity.Y);
-            UpdateFacingDirection(inputDirection);
-        }
-
         public void UpdateFacingDirection(float inputDirection)
         {
             if (Mathf.Abs(inputDirection) > 0.1f && Visual != null)
@@ -303,7 +275,8 @@ namespace Joguim.Player
 
         public void Jump()
         {
-            Velocity = new Vector2(Velocity.X, StatsResource.JumpVelocity);
+            Velocity = new Vector2(Velocity.X, CurrentJumpVelocity);
+            AudioManager.Instance?.PlaySfx("player_jump.wav");
             // squash visual
             if (Visual != null)
             {
@@ -315,7 +288,7 @@ namespace Joguim.Player
 
         public void DoubleJump()
         {
-            Velocity = new Vector2(Velocity.X, StatsResource.JumpVelocity * 0.90f);
+            Velocity = new Vector2(Velocity.X, CurrentJumpVelocity * 0.90f);
             // Faísca pulse quando faz double jump
             var faisca = GetTree().GetFirstNodeInGroup("Companion");
             if (faisca != null && faisca.HasMethod("Flash")) { /* fallback */ }
@@ -373,6 +346,8 @@ namespace Joguim.Player
         {
             if (_isDead) return;
             GD.Print($"Player tomou {damage} dano. HP {Health.CurrentHealth}");
+            AudioManager.Instance?.PlaySfx("player_hurt.wav");
+            _hurtTimer = 0.25f;
             Velocity = knockbackDirection * 320f * (1f - StatsResource.KnockbackResistance);
             if (knockbackDirection.Y < -0.2f) Velocity = new Vector2(Velocity.X, -180f);
             if (Visual != null)
@@ -388,21 +363,20 @@ namespace Joguim.Player
             // hitstop curto
             Engine.TimeScale = 0.2f;
             GetTree().CreateTimer(0.07, true, false, true).Timeout += () => Engine.TimeScale = 1f;
-            StateMachine?.ChangeState(PlayerStateType.Hurt);
         }
 
         private void OnDied()
         {
             _isDead = true;
-            StateMachine?.ChangeState(PlayerStateType.Dead);
+            _hurtTimer = 0f;
+            PlayAnimation("dead");
             EventBus.Instance?.EmitSignal("PlayerDied");
-            // respawn after 1s for prototype
+            // respawn after 1s for prototype: último checkpoint ativado, ou perto de onde morreu
+            Vector2 deathPosition = GlobalPosition;
             GetTree().CreateTimer(1.0).Timeout += () =>
             {
-                var spawn = GetTree().GetFirstNodeInGroup("Checkpoints");
-                Vector2 pos = GlobalPosition + Vector2.Up * 40;
-                if (spawn is Node2D n) pos = n.GlobalPosition;
-                Respawn(pos);
+                if (!IsInstanceValid(this)) return;
+                Respawn(_lastCheckpointPosition ?? deathPosition + Vector2.Up * 40);
             };
         }
 
@@ -410,11 +384,10 @@ namespace Joguim.Player
         {
             _isDead = false; GlobalPosition = position; Health?.Reset(); Velocity = Vector2.Zero;
             SetProcess(true); SetPhysicsProcess(true);
-            StateMachine?.ChangeState(PlayerStateType.Idle);
             EventBus.Instance?.EmitSignal("PlayerRespawned", position);
         }
 
-        private void OnCheckpointActivated(Vector2 position, string checkpointId) { }
+        private void OnCheckpointActivated(Vector2 position, string checkpointId) => _lastCheckpointPosition = position;
 
         public void Heal(int amount) => Health?.Heal(amount);
 

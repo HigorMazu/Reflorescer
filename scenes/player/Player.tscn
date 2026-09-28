@@ -1,7 +1,6 @@
-[gd_scene load_steps=15 format=3 uid="uid://player001"]
+[gd_scene load_steps=14 format=3 uid="uid://player001"]
 
 [ext_resource type="Script" path="res://scripts/player/PlayerController.cs" id="1"]
-[ext_resource type="Script" path="res://scripts/player/PlayerStateMachine.cs" id="2"]
 [ext_resource type="Script" path="res://scripts/combat/Health.cs" id="3"]
 [ext_resource type="Script" path="res://scripts/combat/CombatController.cs" id="4"]
 [ext_resource type="Script" path="res://scripts/combat/Hitbox.cs" id="5"]
@@ -207,9 +206,6 @@ collision_mask = 32
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionDetector"]
 shape = SubResource("RectangleShape2D_interaction")
-
-[node name="PlayerStateMachine" type="Node" parent="."]
-script = ExtResource("2")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(0, -20)

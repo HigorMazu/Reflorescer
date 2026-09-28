@@ -15,6 +15,8 @@ namespace Joguim.Resources
         [Export] public float AttackCooldown = 1.0f;
         [Export] public float Gravity = 980.0f;
         [Export] public float KnockbackResistance = 0.2f;
+        // false = não entra em Hurt ao tomar dano (não é interrompido no meio do ataque)
+        [Export] public bool InterruptOnHit = true;
         [Export] public int ExperienceReward = 10;
     }
 }

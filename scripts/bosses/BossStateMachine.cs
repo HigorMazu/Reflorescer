@@ -113,13 +113,19 @@ namespace Joguim.Bosses
     {
         private float _attackTimer;
         private int _attackCount;
+        private bool _started;
 
         public BossPhase1State(BossBase boss, BossStateMachine stateMachine) : base(boss, stateMachine) { }
 
         public override void Enter()
         {
-            _attackTimer = Boss.GetCurrentPhaseCooldown();
-            _attackCount = 0;
+            // Voltar do Hurt não zera o timer de ataque, senão o boss nunca ataca sob pressão
+            if (!_started)
+            {
+                _started = true;
+                _attackTimer = Boss.GetCurrentPhaseCooldown();
+                _attackCount = 0;
+            }
             Boss.PlayAnimation("phase1_idle");
         }
 
@@ -128,16 +134,16 @@ namespace Joguim.Bosses
             Boss.ApplyGravity(delta);
             Boss.MoveAndSlide();
 
-            _attackTimer -= (float)delta;
+            if (!Boss.IsBusy) _attackTimer -= (float)delta;
 
             if (_attackTimer <= 0)
             {
-                Boss.PerformAttack();
+                Boss.ChooseAttack();
                 _attackCount++;
                 _attackTimer = Boss.GetCurrentPhaseCooldown();
             }
 
-            Boss.ChasePlayer(delta);
+            if (!Boss.IsBusy) Boss.ChasePlayer(delta);
 
             if (Boss.HealthPercentage <= 0.5f)
             {
@@ -155,8 +161,9 @@ namespace Joguim.Bosses
 
         public override void Enter()
         {
+            // A transição de fase só acontece uma vez; voltar do Hurt retoma a luta direto
+            if (_phaseTransitionDone) return;
             _attackTimer = 1.5f;
-            _phaseTransitionDone = false;
             Boss.PlayAnimation("phase2_transition");
             Boss.StopMovement();
         }
@@ -177,15 +184,15 @@ namespace Joguim.Bosses
                 return;
             }
 
-            _attackTimer -= (float)delta;
+            if (!Boss.IsBusy) _attackTimer -= (float)delta;
 
             if (_attackTimer <= 0)
             {
-                Boss.PerformAttack();
+                Boss.ChooseAttack();
                 _attackTimer = Boss.GetCurrentPhaseCooldown();
             }
 
-            Boss.ChasePlayer(delta);
+            if (!Boss.IsBusy) Boss.ChasePlayer(delta);
 
             if (Boss.HealthPercentage <= 0.2f)
             {
@@ -203,8 +210,8 @@ namespace Joguim.Bosses
 
         public override void Enter()
         {
+            if (_enragedTransitionDone) return;
             _attackTimer = 1.0f;
-            _enragedTransitionDone = false;
             Boss.PlayAnimation("enraged_transition");
             Boss.StopMovement();
         }
@@ -225,15 +232,15 @@ namespace Joguim.Bosses
                 return;
             }
 
-            _attackTimer -= (float)delta;
+            if (!Boss.IsBusy) _attackTimer -= (float)delta;
 
             if (_attackTimer <= 0)
             {
-                Boss.PerformAttack();
+                Boss.ChooseAttack();
                 _attackTimer = Boss.GetCurrentPhaseCooldown() * 0.7f;
             }
 
-            Boss.ChasePlayer(delta);
+            if (!Boss.IsBusy) Boss.ChasePlayer(delta);
         }
     }
 

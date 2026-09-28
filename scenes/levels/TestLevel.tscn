@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://testlevel001"]
+[gd_scene load_steps=12 format=3 uid="uid://testlevel001"]
 
 [ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://faisca001" path="res://scenes/companion/Faisca.tscn" id="2"]
@@ -7,6 +7,10 @@
 [ext_resource type="Script" path="res://scripts/world/TransitionTrigger.cs" id="6"]
 [ext_resource type="Script" path="res://scripts/ui/HUDController.cs" id="7"]
 [ext_resource type="Script" path="res://scripts/ui/HealthBar.cs" id="8"]
+[ext_resource type="PackedScene" uid="uid://enemyvoador001" path="res://scenes/enemies/Enemy_Voador.tscn" id="9"]
+[ext_resource type="PackedScene" uid="uid://enemyrapido001" path="res://scenes/enemies/Enemy_Rapido.tscn" id="10"]
+[ext_resource type="PackedScene" uid="uid://enemyrobusto001" path="res://scenes/enemies/Enemy_Robusto.tscn" id="11"]
+[ext_resource type="Script" path="res://scripts/world/RestorationPoint.cs" id="12"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor1"]
 size = Vector2(800, 40)
@@ -159,6 +163,15 @@ position = Vector2(850, 460)
 [node name="Enemy3" parent="Enemies" instance=ExtResource("3")]
 position = Vector2(1150, 460)
 
+[node name="Voador1" parent="Enemies" instance=ExtResource("9")]
+position = Vector2(720, 340)
+
+[node name="Rapido1" parent="Enemies" instance=ExtResource("10")]
+position = Vector2(1300, 460)
+
+[node name="Robusto1" parent="Enemies" instance=ExtResource("11")]
+position = Vector2(700, 460)
+
 [node name="Checkpoint1" type="Area2D" parent="."]
 position = Vector2(350, 480)
 collision_layer = 32
@@ -213,6 +226,7 @@ collision_layer = 32
 collision_mask = 2
 script = ExtResource("6")
 TargetScene = "res://scenes/levels/BossArena.tscn"
+TargetArea = "SpawnFromTestLevel"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TransitionToBoss"]
 shape = SubResource("RectangleShape2D_transition_shape")
@@ -223,6 +237,26 @@ offset_top = -50.0
 offset_right = 15.0
 offset_bottom = 50.0
 color = Color(0.4, 0.2, 0.8, 0.6)
+
+[node name="SpawnFromBossArena" type="Marker2D" parent="." groups=["SpawnPoints"]]
+position = Vector2(1360, 460)
+
+[node name="RestorationPoint1" type="Area2D" parent="."]
+position = Vector2(120, 480)
+collision_layer = 32
+collision_mask = 2
+script = ExtResource("12")
+PointId = "restoration_test_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RestorationPoint1"]
+shape = SubResource("RectangleShape2D_checkpoint_shape")
+
+[node name="Placeholder" type="ColorRect" parent="RestorationPoint1"]
+offset_left = -10.0
+offset_top = -14.0
+offset_right = 10.0
+offset_bottom = 0.0
+color = Color(0.45, 0.32, 0.18, 1)
 
 [node name="HUD" type="CanvasLayer" parent="."]
 layer = 10

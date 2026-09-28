@@ -17,6 +17,10 @@ namespace Joguim.UI
         private Label _interactionPrompt;
         private Label _abilityDisplay;
         private Control _pauseMenu;
+        private Label _unlockNotification;
+        private Tween _unlockTween;
+
+        private const float UnlockNotificationDuration = 2.5f;
 
         private PlayerController _player;
 
@@ -110,7 +114,43 @@ namespace Joguim.UI
         private void ShowAbilityUnlockNotification(string abilityId)
         {
             GD.Print($"Ability unlocked notification: {abilityId}");
+
+            if (_unlockNotification == null)
+            {
+                _unlockNotification = new Label
+                {
+                    Name = "AbilityUnlockNotification",
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    GrowHorizontal = Control.GrowDirection.Both,
+                    Visible = false
+                };
+                _unlockNotification.AddThemeFontSizeOverride("font_size", 28);
+                _unlockNotification.AddThemeColorOverride("font_outline_color", Colors.Black);
+                _unlockNotification.AddThemeConstantOverride("outline_size", 6);
+                AddChild(_unlockNotification);
+                _unlockNotification.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.CenterTop);
+                _unlockNotification.OffsetTop = 120;
+            }
+
+            _unlockNotification.Text = $"Nova habilidade: {GetAbilityDisplayName(abilityId)}";
+            _unlockNotification.Visible = true;
+            _unlockNotification.Modulate = Colors.White;
+
+            _unlockTween?.Kill();
+            _unlockTween = CreateTween();
+            _unlockTween.TweenInterval(UnlockNotificationDuration);
+            _unlockTween.TweenProperty(_unlockNotification, "modulate:a", 0.0f, 0.4);
+            _unlockTween.TweenCallback(Callable.From(() => _unlockNotification.Visible = false));
         }
+
+        private static string GetAbilityDisplayName(string abilityId) => abilityId switch
+        {
+            "Dash" => "Dash",
+            "DoubleJump" => "Pulo Duplo",
+            "WallJump" => "Pulo de Parede",
+            _ => abilityId
+        };
 
         public void ShowGameOver()
         {
