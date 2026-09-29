@@ -26,6 +26,13 @@ namespace Joguim.Save
             EventBus.Instance.BossDefeated += OnBossDefeated;
             EventBus.Instance.ItemCollected += OnItemCollected;
             EventBus.Instance.AbilityUnlocked += OnAbilityUnlocked;
+            EventBus.Instance.AreaRestored += OnAreaRestored;
+        }
+
+        // Consultado pelos RestorationPoint ao entrarem numa cena, pra nascer já restaurados
+        public bool IsPointRestored(string pointId)
+        {
+            return _currentSave != null && _currentSave.RestoredPoints.Contains(pointId);
         }
 
         public bool HasSave(int slot)
@@ -180,6 +187,14 @@ namespace Joguim.Save
                     }
                 }
             }
+
+            foreach (var node in GetTree().GetNodesInGroup(World.RestorationPoint.GroupName))
+            {
+                if (node is World.RestorationPoint point && save.RestoredPoints.Contains(point.PointId))
+                {
+                    point.SetRestoredWithoutEffect();
+                }
+            }
         }
 
         public void SaveCurrentGame(int slot = 0)
@@ -244,6 +259,21 @@ namespace Joguim.Save
             if (!_currentSave.CollectedItems.Contains(itemId))
             {
                 _currentSave.CollectedItems.Add(itemId);
+            }
+
+            SaveGame(_currentSave.Slot);
+        }
+
+        private void OnAreaRestored(string pointId)
+        {
+            if (_currentSave == null)
+            {
+                _currentSave = CreateNewSave(0);
+            }
+
+            if (!_currentSave.RestoredPoints.Contains(pointId))
+            {
+                _currentSave.RestoredPoints.Add(pointId);
             }
 
             SaveGame(_currentSave.Slot);

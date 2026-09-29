@@ -24,6 +24,7 @@ namespace Joguim.Save
         public List<string> DefeatedEnemies { get; set; } = new();
         public List<string> DefeatedBosses { get; set; } = new();
         public List<string> ActivatedCheckpoints { get; set; } = new();
+        public List<string> RestoredPoints { get; set; } = new();
         public List<string> UnlockedShortcuts { get; set; } = new();
 
         // Stats

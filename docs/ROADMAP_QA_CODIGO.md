@@ -12,9 +12,9 @@ responsavel: Gustavo
 par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 12
-epicos_concluidos: 0
+epicos_concluidos: 2
 tasks_total: 44
-tasks_prontas: 5
+tasks_prontas: 20
 tasks_bloqueadas: 6
 ---
 # Roadmap de QA — Código (Reflorescer)
@@ -27,17 +27,17 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 
 ---
 
-> [!failure]- EPIC-C01 — Fundação Técnica — 🔴 Falha · 🔴 Bloqueante
+> [!success]- EPIC-C01 — Fundação Técnica — ✅ Passa · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — Input Map bate 100% com os controles de [[🕹️ Sistemas de Jogo#Movimentação|Sistemas de Jogo]], ataque nunca dispara duas vezes, e só existe uma fonte de verdade pro double jump.
 >
-> > [!failure]- Task C01-T1 — Input Map bate com a documentação
-> > - [ ] Todas as ações lidas em `scripts/` (`move_left`, `move_right`, `jump`, `attack`, `dash`, `interact`, `ability`) correspondem às teclas de [[🕹️ Sistemas de Jogo#Movimentação|Sistemas de Jogo]].
-> > - [ ] Nenhum script ficou lendo uma ação com o nome antigo depois do remapeamento.
+> > [!success]- Task C01-T1 — Input Map bate com a documentação
+> > - [x] Todas as ações lidas em `scripts/` (`move_left`, `move_right`, `jump`, `attack`, `dash`, `interact`, `ability`) correspondem às teclas de [[🕹️ Sistemas de Jogo#Movimentação|Sistemas de Jogo]].
+> > - [x] Nenhum script ficou lendo uma ação com o nome antigo depois do remapeamento.
 > > - **Achado da auditoria (15/09):** hoje `attack`=J+clique, `dash`=K+seta-baixo, `jump`=Espaço/W/seta-cima, `ability`=L (sem uso). Sem S nem Q mapeados — bate com nada da seção 7.
 > >
-> > Status: 🔴 falha — Input Map real não bate com a documentação confirmada.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
-> > [!warning]- Task C01-T2 — Regressão de movimento após unificar
+> > [!success]- Task C01-T2 — Regressão de movimento após unificar
 > > - [x] Segurar mover esquerda/direita no chão → acelera até 200px/s, desacelera ao soltar.
 > > - [x] Pular parado (chão) → `Velocity.Y = -460` instantânea.
 > > - [x] Soltar o botão de pular cedo → corta a velocidade pra metade se `Velocity.Y < -80` (jump cut).
@@ -45,27 +45,27 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [x] Apertar pular ~0.1s antes de tocar o chão → pulo executa ao tocar (jump buffer, 0.12s).
 > > - [x] Cair de queda longa → `Velocity.Y` nunca passa de 650; gravidade de queda é 1.6x a de subida.
 > > - [x] Virar de direção rapidamente → visual vira instantaneamente, sem input travado.
-> > - [ ] Apertar ataque uma única vez → `PerformAttack()`/`EnableHitbox()` executa **1 vez só**.
+> > - [x] Apertar ataque uma única vez → `PerformAttack()`/`EnableHitbox()` executa **1 vez só**.
 > > - **Achado da auditoria (15/09):** os 7 primeiros casos passam hoje. O último é risco real — `PlayerController.HandlePrototypeMovement()` e a `PlayerStateMachine`/`PlayerStates.cs` antiga rodam em paralelo, e `AttackState.Enter()` também chama `Player.PerformAttack()`, então um único input pode disparar o ataque 2x.
-> > - [ ] Depois da `EPIC-C01-T2` do Dev (remoção do sistema duplicado): repetir todos os casos acima — nada pode ter regredido.
+> > - [x] Depois da `EPIC-C01-T2` do Dev (remoção do sistema duplicado): repetir todos os casos acima — nada pode ter regredido.
 > > - **Achado (28/09) — os 7 casos de física não rodavam com esses valores:** a state machine antiga também chamava `ApplyGravity` + `MoveAndSlide`, então a física rodava 2x por frame (deslocamento e gravidade dobrados). A `EPIC-C01-T2` do Dev removeu isso. Os números acima (200px/s, -460, 650) passam a valer de verdade só agora, e o movimento vai parecer mais lento que no playtest antigo. Repetir todos os casos.
 > >
-> > Status: 🟡 parcial — física de movimento passa, mas ataque duplicado é risco real enquanto os dois sistemas coexistirem.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
-> > [!warning]- Task C01-T3 — Double Jump com fonte única
-> > - [ ] Pular de novo no ar sem tocar o chão → disponível vindo de **uma única fonte** de verdade.
+> > [!success]- Task C01-T3 — Double Jump com fonte única
+> > - [x] Pular de novo no ar sem tocar o chão → disponível vindo de **uma única fonte** de verdade.
 > > - **Achado da auditoria (15/09):** hoje sempre disponível, mas por duas fontes concorrentes ao mesmo tempo — `PlayerController.InitDoubleJump()` (fallback hardcoded, intencional só pro protótipo) e `AbilityManager.UnlockPrototypeAbilities()`. Funciona por acidente, não por design.
 > >
-> > Status: 🟡 parcial — double jump funciona, mas sem fonte única de verdade.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 
 > [!failure]- EPIC-C02 — Mecânica de Restauração ODS15 — 🔴 Falha · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — ponto de restauração interagível nas 3 áreas, efeito visual próprio, evento dedicado no `EventBus`, e persistência em save.
 >
-> > [!failure]- Task C02-T1 — Interação de restauração existe
-> > - [ ] Existe um ponto de restauração interagível (planta/cura/reativa) em pelo menos 1 lugar de cada uma das 3 áreas da demo.
+> > [!success]- Task C02-T1 — Interação de restauração existe
+> > - [x] Existe um ponto de restauração interagível (planta/cura/reativa) em pelo menos 1 lugar de cada uma das 3 áreas da demo.
 > > - **Achado da auditoria (15/09):** não existe — `Checkpoint` é só save point genérico, sem nenhum conceito de "restaurar" o bioma.
 > >
-> > Status: 🔴 falha — mecânica não implementada.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
 > > [!failure]- Task C02-T2 — Efeito visual/de mundo
 > > - [ ] Interagir com o ponto dispara um efeito visual/de mundo perceptível (partícula, mudança de cor no tile, sprite antes/depois).
@@ -75,6 +75,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > [!failure]- Task C02-T3 — Evento dedicado e persistência
 > > - [ ] Emite um evento próprio no `EventBus` (não reaproveita `CheckpointActivated`).
 > > - [ ] Pontos restaurados persistem no save (fechar/reabrir o jogo mantém o estado restaurado).
+> > - **Nota (28/09):** o segundo caso (fechar/reabrir) depende do fluxo de Continuar (C09-T2), que ainda não existe. Por enquanto, testar: (1) restaurar e ir pro `BossArena` e voltar → continua restaurado; (2) o `save_0.json` (em `%APPDATA%/Godot/app_userdata/Joguim - Metroidvania/`) lista o ponto em `RestoredPoints`.
 > >
 > > Status: 🔴 falha — nada disso existe hoje.
 >
@@ -94,7 +95,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [x] Tomar dano de um inimigo → HP cai, knockback, 1s de invulnerabilidade, shake visual.
 > > - [x] Tomar dano durante a invulnerabilidade pós-hit → segundo hit ignorado.
 > >
-> > Status: ✅ passa — baseline de combate sólida, segura pra construir o toggle da espada em cima.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
 > > [!failure]- Task C03-T1 — Toggle da espada (Q)
 > > - [ ] Apertar Q alterna `HasSword` e a visibilidade do sprite da espada/bandagem.
@@ -118,11 +119,11 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > [!failure]- EPIC-C04 — Dash e Desbloqueio Pós-Korrag — 🔴 Falha · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — `BossDefeated` dispara uma única vez, dash tem movimento real, é desbloqueado só ao derrotar o Korrag, e a UI avisa o jogador.
 >
-> > [!warning]- Task C04-T1 — Evento BossDefeated único
-> > - [ ] Derrotar o Korrag emite `BossDefeated` **uma vez só**.
+> > [!success]- Task C04-T1 — Evento BossDefeated único
+> > - [x] Derrotar o Korrag emite `BossDefeated` **uma vez só**.
 > > - **Achado da auditoria (15/09):** dispara duas vezes — `BossBase.OnDied()` e `BossDeadState.Enter()` chamam `EmitDefeated()` cada um, de forma independente. Mesmo achado documentado em `EPIC-C06-T2` — é a mesma correção, contar uma vez só no cômputo geral.
 > >
-> > Status: 🟡 parcial — o evento existe e funciona, mas duplicado.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
 > > [!failure]- Task C04-T2 — Movimento do dash existe
 > > - [ ] Apertar Shift (pós remapeamento) com a habilidade desbloqueada → impulso horizontal rápido na direção que o Kairo olha.
@@ -170,7 +171,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: 🔴 bloqueado — decisão de escopo pendente.
 
-> [!failure]- EPIC-C06 — Boss Korrag (IA e Identidade) — 🔴 Falha · 🔴 Bloqueante
+> [!warning]- EPIC-C06 — Boss Korrag (IA e Identidade) — 🟡 Parcial · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — o Korrag usa Charge e Stomp durante a luta, o `BossName` é "Korrag, o Javali", e o evento de derrota dispara uma única vez.
 >
 > > [!success]- Task C06-T0 — Regressão do núcleo do boss (baseline antes de mexer)
@@ -182,26 +183,26 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [x] Boss recebe 8 ataques básicos do jogador (25×8=200) → morre exatamente no 8º hit.
 > > - **Correção de uma nota antiga da auditoria:** a troca de fase por HP já funciona sozinha via `BossStateMachine` (`BossPhase1State`/`BossPhase2State`/`BossEnragedState` chamam `SetPhase()` automaticamente) — não é um gap, ao contrário do que uma versão anterior deste documento registrava.
 > >
-> > Status: ✅ passa — núcleo do boss (ativação, intro, fases, dano, morte) está sólido.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
-> > [!failure]- Task C06-T1 — Loop de decisão de ataque
-> > - [ ] O boss usa a investida (Charge) em algum momento da luta.
-> > - [ ] O boss usa a pisada em área (Stomp) em algum momento.
-> > - [ ] O boss ainda usa o ataque melee genérico em alguma situação (variedade, não só os ataques especiais).
+> > [!success]- Task C06-T1 — Loop de decisão de ataque
+> > - [x] O boss usa a investida (Charge) em algum momento da luta.
+> > - [x] O boss usa a pisada em área (Stomp) em algum momento.
+> > - [x] O boss ainda usa o ataque melee genérico em alguma situação (variedade, não só os ataques especiais).
 > > - **Achado da auditoria (15/09):** `StartCharge()`/`ExecuteCharge()`/`PerformStomp()` já existem em `JavaliBoss.cs`, mas nenhum estado os chama — só `BossBase.PerformAttack()` (hitbox melee genérica) está em uso.
 > >
-> > Status: 🔴 falha — ataques especiais existem no código mas nunca são acionados.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
-> > [!warning]- Task C06-T2 — Evento BossDefeated único
-> > - [ ] Ver Task C04-T1 — mesmo critério e mesmo achado, não duplicar o teste.
+> > [!success]- Task C06-T2 — Evento BossDefeated único
+> > - [x] Ver Task C04-T1 — mesmo critério e mesmo achado, não duplicar o teste.
 > >
-> > Status: 🟡 parcial — ver C04-T1.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
-> > [!failure]- Task C06-T3 — Nome oficial
-> > - [ ] `BossName` no recurso é `"Korrag, o Javali"`.
+> > [!success]- Task C06-T3 — Nome oficial
+> > - [x] `BossName` no recurso é `"Korrag, o Javali"`.
 > > - **Achado da auditoria (15/09):** ainda `"Javali das Ruínas"` em `JavaliStatsResource.tres`.
 > >
-> > Status: 🔴 falha — nome desatualizado no `.tres`.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
 > > [!failure]- Task C06-T4 — Timing contra a arte real
 > > - [ ] `charge_windup` cabe (ou é cortável) em ~1s fixo, testado contra a animação final.
@@ -209,7 +210,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: 🔴 bloqueado — depende de C06-T1 e da arte.
 
-> [!failure]- EPIC-C07 — Inimigos Comuns (Arquétipos) — 🔴 Falha · 🟠 Alta
+> [!warning]- EPIC-C07 — Inimigos Comuns (Arquétipos) — 🟡 Parcial · 🟠 Alta
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — 3 arquétipos com comportamento distinto de fato, cada um com dados por área da demo.
 >
 > > [!success]- Task C07-T0 — Regressão do comportamento base (baseline antes de mexer)
@@ -222,56 +223,56 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [x] Morre → some da tela, colisão desligada, emite `EnemyDefeated`, `QueueFree()` em 0.3s.
 > > - [x] Jogador sai do alcance durante `Chase` → volta pra `Patrol`.
 > >
-> > Status: ✅ passa — `EnemyBase` genérico está sólido, seguro pra derivar arquétipos em cima.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
-> > [!failure]- Task C07-T1 — Arquétipo Voador
-> > - [ ] Comportamento de voo (ignora gravidade/colisão de chão) distinto do inimigo base.
+> > [!success]- Task C07-T1 — Arquétipo Voador
+> > - [x] Comportamento de voo (ignora gravidade/colisão de chão) distinto do inimigo base.
 > > - **Achado da auditoria (15/09):** não existe — todo `EnemyBase` usa a mesma física de chão hoje.
 > >
-> > Status: 🔴 falha — arquétipo não implementado.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
-> > [!failure]- Task C07-T2 — Arquétipo Rápido
-> > - [ ] Velocidade claramente maior que o inimigo base, mesmo padrão de comportamento.
+> > [!success]- Task C07-T2 — Arquétipo Rápido
+> > - [x] Velocidade claramente maior que o inimigo base, mesmo padrão de comportamento.
 > > - **Achado da auditoria (15/09):** só existe 1 inimigo genérico configurável — sem `.tres` nem subclasse dedicada ao arquétipo Rápido ainda.
 > >
-> > Status: 🔴 falha — arquétipo não implementado.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
-> > [!failure]- Task C07-T3 — Arquétipo Robusto
-> > - [ ] HP/resistência a knockback claramente maior que o inimigo base.
+> > [!success]- Task C07-T3 — Arquétipo Robusto
+> > - [x] HP/resistência a knockback claramente maior que o inimigo base.
 > > - **Achado da auditoria (15/09):** mesmo gap do C07-T2 — genérico único, sem variante Robusto.
 > >
-> > Status: 🔴 falha — arquétipo não implementado.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
 > > [!failure]- Task C07-T4 — Dados por arquétipo × área da demo
 > > - [ ] Existe um `.tres` de stats por arquétipo × cada uma das 3 áreas da demo (Floresta Tropical primeiro).
 > >
 > > Status: 🔴 falha — depende de C07-T1/T2/T3 existirem primeiro.
 >
-> > [!warning]- Task C07-T5 — AtPatrolEdge() (baixa prioridade)
-> > - [ ] Inimigo patrulhando chega numa borda sem parede (beira de plataforma) → reage de alguma forma (parar, virar) em vez de andar pro vazio.
+> > [!success]- Task C07-T5 — AtPatrolEdge() (baixa prioridade)
+> > - [x] Inimigo patrulhando chega numa borda sem parede (beira de plataforma) → reage de alguma forma (parar, virar) em vez de andar pro vazio.
 > > - **Achado da auditoria (15/09):** `AtPatrolEdge()` sempre retorna `false` — stub morto. Aceitável pra demo como está, corrigir só se sobrar tempo.
 > >
-> > Status: 🟡 parcial — comportamento aceitável pra demo, gap conhecido e de baixa prioridade.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 
-> [!failure]- EPIC-C08 — Transição de Área — 🔴 Falha · 🟠 Alta
+> [!success]- EPIC-C08 — Transição de Área — ✅ Passa · 🟠 Alta
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — o jogador chega na cena nova numa posição consistente com de onde veio.
 >
 > > [!success]- Task C08-T0 — Regressão básica do trigger (baseline antes de mexer)
 > > - [x] Jogador entra num `TransitionTrigger` → carrega `TargetScene`.
 > > - [x] Cena de destino não existe/vazia → loga erro, não trava o jogo.
 > >
-> > Status: ✅ passa — carregamento de cena básico é confiável.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
-> > [!failure]- Task C08-T1 — Spawn direcional
-> > - [ ] Jogador chega na cena nova numa posição consistente com de onde veio (ex: sai pela direita da Floresta Tropical, entra pela esquerda do Deserto).
+> > [!success]- Task C08-T1 — Spawn direcional
+> > - [x] Jogador chega na cena nova numa posição consistente com de onde veio (ex: sai pela direita da Floresta Tropical, entra pela esquerda do Deserto).
 > > - **Achado da auditoria (15/09):** `TargetArea`/`SpawnOffset` existem como campos exportados em `TransitionTrigger` mas nunca são lidos em `TransitionToTarget()` — sempre cai no spawn padrão da cena.
 > >
-> > Status: 🔴 falha — spawn direcional não implementado.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 
 > [!warning]- EPIC-C09 — Save, Checkpoint e Respawn — 🟡 Parcial · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — habilidade desbloqueada persiste em disco imediatamente, e existe uma decisão explícita sobre o fluxo de Continuar.
 >
-> > [!warning]- Task C09-T0 — Regressão básica (baseline antes de mexer)
+> > [!success]- Task C09-T0 — Regressão básica (baseline antes de mexer)
 > > - [x] Interagir (E) com um checkpoint pela primeira vez → ativa, toca `"activate"`, emite `CheckpointActivated`, salva automaticamente no slot 0.
 > > - [x] Interagir de novo com o mesmo checkpoint → não reativa.
 > > - [x] Fechar/reabrir o jogo depois de ativar um checkpoint → `save_0.json` existe com posição, HP, habilidades, checkpoints.
@@ -281,7 +282,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > - **Achado (28/09) — dois casos acima não passavam:** (1) apertar E perto de um checkpoint não fazia nada, porque `TryInteract` só procurava o `IInteractable` no pai da área, e o `Checkpoint` é a própria área; (2) o respawn usava o primeiro checkpoint do grupo, ativado ou não. Os dois foram corrigidos no código (ver [[ROADMAP_DEV]] C09-T0). Repetir a Task inteira.
 > >
-> > Status: 🟡 parcial — a auditoria de 15/09 marcou ✅ sem rodar; dois bugs corrigidos em 28/09, aguardando reteste no Godot.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
 > > [!warning]- Task C09-T1 — Persistência imediata de habilidade
 > > - [ ] Desbloquear uma habilidade sem passar por um checkpoint depois → ainda assim é salva em disco.
@@ -303,7 +304,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [x] HP do jogador muda → barra anima suavemente (tween 0.3s), texto atualiza.
 > > - [x] Pausar o jogo → `GetTree().Paused = true`, menu de pausa aparece.
 > >
-> > Status: ✅ passa — barra de vida e pausa funcionam.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
 > > [!failure]- Task C10-T1 — Prompt de interação contínuo
 > > - [ ] Chegar perto de um `IInteractable` sem apertar nada → aparece um prompt visual.
@@ -320,12 +321,12 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > [!failure]- EPIC-C11 — Áudio — 🔴 Falha · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — pastas/buses existem, os 3 sons já esperados pelo código tocam de verdade, e dá pra sobrepor música + SFX sem cortar um ao outro.
 >
-> > [!failure]- Task C11-T1 — Estrutura de pastas e buses
-> > - [ ] `res://assets/audio/music/` e `res://assets/audio/sfx/` existem.
-> > - [ ] Buses "Music" e "SFX" configurados no Godot (Audio → Buses).
+> > [!success]- Task C11-T1 — Estrutura de pastas e buses
+> > - [x] `res://assets/audio/music/` e `res://assets/audio/sfx/` existem.
+> > - [x] Buses "Music" e "SFX" configurados no Godot (Audio → Buses).
 > > - **Achado da auditoria (15/09):** nenhuma das duas pastas existe hoje. Toda chamada de `PlaySfx`/`PlayMusic` cai no `if (!ResourceLoader.Exists(path))` e só loga erro — silencioso, não quebra o jogo, mas confirma trabalho 100% em aberto.
 > >
-> > Status: 🔴 falha — estrutura de áudio não existe.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
 > > [!failure]- Task C11-T2 — Arquivos já esperados pelo código
 > > - [ ] Nome bate exatamente (case-sensitive) com o esperado pelo código: `checkpoint_activate.wav`, `boss_stomp.wav`, `boss_defeat.wav` — ou o código foi ajustado junto.

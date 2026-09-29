@@ -36,6 +36,8 @@ namespace Joguim.Core
 
         // World signals
         [Signal] public delegate void SecretRevealedEventHandler(string secretId);
+        // Restauração ODS 15: um RestorationPoint foi restaurado (não confundir com CheckpointActivated)
+        [Signal] public delegate void AreaRestoredEventHandler(string pointId);
 
         // Pause signals
         [Signal] public delegate void PauseToggledEventHandler(bool isPaused);
