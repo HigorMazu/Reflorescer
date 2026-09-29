@@ -14,8 +14,8 @@ descricao: Casos de teste da integração código + arte
 epicos_total: 8
 epicos_concluidos: 0
 tasks_total: 19
-tasks_prontas: 0
-tasks_bloqueadas: 18
+tasks_prontas: 1
+tasks_bloqueadas: 14
 ---
 # Roadmap de QA — Integração (Código + Arte do Higor)
 
@@ -28,42 +28,45 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > [!failure]- EPIC-A00 — Padrões Técnicos — 🔴 Bloqueado · 🔴 Bloqueante
 > *Pronto quando*: todo `SpriteFrames` entregue segue canvas e pivô consistentes, e o flip (por escala no Kairo, `FlipH` em inimigos/boss) não distorce a arte.
 >
-> > [!failure]- Task A00-T1 — Formato e consistência
-> > - [ ] Cada `SpriteFrames` entregue usa o mesmo tamanho de canvas em todos os frames de um personagem.
+> > [!warning]- Task A00-T1 — Formato e consistência
+> > - [x] Cada `SpriteFrames` entregue usa o mesmo tamanho de canvas em todos os frames de um personagem.
 > > - [ ] Pivô/ancoragem consistente entre animações do mesmo personagem — sem "pulo" de posição ao trocar.
+> > - **Verificação (28/09, Claude, pelos arquivos):** Kairo: os 11 quadros têm 180×170. Korrag: os 15 quadros têm 260×180 (as folhas `_sheet.png` são só referência, não entram no `SpriteFrames`). Os dois `SpriteFrames` usam `centered = false` com um offset fixo no nó, então canvas igual = mesma âncora. Um "pulo" só aconteceria se o desenho estiver deslocado dentro do canvas, e isso precisa de olho humano.
 > >
-> > Status: 🔴 bloqueado — nenhuma arte final entregue ainda para verificar.
+> > Status: 🟡 parcial (28/09) — canvas ✅ nos 2 personagens entregues; pivô ainda precisa de conferência visual quadro a quadro.
 >
 > > [!failure]- Task A00-T2 — Flip
 > > - [ ] Kairo: flip por escala não distorce elementos assimétricos da arte final (ex: espada só de um lado).
 > > - [ ] Inimigos/boss: `FlipH` espelha corretamente sem distorcer asas/antenas/elementos assimétricos.
+> > - **Achado (28/09):** o sprite do Kairo (`kairo_faisca_*.png`) tem a Faísca desenhada no canto superior direito. Com o flip por escala, ela pula pro outro lado do Kairo a cada virada. Além disso, o companheiro `Faisca.tscn` continua desenhando o placeholder (corpo, asas e luz) e segue o Kairo, então aparecem **duas Faíscas**. Proposta pro Higor: Kairo sem a Faísca no sprite, e a arte da Faísca entregue separada pro `Faisca.tscn` (ver [[ROADMAP_ARTE]] A01-T1 e A03). Flip de inimigos/boss por `FlipH`: ainda não conferido.
 > >
-> > Status: 🔴 bloqueado — depende da primeira entrega de arte com elementos assimétricos.
+> > Status: 🔴 falha (28/09) — a Faísca está desenhada dentro do sprite do Kairo e troca de lado no flip.
 
 > [!failure]- EPIC-A01 — Kairo — 🔴 Bloqueado · 🔴 Bloqueante
 > *Pronto quando*: as animações núcleo substituem o placeholder sem regressão de física, e a Espada de Grama alterna visual corretamente em jogo.
 >
-> > [!failure]- Task A01-T1 — Animações núcleo
-> > - [ ] Trocar o placeholder pelo pacote idle/run/jump/fall/attack/hurt/dead e rodar de novo a Task C01-T2 do [[ROADMAP_QA_CODIGO]] — nenhum comportamento de física deve mudar, só o visual.
+> > [!success]- Task A01-T1 — Animações núcleo
+> > - [x] Trocar o placeholder pelo pacote idle/run/jump/fall/attack/hurt/dead e rodar de novo a Task C01-T2 do [[ROADMAP_QA_CODIGO]] — nenhum comportamento de física deve mudar, só o visual.
+> > - **Verificação (28/09):** idle 2 quadros/5 fps, run 2/8, jump 1, fall 1, attack 3/10 fps (0.3s, igual ao `AttackCooldown`), hurt 1, dead 1. Os nomes batem com o que o `PlayerController` toca.
 > >
-> > Status: 🔴 bloqueado — depende de [[ROADMAP_ARTE]] `A01-T1`.
+> > Status: ✅ passa (28/09) — as 7 animações núcleo estão no `KairoFaiscaSpriteFrames.tres` e a regressão de física (C01-T2) foi validada com essa arte. Ressalva de arte: Faísca embutida (ver A00-T2).
 >
 > > [!failure]- Task A01-T2 — Espada de Grama
 > > - [ ] Sprite da espada visível quando ativada, "bandagem" visível quando desativada — nunca os dois ao mesmo tempo.
 > > - [ ] Animação de ataque: a janela de dano da hitbox é fixa em 0.14s hoje, independente da duração da animação — ajustar o tempo da hitbox (ou o `AttackCooldown`) se a animação final não bater com esse corte.
 > > - **Dependência dupla:** só testável depois que [[ROADMAP_DEV]] `EPIC-C03` (toggle da espada) **e** [[ROADMAP_ARTE]] `A01-T2` (os 2 visuais) estiverem prontos.
 > >
-> > Status: 🔴 bloqueado — depende de código e arte, nenhum dos dois pronto ainda.
+> > Status: 🔴 bloqueado só por arte (28/09) — o código está pronto ([[ROADMAP_DEV]] EPIC-C03 concluído); faltam os 2 visuais (espada / bandagem). Hoje o estado aparece no HUD e num tom verde provisório.
 >
 > > [!failure]- Task A01-T3 — Wall grab / wall jump
 > > - [ ] Animação integrada e sincronizada com a mecânica ([[ROADMAP_DEV]] `EPIC-C05`).
 > >
-> > Status: 🔴 bloqueado — mecânica de código ainda não existe.
+> > Status: 🔴 bloqueado só por arte (28/09) — mecânica pronta ([[ROADMAP_DEV]] EPIC-C05 concluído). O código já toca `wall_slide` se existir no `SpriteFrames`; senão usa `fall`.
 >
 > > [!failure]- Task A01-T4 — Dash
 > > - [ ] Variação visual integrada e sincronizada com a mecânica ([[ROADMAP_DEV]] `EPIC-C04`).
 > >
-> > Status: 🔴 bloqueado — mecânica de código ainda não existe.
+> > Status: 🔴 bloqueado só por arte (28/09) — mecânica pronta ([[ROADMAP_DEV]] EPIC-C04 concluído). O código já toca `dash` se existir no `SpriteFrames`; senão usa `run` com tom esverdeado.
 
 > [!failure]- EPIC-A02 — Inimigos Comuns — 🔴 Bloqueado · 🔴 Bloqueante
 > *Pronto quando*: os 3 arquétipos da Floresta Tropical rodam com arte final sem tocar em script, e os reskins de Deserto/Tundra repetem o mesmo resultado.
@@ -92,13 +95,16 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > [!failure]- EPIC-A04 — Boss KORRAG — 🔴 Bloqueado · 🟠 Alta
 > *Pronto quando*: as transições de fase são claras pro jogador mesmo com `idle` compartilhado, o timing de `charge_windup` bate com o código, e o nome exibido é "Korrag, o Javali".
 >
-> > [!failure]- Task A04-T1 — Obrigatórios
+> > [!warning]- Task A04-T1 — Obrigatórios
 > > - [ ] Transições de fase ([[ROADMAP_QA_CODIGO]] `C06-T0`) comunicam claramente ao jogador que o boss mudou de fase, mesmo com `idle` compartilhado.
-> > - [ ] Quando `StartCharge()`/`PerformStomp()` forem ligados ([[ROADMAP_DEV]] `EPIC-C06-T1`): `charge_windup` cabe no ~1s fixo antes da investida disparar.
+> > - [x] Quando `StartCharge()`/`PerformStomp()` forem ligados ([[ROADMAP_DEV]] `EPIC-C06-T1`): `charge_windup` cabe no ~1s fixo antes da investida disparar.
 > > - [ ] Animação `defeated`: hoje o boss vira invisível e é destruído 0.3s depois de `Dead` — se `defeated` for mais longa, ajustar esse tempo no código.
-> > - [ ] Nome exibido em qualquer UI usa "Korrag, o Javali", não "Javali das Ruínas".
+> > - [x] Nome exibido em qualquer UI usa "Korrag, o Javali", não "Javali das Ruínas".
+> > - **Verificação (28/09):** `charge_windup` tem 1 quadro. Mantido o windup de 1s com pulso vermelho de aviso, aprovado no playtest ([[ROADMAP_DEV]] C06-T4). Nome: nenhuma UI exibe o `BossName` hoje (a barra do Korrag mostra só a vida); o recurso diz "Korrag, o Javali".
+> > - **Mudança de código (28/09):** a morte não é mais "invisível + destruir em 0.3s". Agora toca `dead`, espera 0.6s e some em fade de 0.6s. A animação `defeated` existe no `SpriteFrames` mas **não é tocada** por nenhum estado: decidir se ela substitui `dead` ou entra depois dela.
+> > - **Observação pra conferência visual:** `phase2_transition` tem 1 quadro (0.25s), mas o estado segura 1.5s nela. `phase1_idle` e `enraged_transition` também têm 1 quadro.
 > >
-> > Status: 🔴 bloqueado — depende de [[ROADMAP_ARTE]] `A04-T1` e de [[ROADMAP_DEV]] `C06-T1`/`C06-T3`.
+> > Status: 🟡 parcial (28/09) — windup e nome ✅; falta conferir visualmente se as transições de fase ficam claras.
 >
 > > [!note]- Task A04-T2 — Opcional
 > > - [ ] `enraged_transition` integrada, se entregue.

@@ -68,7 +68,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > [!success]- Task C02-T1 — Definir e implementar a interação
 > > - [x] Decidir se a restauração é o próprio `Checkpoint` reaproveitado (com um estado temático a mais) ou uma classe nova (`RestorationPoint : IInteractable`) separada do save point.
 > > - [x] Implementar a interação escolhida.
-> > - **Decisão do Gustavo (28/09) — classe separada:** `RestorationPoint : Area2D, IInteractable` (`scripts/world/RestorationPoint.cs`), independente do `Checkpoint`. Restaurar não é salvar, então cada um tem evento e persistência próprios. Interage uma vez (`Restored`), prompt "Restaurar". Os ganchos de C02-T2 (efeito) e C02-T3 (evento/save) estão marcados no `Interact()`. **Registrar em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].**
+> > - **Decisão do Gustavo (28/09) — classe separada:** `RestorationPoint : Area2D, IInteractable` (`scripts/world/RestorationPoint.cs`), independente do `Checkpoint`. Restaurar não é salvar, então cada um tem evento e persistência próprios. Interage uma vez (`Restored`), prompt "Restaurar". Os ganchos de C02-T2 (efeito) e C02-T3 (evento/save) estão marcados no `Interact()`. Registrada em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]] (28/09).
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
@@ -110,7 +110,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > [!success]- Task C03-T2 — Stats duplos (ativada/desativada)
 > > - [x] Criar a variante "espada desativada": +velocidade, +pulo, sem ataque.
 > > - **Opção simples:** dois blocos de valores no `PlayerStatsResource` (`MoveSpeedSwordOn`/`Off`, etc.) ou um segundo `.tres`.
-> > - **Nota (28/09):** opção simples aplicada: `MoveSpeedNoSword` (240) e `JumpVelocityNoSword` (-520) no `PlayerStatsResource`. O `PlayerController` usa `CurrentMoveSpeed`/`CurrentJumpVelocity`, que leem `HasSword`. O "sem ataque" já vem do `CanAttack()`. **Os valores são chute (+20% e +13%): decidir os definitivos e registrar em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].**
+> > - **Nota (28/09):** opção simples aplicada: `MoveSpeedNoSword` (240) e `JumpVelocityNoSword` (-520) no `PlayerStatsResource`. O `PlayerController` usa `CurrentMoveSpeed`/`CurrentJumpVelocity`, que leem `HasSword`. O "sem ataque" já vem do `CanAttack()`. **Valores iniciais (+20% e +13%) validados em playtest e registrados em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]] (28/09).**
 > > - **Nota (28/09):** testável agora: com a espada guardada, `CurrentMoveSpeed` = 240 e `CurrentJumpVelocity` = -520; ativada, 200 e -460 (conferido no Godot).
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
@@ -139,7 +139,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > [!success]- Task C04-T2 — Implementar o movimento do dash
 > > - [x] Impulso horizontal rápido na direção que o Kairo está olhando, com cooldown e talvez i-frames curtos (típico de Metroidvania).
 > > - **Nota (28/09):** `PlayerController.StartDash()`: impulso horizontal na direção em que o Kairo olha, sem gravidade nem input durante o impulso. Termina no fim da duração ou ao bater na parede e sai com a velocidade de corrida. Parâmetros no `PlayerStatsResource`: `DashSpeed` 520, `DashDuration` 0.16s (≈83px), `DashCooldown` 0.6s. I-frames só durante o impulso, sem encurtar uma invulnerabilidade pós-dano que já esteja rodando. Anima com `dash` se o `SpriteFrames` tiver (A01-T4); senão usa `run` com um tint esverdeado. SFX esperado: `player_dash.wav`.
-> > - **Decisão do Gustavo (28/09) — dash só no chão:** o enum já separa `Dash` de `AirDash`, então o dash do Korrag funciona só com o Kairo no chão; o dash aéreo fica pra uma habilidade futura. **Registrar em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].**
+> > - **Decisão do Gustavo (28/09) — dash só no chão:** o enum já separa `Dash` de `AirDash`, então o dash do Korrag funciona só com o Kairo no chão; o dash aéreo fica pra uma habilidade futura. Registrada em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]] (28/09).
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
@@ -180,7 +180,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 >
 > > [!success]- Task C05-T4 — Decisão de gating
 > > - [x] Decidir se é liberado desde o início ou gated por uma `AbilityId` (`WallJump` já existe no enum) — **pendência a decidir com o Higor/documentar em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]]** antes de travar o design final.
-> > - **Decisão do Gustavo (28/09) — desde o início, deslizando devagar:** wall grab/wall jump ficam disponíveis desde o começo da demo, como já dizia a tabela de controles do [[🕹️ Sistemas de Jogo#Movimentação|Sistemas de Jogo]] (sem condição de desbloqueio; o dash continua sendo a recompensa do Korrag). Continua passando pelo `AbilityManager` (`WallJump` entra no conjunto inicial, igual ao `DoubleJump`): gatear no futuro é tirar uma linha. O agarrar é "deslizar devagar", não "grudar parado", como está no GDD. **Registrar em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].**
+> > - **Decisão do Gustavo (28/09) — desde o início, deslizando devagar:** wall grab/wall jump ficam disponíveis desde o começo da demo, como já dizia a tabela de controles do [[🕹️ Sistemas de Jogo#Movimentação|Sistemas de Jogo]] (sem condição de desbloqueio; o dash continua sendo a recompensa do Korrag). Continua passando pelo `AbilityManager` (`WallJump` entra no conjunto inicial, igual ao `DoubleJump`): gatear no futuro é tirar uma linha. O agarrar é "deslizar devagar", não "grudar parado", como está no GDD. Registrada em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]] (28/09).
 > >
 > > Status: ✅ concluído — decisão tomada em 28/09 (Gustavo).
 
@@ -199,7 +199,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - [x] Em `BossPhase1State`/`BossPhase2State`/`BossEnragedState`, trocar a chamada genérica `Boss.PerformAttack()` por uma decisão entre `PerformAttack()` (melee), `StartCharge()` (investida) e `PerformStomp()` (pisada em área).
 > > - **Sugestão de implementação:** método virtual `ChooseAttack()` em `BossBase`, sobrescrito por `JavaliBoss` — pode começar simples (sorteio ponderado ou por distância).
 > > - **Nota (28/09) — implementação:** `BossBase.ChooseAttack()` virtual, sobrescrito em `JavaliBoss`. Stomp (35%, 50% no enraged) quando o jogador está a até `StompRadius`; Charge (60% na fase 1, 80% depois) a partir de `ChargeMinDistance` (180px); no meio-termo, 40% Charge e o resto melee. O Charge agora tem fim (`ChargeDuration` 0.9s ou bater na parede) e aplica `ChargeDamage`. O Stomp ganhou windup de 0.4s. O `MoveAndSlide` saiu do `ExecuteCharge` (o estado já chama). O melee vira a hitbox pro lado do jogador (antes só acertava à direita) e desliga depois de 0.25s.
-> > - **Decisão do Gustavo (28/09) — super armor e timers:** o boss tem `InvulnerabilityDuration = 0` e todo golpe o jogava em `Hurt`, o que zerava o timer de ataque e cancelava o windup do Charge. Na prática, batendo sem parar, ele nunca atacava. Agora: (1) durante Charge/Stomp (`IsBusy`) o dano entra, mas não interrompe nem empurra; (2) o timer de ataque sobrevive às idas ao `Hurt`; (3) as transições de fase 2/enraged tocam uma vez só (antes repetiam a cada hit). **Registrar em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].**
+> > - **Decisão do Gustavo (28/09) — super armor e timers:** o boss tem `InvulnerabilityDuration = 0` e todo golpe o jogava em `Hurt`, o que zerava o timer de ataque e cancelava o windup do Charge. Na prática, batendo sem parar, ele nunca atacava. Agora: (1) durante Charge/Stomp (`IsBusy`) o dano entra, mas não interrompe nem empurra; (2) o timer de ataque sobrevive às idas ao `Hurt`; (3) as transições de fase 2/enraged tocam uma vez só (antes repetiam a cada hit). Registrada em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]] (28/09).
 > > - **Achado (28/09), não corrigido:** o enraged chama `SetPhase(2)`, mas `JavaliStatsResource` só tem 2 fases (índices 0 e 1), então no enraged o boss cai nos defaults (cooldown 1.5, velocidade 100, dano 20). Fica mais fraco que na fase 2. Precisa de um `JavaliPhase3.tres` ou de ajuste no índice.
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
@@ -245,7 +245,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 >
 > > [!success]- Task C07-T3 — Robusto
 > > - [x] `.tres` com `MaxHealth`/`KnockbackResistance` mais altos; avaliar se precisa de código extra (ex: ignorar knockback abaixo de um threshold).
-> > - **Nota (28/09) — avaliação:** sem subclasse. Um campo novo no `EnemyStatsResource`, `InterruptOnHit` (`false` = não entra em `Hurt` ao tomar dano), mantém tudo data-driven. `EnemyRobustoStats.tres` (HP 150, KnockbackResistance 0.9, `InterruptOnHit = false`) + cena herdada `Enemy_Robusto.tscn`. **Os valores dos 3 arquétipos são chute: validar em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].**
+> > - **Nota (28/09) — avaliação:** sem subclasse. Um campo novo no `EnemyStatsResource`, `InterruptOnHit` (`false` = não entra em `Hurt` ao tomar dano), mantém tudo data-driven. `EnemyRobustoStats.tres` (HP 150, KnockbackResistance 0.9, `InterruptOnHit = false`) + cena herdada `Enemy_Robusto.tscn`. Valores provisórios registrados em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]] (28/09); valores por área seguem pendentes (C07-T4).
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
@@ -295,7 +295,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > [!success]- Task C09-T2 — Fluxo de "Continuar"
 > > - [x] Se a demo tiver esse menu: chamar `SaveManager.LoadGame(slot)` e, em `ApplySaveData`, trocar de cena pra `save.CurrentScene` antes de restaurar posição/HP (hoje não troca).
 > > - [ ] Se a demo **não** vai ter esse menu (sempre começa do zero): documentar essa decisão em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].
-> > - **Decisão do Gustavo (28/09) — menu inicial com Continuar:** nova cena principal `scenes/ui/MainMenu.tscn` (`MainMenu.cs`) com "Continuar" (só aparece se existe `save_0.json`), "Novo jogo" e "Sair". A segunda sub-task (não ter o menu) fica descartada. **Registrar em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].**
+> > - **Decisão do Gustavo (28/09) — menu inicial com Continuar:** nova cena principal `scenes/ui/MainMenu.tscn` (`MainMenu.cs`) com "Continuar" (só aparece se existe `save_0.json`), "Novo jogo" e "Sair". A segunda sub-task (não ter o menu) fica descartada. Registrada em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]] (28/09).
 > > - **Nota (28/09) — como funciona:** `SaveManager.ContinueGame()` lê o save, restaura na hora o estado de sessão (habilidades sem notificação, `GameManager.HasSword`), troca pra `save.CurrentScene` e, no `SceneTree.SceneChanged`, aplica posição, HP, checkpoints (o último vira ponto de respawn) e áreas restauradas. `StartNewGame()` apaga o save e zera o estado dos autoloads (`AbilityManager.ResetToInitial()`, espada ativada). Boss que está em `DefeatedBosses` não é instanciado de novo (`BossBase._Ready`). O menu de pausa ganhou os botões ligados (Continuar, Salvar, Menu inicial); antes nenhum funcionava.
 > > - **Bugfix CRÍTICO (28/09) — posição nunca era salva:** o `save_0.json` gravava `"PlayerPosition": {}`, porque o `Vector2` do Godot usa campos (X/Y) e o `System.Text.Json` só serializa propriedades por padrão. Correção: `IncludeFields = true` no `SaveData`. Saves antigos (com `{}`) carregam no spawn padrão da cena. O `HasSword` também passou a ir pro save.
 > > - **Verificação (28/09, headless):** menu → Novo jogo → guardar espada + checkpoint + restaurar + salvar → morrer → Tentar de novo → menu → Continuar: cena, posição, espada, dash, checkpoint e área restaurada voltam; na arena, o Korrag já derrotado não reaparece.
@@ -319,7 +319,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 >
 > > [!success]- Task C10-T2 — Game Over
 > > - [x] Decidir se a demo precisa de tela de Game Over real ou se o respawn automático (já funcional) basta. Se precisar, implementar o que `ShowGameOver()` deveria de fato disparar.
-> > - **Decisão do Gustavo (28/09) — tela de Game Over:** ao morrer, 0.8s depois aparece "Você caiu" com "Tentar de novo" (renasce no último checkpoint ativado, ou perto de onde morreu) e "Menu inicial". O jogo fica pausado e o Esc não despausa (`GameManager.IsGameOver`). Substitui o respawn automático de 1s, que só continua como fallback em cena sem HUD. **Registrar em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].**
+> > - **Decisão do Gustavo (28/09) — tela de Game Over:** ao morrer, 0.8s depois aparece "Você caiu" com "Tentar de novo" (renasce no último checkpoint ativado, ou perto de onde morreu) e "Menu inicial". O jogo fica pausado e o Esc não despausa (`GameManager.IsGameOver`). Substitui o respawn automático de 1s, que só continua como fallback em cena sem HUD. Registrada em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]] (28/09).
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 
@@ -362,7 +362,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: não iniciado — ⛔ bloqueado: só depois dos épicos 🔴/🟠.
 >
-> > [!warning]- Task C12-T3 — Integração incremental
+> > [!info]- Task C12-T3 — Integração incremental
 > > - [ ] Rodar o [[ROADMAP_QA_INTEGRACAO]] junto com o Higor assim que a arte de cada bloco chegar — não esperar tudo pronto pra testar.
 > >
-> > Status: não iniciado — 🟡 pode começar por bloco: Kairo e Korrag já têm arte no repo.
+> > Status: em andamento (28/09) — Kairo e Korrag conferidos pelo que dá pra verificar nos arquivos (ver [[ROADMAP_QA_INTEGRACAO]] A00/A01/A04); falta conferência visual e o resto da arte.

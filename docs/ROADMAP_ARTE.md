@@ -63,6 +63,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01` 
 > > - [ ] `hurt` (tomando dano)
 > > - [ ] `dead` (morrendo)
 > > - **Nota:** ao entregar, rodar de novo a Task C01-T2 do [[ROADMAP_QA_CODIGO]] — nenhum comportamento de física deve mudar, só o visual.
+> > - **Achado da integração (28/09) — Faísca embutida no sprite do Kairo:** os quadros `kairo_faisca_*` têm a Faísca desenhada junto. No jogo, ela troca de lado a cada virada do Kairo (flip por escala) e aparece duplicada, porque a Faísca também é um personagem separado (`Faisca.tscn`) que segue o Kairo. Pedido: redesenhar o Kairo sem a Faísca e entregar a Faísca em sprites próprios (A03). Fora isso, as 7 animações núcleo integraram sem regressão (ver [[ROADMAP_QA_INTEGRACAO]] A01-T1).
 > >
 > > Status: não iniciado.
 >
@@ -145,6 +146,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01` 
 > > - [ ] `defeated` (derrotado, pós-morte).
 > > - **Nota de timing:** `charge_windup` precisa caber (ou ser cortável) em ~1s fixo — combinar com o Gustavo se a animação final não bater com esse corte (ver [[ROADMAP_DEV]] `C06-T4`).
 > > - **Nota:** hoje o boss vira invisível e é destruído 0.3s depois de `Dead` — se `defeated` for mais longa que isso, o Gustavo ajusta esse tempo no código.
+> > - **Nota da integração (28/09):** `charge_windup` com 1 quadro funciona, porque o código pisca o Korrag em vermelho durante o 1s de windup. A animação `defeated` não é usada pelo código hoje (a morte toca `dead` + fade): combinar com o Gustavo se ela deve entrar.
 > >
 > > Status: parcial — 4 das 8 animações já existem (herdadas do inimigo base), as 4 exclusivas do boss estão pendentes.
 >
