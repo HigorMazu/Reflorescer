@@ -12,9 +12,9 @@ responsavel: Gustavo
 par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 12
-epicos_concluidos: 6
+epicos_concluidos: 8
 tasks_total: 44
-tasks_prontas: 35
+tasks_prontas: 37
 tasks_bloqueadas: 4
 ---
 # Roadmap de QA — Código (Reflorescer)
@@ -175,7 +175,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): liberado desde o início, sem pré-requisito. Regressão de pulo, pulo duplo, dash e ataque ok.
 
-> [!warning]- EPIC-C06 — Boss Korrag (IA e Identidade) — 🟡 Parcial · 🔴 Bloqueante
+> [!success]- EPIC-C06 — Boss Korrag (IA e Identidade) — ✅ Passa · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — o Korrag usa Charge e Stomp durante a luta, o `BossName` é "Korrag, o Javali", e o evento de derrota dispara uma única vez.
 >
 > > [!success]- Task C06-T0 — Regressão do núcleo do boss (baseline antes de mexer)
@@ -208,11 +208,11 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
-> > [!warning]- Task C06-T4 — Timing contra a arte real
-> > - [ ] `charge_windup` cabe (ou é cortável) em ~1s fixo, testado contra a animação final.
+> > [!success]- Task C06-T4 — Timing contra a arte real
+> > - [x] `charge_windup` cabe (ou é cortável) em ~1s fixo, testado contra a animação final.
 > > - **Nota:** este caso só roda depois que `EPIC-C06-T1` conectar o Charge **e** a arte de `charge_windup` chegar — cruza com [[ROADMAP_QA_INTEGRACAO]] `EPIC-A04-T1`.
 > >
-> > Status: 🟡 implementado em 28/09 (1s de windup + pulso vermelho de aviso) — aguarda QA manual e decisão do tempo.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): windup de 1s com pulso vermelho, tempo aprovado.
 
 > [!warning]- EPIC-C07 — Inimigos Comuns (Arquétipos) — 🟡 Parcial · 🟠 Alta
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — 3 arquétipos com comportamento distinto de fato, cada um com dados por área da demo.
@@ -304,7 +304,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): menu com Continuar; Continuar volta à cena/posição salvas, inclusive na arena (sem o Korrag, com dash) e depois de fechar/reabrir o jogo.
 
-> [!failure]- EPIC-C10 — HUD e UX — 🔴 Falha · 🟡 Média
+> [!success]- EPIC-C10 — HUD e UX — ✅ Passa · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — prompt de interação contínuo funcionando, e decisão sobre Game Over tomada e implementada.
 >
 > > [!success]- Task C10-T0 — Regressão básica de HUD (baseline antes de mexer)
@@ -313,11 +313,11 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
-> > [!warning]- Task C10-T1 — Prompt de interação contínuo
-> > - [ ] Chegar perto de um `IInteractable` sem apertar nada → aparece um prompt visual.
+> > [!success]- Task C10-T1 — Prompt de interação contínuo
+> > - [x] Chegar perto de um `IInteractable` sem apertar nada → aparece um prompt visual.
 > > - **Achado da auditoria (15/09):** `ShowInteractionPrompt()`/`HideInteractionPrompt()` existem no `HUDController` mas nada os chama continuamente hoje.
 > >
-> > Status: 🟡 implementado em 28/09 — aguarda QA manual.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): prompt aparece perto da bandeira e do ponto de restauração, some depois de usar e ao se afastar.
 >
 > > [!success]- Task C10-T2 — Game Over
 > > - [x] Decisão tomada e implementada (ou explicitamente descartada em favor do respawn automático, já funcional).
