@@ -12,10 +12,10 @@ responsavel: Gustavo
 par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 12
-epicos_concluidos: 3
+epicos_concluidos: 4
 tasks_total: 44
-tasks_prontas: 24
-tasks_bloqueadas: 6
+tasks_prontas: 27
+tasks_bloqueadas: 4
 ---
 # Roadmap de QA — Código (Reflorescer)
 
@@ -84,7 +84,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: 🔴 falha — nenhuma área tem pontos de restauração ainda.
 
-> [!failure]- EPIC-C03 — Combate e Espada de Grama — 🔴 Falha · 🟠 Alta
+> [!success]- EPIC-C03 — Combate e Espada de Grama — ✅ Passa · 🟠 Alta
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — Q alterna a espada em tempo real, stats diferentes com espada ativada/desativada, e não dá pra atacar com ela desativada.
 >
 > > [!success]- Task C03-T0 — Regressão de combate básico (baseline antes de mexer)
@@ -95,26 +95,26 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [x] Tomar dano de um inimigo → HP cai, knockback, 1s de invulnerabilidade, shake visual.
 > > - [x] Tomar dano durante a invulnerabilidade pós-hit → segundo hit ignorado.
 > >
-> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
+> > Status: ✅ passa — baseline revalidada em 28/09 depois da EPIC-C03 (Gustavo).
 >
-> > [!failure]- Task C03-T1 — Toggle da espada (Q)
-> > - [ ] Apertar Q alterna `HasSword` e a visibilidade do sprite da espada/bandagem.
+> > [!success]- Task C03-T1 — Toggle da espada (Q)
+> > - [x] Apertar Q alterna `HasSword` e a visibilidade do sprite da espada/bandagem.
 > > - **Achado da auditoria (15/09):** `SetSwordVisible()` existe mas nunca é chamado depois do `_Ready()` — não há input ligado a ele ainda.
 > >
-> > Status: 🔴 falha — toggle não existe, `HasSword=true` é hardcoded.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo). HUD e tom verde mostram o estado; o estado se mantém ao trocar de cena.
 >
-> > [!failure]- Task C03-T2 — Stats duplos
-> > - [ ] Com a espada desativada: +velocidade, +pulo, sem ataque.
+> > [!success]- Task C03-T2 — Stats duplos
+> > - [x] Com a espada desativada: +velocidade, +pulo, sem ataque.
 > > - **Achado da auditoria (15/09):** só existe um conjunto de stats em `PlayerStatsResource`, sem variante "sem espada".
 > >
-> > Status: 🔴 falha — não existe a variante de stats.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo). Espada guardada: visivelmente mais rápido e mais alto, sem ataque.
 >
-> > [!failure]- Task C03-T3 — Bloqueio e regressão final
-> > - [ ] Tentar atacar com a espada desativada → bloqueado.
-> > - [ ] Alternar a espada em pleno combate/movimento → sem travar animação/input.
-> > - [ ] Repetir a Task C03-T0 → nada regrediu.
+> > [!success]- Task C03-T3 — Bloqueio e regressão final
+> > - [x] Tentar atacar com a espada desativada → bloqueado.
+> > - [x] Alternar a espada em pleno combate/movimento → sem travar animação/input.
+> > - [x] Repetir a Task C03-T0 → nada regrediu.
 > >
-> > Status: 🔴 bloqueado — não testável até C03-T1/T2 existirem.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo). Troca repetida em combate sem travar; C03-T0 repetida sem regressão.
 
 > [!success]- EPIC-C04 — Dash e Desbloqueio Pós-Korrag — ✅ Passa · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — `BossDefeated` dispara uma única vez, dash tem movimento real, é desbloqueado só ao derrotar o Korrag, e a UI avisa o jogador.
@@ -167,11 +167,12 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: 🔴 falha — depende de C05-T1/T2 existirem primeiro.
 >
-> > [!failure]- Task C05-T4 — Gating da habilidade
+> > [!warning]- Task C05-T4 — Gating da habilidade
 > > - [ ] Se gated por `AbilityId.WallJump`: usar antes de desbloqueado não faz nada. Se liberado desde o início: funciona sem pré-requisito.
 > > - **Nota:** decisão de design ainda em aberto (ver [[ROADMAP_DEV]] C05-T4) — este caso só é testável depois que a decisão for tomada e documentada em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].
+> > - **Nota (28/09):** decidido "liberado desde o início" (ver [[ROADMAP_DEV]] C05-T4). O caso a testar é o segundo: funciona sem pré-requisito, logo no começo da fase.
 > >
-> > Status: 🔴 bloqueado — decisão de escopo pendente.
+> > Status: 🟡 decisão tomada em 28/09 (liberado desde o início) — aguarda o teste: funciona sem pré-requisito.
 
 > [!warning]- EPIC-C06 — Boss Korrag (IA e Identidade) — 🟡 Parcial · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — o Korrag usa Charge e Stomp durante a luta, o `BossName` é "Korrag, o Javali", e o evento de derrota dispara uma única vez.

@@ -25,5 +25,9 @@ namespace Joguim.Resources
         [Export] public float DashSpeed = 520.0f;
         [Export] public float DashDuration = 0.16f;
         [Export] public float DashCooldown = 0.6f;
+        // Parede: segurar A/D contra a parede no ar desliza devagar; pular empurra pro lado oposto
+        [Export] public float WallSlideSpeed = 90.0f;
+        [Export] public float WallJumpHorizontalSpeed = 260.0f;
+        [Export] public float WallJumpInputLock = 0.15f;
     }
 }

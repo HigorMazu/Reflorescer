@@ -16,6 +16,8 @@ namespace Joguim.Abilities
             // Habilidades iniciais da demo: DoubleJump já vem liberado.
             // Entram direto no conjunto, sem emitir AbilityUnlocked (não é um desbloqueio de gameplay).
             _unlockedAbilities.Add(AbilityId.DoubleJump);
+            // Wall grab/wall jump desde o início (decisão de 28/09, C05-T4); gatear depois = tirar esta linha
+            _unlockedAbilities.Add(AbilityId.WallJump);
 
             EventBus.Instance.BossDefeated += OnBossDefeated;
         }

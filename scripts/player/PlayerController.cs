@@ -40,6 +40,8 @@ namespace Joguim.Player
         public bool HasDoubleJump => AbilityManager.Instance?.HasAbility(AbilityId.DoubleJump) ?? false;
         public bool HasDash => AbilityManager.Instance?.HasAbility(AbilityId.Dash) ?? false;
         public bool IsDashing => _dashTimer > 0;
+        public bool HasWallJump => AbilityManager.Instance?.HasAbility(AbilityId.WallJump) ?? false;
+        public bool IsWallSliding => _isWallSliding;
 
         private bool _isDead = false;
         private float _attackTimer = 0f;
@@ -52,6 +54,11 @@ namespace Joguim.Player
         private float _jumpBufferTime = 0.12f;
         private float _jumpBufferCounter = 0f;
         private bool _doubleJumpUsed = false;
+        private bool _isWallSliding = false;
+        private float _lastWallNormalX = 0f;
+        private float _wallCoyoteTime = 0.1f;
+        private float _wallCoyoteCounter = 0f;
+        private float _wallJumpLockTimer = 0f;
         private int _jumpCount = 0;
         private Vector2? _lastCheckpointPosition;
 
@@ -127,6 +134,8 @@ namespace Joguim.Player
             if (_dashCooldownTimer > 0) _dashCooldownTimer -= (float)delta;
             if (_coyoteCounter > 0) _coyoteCounter -= (float)delta;
             if (_jumpBufferCounter > 0) _jumpBufferCounter -= (float)delta;
+            if (_wallCoyoteCounter > 0) _wallCoyoteCounter -= (float)delta;
+            if (_wallJumpLockTimer > 0) _wallJumpLockTimer -= (float)delta;
 
             HandlePrototypeMovement(delta);
             UpdatePrototypeAnimation();
@@ -163,6 +172,11 @@ namespace Joguim.Player
                 _jumpBufferCounter = 0;
                 _coyoteCounter = 0;
                 _jumpCount = 1;
+            }
+            else if (wantsJump && CanWallJump())
+            {
+                WallJump();
+                _jumpBufferCounter = 0;
             }
             else if (wantsJump && HasDoubleJump && !_doubleJumpUsed && !IsOnFloor())
             {
@@ -221,23 +235,63 @@ namespace Joguim.Player
             float inputDir = Input.GetAxis("move_left", "move_right");
             if (Mathf.Abs(inputDir) > 0.01f) LastFacingDirection = inputDir > 0 ? Vector2.Right : Vector2.Left;
 
-            float accel = IsOnFloor() ? StatsResource.Acceleration : StatsResource.AirAcceleration;
-            float targetSpeed = inputDir * CurrentMoveSpeed;
-            if (Mathf.Abs(inputDir) > 0.01f)
-                Velocity = new Vector2(Mathf.MoveToward(Velocity.X, targetSpeed, accel * (float)delta), Velocity.Y);
-            else
-                Velocity = new Vector2(Mathf.MoveToward(Velocity.X, 0, StatsResource.Deceleration * (float)delta), Velocity.Y);
+            // Logo após um wall jump o input horizontal fica travado por um instante,
+            // senão segurar a direção da parede anula o empurrão pro lado oposto
+            if (_wallJumpLockTimer <= 0)
+            {
+                float accel = IsOnFloor() ? StatsResource.Acceleration : StatsResource.AirAcceleration;
+                float targetSpeed = inputDir * CurrentMoveSpeed;
+                if (Mathf.Abs(inputDir) > 0.01f)
+                    Velocity = new Vector2(Mathf.MoveToward(Velocity.X, targetSpeed, accel * (float)delta), Velocity.Y);
+                else
+                    Velocity = new Vector2(Mathf.MoveToward(Velocity.X, 0, StatsResource.Deceleration * (float)delta), Velocity.Y);
 
-            UpdateFacingDirection(inputDir);
+                UpdateFacingDirection(inputDir);
+            }
+
+            UpdateWallSlide(inputDir);
 
             // Gravity
             ApplyGravity(delta);
+            // Agarrado na parede: a queda fica limitada a uma velocidade baixa (desliza devagar)
+            if (_isWallSliding && Velocity.Y > StatsResource.WallSlideSpeed)
+                Velocity = new Vector2(Velocity.X, StatsResource.WallSlideSpeed);
 
             MoveAndSlide();
 
             // Interact
             if (Input.IsActionJustPressed("interact")) TryInteract();
             if (Input.IsActionJustPressed("toggle_sword")) ToggleSword();
+        }
+
+        // Agarrado = no ar, encostado numa parede (IsOnWall do último MoveAndSlide) e segurando a direção dela
+        private void UpdateWallSlide(float inputDir)
+        {
+            _isWallSliding = false;
+            if (!HasWallJump || IsOnFloor() || !IsOnWall() || _wallJumpLockTimer > 0) return;
+
+            float normalX = GetWallNormal().X;
+            if (Mathf.Abs(normalX) < 0.5f) return;
+            if (inputDir * normalX >= -0.01f) return; // não está segurando contra a parede
+
+            _isWallSliding = true;
+            _lastWallNormalX = Mathf.Sign(normalX);
+            _wallCoyoteCounter = _wallCoyoteTime;
+            _doubleJumpUsed = false; // agarrar a parede devolve o pulo duplo
+        }
+
+        // Pequena tolerância (wall coyote): dá pra pular logo depois de soltar a parede
+        private bool CanWallJump() => HasWallJump && !IsOnFloor() && _wallCoyoteCounter > 0;
+
+        private void WallJump()
+        {
+            Jump();
+            Velocity = new Vector2(_lastWallNormalX * StatsResource.WallJumpHorizontalSpeed, Velocity.Y);
+            _wallJumpLockTimer = StatsResource.WallJumpInputLock;
+            _wallCoyoteCounter = 0;
+            _isWallSliding = false;
+            LastFacingDirection = _lastWallNormalX > 0 ? Vector2.Right : Vector2.Left;
+            UpdateFacingDirection(_lastWallNormalX);
         }
 
         private void UpdatePrototypeAnimation()
@@ -248,6 +302,8 @@ namespace Joguim.Player
             if (IsDashing) anim = Sprite?.SpriteFrames != null && Sprite.SpriteFrames.HasAnimation("dash") ? "dash" : "run";
             else if (_hurtTimer > 0) anim = "hurt";
             else if (_attackTimer > 0) anim = "attack";
+            else if (_isWallSliding && Velocity.Y >= 0)
+                anim = Sprite?.SpriteFrames != null && Sprite.SpriteFrames.HasAnimation("wall_slide") ? "wall_slide" : "fall";
             else if (!IsOnFloor()) anim = Velocity.Y < 0 ? "jump" : "fall";
             else if (Mathf.Abs(Velocity.X) > 10f) anim = "run";
 

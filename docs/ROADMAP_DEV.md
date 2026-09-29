@@ -12,11 +12,11 @@ responsavel: Gustavo
 par: "[[ROADMAP_QA_CODIGO]]"
 descricao: Backlog de implementação da demo (código)
 epicos_total: 12
-epicos_concluidos: 3
+epicos_concluidos: 4
 tasks_total: 44
-tasks_prontas: 29
-tasks_bloqueadas: 7
-tasks_liberadas: 3
+tasks_prontas: 33
+tasks_bloqueadas: 6
+tasks_liberadas: 2
 ---
 # Roadmap de Desenvolvimento — Código (Gustavo)
 
@@ -91,7 +91,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: não iniciado — ⛔ bloqueado: as cenas de Floresta Tropical, Deserto e Tundra não existem (só `TestLevel` e `BossArena`) — depende do [[ROADMAP_ARTE]] `EPIC-A05`.
 
-> [!info]- EPIC-C03 — Combate e Espada de Grama — 🔄 Em andamento · 🟠 Alta
+> [!success]- EPIC-C03 — Combate e Espada de Grama — ✅ Concluído · 🟠 Alta
 > *Pronto quando*: Q alterna a espada em tempo real (visual + `HasSword`), o jogador tem stats diferentes com a espada ativada/desativada, e não dá pra atacar com ela desativada.
 >
 > > [!success]- Task C03-T0 — Regressão de combate básico (antes de mexer)
@@ -99,29 +99,29 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!info]- Task C03-T1 — Wire do input Q (ativar/desativar)
+> > [!success]- Task C03-T1 — Wire do input Q (ativar/desativar)
 > > - [x] Ligar a ação `Q` (pós `EPIC-C01-T1`) a um método novo `ToggleSword()` em `PlayerController`, chamando `HasSword = !HasSword` e `SetSwordVisible(HasSword)`.
 > > - **Achado (28/09, pós-pull) — sprite do Kairo sem variante de espada:** os `ColorRect` placeholder da espada (`Blade`/`Handle`) foram escondidos no commit `6153f13`, e o sprite novo (`KairoFaiscaSpriteFrames.tres`) não tem espada visível nem variante com e sem espada. O toggle de lógica funciona, mas o visual precisa de arte nova (ou de uma camada separada da espada). Também: a Faísca está desenhada dentro do sprite do Kairo e duplica com o `Faisca.tscn` — levar pro Higor ([[ROADMAP_ARTE]] `EPIC-A01`).
 > > - **Nota (28/09):** `PlayerController.ToggleSword()` na ação `toggle_sword` (Q): inverte `HasSword`, chama `SetSwordVisible`, emite o novo sinal `EventBus.SwordToggled(bool)` e toca `sword_on.wav`/`sword_off.wav`. O estado fica em `GameManager.HasSword` (autoload), porque o Player é recriado a cada troca de cena e sem isso a espada "voltava" ao entrar na arena.
 > > - **UX (28/09) — indicador provisório:** até existir arte com/sem espada, o HUD mostra "Espada: ativada [Q]" / "Espada: guardada [Q]" (no `AbilityDisplay` que já existia) e o sprite do Kairo ganha um tom verde claro com a espada guardada (`SelfModulate`, pra não conflitar com os flashes de ataque/dano). Remover o tom quando a arte do Higor chegar (`ROADMAP_ARTE` A01-T2).
 > >
-> > Status: implementado (28/09), compila e verificado em teste automatizado no Godot — ⏳ aguarda QA manual.
+> > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!info]- Task C03-T2 — Stats duplos (ativada/desativada)
+> > [!success]- Task C03-T2 — Stats duplos (ativada/desativada)
 > > - [x] Criar a variante "espada desativada": +velocidade, +pulo, sem ataque.
 > > - **Opção simples:** dois blocos de valores no `PlayerStatsResource` (`MoveSpeedSwordOn`/`Off`, etc.) ou um segundo `.tres`.
 > > - **Nota (28/09):** opção simples aplicada: `MoveSpeedNoSword` (240) e `JumpVelocityNoSword` (-520) no `PlayerStatsResource`. O `PlayerController` usa `CurrentMoveSpeed`/`CurrentJumpVelocity`, que leem `HasSword`. O "sem ataque" já vem do `CanAttack()`. **Os valores são chute (+20% e +13%): decidir os definitivos e registrar em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].**
 > > - **Nota (28/09):** testável agora: com a espada guardada, `CurrentMoveSpeed` = 240 e `CurrentJumpVelocity` = -520; ativada, 200 e -460 (conferido no Godot).
 > >
-> > Status: implementado (28/09), compila e verificado em teste automatizado no Godot — ⏳ aguarda QA manual.
+> > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!info]- Task C03-T3 — Bloqueio e teste em combate real
+> > [!success]- Task C03-T3 — Bloqueio e teste em combate real
 > > - [x] Bloquear `CanAttack()` quando `HasSword == false` (parcialmente já verdade hoje).
-> > - [ ] Testar a troca em pleno combate/movimento — sem travar animação/input no meio da troca.
-> > - [ ] Rodar de novo a Task C03-T0 pra garantir que nada regrediu.
+> > - [x] Testar a troca em pleno combate/movimento — sem travar animação/input no meio da troca.
+> > - [x] Rodar de novo a Task C03-T0 pra garantir que nada regrediu.
 > > - **Nota (28/09):** o bloqueio já existia (`CanAttack()` exige `HasSword`). Trocar a espada não cancela um golpe em andamento: ele termina a janela de 0.14s normalmente, sem travar animação nem input (verificado no Godot: ataque + Q no mesmo frame, sem erro).
 > >
-> > Status: implementado (28/09) — ⏳ aguarda QA manual: troca em combate e regressão da C03-T0.
+> > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 
 > [!success]- EPIC-C04 — Dash e Desbloqueio Pós-Korrag — ✅ Concluído · 🔴 Bloqueante
 > *Pronto quando*: derrotar o Korrag desbloqueia o dash uma única vez, e apertar Shift com o dash desbloqueado move o Kairo com um impulso rápido na direção que ele olha.
@@ -157,28 +157,32 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo), depois do bugfix do EventBus.
 
-> [!todo]- EPIC-C05 — Wall Grab / Wall Jump — ⬜ Não iniciado · 🟠 Alta
+> [!info]- EPIC-C05 — Wall Grab / Wall Jump — 🔄 Em andamento · 🟠 Alta
 > *Pronto quando*: segurar A/D contra uma parede no ar reduz a queda, e pular nessa condição empurra o Kairo pro lado oposto.
 >
-> > [!todo]- Task C05-T1 — Detecção de parede
-> > - [ ] Detectar colisão lateral com parede no ar (`IsOnWall()` do Godot ou raycast lateral) em `PlayerController`.
+> > [!info]- Task C05-T1 — Detecção de parede
+> > - [x] Detectar colisão lateral com parede no ar (`IsOnWall()` do Godot ou raycast lateral) em `PlayerController`.
+> > - **Nota (28/09):** `UpdateWallSlide()` usa o `IsOnWall()`/`GetWallNormal()` do último `MoveAndSlide`. O corpo do Kairo só colide com a camada World, então inimigo não conta como parede. "Agarrado" = no ar + encostado + segurando A/D na direção da parede.
 > >
-> > Status: não iniciado — 🟢 liberado (movimento unificado).
+> > Status: implementado (28/09), compila e verificado em teste automatizado no Godot — ⏳ aguarda QA manual.
 >
-> > [!warning]- Task C05-T2 — Agarrar / slide
-> > - [ ] Enquanto segurando A/D contra a parede no ar, reduzir a velocidade de queda (não necessariamente travar em 0).
+> > [!info]- Task C05-T2 — Agarrar / slide
+> > - [x] Enquanto segurando A/D contra a parede no ar, reduzir a velocidade de queda (não necessariamente travar em 0).
+> > - **Nota (28/09):** agarrado, a queda fica limitada a `WallSlideSpeed` (90 px/s, contra ~650 em queda livre). Agarrar devolve o pulo duplo. Anima com `wall_slide` se existir no `SpriteFrames` (A01-T3); senão usa `fall`.
 > >
-> > Status: não iniciado — 🟡 aguarda C05-T1.
+> > Status: implementado (28/09), compila e verificado em teste automatizado no Godot — ⏳ aguarda QA manual.
 >
-> > [!warning]- Task C05-T3 — Pulo de parede
-> > - [ ] Pular estando agarrado empurra pro lado oposto da parede, impulso vertical semelhante ao pulo normal.
+> > [!info]- Task C05-T3 — Pulo de parede
+> > - [x] Pular estando agarrado empurra pro lado oposto da parede, impulso vertical semelhante ao pulo normal.
+> > - **Nota (28/09):** o pulo de parede usa o mesmo impulso vertical do pulo normal (respeita os stats com/sem espada) + `WallJumpHorizontalSpeed` (260) pro lado oposto. O input horizontal fica travado por `WallJumpInputLock` (0.15s), senão segurar a direção da parede anularia o empurrão. Há um "wall coyote" de 0.1s pra pular logo depois de soltar a parede. Verificado no Godot: com A ainda segurado, o pulo sai com velocidade (+260, -444) e afasta da parede.
 > >
-> > Status: não iniciado — 🟡 aguarda C05-T2.
+> > Status: implementado (28/09), compila e verificado em teste automatizado no Godot — ⏳ aguarda QA manual.
 >
-> > [!failure]- Task C05-T4 — Decisão de gating
-> > - [ ] Decidir se é liberado desde o início ou gated por uma `AbilityId` (`WallJump` já existe no enum) — **pendência a decidir com o Higor/documentar em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]]** antes de travar o design final.
+> > [!success]- Task C05-T4 — Decisão de gating
+> > - [x] Decidir se é liberado desde o início ou gated por uma `AbilityId` (`WallJump` já existe no enum) — **pendência a decidir com o Higor/documentar em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]]** antes de travar o design final.
+> > - **Decisão do Gustavo (28/09) — desde o início, deslizando devagar:** wall grab/wall jump ficam disponíveis desde o começo da demo, como já dizia a tabela de controles do [[🕹️ Sistemas de Jogo#Movimentação|Sistemas de Jogo]] (sem condição de desbloqueio; o dash continua sendo a recompensa do Korrag). Continua passando pelo `AbilityManager` (`WallJump` entra no conjunto inicial, igual ao `DoubleJump`): gatear no futuro é tirar uma linha. O agarrar é "deslizar devagar", não "grudar parado", como está no GDD. **Registrar em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].**
 > >
-> > Status: não iniciado — ⛔ bloqueado: decisão de design pendente (Higor + [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]]).
+> > Status: ✅ concluído — decisão tomada em 28/09 (Gustavo).
 
 > [!info]- EPIC-C06 — Boss Korrag (IA e Identidade) — 🔄 Em andamento · 🔴 Bloqueante
 > *Pronto quando*: o Korrag usa Charge e Stomp em algum momento da luta (não só o ataque genérico), o `BossName` no código é "Korrag, o Javali", e o evento de derrota dispara uma única vez.
