@@ -12,9 +12,9 @@ responsavel: Gustavo
 par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 12
-epicos_concluidos: 2
+epicos_concluidos: 3
 tasks_total: 44
-tasks_prontas: 21
+tasks_prontas: 24
 tasks_bloqueadas: 6
 ---
 # Roadmap de QA — Código (Reflorescer)
@@ -116,7 +116,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: 🔴 bloqueado — não testável até C03-T1/T2 existirem.
 
-> [!failure]- EPIC-C04 — Dash e Desbloqueio Pós-Korrag — 🔴 Falha · 🔴 Bloqueante
+> [!success]- EPIC-C04 — Dash e Desbloqueio Pós-Korrag — ✅ Passa · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — `BossDefeated` dispara uma única vez, dash tem movimento real, é desbloqueado só ao derrotar o Korrag, e a UI avisa o jogador.
 >
 > > [!success]- Task C04-T1 — Evento BossDefeated único
@@ -125,24 +125,26 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
-> > [!failure]- Task C04-T2 — Movimento do dash existe
-> > - [ ] Apertar Shift (pós remapeamento) com a habilidade desbloqueada → impulso horizontal rápido na direção que o Kairo olha.
+> > [!success]- Task C04-T2 — Movimento do dash existe
+> > - [x] Apertar Shift (pós remapeamento) com a habilidade desbloqueada → impulso horizontal rápido na direção que o Kairo olha.
 > > - **Achado da auditoria (15/09):** nenhuma implementação de movimento associada ao dash — `AbilityId.Dash` existe só como enum, sem código de movimento atrás.
+> > - **Nota (28/09):** validados também: parado e andando pros dois lados; no ar não funciona (dash só no chão, decisão registrada no Dev); atravessar um inimigo durante o impulso não causa dano.
 > >
-> > Status: 🔴 falha — dash não implementado.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo).
 >
-> > [!failure]- Task C04-T3 — Desbloqueio ao derrotar o Korrag
-> > - [ ] Derrotar o Korrag → `AbilityManager.UnlockAbility(AbilityId.Dash)` é chamado.
-> > - [ ] Antes de derrotar o Korrag → apertar dash não faz nada (habilidade ainda bloqueada).
+> > [!success]- Task C04-T3 — Desbloqueio ao derrotar o Korrag
+> > - [x] Derrotar o Korrag → `AbilityManager.UnlockAbility(AbilityId.Dash)` é chamado.
+> > - [x] Antes de derrotar o Korrag → apertar dash não faz nada (habilidade ainda bloqueada).
 > > - **Achado da auditoria (15/09):** nenhum script escuta `EventBus.BossDefeated` pra isso. Quando for implementado, o listener precisa ser resistente ao evento disparar 2x até a Task C04-T1 ser corrigida — senão risco de desbloquear com efeito colateral duplicado.
 > >
-> > Status: 🔴 falha — desbloqueio não implementado.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo).
 >
-> > [!failure]- Task C04-T4 — Notificação de UI
-> > - [ ] Ao desbloquear o dash → alguma notificação visual aparece na tela.
+> > [!success]- Task C04-T4 — Notificação de UI
+> > - [x] Ao desbloquear o dash → alguma notificação visual aparece na tela.
 > > - **Achado da auditoria (15/09):** só `GD.Print` no console hoje, nenhuma UI real.
+> > - **Achado (28/09) — falhou no teste do Gustavo:** a notificação não aparecia quando se chegava à arena pelo portal. Reproduzido no Godot: o HUD destruído do `TestLevel` continuava inscrito no `EventBus` e a exceção dele cortava a cadeia do evento. Corrigido no código (ver [[ROADMAP_DEV]] C04-T4). Com a correção, o teste automatizado (headless: TestLevel → BossArena → 8 golpes) mostra o label visível com "Nova habilidade: Dash".
 > >
-> > Status: 🔴 falha — sem feedback visual.
+> > Status: ✅ passa — revalidado no Godot em 28/09 (Gustavo): entrando pelo portal, derrotar o Korrag mostra "Nova habilidade: Dash"; a barra de vida do Kairo também atualiza na arena.
 
 > [!failure]- EPIC-C05 — Wall Grab / Wall Jump — 🔴 Falha · 🟠 Alta
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — segurar A/D contra a parede no ar reduz a queda, e pular nessa condição empurra pro lado oposto.

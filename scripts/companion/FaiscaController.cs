@@ -47,6 +47,13 @@ namespace Joguim.Companion
             EventBus.Instance.PlayerRespawned += OnPlayerRespawned;
         }
 
+        // O EventBus é autoload e sobrevive à troca de cena: sem desinscrever, o handler de uma Faísca
+        // já destruída lança ObjectDisposedException e interrompe os demais inscritos do evento.
+        public override void _ExitTree()
+        {
+            if (EventBus.Instance != null) EventBus.Instance.PlayerRespawned -= OnPlayerRespawned;
+        }
+
         public override void _PhysicsProcess(double delta)
         {
             if (_player == null)

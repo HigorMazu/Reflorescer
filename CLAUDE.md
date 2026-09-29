@@ -44,5 +44,6 @@ Os 4 roadmaps são notas do Obsidian (Obsidian Flavored Markdown, ver a skill `o
 
 - Depois de qualquer mudança em `scripts/player/`, `scripts/enemies/` ou `scripts/bosses/`, rodar as subtasks de QA da Task equivalente em `ROADMAP_QA_CODIGO.md` antes de considerar a Task concluída.
 - Ao concluir uma Task, marcar o checkbox correspondente no `ROADMAP_DEV.md` (ou `ROADMAP_ARTE.md`).
+- **EventBus:** todo nó de cena que fizer `EventBus.Instance.X += Handler` precisa do `-=` correspondente no `_ExitTree()`. O `EventBus` é autoload e sobrevive à troca de cena, e o handler de um nó destruído lança `ObjectDisposedException`, interrompendo os demais inscritos (bug real de 28/09: a notificação do dash sumia). Só autoloads ficam dispensados.
 - Toda decisão de design nova (nome, mecânica, escopo) é registrada no GDD do Obsidian: o quê/porquê em `🗳️ Decisões e Configuração.md` e uma linha datada em `🗓️ Log de Atualizações.md` (ambos na pasta-pai). Este repo só documenta o *como*, não o *o quê*/*por quê*.
 - Escopo atual é o da **demo**: Floresta Tropical → Deserto → Tundra, boss Korrag, 3 arquétipos de inimigo comum. Não implementar conteúdo de outros biomas sem confirmar com o Gustavo primeiro — não é retrabalho perdido, só não é prioridade agora.

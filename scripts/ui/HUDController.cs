@@ -44,6 +44,16 @@ namespace Joguim.UI
             CallDeferred(MethodName.InitializeHUD);
         }
 
+        // O EventBus é autoload e sobrevive à troca de cena: sem desinscrever, o handler de um HUD
+        // já destruído lança ObjectDisposedException e interrompe os demais inscritos (ex.: o HUD da cena nova).
+        public override void _ExitTree()
+        {
+            if (EventBus.Instance == null) return;
+            EventBus.Instance.PlayerHealthChanged -= OnPlayerHealthChanged;
+            EventBus.Instance.PauseToggled -= OnPauseToggled;
+            EventBus.Instance.AbilityUnlocked -= OnAbilityUnlocked;
+        }
+
         private void InitializeHUD()
         {
             _player = GetTree().GetFirstNodeInGroup("Player") as PlayerController;

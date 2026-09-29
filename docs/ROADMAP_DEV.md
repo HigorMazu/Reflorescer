@@ -12,7 +12,7 @@ responsavel: Gustavo
 par: "[[ROADMAP_QA_CODIGO]]"
 descricao: Backlog de implementação da demo (código)
 epicos_total: 12
-epicos_concluidos: 2
+epicos_concluidos: 3
 tasks_total: 44
 tasks_prontas: 27
 tasks_bloqueadas: 7
@@ -119,7 +119,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: não iniciado — 🟡 aguarda C03-T1/T2.
 
-> [!info]- EPIC-C04 — Dash e Desbloqueio Pós-Korrag — 🔄 Em andamento · 🔴 Bloqueante
+> [!success]- EPIC-C04 — Dash e Desbloqueio Pós-Korrag — ✅ Concluído · 🔴 Bloqueante
 > *Pronto quando*: derrotar o Korrag desbloqueia o dash uma única vez, e apertar Shift com o dash desbloqueado move o Kairo com um impulso rápido na direção que ele olha.
 >
 > Depende de `EPIC-C01` (Input Map correto).
@@ -132,25 +132,26 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!info]- Task C04-T2 — Implementar o movimento do dash
+> > [!success]- Task C04-T2 — Implementar o movimento do dash
 > > - [x] Impulso horizontal rápido na direção que o Kairo está olhando, com cooldown e talvez i-frames curtos (típico de Metroidvania).
 > > - **Nota (28/09):** `PlayerController.StartDash()`: impulso horizontal na direção em que o Kairo olha, sem gravidade nem input durante o impulso. Termina no fim da duração ou ao bater na parede e sai com a velocidade de corrida. Parâmetros no `PlayerStatsResource`: `DashSpeed` 520, `DashDuration` 0.16s (≈83px), `DashCooldown` 0.6s. I-frames só durante o impulso, sem encurtar uma invulnerabilidade pós-dano que já esteja rodando. Anima com `dash` se o `SpriteFrames` tiver (A01-T4); senão usa `run` com um tint esverdeado. SFX esperado: `player_dash.wav`.
 > > - **Decisão do Gustavo (28/09) — dash só no chão:** o enum já separa `Dash` de `AirDash`, então o dash do Korrag funciona só com o Kairo no chão; o dash aéreo fica pra uma habilidade futura. **Registrar em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].**
 > >
-> > Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot.
+> > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!info]- Task C04-T3 — Ligar ao AbilityManager e ao evento do boss
+> > [!success]- Task C04-T3 — Ligar ao AbilityManager e ao evento do boss
 > > - [x] Input: `Input.IsActionJustPressed("dash") && AbilityManager.Instance.HasAbility(AbilityId.Dash)`.
 > > - [x] Assinar `EventBus.BossDefeated` (sugestão: no próprio `AbilityManager`, ou um `DemoProgressionManager` novo) e chamar `UnlockAbility(AbilityId.Dash)` quando `bossId == "boss_javali"`.
 > > - **Nota (28/09):** o próprio `AbilityManager` escuta `EventBus.BossDefeated` e chama `UnlockAbility(Dash)` quando `bossId == "boss_javali"`. O `UnlockAbility` já ignora repetição. O unlock dispara em cadeia a notificação do HUD (C04-T4) e o save imediato (C09-T1): as duas ficam testáveis a partir daqui.
 > >
-> > Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot.
+> > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!info]- Task C04-T4 — Notificação de habilidade desbloqueada
+> > [!success]- Task C04-T4 — Notificação de habilidade desbloqueada
 > > - [x] Dar um retorno visual mínimo (texto na tela por 2-3s) — hoje `HUDController.ShowAbilityUnlockNotification` só imprime no console.
 > > - **Nota (28/09):** `HUDController` cria um `Label` centralizado no topo ("Nova habilidade: X"), 2.5s na tela e 0.4s de fade. A `BossArena` não tinha HUD, então ganhou uma instância de `HUD.tscn`: é lá que o dash vai ser desbloqueado.
+> > - **Bugfix CRÍTICO (28/09) — notificação não aparecia vindo do TestLevel:** reproduzido no Godot (headless). O HUD e a Faísca do `TestLevel` se inscreviam no `EventBus` (autoload, sobrevive à troca de cena) e nunca se desinscreviam. Na `BossArena`, o handler do HUD já destruído lançava `ObjectDisposedException`, e a exceção interrompia a cadeia do evento antes de chegar ao HUD novo. O mesmo quebrava a barra de vida do Kairo na arena (`PlayerHealthChanged`). Correção: `_ExitTree()` desinscrevendo tudo em `HUDController` e `FaiscaController`. **Regra daqui pra frente:** todo nó de cena que fizer `EventBus.Instance.X += ...` precisa do `-=` no `_ExitTree()`. Só autoloads (`AbilityManager`, `SaveManager`) ficam dispensados.
 > >
-> > Status: implementado (28/09), compila — ⏳ testável agora: derrotar o Korrag dispara a notificação.
+> > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo), depois do bugfix do EventBus.
 
 > [!todo]- EPIC-C05 — Wall Grab / Wall Jump — ⬜ Não iniciado · 🟠 Alta
 > *Pronto quando*: segurar A/D contra uma parede no ar reduz a queda, e pular nessa condição empurra o Kairo pro lado oposto.
@@ -182,8 +183,9 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 >
 > > [!success]- Task C06-T0 — Regressão do núcleo do boss (antes de mexer)
 > > - [x] Rodar a Task C06-T0 do [[ROADMAP_QA_CODIGO]] (ativação, intro, fases automáticas, contato, morte em 8 hits).
+> > - **UX (28/09) — Korrag "morria antes do golpe final":** o dano estava certo (morte no 8º golpe, conferido no Godot), mas o `OnDied()` escondia o boss no mesmo frame do golpe final, sem animação. Agora a colisão e o dano são desligados na hora (via `SetDeferred`, porque a morte vem de callback de física), a barra flutuante some, toca `dead`, e ele desaparece em fade (0.6s de espera + 0.6s de fade) antes do `QueueFree`.
 > >
-> > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
+> > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo); morte com animação e fade revalidada no mesmo dia.
 >
 > > [!success]- Task C06-T1 — Loop de decisão de ataque
 > > - [x] Em `BossPhase1State`/`BossPhase2State`/`BossEnragedState`, trocar a chamada genérica `Boss.PerformAttack()` por uma decisão entre `PerformAttack()` (melee), `StartCharge()` (investida) e `PerformStomp()` (pisada em área).

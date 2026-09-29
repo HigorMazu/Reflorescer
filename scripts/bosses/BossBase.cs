@@ -29,6 +29,8 @@ namespace Joguim.Bosses
         private float _bossContactTimer = 0f;
         private float _bossContactCooldown = 0.9f;
         private int _bossContactDamage = 22;
+        private const float DeathFadeDelay = 0.6f;
+        private const float DeathFadeDuration = 0.6f;
         private ProgressBar _bossFloatingBar;
         private Label _bossHpLabel;
 
@@ -274,30 +276,33 @@ namespace Joguim.Bosses
         {
             if (_isBossDead) return;
             _isBossDead = true;
-            GD.Print($"Boss {BossId} MORREU! HP=0 -> sumindo do jogo.");
+            GD.Print($"Boss {BossId} MORREU! HP=0 -> animação de morte e fade.");
 
-            Visible = false;
-
-            CollisionLayer = 0;
-            CollisionMask = 0;
+            // Desliga colisão e dano na hora (deferred: a morte costuma vir de um callback de física),
+            // mas o corpo continua visível pra animação de morte, em vez de sumir no frame do golpe final.
+            SetDeferred(CollisionObject2D.PropertyName.CollisionLayer, 0);
+            SetDeferred(CollisionObject2D.PropertyName.CollisionMask, 0);
             SetPhysicsProcess(false);
 
             var hurt = GetNodeOrNull<Area2D>("Hurtbox");
-            if (hurt != null) { hurt.Monitoring = false; hurt.Monitorable = false; }
+            if (hurt != null) { hurt.SetDeferred(Area2D.PropertyName.Monitoring, false); hurt.SetDeferred(Area2D.PropertyName.Monitorable, false); }
 
             var hit = GetNodeOrNull<Area2D>("AttackHitbox");
-            if (hit != null) { hit.Monitoring = false; hit.Monitorable = false; }
+            if (hit != null) { hit.SetDeferred(Area2D.PropertyName.Monitoring, false); hit.SetDeferred(Area2D.PropertyName.Monitorable, false); }
 
             var col = GetNodeOrNull<CollisionShape2D>("CollisionShape2D");
-            if (col != null) col.Disabled = true;
+            if (col != null) col.SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
 
-            // BossDeadState.Enter() emite BossDefeated — fonte única do evento
+            if (_bossFloatingBar != null) _bossFloatingBar.Visible = false;
+            if (_bossHpLabel != null) _bossHpLabel.Visible = false;
+
+            // BossDeadState.Enter() toca "dead" e emite BossDefeated — fonte única do evento
             if (StateMachine != null) StateMachine.ChangeState(BossStateType.Dead);
 
-            GetTree().CreateTimer(0.3).Timeout += () =>
-            {
-                if (GodotObject.IsInstanceValid(this)) QueueFree();
-            };
+            var fade = CreateTween();
+            fade.TweenInterval(DeathFadeDelay);
+            fade.TweenProperty(this, "modulate:a", 0.0f, DeathFadeDuration);
+            fade.TweenCallback(Callable.From(QueueFree));
         }
 
         public void EmitDefeated()
