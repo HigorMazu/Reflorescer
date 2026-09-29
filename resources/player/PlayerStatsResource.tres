@@ -19,3 +19,6 @@ AttackDamage = 25
 AttackCooldown = 0.30
 KnockbackResistance = 0.3
 InvulnerabilityDuration = 1.0
+DashSpeed = 520.0
+DashDuration = 0.16
+DashCooldown = 0.6

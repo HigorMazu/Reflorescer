@@ -14,9 +14,9 @@ descricao: Backlog de implementação da demo (código)
 epicos_total: 12
 epicos_concluidos: 2
 tasks_total: 44
-tasks_prontas: 25
+tasks_prontas: 27
 tasks_bloqueadas: 7
-tasks_liberadas: 5
+tasks_liberadas: 4
 ---
 # Roadmap de Desenvolvimento — Código (Gustavo)
 
@@ -72,19 +72,19 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!info]- Task C02-T2 — Efeito visual/de mundo
+> > [!success]- Task C02-T2 — Efeito visual/de mundo
 > > - [x] Implementar o efeito da restauração (mesmo simples pra demo: partícula + mudança de cor no tile ao redor, ou sprite "antes/depois").
 > > - **Nota (28/09) — antes/depois data-driven:** o `RestorationPoint` ganhou `DegradedVisuals` e `RestoredVisuals` (listas de `NodePath`). Ao restaurar, os degradados somem em fade (0.6s), os restaurados brotam de baixo pra cima, e sai um burst de `CpuParticles2D` verde (`ParticleColor`). No `TestLevel`, placeholder: chão seco + toco → grama verde + broto. Quando a arte chegar, basta apontar as listas pros sprites do Higor no editor, sem mexer no código. SFX esperado: `restoration.wav`.
 > >
-> > Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot.
+> > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!info]- Task C02-T3 — Evento dedicado e persistência
+> > [!warning]- Task C02-T3 — Evento dedicado e persistência
 > > - [x] Emitir um evento próprio no `EventBus` (ex: `AreaRestored(string pointId)`) — não reaproveitar `CheckpointActivated`.
 > > - [x] Persistir pontos restaurados no save, igual `ActivatedCheckpoints` já persiste.
 > > - **Nota (28/09):** novo sinal `EventBus.AreaRestored(string pointId)`. O `SaveManager` guarda `RestoredPoints` no `SaveData` e salva na hora (igual ao unlock de habilidade). O `ApplySaveData` restaura os pontos sem efeito nem evento. Cada `RestorationPoint` consulta `SaveManager.IsPointRestored()` no `_Ready`, então sair pro `BossArena` e voltar mantém o ponto restaurado.
 > > - **Pendência (28/09) — reabrir o jogo:** o estado vai pro `save_0.json`, mas hoje nenhum fluxo carrega o save ao abrir o jogo. Isso é a decisão da C09-T2 (menu Continuar). Até ela, "fechar e reabrir mantém restaurado" não tem como passar; o que dá pra verificar é o arquivo `user://save_0.json` conter `RestoredPoints`.
 > >
-> > Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot.
+> > Status: implementado e validado na sessão (28/09) — 🟡 manter o estado ao reabrir o jogo aguarda a decisão da C09-T2.
 >
 > > [!failure]- Task C02-T4 — Posicionar nas 3 áreas da demo
 > > - [ ] Definir quantos pontos por área (mínimo 1 por bioma) e posicionar nas cenas de Floresta Tropical, Deserto e Tundra.
@@ -132,22 +132,25 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!todo]- Task C04-T2 — Implementar o movimento do dash
-> > - [ ] Impulso horizontal rápido na direção que o Kairo está olhando, com cooldown e talvez i-frames curtos (típico de Metroidvania).
+> > [!info]- Task C04-T2 — Implementar o movimento do dash
+> > - [x] Impulso horizontal rápido na direção que o Kairo está olhando, com cooldown e talvez i-frames curtos (típico de Metroidvania).
+> > - **Nota (28/09):** `PlayerController.StartDash()`: impulso horizontal na direção em que o Kairo olha, sem gravidade nem input durante o impulso. Termina no fim da duração ou ao bater na parede e sai com a velocidade de corrida. Parâmetros no `PlayerStatsResource`: `DashSpeed` 520, `DashDuration` 0.16s (≈83px), `DashCooldown` 0.6s. I-frames só durante o impulso, sem encurtar uma invulnerabilidade pós-dano que já esteja rodando. Anima com `dash` se o `SpriteFrames` tiver (A01-T4); senão usa `run` com um tint esverdeado. SFX esperado: `player_dash.wav`.
+> > - **Decisão do Gustavo (28/09) — dash só no chão:** o enum já separa `Dash` de `AirDash`, então o dash do Korrag funciona só com o Kairo no chão; o dash aéreo fica pra uma habilidade futura. **Registrar em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].**
 > >
-> > Status: não iniciado — 🟢 liberado (Shift mapeado e movimento unificado).
+> > Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot.
 >
-> > [!warning]- Task C04-T3 — Ligar ao AbilityManager e ao evento do boss
-> > - [ ] Input: `Input.IsActionJustPressed("dash") && AbilityManager.Instance.HasAbility(AbilityId.Dash)`.
-> > - [ ] Assinar `EventBus.BossDefeated` (sugestão: no próprio `AbilityManager`, ou um `DemoProgressionManager` novo) e chamar `UnlockAbility(AbilityId.Dash)` quando `bossId == "boss_javali"`.
+> > [!info]- Task C04-T3 — Ligar ao AbilityManager e ao evento do boss
+> > - [x] Input: `Input.IsActionJustPressed("dash") && AbilityManager.Instance.HasAbility(AbilityId.Dash)`.
+> > - [x] Assinar `EventBus.BossDefeated` (sugestão: no próprio `AbilityManager`, ou um `DemoProgressionManager` novo) e chamar `UnlockAbility(AbilityId.Dash)` quando `bossId == "boss_javali"`.
+> > - **Nota (28/09):** o próprio `AbilityManager` escuta `EventBus.BossDefeated` e chama `UnlockAbility(Dash)` quando `bossId == "boss_javali"`. O `UnlockAbility` já ignora repetição. O unlock dispara em cadeia a notificação do HUD (C04-T4) e o save imediato (C09-T1): as duas ficam testáveis a partir daqui.
 > >
-> > Status: não iniciado — 🟡 aguarda C04-T1 e C04-T2.
+> > Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot.
 >
 > > [!info]- Task C04-T4 — Notificação de habilidade desbloqueada
 > > - [x] Dar um retorno visual mínimo (texto na tela por 2-3s) — hoje `HUDController.ShowAbilityUnlockNotification` só imprime no console.
 > > - **Nota (28/09):** `HUDController` cria um `Label` centralizado no topo ("Nova habilidade: X"), 2.5s na tela e 0.4s de fade. A `BossArena` não tinha HUD, então ganhou uma instância de `HUD.tscn`: é lá que o dash vai ser desbloqueado.
 > >
-> > Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot.
+> > Status: implementado (28/09), compila — ⏳ testável agora: derrotar o Korrag dispara a notificação.
 
 > [!todo]- EPIC-C05 — Wall Grab / Wall Jump — ⬜ Não iniciado · 🟠 Alta
 > *Pronto quando*: segurar A/D contra uma parede no ar reduz a queda, e pular nessa condição empurra o Kairo pro lado oposto.
@@ -315,7 +318,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > [!failure]- Task C11-T2 — Arquivos já esperados pelo código
 > > - [ ] Produzir/conseguir os 3 arquivos já chamados no código (nomes exatos, case-sensitive): `checkpoint_activate.wav`, `boss_stomp.wav`, `boss_defeat.wav`.
 > >
-> > Status: não iniciado — ⛔ bloqueado: arquivos de áudio ainda não existem. Lista completa esperada pelo código agora (em `sfx/`): `checkpoint_activate.wav`, `boss_stomp.wav`, `boss_defeat.wav`, `player_attack.wav`, `player_jump.wav`, `player_hurt.wav`, `enemy_hit.wav`, `enemy_death.wav`, `restoration.wav`.
+> > Status: não iniciado — ⛔ bloqueado: arquivos de áudio ainda não existem. Lista completa esperada pelo código agora (em `sfx/`): `checkpoint_activate.wav`, `boss_stomp.wav`, `boss_defeat.wav`, `player_attack.wav`, `player_jump.wav`, `player_hurt.wav`, `player_dash.wav`, `enemy_hit.wav`, `enemy_death.wav`, `restoration.wav`.
 >
 > > [!warning]- Task C11-T3 — Chamadas que faltam
 > > - [x] Adicionar `AudioManager.PlaySfx(...)` pro ataque do jogador, hit em inimigo/jogador, morte de inimigo comum, pulo (opcional).

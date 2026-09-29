@@ -38,10 +38,15 @@ namespace Joguim.Player
         public float CurrentJumpVelocity => HasSword ? StatsResource.JumpVelocity : StatsResource.JumpVelocityNoSword;
         // Fonte única de verdade do double jump: AbilityManager
         public bool HasDoubleJump => AbilityManager.Instance?.HasAbility(AbilityId.DoubleJump) ?? false;
+        public bool HasDash => AbilityManager.Instance?.HasAbility(AbilityId.Dash) ?? false;
+        public bool IsDashing => _dashTimer > 0;
 
         private bool _isDead = false;
         private float _attackTimer = 0f;
         private float _hurtTimer = 0f;
+        private float _dashTimer = 0f;
+        private float _dashCooldownTimer = 0f;
+        private float _dashDirection = 1f;
         private float _coyoteTime = 0.15f;
         private float _coyoteCounter = 0f;
         private float _jumpBufferTime = 0.12f;
@@ -115,6 +120,7 @@ namespace Joguim.Player
             // Timers
             if (_attackTimer > 0) _attackTimer -= (float)delta;
             if (_hurtTimer > 0) _hurtTimer -= (float)delta;
+            if (_dashCooldownTimer > 0) _dashCooldownTimer -= (float)delta;
             if (_coyoteCounter > 0) _coyoteCounter -= (float)delta;
             if (_jumpBufferCounter > 0) _jumpBufferCounter -= (float)delta;
 
@@ -124,6 +130,17 @@ namespace Joguim.Player
 
         private void HandlePrototypeMovement(double delta)
         {
+            // Dash: durante o impulso ignora gravidade, input horizontal e pulo
+            if (Input.IsActionJustPressed("dash") && CanDash()) StartDash();
+            if (IsDashing)
+            {
+                _dashTimer -= (float)delta;
+                Velocity = new Vector2(_dashDirection * StatsResource.DashSpeed, 0);
+                MoveAndSlide();
+                if (_dashTimer <= 0 || IsOnWall()) EndDash();
+                return;
+            }
+
             // Coyote + jump buffer + double jump
             if (IsOnFloor())
             {
@@ -223,7 +240,8 @@ namespace Joguim.Player
             if (Visual == null) return;
             // Simple squash/stretch based on state for placeholder prototype
             string anim = "idle";
-            if (_hurtTimer > 0) anim = "hurt";
+            if (IsDashing) anim = Sprite?.SpriteFrames != null && Sprite.SpriteFrames.HasAnimation("dash") ? "dash" : "run";
+            else if (_hurtTimer > 0) anim = "hurt";
             else if (_attackTimer > 0) anim = "attack";
             else if (!IsOnFloor()) anim = Velocity.Y < 0 ? "jump" : "fall";
             else if (Mathf.Abs(Velocity.X) > 10f) anim = "run";
@@ -292,6 +310,37 @@ namespace Joguim.Player
             // Faísca pulse quando faz double jump
             var faisca = GetTree().GetFirstNodeInGroup("Companion");
             if (faisca != null && faisca.HasMethod("Flash")) { /* fallback */ }
+        }
+
+        // Dash é só no chão: o dash aéreo é outra habilidade (AbilityId.AirDash)
+        public bool CanDash() => HasDash && !IsDashing && _dashCooldownTimer <= 0 && _hurtTimer <= 0 && IsOnFloor();
+
+        private void StartDash()
+        {
+            _dashDirection = LastFacingDirection.X >= 0 ? 1f : -1f;
+            _dashTimer = StatsResource.DashDuration;
+            _dashCooldownTimer = StatsResource.DashCooldown;
+            // i-frames só durante o impulso (sem encurtar uma invulnerabilidade pós-dano que já esteja rodando)
+            if (Health != null && !Health.IsInvulnerable) Health.StartInvulnerability(StatsResource.DashDuration);
+            AudioManager.Instance?.PlaySfx("player_dash.wav");
+            EventBus.Instance?.EmitSignal(EventBus.SignalName.PlayerAbilityUsed, AbilityId.Dash.ToString());
+
+            if (Visual != null)
+            {
+                Visual.Modulate = new Color(0.75f, 1.0f, 0.85f, 0.75f);
+                Visual.Scale = new Vector2(_dashDirection * 1.2f, 0.85f);
+            }
+        }
+
+        private void EndDash()
+        {
+            _dashTimer = 0f;
+            Velocity = new Vector2(_dashDirection * StatsResource.MoveSpeed, 0);
+            if (Visual != null)
+            {
+                Visual.Modulate = Colors.White;
+                Visual.Scale = new Vector2(_dashDirection, 1);
+            }
         }
 
         public bool CanAttack() => HasSword && CombatController?.Hitbox != null && _attackTimer <= 0.001f;
@@ -369,6 +418,7 @@ namespace Joguim.Player
         {
             _isDead = true;
             _hurtTimer = 0f;
+            _dashTimer = 0f;
             PlayAnimation("dead");
             EventBus.Instance?.EmitSignal("PlayerDied");
             // respawn after 1s for prototype: último checkpoint ativado, ou perto de onde morreu

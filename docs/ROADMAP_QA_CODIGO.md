@@ -14,7 +14,7 @@ descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 12
 epicos_concluidos: 2
 tasks_total: 44
-tasks_prontas: 20
+tasks_prontas: 21
 tasks_bloqueadas: 6
 ---
 # Roadmap de QA — Código (Reflorescer)
@@ -58,7 +58,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 
-> [!failure]- EPIC-C02 — Mecânica de Restauração ODS15 — 🔴 Falha · 🔴 Bloqueante
+> [!warning]- EPIC-C02 — Mecânica de Restauração ODS15 — 🟡 Parcial · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — ponto de restauração interagível nas 3 áreas, efeito visual próprio, evento dedicado no `EventBus`, e persistência em save.
 >
 > > [!success]- Task C02-T1 — Interação de restauração existe
@@ -67,17 +67,17 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
-> > [!failure]- Task C02-T2 — Efeito visual/de mundo
-> > - [ ] Interagir com o ponto dispara um efeito visual/de mundo perceptível (partícula, mudança de cor no tile, sprite antes/depois).
+> > [!success]- Task C02-T2 — Efeito visual/de mundo
+> > - [x] Interagir com o ponto dispara um efeito visual/de mundo perceptível (partícula, mudança de cor no tile, sprite antes/depois).
 > >
-> > Status: 🔴 falha — depende da Task C02-T1 existir primeiro.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo).
 >
-> > [!failure]- Task C02-T3 — Evento dedicado e persistência
-> > - [ ] Emite um evento próprio no `EventBus` (não reaproveita `CheckpointActivated`).
+> > [!warning]- Task C02-T3 — Evento dedicado e persistência
+> > - [x] Emite um evento próprio no `EventBus` (não reaproveita `CheckpointActivated`).
 > > - [ ] Pontos restaurados persistem no save (fechar/reabrir o jogo mantém o estado restaurado).
 > > - **Nota (28/09):** o segundo caso (fechar/reabrir) depende do fluxo de Continuar (C09-T2), que ainda não existe. Por enquanto, testar: (1) restaurar e ir pro `BossArena` e voltar → continua restaurado; (2) o `save_0.json` (em `%APPDATA%/Godot/app_userdata/Joguim - Metroidvania/`) lista o ponto em `RestoredPoints`.
 > >
-> > Status: 🔴 falha — nada disso existe hoje.
+> > Status: 🟡 parcial — evento e persistência na sessão validados em 28/09 (restaurar, ir ao BossArena e voltar mantém o estado); fechar/reabrir depende da C09-T2.
 >
 > > [!failure]- Task C02-T4 — Cobertura nas 3 áreas da demo
 > > - [ ] Pelo menos 1 ponto de restauração ativo e testável em Floresta Tropical, Deserto e Tundra.

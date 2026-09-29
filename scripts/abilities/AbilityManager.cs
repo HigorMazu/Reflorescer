@@ -16,6 +16,15 @@ namespace Joguim.Abilities
             // Habilidades iniciais da demo: DoubleJump já vem liberado.
             // Entram direto no conjunto, sem emitir AbilityUnlocked (não é um desbloqueio de gameplay).
             _unlockedAbilities.Add(AbilityId.DoubleJump);
+
+            EventBus.Instance.BossDefeated += OnBossDefeated;
+        }
+
+        // Progressão da demo: derrotar o Korrag libera o Dash.
+        // UnlockAbility ignora repetição, então um BossDefeated duplicado não desbloqueia duas vezes.
+        private void OnBossDefeated(string bossId)
+        {
+            if (bossId == "boss_javali") UnlockAbility(AbilityId.Dash);
         }
 
         public bool HasAbility(AbilityId abilityId)

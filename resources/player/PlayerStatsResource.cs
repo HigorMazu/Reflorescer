@@ -21,5 +21,9 @@ namespace Joguim.Resources
         [Export] public float AttackCooldown = 0.4f;
         [Export] public float KnockbackResistance = 0.3f;
         [Export] public float InvulnerabilityDuration = 1.0f;
+        // Dash (desbloqueado ao derrotar o Korrag): impulso horizontal curto, com i-frames durante o impulso
+        [Export] public float DashSpeed = 520.0f;
+        [Export] public float DashDuration = 0.16f;
+        [Export] public float DashCooldown = 0.6f;
     }
 }
