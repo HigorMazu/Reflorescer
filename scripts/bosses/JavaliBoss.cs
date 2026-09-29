@@ -22,6 +22,7 @@ namespace Joguim.Bosses
         private Vector2 _chargeDirection;
         private bool _isStomping;
         private float _stompTimer;
+        private Tween _windupTelegraph;
 
         public override bool IsBusy => _isCharging || _isStomping;
 
@@ -57,6 +58,7 @@ namespace Joguim.Bosses
                 {
                     _chargeTimer -= (float)delta;
                     StopMovement();
+                    if (_chargeTimer <= 0) StopWindupTelegraph();
                 }
                 else
                 {
@@ -120,7 +122,20 @@ namespace Joguim.Bosses
             if (Sprite != null)
             {
                 Sprite.FlipH = _chargeDirection.X < 0;
+                // Telegrafia do windup: a arte é 1 quadro parado, então o aviso vem de um pulso vermelho
+                // (SelfModulate, pra não brigar com o flash de dano que usa Modulate)
+                _windupTelegraph?.Kill();
+                _windupTelegraph = CreateTween().SetLoops();
+                _windupTelegraph.TweenProperty(Sprite, "self_modulate", new Color(1f, 0.45f, 0.45f), 0.12);
+                _windupTelegraph.TweenProperty(Sprite, "self_modulate", Colors.White, 0.12);
             }
+        }
+
+        private void StopWindupTelegraph()
+        {
+            _windupTelegraph?.Kill();
+            _windupTelegraph = null;
+            if (Sprite != null) Sprite.SelfModulate = Colors.White;
         }
 
         private void ExecuteCharge(double delta)
@@ -145,6 +160,7 @@ namespace Joguim.Bosses
 
         public void StopCharge()
         {
+            StopWindupTelegraph();
             _isCharging = false;
             Velocity = new Vector2(0, Velocity.Y);
             PlayAnimation("walk");

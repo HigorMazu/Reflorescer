@@ -4,7 +4,7 @@ using Joguim.Interaction;
 
 namespace Joguim.World
 {
-    public partial class Checkpoint : Node2D, IInteractable
+    public partial class Checkpoint : Area2D, IInteractable
     {
         [Export] public string CheckpointId = "checkpoint_01";
         [Export] public bool Activated = false;
@@ -55,12 +55,13 @@ namespace Joguim.World
 
         public string GetInteractionPrompt()
         {
-            return Activated ? "Checkpoint (Activated)" : "Activate Checkpoint";
+            return Activated ? "Checkpoint ativado" : "Ativar checkpoint";
         }
 
+        // Checkpoint já ativado não oferece interação (o Interact já ignorava; agora o prompt também some)
         public bool CanInteract()
         {
-            return true;
+            return !Activated;
         }
 
         public void Deactivate()

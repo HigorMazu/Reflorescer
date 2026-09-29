@@ -15,6 +15,8 @@ namespace Joguim.Core
         [Signal] public delegate void PlayerAbilityUsedEventHandler(string abilityName);
         // Espada de Grama ativada (true) ou guardada (false) com Q
         [Signal] public delegate void SwordToggledEventHandler(bool hasSword);
+        // Prompt do interagível ao alcance do jogador ("" = nenhum, esconde o prompt)
+        [Signal] public delegate void InteractionPromptChangedEventHandler(string prompt);
 
         // Ability signals
         [Signal] public delegate void AbilityUnlockedEventHandler(string abilityId);

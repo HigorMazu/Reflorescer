@@ -62,6 +62,7 @@ namespace Joguim.Player
         private int _jumpCount = 0;
         private Vector2? _lastCheckpointPosition;
         private Vector2 _deathPosition;
+        private string _currentPrompt = "";
 
         public override void _Ready()
         {
@@ -140,6 +141,7 @@ namespace Joguim.Player
 
             HandlePrototypeMovement(delta);
             UpdatePrototypeAnimation();
+            UpdateInteractionPrompt();
         }
 
         private void HandlePrototypeMovement(double delta)
@@ -322,18 +324,34 @@ namespace Joguim.Player
 
         private void TryInteract()
         {
-            if (InteractionDetector == null) return;
+            var interactable = FindInteractable();
+            if (interactable == null) return;
+            interactable.Interact(this);
+            GD.Print($"Interagiu com {((Node)interactable).Name}");
+            UpdateInteractionPrompt();
+        }
+
+        // Primeiro interagível disponível sobreposto ao InteractionDetector
+        private Joguim.Interaction.IInteractable FindInteractable()
+        {
+            if (InteractionDetector == null) return null;
             foreach (var area in InteractionDetector.GetOverlappingAreas())
             {
                 // O interagível pode ser a própria Area2D (Checkpoint) ou o pai dela
                 Node candidate = area is Joguim.Interaction.IInteractable ? area : area.GetParent();
                 if (candidate is Joguim.Interaction.IInteractable interactable && interactable.CanInteract())
-                {
-                    interactable.Interact(this);
-                    GD.Print($"Interagiu com {candidate.Name}");
-                    break;
-                }
+                    return interactable;
             }
+            return null;
+        }
+
+        // Prompt contínuo (C10-T1): avisa o HUD só quando o texto muda, sem precisar apertar E
+        private void UpdateInteractionPrompt()
+        {
+            string prompt = _isDead ? "" : FindInteractable()?.GetInteractionPrompt() ?? "";
+            if (prompt == _currentPrompt) return;
+            _currentPrompt = prompt;
+            EventBus.Instance?.EmitSignal(EventBus.SignalName.InteractionPromptChanged, prompt);
         }
 
         public void ApplyGravity(double delta)
@@ -483,6 +501,7 @@ namespace Joguim.Player
             _dashTimer = 0f;
             PlayAnimation("dead");
             _deathPosition = GlobalPosition;
+            UpdateInteractionPrompt();
             EventBus.Instance?.EmitSignal("PlayerDied");
             // Quem decide o respawn é a tela de Game Over do HUD ("Tentar de novo").
             // Cena sem HUD (ex.: cena de teste): volta ao comportamento antigo, respawn automático em 1s.

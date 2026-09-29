@@ -55,6 +55,7 @@ namespace Joguim.UI
             EventBus.Instance.PauseToggled += OnPauseToggled;
             EventBus.Instance.AbilityUnlocked += OnAbilityUnlocked;
             EventBus.Instance.SwordToggled += OnSwordToggled;
+            EventBus.Instance.InteractionPromptChanged += OnInteractionPromptChanged;
 
             CallDeferred(MethodName.InitializeHUD);
         }
@@ -69,6 +70,7 @@ namespace Joguim.UI
             EventBus.Instance.PauseToggled -= OnPauseToggled;
             EventBus.Instance.AbilityUnlocked -= OnAbilityUnlocked;
             EventBus.Instance.SwordToggled -= OnSwordToggled;
+            EventBus.Instance.InteractionPromptChanged -= OnInteractionPromptChanged;
         }
 
         private void InitializeHUD()
@@ -103,6 +105,12 @@ namespace Joguim.UI
             {
                 _healthLabel.Text = $"{currentHealth} / {maxHealth}";
             }
+        }
+
+        private void OnInteractionPromptChanged(string prompt)
+        {
+            if (string.IsNullOrEmpty(prompt)) HideInteractionPrompt();
+            else ShowInteractionPrompt($"[E] {prompt}");
         }
 
         public void ShowInteractionPrompt(string prompt)

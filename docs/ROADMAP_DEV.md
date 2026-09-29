@@ -14,9 +14,9 @@ descricao: Backlog de implementação da demo (código)
 epicos_total: 12
 epicos_concluidos: 6
 tasks_total: 44
-tasks_prontas: 35
+tasks_prontas: 37
 tasks_bloqueadas: 4
-tasks_liberadas: 2
+tasks_liberadas: 0
 ---
 # Roadmap de Desenvolvimento — Código (Gustavo)
 
@@ -215,11 +215,12 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!todo]- Task C06-T4 — Ajustar timing com a arte real
+> > [!info]- Task C06-T4 — Ajustar timing com a arte real
 > > - [ ] Testar o `charge_windup` (1s) contra a animação real assim que a arte chegar (cruza com [[ROADMAP_QA_INTEGRACAO]] `EPIC-A04`).
 > > - **Nota (28/09, pós-pull):** `KorragSpriteFrames.tres` já tem `charge_windup` (1 frame, 5 fps) e todos os nomes de animação chamados em `BossStateMachine.cs`/`JavaliBoss.cs` existem no recurso (`walk` existe mas nenhum script chama ainda).
+> > - **Nota (28/09) — arte vs. timing:** a `charge_windup` do Higor tem 1 quadro (5 fps, sem loop), então o Korrag ficava congelado o segundo inteiro do windup. Mantido o `ChargeWindup` de 1s (tempo justo pra reagir) e adicionada telegrafia: pulso vermelho no `SelfModulate` do sprite (0.12s por meia-volta) durante o windup, desligado quando a investida começa, quando ela para ou quando o boss morre. Se 1s parecer lento, é só baixar `ChargeWindup` no inspetor do `Boss_Javali`. Se o Higor fizer um windup com mais quadros, o pulso pode sair. Cruza com [[ROADMAP_QA_INTEGRACAO]] A04.
 > >
-> > Status: não iniciado — 🟢 liberado (C06-T1 implementado e arte do `charge_windup` no repo).
+> > Status: implementado (28/09), compila e verificado em teste automatizado no Godot — ⏳ aguarda QA manual. Decidir no teste se 1s de windup está bom.
 
 > [!info]- EPIC-C07 — Inimigos Comuns (Arquétipos) — 🔄 Em andamento · 🟠 Alta
 > *Pronto quando*: existem 3 arquétipos (Voador/Rápido/Robusto) com comportamento distinto de fato, cada um com `.tres` de stats pra cada uma das 3 áreas da demo.
@@ -308,10 +309,12 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!todo]- Task C10-T1 — Prompt de interação contínuo
-> > - [ ] Fazer o `PlayerController` (ou um `InteractionDetector` dedicado) chamar `HUDController.ShowInteractionPrompt()`/`HideInteractionPrompt()` continuamente com base em estar ou não sobrepondo um `IInteractable` — hoje só reage ao apertar E.
+> > [!info]- Task C10-T1 — Prompt de interação contínuo
+> > - [x] Fazer o `PlayerController` (ou um `InteractionDetector` dedicado) chamar `HUDController.ShowInteractionPrompt()`/`HideInteractionPrompt()` continuamente com base em estar ou não sobrepondo um `IInteractable` — hoje só reage ao apertar E.
+> > - **Nota (28/09):** o `PlayerController` procura, a cada frame, o primeiro `IInteractable` disponível no `InteractionDetector` (`FindInteractable()`, também usado pelo E) e emite o novo sinal `EventBus.InteractionPromptChanged(string)` só quando o texto muda. O HUD mostra `[E] <prompt>` no `InteractionPrompt` que já existia. Textos: "Ativar checkpoint", "Restaurar". Checkpoint ativado e ponto já restaurado não oferecem interação, então o prompt some depois de usar.
+> > - **Bugfix CRÍTICO (28/09) — `Checkpoint` herdava de `Node2D`, mas o nó é uma `Area2D`:** ao percorrer `GetOverlappingAreas()` (tipado como `Area2D`), o C# lançava `InvalidCastException` quando o checkpoint estava na lista. Com o prompt checando a cada frame, isso quebrava todo frame (achado no teste automatizado). Correção: `Checkpoint : Area2D`. O E perto da bandeira passava pelo mesmo laço, então vale revalidar a ativação do checkpoint.
 > >
-> > Status: não iniciado — 🟢 liberado (movimento unificado).
+> > Status: implementado (28/09), compila e verificado em teste automatizado no Godot — ⏳ aguarda QA manual.
 >
 > > [!success]- Task C10-T2 — Game Over
 > > - [x] Decidir se a demo precisa de tela de Game Over real ou se o respawn automático (já funcional) basta. Se precisar, implementar o que `ShowGameOver()` deveria de fato disparar.

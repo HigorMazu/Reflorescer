@@ -15,7 +15,7 @@ epicos_total: 12
 epicos_concluidos: 6
 tasks_total: 44
 tasks_prontas: 35
-tasks_bloqueadas: 5
+tasks_bloqueadas: 4
 ---
 # Roadmap de QA — Código (Reflorescer)
 
@@ -208,11 +208,11 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
-> > [!failure]- Task C06-T4 — Timing contra a arte real
+> > [!warning]- Task C06-T4 — Timing contra a arte real
 > > - [ ] `charge_windup` cabe (ou é cortável) em ~1s fixo, testado contra a animação final.
 > > - **Nota:** este caso só roda depois que `EPIC-C06-T1` conectar o Charge **e** a arte de `charge_windup` chegar — cruza com [[ROADMAP_QA_INTEGRACAO]] `EPIC-A04-T1`.
 > >
-> > Status: 🔴 bloqueado — depende de C06-T1 e da arte.
+> > Status: 🟡 implementado em 28/09 (1s de windup + pulso vermelho de aviso) — aguarda QA manual e decisão do tempo.
 
 > [!warning]- EPIC-C07 — Inimigos Comuns (Arquétipos) — 🟡 Parcial · 🟠 Alta
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — 3 arquétipos com comportamento distinto de fato, cada um com dados por área da demo.
@@ -286,6 +286,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > - **Achado (28/09) — dois casos acima não passavam:** (1) apertar E perto de um checkpoint não fazia nada, porque `TryInteract` só procurava o `IInteractable` no pai da área, e o `Checkpoint` é a própria área; (2) o respawn usava o primeiro checkpoint do grupo, ativado ou não. Os dois foram corrigidos no código (ver [[ROADMAP_DEV]] C09-T0). Repetir a Task inteira.
 > > - **Mudança de comportamento (28/09):** os dois casos de respawn acima agora passam pela tela de Game Over (C10-T2). Morrer abre "Você caiu", e "Tentar de novo" faz o respawn no último checkpoint com HP cheio. O respawn automático de 1s só existe em cena sem HUD.
+> > - **Nota (28/09):** o `Checkpoint` passou a herdar de `Area2D` (antes `Node2D`, causava `InvalidCastException` no laço de interação). Revalidar "E na bandeira ativa o checkpoint".
 > >
 > > Status: ✅ passa — revalidado em 28/09 (Gustavo) com o respawn pela tela de Game Over.
 >
@@ -312,11 +313,11 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
-> > [!failure]- Task C10-T1 — Prompt de interação contínuo
+> > [!warning]- Task C10-T1 — Prompt de interação contínuo
 > > - [ ] Chegar perto de um `IInteractable` sem apertar nada → aparece um prompt visual.
 > > - **Achado da auditoria (15/09):** `ShowInteractionPrompt()`/`HideInteractionPrompt()` existem no `HUDController` mas nada os chama continuamente hoje.
 > >
-> > Status: 🔴 falha — prompt não aparece automaticamente.
+> > Status: 🟡 implementado em 28/09 — aguarda QA manual.
 >
 > > [!success]- Task C10-T2 — Game Over
 > > - [x] Decisão tomada e implementada (ou explicitamente descartada em favor do respawn automático, já funcional).
