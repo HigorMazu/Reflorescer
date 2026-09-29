@@ -12,6 +12,8 @@ namespace Joguim.Core
         public string CurrentArea { get; set; } = "";
         // Estado da Espada de Grama na sessão: o Player é recriado a cada troca de cena
         public bool HasSword { get; set; } = true;
+        // Tela de Game Over aberta: o jogo fica pausado e o Esc não despausa
+        public bool IsGameOver { get; set; }
 
         public override void _Ready()
         {
@@ -29,6 +31,7 @@ namespace Joguim.Core
 
         public void TogglePause()
         {
+            if (IsGameOver) return;
             IsGamePaused = !IsGamePaused;
             GetTree().Paused = IsGamePaused;
             EventBus.Instance.EmitSignal("PauseToggled", IsGamePaused);

@@ -14,8 +14,8 @@ descricao: Backlog de implementação da demo (código)
 epicos_total: 12
 epicos_concluidos: 5
 tasks_total: 44
-tasks_prontas: 33
-tasks_bloqueadas: 6
+tasks_prontas: 35
+tasks_bloqueadas: 4
 tasks_liberadas: 2
 ---
 # Roadmap de Desenvolvimento — Código (Gustavo)
@@ -78,13 +78,13 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!warning]- Task C02-T3 — Evento dedicado e persistência
+> > [!info]- Task C02-T3 — Evento dedicado e persistência
 > > - [x] Emitir um evento próprio no `EventBus` (ex: `AreaRestored(string pointId)`) — não reaproveitar `CheckpointActivated`.
 > > - [x] Persistir pontos restaurados no save, igual `ActivatedCheckpoints` já persiste.
 > > - **Nota (28/09):** novo sinal `EventBus.AreaRestored(string pointId)`. O `SaveManager` guarda `RestoredPoints` no `SaveData` e salva na hora (igual ao unlock de habilidade). O `ApplySaveData` restaura os pontos sem efeito nem evento. Cada `RestorationPoint` consulta `SaveManager.IsPointRestored()` no `_Ready`, então sair pro `BossArena` e voltar mantém o ponto restaurado.
 > > - **Pendência (28/09) — reabrir o jogo:** o estado vai pro `save_0.json`, mas hoje nenhum fluxo carrega o save ao abrir o jogo. Isso é a decisão da C09-T2 (menu Continuar). Até ela, "fechar e reabrir mantém restaurado" não tem como passar; o que dá pra verificar é o arquivo `user://save_0.json` conter `RestoredPoints`.
 > >
-> > Status: implementado e validado na sessão (28/09) — 🟡 manter o estado ao reabrir o jogo aguarda a decisão da C09-T2.
+> > Status: implementado (28/09) — ⏳ aguarda QA manual: com o Continuar (C09-T2), reabrir o jogo mantém a área restaurada (verificado em teste automatizado).
 >
 > > [!failure]- Task C02-T4 — Posicionar nas 3 áreas da demo
 > > - [ ] Definir quantos pontos por área (mínimo 1 por bioma) e posicionar nas cenas de Floresta Tropical, Deserto e Tundra.
@@ -286,16 +286,21 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > [!info]- Task C09-T1 — Persistir unlock de habilidade imediatamente
 > > - [x] Hoje só atualiza a lista em memória até o próximo save por checkpoint/boss/item — garantir `SaveGame()` também no unlock, ou documentar a decisão de não fazer isso pra demo.
 > > - **Nota (28/09):** `SaveManager.OnAbilityUnlocked` chama `SaveGame()` na hora (cria o save do slot 0 se ainda não existir). `ApplySaveData` passou a restaurar as habilidades sem emitir `AbilityUnlocked`, pra carregar um save não disparar notificação nem um save extra.
+> > - **Nota (28/09):** confirmado no teste automatizado do Continuar: o `Dash` desbloqueado aparece no save e volta ao continuar.
 > >
 > > Status: implementado (28/09), compila — ⏳ aguarda rodar o QA no Godot.
 >
-> > [!failure]- Task C09-T2 — Fluxo de "Continuar"
-> > - [ ] Se a demo tiver esse menu: chamar `SaveManager.LoadGame(slot)` e, em `ApplySaveData`, trocar de cena pra `save.CurrentScene` antes de restaurar posição/HP (hoje não troca).
+> > [!info]- Task C09-T2 — Fluxo de "Continuar"
+> > - [x] Se a demo tiver esse menu: chamar `SaveManager.LoadGame(slot)` e, em `ApplySaveData`, trocar de cena pra `save.CurrentScene` antes de restaurar posição/HP (hoje não troca).
 > > - [ ] Se a demo **não** vai ter esse menu (sempre começa do zero): documentar essa decisão em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].
+> > - **Decisão do Gustavo (28/09) — menu inicial com Continuar:** nova cena principal `scenes/ui/MainMenu.tscn` (`MainMenu.cs`) com "Continuar" (só aparece se existe `save_0.json`), "Novo jogo" e "Sair". A segunda sub-task (não ter o menu) fica descartada. **Registrar em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].**
+> > - **Nota (28/09) — como funciona:** `SaveManager.ContinueGame()` lê o save, restaura na hora o estado de sessão (habilidades sem notificação, `GameManager.HasSword`), troca pra `save.CurrentScene` e, no `SceneTree.SceneChanged`, aplica posição, HP, checkpoints (o último vira ponto de respawn) e áreas restauradas. `StartNewGame()` apaga o save e zera o estado dos autoloads (`AbilityManager.ResetToInitial()`, espada ativada). Boss que está em `DefeatedBosses` não é instanciado de novo (`BossBase._Ready`). O menu de pausa ganhou os botões ligados (Continuar, Salvar, Menu inicial); antes nenhum funcionava.
+> > - **Bugfix CRÍTICO (28/09) — posição nunca era salva:** o `save_0.json` gravava `"PlayerPosition": {}`, porque o `Vector2` do Godot usa campos (X/Y) e o `System.Text.Json` só serializa propriedades por padrão. Correção: `IncludeFields = true` no `SaveData`. Saves antigos (com `{}`) carregam no spawn padrão da cena. O `HasSword` também passou a ir pro save.
+> > - **Verificação (28/09, headless):** menu → Novo jogo → guardar espada + checkpoint + restaurar + salvar → morrer → Tentar de novo → menu → Continuar: cena, posição, espada, dash, checkpoint e área restaurada voltam; na arena, o Korrag já derrotado não reaparece.
 > >
-> > Status: não iniciado — ⛔ bloqueado: decisão pendente (a demo terá menu Continuar?).
+> > Status: implementado (28/09), compila e verificado em teste automatizado no Godot — ⏳ aguarda QA manual.
 
-> [!todo]- EPIC-C10 — HUD e UX — ⬜ Não iniciado · 🟡 Média
+> [!info]- EPIC-C10 — HUD e UX — 🔄 Em andamento · 🟡 Média
 > *Pronto quando*: um prompt visual aparece ao chegar perto de um `IInteractable` (sem precisar apertar nada), e a decisão sobre Game Over foi tomada e implementada.
 >
 > > [!success]- Task C10-T0 — Regressão básica de HUD
@@ -308,10 +313,11 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: não iniciado — 🟢 liberado (movimento unificado).
 >
-> > [!failure]- Task C10-T2 — Game Over
-> > - [ ] Decidir se a demo precisa de tela de Game Over real ou se o respawn automático (já funcional) basta. Se precisar, implementar o que `ShowGameOver()` deveria de fato disparar.
+> > [!info]- Task C10-T2 — Game Over
+> > - [x] Decidir se a demo precisa de tela de Game Over real ou se o respawn automático (já funcional) basta. Se precisar, implementar o que `ShowGameOver()` deveria de fato disparar.
+> > - **Decisão do Gustavo (28/09) — tela de Game Over:** ao morrer, 0.8s depois aparece "Você caiu" com "Tentar de novo" (renasce no último checkpoint ativado, ou perto de onde morreu) e "Menu inicial". O jogo fica pausado e o Esc não despausa (`GameManager.IsGameOver`). Substitui o respawn automático de 1s, que só continua como fallback em cena sem HUD. **Registrar em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].**
 > >
-> > Status: não iniciado — ⛔ bloqueado: decisão pendente (tela de Game Over ou só respawn?).
+> > Status: implementado (28/09), compila e verificado em teste automatizado no Godot — ⏳ aguarda QA manual.
 
 > [!info]- EPIC-C11 — Áudio — 🔄 Em andamento · 🟡 Média
 > *Pronto quando*: as pastas/buses de áudio existem, os 3 sons já esperados pelo código tocam de verdade, e a demo inteira tem pelo menos uma música por bioma e feedback sonoro nos hits principais.

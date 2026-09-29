@@ -17,6 +17,7 @@ namespace Joguim.Save
         public int PlayerHealth { get; set; }
         public int PlayerMaxHealth { get; set; }
         public string LastCheckpointId { get; set; }
+        public bool HasSword { get; set; } = true;
 
         // Progression
         public List<string> UnlockedAbilities { get; set; } = new();
@@ -41,19 +42,23 @@ namespace Joguim.Save
             LastCheckpointId = "";
         }
 
+        // IncludeFields: o Vector2 do Godot guarda X/Y como campos; sem isso a posição salvava como {}
+        private static readonly JsonSerializerOptions JsonOptions = new()
+        {
+            WriteIndented = true,
+            IncludeFields = true
+        };
+
         public string ToJson()
         {
-            return JsonSerializer.Serialize(this, new JsonSerializerOptions
-            {
-                WriteIndented = true
-            });
+            return JsonSerializer.Serialize(this, JsonOptions);
         }
 
         public static SaveData FromJson(string json)
         {
             try
             {
-                return JsonSerializer.Deserialize<SaveData>(json);
+                return JsonSerializer.Deserialize<SaveData>(json, JsonOptions);
             }
             catch (Exception e)
             {

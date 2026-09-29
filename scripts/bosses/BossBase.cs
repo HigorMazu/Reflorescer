@@ -41,6 +41,14 @@ namespace Joguim.Bosses
 
         public override void _Ready()
         {
+            // Continuar um save em que este boss já foi derrotado: ele não volta
+            if (Joguim.Save.SaveManager.Instance != null && Joguim.Save.SaveManager.Instance.IsBossDefeated(BossId))
+            {
+                _isBossDead = true;
+                QueueFree();
+                return;
+            }
+
             Sprite = GetNodeOrNull<AnimatedSprite2D>(SpritePath);
             CombatController = GetNodeOrNull<CombatController>(CombatControllerPath);
             HealthBar = GetNodeOrNull<HealthBar>(HealthBarPath);

@@ -16,6 +16,9 @@ namespace Joguim.Save
         private const string SaveExtension = ".json";
         private const int MaxSlots = 3;
 
+        public const string NewGameScene = "res://scenes/Main.tscn";
+        public const string MainMenuScene = "res://scenes/ui/MainMenu.tscn";
+
         private SaveData _currentSave;
 
         public override void _Ready()
@@ -34,6 +37,43 @@ namespace Joguim.Save
         {
             return _currentSave != null && _currentSave.RestoredPoints.Contains(pointId);
         }
+
+        public bool IsBossDefeated(string bossId)
+        {
+            return _currentSave != null && _currentSave.DefeatedBosses.Contains(bossId);
+        }
+
+        // Menu inicial → "Novo jogo": apaga o save e zera o estado da sessão que vive em autoloads
+        public void StartNewGame(int slot = 0)
+        {
+            DeleteSave(slot);
+            _currentSave = null;
+            AbilityManager.Instance?.ResetToInitial();
+            if (GameManager.Instance != null) GameManager.Instance.HasSword = true;
+            SceneManager.Instance.LoadScene(NewGameScene);
+        }
+
+        // Menu inicial → "Continuar": restaura o estado de sessão já, troca pra cena salva
+        // e aplica posição/checkpoints/etc. quando a cena nova estiver pronta (SceneTree.SceneChanged)
+        public bool ContinueGame(int slot = 0)
+        {
+            var save = ReadSave(slot);
+            if (save == null) return false;
+
+            _currentSave = save;
+            if (GameManager.Instance != null) GameManager.Instance.HasSword = save.HasSword;
+            AbilityManager.Instance?.SetUnlockedAbilities(ParseAbilities(save.UnlockedAbilities));
+
+            string scene = !string.IsNullOrEmpty(save.CurrentScene) && save.CurrentScene != MainMenuScene && ResourceLoader.Exists(save.CurrentScene)
+                ? save.CurrentScene
+                : NewGameScene;
+            GetTree().Connect(SceneTree.SignalName.SceneChanged, Callable.From(ApplyCurrentSave), (uint)ConnectFlags.OneShot);
+            SceneManager.Instance.LoadScene(scene);
+            GD.Print($"Continuando do slot {slot} em {scene}.");
+            return true;
+        }
+
+        private void ApplyCurrentSave() => ApplySaveData(_currentSave);
 
         public bool HasSave(int slot)
         {
@@ -68,6 +108,7 @@ namespace Joguim.Save
                 _currentSave.PlayerHealth = player.Health?.CurrentHealth ?? 100;
                 _currentSave.PlayerMaxHealth = player.Health?.MaxHealth ?? 100;
                 _currentSave.CurrentScene = SceneManager.Instance.CurrentScenePath;
+                _currentSave.HasSword = GameManager.Instance?.HasSword ?? true;
                 _currentSave.Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
                 _currentSave.UnlockedAbilities.Clear();
@@ -87,6 +128,17 @@ namespace Joguim.Save
 
         public SaveData LoadGame(int slot)
         {
+            _currentSave = ReadSave(slot);
+            if (_currentSave == null) return null;
+
+            ApplySaveData(_currentSave);
+            GD.Print($"Game loaded from slot {slot}.");
+
+            return _currentSave;
+        }
+
+        private SaveData ReadSave(int slot)
+        {
             string path = GetSavePath(slot);
             if (!FileAccess.FileExists(path))
             {
@@ -104,17 +156,19 @@ namespace Joguim.Save
             string json = file.GetAsText();
             file.Close();
 
-            _currentSave = SaveData.FromJson(json);
-            if (_currentSave == null)
+            var save = SaveData.FromJson(json);
+            if (save == null) GD.PrintErr("SaveManager: Failed to parse save data.");
+            return save;
+        }
+
+        private static List<AbilityId> ParseAbilities(List<string> names)
+        {
+            var abilities = new List<AbilityId>();
+            foreach (var name in names)
             {
-                GD.PrintErr("SaveManager: Failed to parse save data.");
-                return null;
+                if (Enum.TryParse<AbilityId>(name, out var abilityId)) abilities.Add(abilityId);
             }
-
-            ApplySaveData(_currentSave);
-            GD.Print($"Game loaded from slot {slot}.");
-
-            return _currentSave;
+            return abilities;
         }
 
         public void DeleteSave(int slot)
@@ -160,21 +214,14 @@ namespace Joguim.Save
             var player = GetTree().GetFirstNodeInGroup("Player") as PlayerController;
             if (player != null)
             {
-                player.GlobalPosition = save.PlayerPosition;
+                // Saves antigos gravaram a posição como {} (0,0): nesse caso fica no spawn da cena
+                if (save.PlayerPosition != Vector2.Zero) player.GlobalPosition = save.PlayerPosition;
                 player.Health?.SetMaxHealth(save.PlayerMaxHealth, true);
                 player.Health?.Heal(save.PlayerHealth);
             }
 
             // Restaura sem emitir AbilityUnlocked: carregar um save não é desbloquear de novo
-            var abilities = new List<AbilityId>();
-            foreach (var abilityStr in save.UnlockedAbilities)
-            {
-                if (Enum.TryParse<AbilityId>(abilityStr, out var abilityId))
-                {
-                    abilities.Add(abilityId);
-                }
-            }
-            AbilityManager.Instance.SetUnlockedAbilities(abilities);
+            AbilityManager.Instance.SetUnlockedAbilities(ParseAbilities(save.UnlockedAbilities));
 
             foreach (var checkpointId in save.ActivatedCheckpoints)
             {
@@ -184,6 +231,8 @@ namespace Joguim.Save
                     if (checkpoint is World.Checkpoint cp && cp.CheckpointId == checkpointId)
                     {
                         cp.Activated = true;
+                        // respawn pós-Continuar volta pro último checkpoint ativado
+                        if (checkpointId == save.LastCheckpointId) player?.SetRespawnPoint(cp.GlobalPosition);
                     }
                 }
             }

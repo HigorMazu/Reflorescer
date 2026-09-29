@@ -1,6 +1,7 @@
 using Godot;
 using Joguim.Core;
 using Joguim.Player;
+using Joguim.Save;
 
 namespace Joguim.UI
 {
@@ -20,7 +21,12 @@ namespace Joguim.UI
         private Label _unlockNotification;
         private Tween _unlockTween;
 
+        private Control _gameOverPanel;
+
         private const float UnlockNotificationDuration = 2.5f;
+        private const float GameOverDelay = 0.8f;
+
+        public const string GroupName = "HUD";
 
         private PlayerController _player;
 
@@ -32,11 +38,19 @@ namespace Joguim.UI
             _abilityDisplay = GetNodeOrNull<Label>(AbilityDisplayPath);
             _pauseMenu = GetNodeOrNull<Control>(PauseMenuPath);
 
+            AddToGroup(GroupName);
+
             if (_pauseMenu != null)
             {
                 _pauseMenu.Visible = false;
+                // o menu de pausa precisa processar com a árvore pausada, senão os botões não respondem
+                _pauseMenu.ProcessMode = ProcessModeEnum.Always;
+                WirePauseButton("VBoxContainer/ResumeButton", () => GameManager.Instance?.TogglePause());
+                WirePauseButton("VBoxContainer/SaveButton", () => SaveManager.Instance?.SaveCurrentGame());
+                WirePauseButton("VBoxContainer/MainMenuButton", GoToMainMenu);
             }
 
+            EventBus.Instance.PlayerDied += OnPlayerDied;
             EventBus.Instance.PlayerHealthChanged += OnPlayerHealthChanged;
             EventBus.Instance.PauseToggled += OnPauseToggled;
             EventBus.Instance.AbilityUnlocked += OnAbilityUnlocked;
@@ -50,6 +64,7 @@ namespace Joguim.UI
         public override void _ExitTree()
         {
             if (EventBus.Instance == null) return;
+            EventBus.Instance.PlayerDied -= OnPlayerDied;
             EventBus.Instance.PlayerHealthChanged -= OnPlayerHealthChanged;
             EventBus.Instance.PauseToggled -= OnPauseToggled;
             EventBus.Instance.AbilityUnlocked -= OnAbilityUnlocked;
@@ -170,9 +185,79 @@ namespace Joguim.UI
             _ => abilityId
         };
 
+        private void WirePauseButton(string path, System.Action action)
+        {
+            var button = _pauseMenu.GetNodeOrNull<Button>(path);
+            if (button != null) button.Pressed += action;
+        }
+
+        private void OnPlayerDied()
+        {
+            GetTree().CreateTimer(GameOverDelay).Timeout += () =>
+            {
+                if (IsInstanceValid(this)) ShowGameOver();
+            };
+        }
+
+        // Tela de Game Over (decisão C10-T2): pausa o jogo e oferece voltar ao último checkpoint ou ao menu inicial
         public void ShowGameOver()
         {
             GD.Print("Game Over");
+            if (_gameOverPanel == null) BuildGameOverPanel();
+
+            _gameOverPanel.Visible = true;
+            if (GameManager.Instance != null) GameManager.Instance.IsGameOver = true;
+            GetTree().Paused = true;
+            _gameOverPanel.GetNode<Button>("Box/RetryButton").GrabFocus();
+        }
+
+        private void HideGameOver()
+        {
+            if (_gameOverPanel != null) _gameOverPanel.Visible = false;
+            if (GameManager.Instance != null) GameManager.Instance.IsGameOver = false;
+            GetTree().Paused = false;
+        }
+
+        private void OnRetryPressed()
+        {
+            HideGameOver();
+            _player ??= GetTree().GetFirstNodeInGroup("Player") as PlayerController;
+            _player?.RespawnAtLastCheckpoint();
+        }
+
+        private void GoToMainMenu()
+        {
+            HideGameOver();
+            if (GameManager.Instance != null && GameManager.Instance.IsGamePaused) GameManager.Instance.TogglePause();
+            SceneManager.Instance?.LoadScene(SaveManager.MainMenuScene);
+        }
+
+        private void BuildGameOverPanel()
+        {
+            _gameOverPanel = new Control { Name = "GameOver", ProcessMode = ProcessModeEnum.Always, Visible = false };
+            AddChild(_gameOverPanel);
+            _gameOverPanel.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
+
+            var dim = new ColorRect { Color = new Color(0, 0, 0, 0.7f), MouseFilter = Control.MouseFilterEnum.Stop };
+            _gameOverPanel.AddChild(dim);
+            dim.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
+
+            var box = new VBoxContainer { Name = "Box", Alignment = BoxContainer.AlignmentMode.Center };
+            box.AddThemeConstantOverride("separation", 16);
+            _gameOverPanel.AddChild(box);
+            box.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
+
+            var title = new Label { Text = "Você caiu", HorizontalAlignment = HorizontalAlignment.Center };
+            title.AddThemeFontSizeOverride("font_size", 48);
+            box.AddChild(title);
+
+            var retry = new Button { Name = "RetryButton", Text = "Tentar de novo", CustomMinimumSize = new Vector2(240, 44), SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter };
+            retry.Pressed += OnRetryPressed;
+            box.AddChild(retry);
+
+            var menu = new Button { Name = "MenuButton", Text = "Menu inicial", CustomMinimumSize = new Vector2(240, 44), SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter };
+            menu.Pressed += GoToMainMenu;
+            box.AddChild(menu);
         }
 
         public void HideAll()

@@ -61,6 +61,7 @@ namespace Joguim.Player
         private float _wallJumpLockTimer = 0f;
         private int _jumpCount = 0;
         private Vector2? _lastCheckpointPosition;
+        private Vector2 _deathPosition;
 
         public override void _Ready()
         {
@@ -481,15 +482,23 @@ namespace Joguim.Player
             _hurtTimer = 0f;
             _dashTimer = 0f;
             PlayAnimation("dead");
+            _deathPosition = GlobalPosition;
             EventBus.Instance?.EmitSignal("PlayerDied");
-            // respawn after 1s for prototype: último checkpoint ativado, ou perto de onde morreu
-            Vector2 deathPosition = GlobalPosition;
-            GetTree().CreateTimer(1.0).Timeout += () =>
+            // Quem decide o respawn é a tela de Game Over do HUD ("Tentar de novo").
+            // Cena sem HUD (ex.: cena de teste): volta ao comportamento antigo, respawn automático em 1s.
+            if (GetTree().GetFirstNodeInGroup(Joguim.UI.HUDController.GroupName) == null)
             {
-                if (!IsInstanceValid(this)) return;
-                Respawn(_lastCheckpointPosition ?? deathPosition + Vector2.Up * 40);
-            };
+                GetTree().CreateTimer(1.0).Timeout += () =>
+                {
+                    if (IsInstanceValid(this)) RespawnAtLastCheckpoint();
+                };
+            }
         }
+
+        // Último checkpoint ativado, ou perto de onde morreu
+        public void RespawnAtLastCheckpoint() => Respawn(_lastCheckpointPosition ?? _deathPosition + Vector2.Up * 40);
+
+        public void SetRespawnPoint(Vector2 position) => _lastCheckpointPosition = position;
 
         public void Respawn(Vector2 position)
         {
