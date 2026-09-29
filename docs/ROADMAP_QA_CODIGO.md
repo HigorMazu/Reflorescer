@@ -12,9 +12,9 @@ responsavel: Gustavo
 par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 12
-epicos_concluidos: 4
+epicos_concluidos: 5
 tasks_total: 44
-tasks_prontas: 27
+tasks_prontas: 31
 tasks_bloqueadas: 4
 ---
 # Roadmap de QA — Código (Reflorescer)
@@ -146,33 +146,33 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — revalidado no Godot em 28/09 (Gustavo): entrando pelo portal, derrotar o Korrag mostra "Nova habilidade: Dash"; a barra de vida do Kairo também atualiza na arena.
 
-> [!failure]- EPIC-C05 — Wall Grab / Wall Jump — 🔴 Falha · 🟠 Alta
+> [!success]- EPIC-C05 — Wall Grab / Wall Jump — ✅ Passa · 🟠 Alta
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — segurar A/D contra a parede no ar reduz a queda, e pular nessa condição empurra pro lado oposto.
 >
-> > [!failure]- Task C05-T1 — Detecção de parede
-> > - [ ] Personagem no ar encostando numa parede lateral → estado de "encostado" é detectado.
+> > [!success]- Task C05-T1 — Detecção de parede
+> > - [x] Personagem no ar encostando numa parede lateral → estado de "encostado" é detectado.
 > > - **Achado da auditoria (15/09):** não existe nenhuma detecção de parede em `PlayerController` hoje.
 > >
-> > Status: 🔴 falha — mecânica não implementada.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): agarra só no ar, encostado e segurando a direção da parede; no chão não agarra.
 >
-> > [!failure]- Task C05-T2 — Agarrar parede / slide
-> > - [ ] Segurar A/D contra uma parede no ar → reduz velocidade de queda.
+> > [!success]- Task C05-T2 — Agarrar parede / slide
+> > - [x] Segurar A/D contra uma parede no ar → reduz velocidade de queda.
 > > - **Achado da auditoria (15/09):** não existe — o personagem só cai normalmente.
 > >
-> > Status: 🔴 falha — mecânica não implementada.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): desliza devagar; sem segurar, cai normalmente.
 >
-> > [!failure]- Task C05-T3 — Pulo de parede
-> > - [ ] Pular estando "agarrado" → empurra pro lado oposto da parede.
+> > [!success]- Task C05-T3 — Pulo de parede
+> > - [x] Pular estando "agarrado" → empurra pro lado oposto da parede.
 > > - **Achado da auditoria (15/09):** não existe.
 > >
-> > Status: 🔴 falha — depende de C05-T1/T2 existirem primeiro.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): empurra pro lado oposto mesmo com A segurado; wall coyote funciona; pulo duplo volta depois de agarrar.
 >
-> > [!warning]- Task C05-T4 — Gating da habilidade
-> > - [ ] Se gated por `AbilityId.WallJump`: usar antes de desbloqueado não faz nada. Se liberado desde o início: funciona sem pré-requisito.
+> > [!success]- Task C05-T4 — Gating da habilidade
+> > - [x] Se gated por `AbilityId.WallJump`: usar antes de desbloqueado não faz nada. Se liberado desde o início: funciona sem pré-requisito.
 > > - **Nota:** decisão de design ainda em aberto (ver [[ROADMAP_DEV]] C05-T4) — este caso só é testável depois que a decisão for tomada e documentada em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].
 > > - **Nota (28/09):** decidido "liberado desde o início" (ver [[ROADMAP_DEV]] C05-T4). O caso a testar é o segundo: funciona sem pré-requisito, logo no começo da fase.
 > >
-> > Status: 🟡 decisão tomada em 28/09 (liberado desde o início) — aguarda o teste: funciona sem pré-requisito.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): liberado desde o início, sem pré-requisito. Regressão de pulo, pulo duplo, dash e ataque ok.
 
 > [!warning]- EPIC-C06 — Boss Korrag (IA e Identidade) — 🟡 Parcial · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — o Korrag usa Charge e Stomp durante a luta, o `BossName` é "Korrag, o Javali", e o evento de derrota dispara uma única vez.

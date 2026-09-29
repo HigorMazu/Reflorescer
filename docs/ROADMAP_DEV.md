@@ -12,7 +12,7 @@ responsavel: Gustavo
 par: "[[ROADMAP_QA_CODIGO]]"
 descricao: Backlog de implementação da demo (código)
 epicos_total: 12
-epicos_concluidos: 4
+epicos_concluidos: 5
 tasks_total: 44
 tasks_prontas: 33
 tasks_bloqueadas: 6
@@ -157,26 +157,26 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo), depois do bugfix do EventBus.
 
-> [!info]- EPIC-C05 — Wall Grab / Wall Jump — 🔄 Em andamento · 🟠 Alta
+> [!success]- EPIC-C05 — Wall Grab / Wall Jump — ✅ Concluído · 🟠 Alta
 > *Pronto quando*: segurar A/D contra uma parede no ar reduz a queda, e pular nessa condição empurra o Kairo pro lado oposto.
 >
-> > [!info]- Task C05-T1 — Detecção de parede
+> > [!success]- Task C05-T1 — Detecção de parede
 > > - [x] Detectar colisão lateral com parede no ar (`IsOnWall()` do Godot ou raycast lateral) em `PlayerController`.
 > > - **Nota (28/09):** `UpdateWallSlide()` usa o `IsOnWall()`/`GetWallNormal()` do último `MoveAndSlide`. O corpo do Kairo só colide com a camada World, então inimigo não conta como parede. "Agarrado" = no ar + encostado + segurando A/D na direção da parede.
 > >
-> > Status: implementado (28/09), compila e verificado em teste automatizado no Godot — ⏳ aguarda QA manual.
+> > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!info]- Task C05-T2 — Agarrar / slide
+> > [!success]- Task C05-T2 — Agarrar / slide
 > > - [x] Enquanto segurando A/D contra a parede no ar, reduzir a velocidade de queda (não necessariamente travar em 0).
 > > - **Nota (28/09):** agarrado, a queda fica limitada a `WallSlideSpeed` (90 px/s, contra ~650 em queda livre). Agarrar devolve o pulo duplo. Anima com `wall_slide` se existir no `SpriteFrames` (A01-T3); senão usa `fall`.
 > >
-> > Status: implementado (28/09), compila e verificado em teste automatizado no Godot — ⏳ aguarda QA manual.
+> > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!info]- Task C05-T3 — Pulo de parede
+> > [!success]- Task C05-T3 — Pulo de parede
 > > - [x] Pular estando agarrado empurra pro lado oposto da parede, impulso vertical semelhante ao pulo normal.
 > > - **Nota (28/09):** o pulo de parede usa o mesmo impulso vertical do pulo normal (respeita os stats com/sem espada) + `WallJumpHorizontalSpeed` (260) pro lado oposto. O input horizontal fica travado por `WallJumpInputLock` (0.15s), senão segurar a direção da parede anularia o empurrão. Há um "wall coyote" de 0.1s pra pular logo depois de soltar a parede. Verificado no Godot: com A ainda segurado, o pulo sai com velocidade (+260, -444) e afasta da parede.
 > >
-> > Status: implementado (28/09), compila e verificado em teste automatizado no Godot — ⏳ aguarda QA manual.
+> > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
 > > [!success]- Task C05-T4 — Decisão de gating
 > > - [x] Decidir se é liberado desde o início ou gated por uma `AbilityId` (`WallJump` já existe no enum) — **pendência a decidir com o Higor/documentar em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]]** antes de travar o design final.
