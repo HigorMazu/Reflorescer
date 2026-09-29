@@ -10,6 +10,8 @@ namespace Joguim.Core
 
         public bool IsGamePaused { get; private set; }
         public string CurrentArea { get; set; } = "";
+        // Estado da Espada de Grama na sessão: o Player é recriado a cada troca de cena
+        public bool HasSword { get; set; } = true;
 
         public override void _Ready()
         {

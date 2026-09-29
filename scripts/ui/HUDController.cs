@@ -40,6 +40,7 @@ namespace Joguim.UI
             EventBus.Instance.PlayerHealthChanged += OnPlayerHealthChanged;
             EventBus.Instance.PauseToggled += OnPauseToggled;
             EventBus.Instance.AbilityUnlocked += OnAbilityUnlocked;
+            EventBus.Instance.SwordToggled += OnSwordToggled;
 
             CallDeferred(MethodName.InitializeHUD);
         }
@@ -52,6 +53,7 @@ namespace Joguim.UI
             EventBus.Instance.PlayerHealthChanged -= OnPlayerHealthChanged;
             EventBus.Instance.PauseToggled -= OnPauseToggled;
             EventBus.Instance.AbilityUnlocked -= OnAbilityUnlocked;
+            EventBus.Instance.SwordToggled -= OnSwordToggled;
         }
 
         private void InitializeHUD()
@@ -62,6 +64,12 @@ namespace Joguim.UI
             {
                 OnPlayerHealthChanged(_player.Health.CurrentHealth, _player.Health.MaxHealth);
             }
+            if (_player != null) OnSwordToggled(_player.HasSword);
+        }
+
+        private void OnSwordToggled(bool hasSword)
+        {
+            SetAbilityDisplay(hasSword ? "Espada: ativada [Q]" : "Espada: guardada [Q]");
         }
 
         public override void _Process(double delta)

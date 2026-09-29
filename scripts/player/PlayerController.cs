@@ -81,6 +81,10 @@ namespace Joguim.Player
                 }
             }
 
+            if (GameManager.Instance != null) HasSword = GameManager.Instance.HasSword;
+            SetSwordVisible(HasSword);
+            ApplySwordTint();
+
             if (Health == null) GD.PrintErr("PlayerController: Health não encontrado.");
             else
             {
@@ -233,6 +237,7 @@ namespace Joguim.Player
 
             // Interact
             if (Input.IsActionJustPressed("interact")) TryInteract();
+            if (Input.IsActionJustPressed("toggle_sword")) ToggleSword();
         }
 
         private void UpdatePrototypeAnimation()
@@ -440,6 +445,26 @@ namespace Joguim.Player
         private void OnCheckpointActivated(Vector2 position, string checkpointId) => _lastCheckpointPosition = position;
 
         public void Heal(int amount) => Health?.Heal(amount);
+
+        // Q: ativa/guarda a Espada de Grama. Guardada = mais velocidade e pulo, sem ataque (CanAttack exige HasSword).
+        // Um golpe já em andamento termina normalmente; a troca não cancela animação nem trava input.
+        public void ToggleSword()
+        {
+            HasSword = !HasSword;
+            if (GameManager.Instance != null) GameManager.Instance.HasSword = HasSword;
+            SetSwordVisible(HasSword);
+            ApplySwordTint();
+            AudioManager.Instance?.PlaySfx(HasSword ? "sword_on.wav" : "sword_off.wav");
+            EventBus.Instance?.EmitSignal(EventBus.SignalName.SwordToggled, HasSword);
+            GD.Print($"Espada {(HasSword ? "ativada" : "guardada")}");
+        }
+
+        // Indicador provisório até existir arte com/sem espada: tom esverdeado claro com a espada guardada.
+        // Usa SelfModulate do sprite pra não brigar com os flashes de ataque/dano (Modulate do Visual).
+        private void ApplySwordTint()
+        {
+            if (Sprite != null) Sprite.SelfModulate = HasSword ? Colors.White : new Color(0.8f, 1.0f, 0.8f);
+        }
 
         public void SetSwordVisible(bool visible)
         {

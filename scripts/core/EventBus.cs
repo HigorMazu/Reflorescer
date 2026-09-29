@@ -13,6 +13,8 @@ namespace Joguim.Core
         [Signal] public delegate void PlayerHealthChangedEventHandler(int currentHealth, int maxHealth);
         [Signal] public delegate void PlayerRespawnedEventHandler(Vector2 position);
         [Signal] public delegate void PlayerAbilityUsedEventHandler(string abilityName);
+        // Espada de Grama ativada (true) ou guardada (false) com Q
+        [Signal] public delegate void SwordToggledEventHandler(bool hasSword);
 
         // Ability signals
         [Signal] public delegate void AbilityUnlockedEventHandler(string abilityId);

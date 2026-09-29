@@ -14,9 +14,9 @@ descricao: Backlog de implementação da demo (código)
 epicos_total: 12
 epicos_concluidos: 3
 tasks_total: 44
-tasks_prontas: 27
+tasks_prontas: 29
 tasks_bloqueadas: 7
-tasks_liberadas: 4
+tasks_liberadas: 3
 ---
 # Roadmap de Desenvolvimento — Código (Gustavo)
 
@@ -99,25 +99,29 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!todo]- Task C03-T1 — Wire do input Q (ativar/desativar)
-> > - [ ] Ligar a ação `Q` (pós `EPIC-C01-T1`) a um método novo `ToggleSword()` em `PlayerController`, chamando `HasSword = !HasSword` e `SetSwordVisible(HasSword)`.
+> > [!info]- Task C03-T1 — Wire do input Q (ativar/desativar)
+> > - [x] Ligar a ação `Q` (pós `EPIC-C01-T1`) a um método novo `ToggleSword()` em `PlayerController`, chamando `HasSword = !HasSword` e `SetSwordVisible(HasSword)`.
 > > - **Achado (28/09, pós-pull) — sprite do Kairo sem variante de espada:** os `ColorRect` placeholder da espada (`Blade`/`Handle`) foram escondidos no commit `6153f13`, e o sprite novo (`KairoFaiscaSpriteFrames.tres`) não tem espada visível nem variante com e sem espada. O toggle de lógica funciona, mas o visual precisa de arte nova (ou de uma camada separada da espada). Também: a Faísca está desenhada dentro do sprite do Kairo e duplica com o `Faisca.tscn` — levar pro Higor ([[ROADMAP_ARTE]] `EPIC-A01`).
+> > - **Nota (28/09):** `PlayerController.ToggleSword()` na ação `toggle_sword` (Q): inverte `HasSword`, chama `SetSwordVisible`, emite o novo sinal `EventBus.SwordToggled(bool)` e toca `sword_on.wav`/`sword_off.wav`. O estado fica em `GameManager.HasSword` (autoload), porque o Player é recriado a cada troca de cena e sem isso a espada "voltava" ao entrar na arena.
+> > - **UX (28/09) — indicador provisório:** até existir arte com/sem espada, o HUD mostra "Espada: ativada [Q]" / "Espada: guardada [Q]" (no `AbilityDisplay` que já existia) e o sprite do Kairo ganha um tom verde claro com a espada guardada (`SelfModulate`, pra não conflitar com os flashes de ataque/dano). Remover o tom quando a arte do Higor chegar (`ROADMAP_ARTE` A01-T2).
 > >
-> > Status: não iniciado — 🟢 liberado pra lógica (a ação `toggle_sword`/Q já existe). O visual depende de arte (ver nota acima).
+> > Status: implementado (28/09), compila e verificado em teste automatizado no Godot — ⏳ aguarda QA manual.
 >
 > > [!info]- Task C03-T2 — Stats duplos (ativada/desativada)
 > > - [x] Criar a variante "espada desativada": +velocidade, +pulo, sem ataque.
 > > - **Opção simples:** dois blocos de valores no `PlayerStatsResource` (`MoveSpeedSwordOn`/`Off`, etc.) ou um segundo `.tres`.
 > > - **Nota (28/09):** opção simples aplicada: `MoveSpeedNoSword` (240) e `JumpVelocityNoSword` (-520) no `PlayerStatsResource`. O `PlayerController` usa `CurrentMoveSpeed`/`CurrentJumpVelocity`, que leem `HasSword`. O "sem ataque" já vem do `CanAttack()`. **Os valores são chute (+20% e +13%): decidir os definitivos e registrar em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].**
+> > - **Nota (28/09):** testável agora: com a espada guardada, `CurrentMoveSpeed` = 240 e `CurrentJumpVelocity` = -520; ativada, 200 e -460 (conferido no Godot).
 > >
-> > Status: implementado (28/09), compila — ⏳ só dá pra testar no Godot depois do toggle (C03-T1).
+> > Status: implementado (28/09), compila e verificado em teste automatizado no Godot — ⏳ aguarda QA manual.
 >
-> > [!warning]- Task C03-T3 — Bloqueio e teste em combate real
-> > - [ ] Bloquear `CanAttack()` quando `HasSword == false` (parcialmente já verdade hoje).
+> > [!info]- Task C03-T3 — Bloqueio e teste em combate real
+> > - [x] Bloquear `CanAttack()` quando `HasSword == false` (parcialmente já verdade hoje).
 > > - [ ] Testar a troca em pleno combate/movimento — sem travar animação/input no meio da troca.
 > > - [ ] Rodar de novo a Task C03-T0 pra garantir que nada regrediu.
+> > - **Nota (28/09):** o bloqueio já existia (`CanAttack()` exige `HasSword`). Trocar a espada não cancela um golpe em andamento: ele termina a janela de 0.14s normalmente, sem travar animação nem input (verificado no Godot: ataque + Q no mesmo frame, sem erro).
 > >
-> > Status: não iniciado — 🟡 aguarda C03-T1/T2.
+> > Status: implementado (28/09) — ⏳ aguarda QA manual: troca em combate e regressão da C03-T0.
 
 > [!success]- EPIC-C04 — Dash e Desbloqueio Pós-Korrag — ✅ Concluído · 🔴 Bloqueante
 > *Pronto quando*: derrotar o Korrag desbloqueia o dash uma única vez, e apertar Shift com o dash desbloqueado move o Kairo com um impulso rápido na direção que ele olha.
@@ -320,7 +324,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > [!failure]- Task C11-T2 — Arquivos já esperados pelo código
 > > - [ ] Produzir/conseguir os 3 arquivos já chamados no código (nomes exatos, case-sensitive): `checkpoint_activate.wav`, `boss_stomp.wav`, `boss_defeat.wav`.
 > >
-> > Status: não iniciado — ⛔ bloqueado: arquivos de áudio ainda não existem. Lista completa esperada pelo código agora (em `sfx/`): `checkpoint_activate.wav`, `boss_stomp.wav`, `boss_defeat.wav`, `player_attack.wav`, `player_jump.wav`, `player_hurt.wav`, `player_dash.wav`, `enemy_hit.wav`, `enemy_death.wav`, `restoration.wav`.
+> > Status: não iniciado — ⛔ bloqueado: arquivos de áudio ainda não existem. Lista completa esperada pelo código agora (em `sfx/`): `checkpoint_activate.wav`, `boss_stomp.wav`, `boss_defeat.wav`, `player_attack.wav`, `player_jump.wav`, `player_hurt.wav`, `player_dash.wav`, `sword_on.wav`, `sword_off.wav`, `enemy_hit.wav`, `enemy_death.wav`, `restoration.wav`.
 >
 > > [!warning]- Task C11-T3 — Chamadas que faltam
 > > - [x] Adicionar `AudioManager.PlaySfx(...)` pro ataque do jogador, hit em inimigo/jogador, morte de inimigo comum, pulo (opcional).
