@@ -12,10 +12,10 @@ responsavel: Gustavo
 par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 12
-epicos_concluidos: 5
+epicos_concluidos: 6
 tasks_total: 44
-tasks_prontas: 31
-tasks_bloqueadas: 4
+tasks_prontas: 35
+tasks_bloqueadas: 5
 ---
 # Roadmap de QA — Código (Reflorescer)
 
@@ -72,13 +72,13 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo).
 >
-> > [!warning]- Task C02-T3 — Evento dedicado e persistência
+> > [!success]- Task C02-T3 — Evento dedicado e persistência
 > > - [x] Emite um evento próprio no `EventBus` (não reaproveita `CheckpointActivated`).
-> > - [ ] Pontos restaurados persistem no save (fechar/reabrir o jogo mantém o estado restaurado).
+> > - [x] Pontos restaurados persistem no save (fechar/reabrir o jogo mantém o estado restaurado).
 > > - **Nota (28/09):** o segundo caso (fechar/reabrir) depende do fluxo de Continuar (C09-T2), que ainda não existe. Por enquanto, testar: (1) restaurar e ir pro `BossArena` e voltar → continua restaurado; (2) o `save_0.json` (em `%APPDATA%/Godot/app_userdata/Joguim - Metroidvania/`) lista o ponto em `RestoredPoints`.
 > > - **Nota (28/09):** o fluxo de Continuar (C09-T2) existe agora, então o caso "fechar/reabrir mantém o estado restaurado" é testável: restaurar, fechar o jogo, abrir e escolher Continuar.
 > >
-> > Status: 🟡 parcial — evento e persistência na sessão validados em 28/09 (restaurar, ir ao BossArena e voltar mantém o estado); fechar/reabrir depende da C09-T2.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): evento, persistência na sessão e fechar/reabrir (via Continuar) mantêm o ponto restaurado.
 >
 > > [!failure]- Task C02-T4 — Cobertura nas 3 áreas da demo
 > > - [ ] Pelo menos 1 ponto de restauração ativo e testável em Floresta Tropical, Deserto e Tundra.
@@ -273,7 +273,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 
-> [!warning]- EPIC-C09 — Save, Checkpoint e Respawn — 🟡 Parcial · 🟡 Média
+> [!success]- EPIC-C09 — Save, Checkpoint e Respawn — ✅ Passa · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — habilidade desbloqueada persiste em disco imediatamente, e existe uma decisão explícita sobre o fluxo de Continuar.
 >
 > > [!success]- Task C09-T0 — Regressão básica (baseline antes de mexer)
@@ -287,21 +287,21 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - **Achado (28/09) — dois casos acima não passavam:** (1) apertar E perto de um checkpoint não fazia nada, porque `TryInteract` só procurava o `IInteractable` no pai da área, e o `Checkpoint` é a própria área; (2) o respawn usava o primeiro checkpoint do grupo, ativado ou não. Os dois foram corrigidos no código (ver [[ROADMAP_DEV]] C09-T0). Repetir a Task inteira.
 > > - **Mudança de comportamento (28/09):** os dois casos de respawn acima agora passam pela tela de Game Over (C10-T2). Morrer abre "Você caiu", e "Tentar de novo" faz o respawn no último checkpoint com HP cheio. O respawn automático de 1s só existe em cena sem HUD.
 > >
-> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
+> > Status: ✅ passa — revalidado em 28/09 (Gustavo) com o respawn pela tela de Game Over.
 >
-> > [!warning]- Task C09-T1 — Persistência imediata de habilidade
-> > - [ ] Desbloquear uma habilidade sem passar por um checkpoint depois → ainda assim é salva em disco.
+> > [!success]- Task C09-T1 — Persistência imediata de habilidade
+> > - [x] Desbloquear uma habilidade sem passar por um checkpoint depois → ainda assim é salva em disco.
 > > - **Achado da auditoria (15/09):** só fica em memória até o próximo `SaveGame()` disparado por checkpoint/boss/item — se o jogo fechar antes disso, o unlock se perde.
 > >
-> > Status: 🟡 parcial — habilidade funciona em memória, mas não persiste imediatamente.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): Dash desbloqueado, salvo na arena, volta ao Continuar.
 >
-> > [!warning]- Task C09-T2 — Fluxo de Continuar
-> > - [ ] Existe uma forma de carregar um save (`LoadGame()`) através de alguma UI/fluxo do jogo.
-> > - [ ] Carregar um save feito em outra área troca de cena automaticamente.
+> > [!success]- Task C09-T2 — Fluxo de Continuar
+> > - [x] Existe uma forma de carregar um save (`LoadGame()`) através de alguma UI/fluxo do jogo.
+> > - [x] Carregar um save feito em outra área troca de cena automaticamente.
 > > - **Achado da auditoria (15/09):** `LoadGame()` existe isolado, nada o chama. `ApplySaveData()` não chama `SceneManager.LoadScene()`.
 > > - **Nota (28/09):** decidido "menu inicial com Continuar". Testar: com save, o menu mostra Continuar; Continuar volta à cena e posição salvas; salvar na arena e continuar abre a arena (troca de cena automática).
 > >
-> > Status: 🟡 implementado em 28/09 (menu inicial com Continuar) — aguarda QA manual.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): menu com Continuar; Continuar volta à cena/posição salvas, inclusive na arena (sem o Korrag, com dash) e depois de fechar/reabrir o jogo.
 
 > [!failure]- EPIC-C10 — HUD e UX — 🔴 Falha · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — prompt de interação contínuo funcionando, e decisão sobre Game Over tomada e implementada.
@@ -318,11 +318,11 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: 🔴 falha — prompt não aparece automaticamente.
 >
-> > [!warning]- Task C10-T2 — Game Over
-> > - [ ] Decisão tomada e implementada (ou explicitamente descartada em favor do respawn automático, já funcional).
+> > [!success]- Task C10-T2 — Game Over
+> > - [x] Decisão tomada e implementada (ou explicitamente descartada em favor do respawn automático, já funcional).
 > > - **Achado da auditoria (15/09):** `ShowGameOver()` só imprime no console, nada chama.
 > >
-> > Status: 🟡 implementado em 28/09 (tela de Game Over) — aguarda QA manual.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): tela "Você caiu"; Esc não despausa; Tentar de novo leva ao checkpoint; Menu inicial funciona.
 
 > [!failure]- EPIC-C11 — Áudio — 🔴 Falha · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — pastas/buses existem, os 3 sons já esperados pelo código tocam de verdade, e dá pra sobrepor música + SFX sem cortar um ao outro.
