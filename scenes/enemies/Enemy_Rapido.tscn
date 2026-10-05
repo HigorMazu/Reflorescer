@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://enemyrapido001"]
 
 [ext_resource type="PackedScene" uid="uid://enemy001" path="res://scenes/enemies/Enemy_Base.tscn" id="1"]
-[ext_resource type="Resource" path="res://resources/enemies/EnemyRapidoStats.tres" id="2"]
+[ext_resource type="Resource" path="res://resources/enemies/areas/Rapido_SopeDaMata.tres" id="2"]
 
 [node name="Enemy_Rapido" instance=ExtResource("1")]
 StatsResource = ExtResource("2")

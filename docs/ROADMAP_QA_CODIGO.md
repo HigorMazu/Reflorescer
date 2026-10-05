@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-09-28
+atualizado: 2026-10-05
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
@@ -11,11 +11,11 @@ papel: qa
 responsavel: Gustavo
 par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
-epicos_total: 12
-epicos_concluidos: 8
-tasks_total: 44
-tasks_prontas: 37
-tasks_bloqueadas: 4
+epicos_total: 13
+epicos_concluidos: 9
+tasks_total: 49
+tasks_prontas: 38
+tasks_bloqueadas: 3
 ---
 # Roadmap de QA — Código (Reflorescer)
 
@@ -59,7 +59,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 
 > [!warning]- EPIC-C02 — Mecânica de Restauração ODS15 — 🟡 Parcial · 🔴 Bloqueante
-> *Pronto quando*: todos os casos de teste abaixo passam ✅ — ponto de restauração interagível nas 3 áreas, efeito visual próprio, evento dedicado no `EventBus`, e persistência em save.
+> *Pronto quando*: todos os casos de teste abaixo passam ✅ — ponto de restauração interagível em 3 das 4 áreas da demo (Sopé da Mata, Dossel Vivo, Igarapé Sufocado), efeito visual próprio, evento dedicado no `EventBus`, e persistência em save.
 >
 > > [!success]- Task C02-T1 — Interação de restauração existe
 > > - [x] Existe um ponto de restauração interagível (planta/cura/reativa) em pelo menos 1 lugar de cada uma das 3 áreas da demo.
@@ -80,10 +80,13 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): evento, persistência na sessão e fechar/reabrir (via Continuar) mantêm o ponto restaurado.
 >
-> > [!failure]- Task C02-T4 — Cobertura nas 3 áreas da demo
-> > - [ ] Pelo menos 1 ponto de restauração ativo e testável em Floresta Tropical, Deserto e Tundra.
+> > [!warning]- Task C02-T4 — Cobertura no Sopé da Mata, Dossel Vivo e Igarapé Sufocado
+> > - [ ] Pelo menos 1 ponto de restauração ativo e testável em cada uma das 3 áreas (sem ponto no Covil de Korrag).
+> > - **Nota (29/09):** escopo atualizado pras 4 áreas da demo (ver [[ROADMAP_DEV]], decisão no topo do arquivo).
 > >
-> > Status: 🔴 falha — nenhuma área tem pontos de restauração ainda.
+> > - **Nota (05/10):** as 3 cenas novas têm 1 ponto cada (`restoration_sope_01`, `restoration_dossel_01`, `restoration_igarape_01`, ver [[ROADMAP_DEV]] C02-T4). Conferido headless: os `NodePath` de antes/depois resolvem.
+> >
+> > Status: 🟡 parcial — os pontos existem nas 3 cenas (headless, 05/10). Falta restaurar cada um em jogo.
 
 > [!success]- EPIC-C03 — Combate e Espada de Grama — ✅ Passa · 🟠 Alta
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — Q alterna a espada em tempo real, stats diferentes com espada ativada/desativada, e não dá pra atacar com ela desativada.
@@ -194,6 +197,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [x] O boss usa a pisada em área (Stomp) em algum momento.
 > > - [x] O boss ainda usa o ataque melee genérico em alguma situação (variedade, não só os ataques especiais).
 > > - **Achado da auditoria (15/09):** `StartCharge()`/`ExecuteCharge()`/`PerformStomp()` já existem em `JavaliBoss.cs`, mas nenhum estado os chama — só `BossBase.PerformAttack()` (hitbox melee genérica) está em uso.
+> > - **Nota (05/10) — revalidar o enraged:** o enraged caía em valores padrão (mais fraco que a fase 2). Corrigido com `JavaliPhase3.tres` (ver [[ROADMAP_DEV]] C06-T1). Ao rodar a C06-T0 de novo, conferir que abaixo de 20% de HP o Korrag fica visivelmente mais rápido e ataca com mais frequência que na fase 2.
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
@@ -214,8 +218,8 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): windup de 1s com pulso vermelho, tempo aprovado.
 
-> [!warning]- EPIC-C07 — Inimigos Comuns (Arquétipos) — 🟡 Parcial · 🟠 Alta
-> *Pronto quando*: todos os casos de teste abaixo passam ✅ — 3 arquétipos com comportamento distinto de fato, cada um com dados por área da demo.
+> [!success]- EPIC-C07 — Inimigos Comuns (Arquétipos) — ✅ Passa · 🟠 Alta
+> *Pronto quando*: todos os casos de teste abaixo passam ✅ — 3 arquétipos com comportamento distinto de fato, cada um com dados pras 4 áreas da demo.
 >
 > > [!success]- Task C07-T0 — Regressão do comportamento base (baseline antes de mexer)
 > > - [x] Inimigo parado, jogador longe → `Idle` 1-3s, depois `Patrol`.
@@ -247,10 +251,12 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
-> > [!failure]- Task C07-T4 — Dados por arquétipo × área da demo
-> > - [ ] Existe um `.tres` de stats por arquétipo × cada uma das 3 áreas da demo (Floresta Tropical primeiro).
+> > [!success]- Task C07-T4 — Dados por arquétipo × área da demo
+> > - [x] Existe um `.tres` de stats por arquétipo × cada uma das 4 áreas da demo (Sopé da Mata primeiro — já são os valores atuais).
 > >
-> > Status: 🔴 falha — depende de C07-T1/T2/T3 existirem primeiro.
+> > - **Nota (05/10):** 9 `.tres` em `resources/enemies/areas/` (`<Arquétipo>_<Área>.tres`; o Covil de Korrag não tem inimigo comum). Os valores batem com a tabela do [[👾 Bestiário]] e são provisórios.
+> >
+> > Status: ✅ passa — verificado headless em 05/10 (Claude): os 9 arquivos existem e cada inimigo das cenas do `EPIC-C13` usa o `.tres` da própria área.
 >
 > > [!success]- Task C07-T5 — AtPatrolEdge() (baixa prioridade)
 > > - [x] Inimigo patrulhando chega numa borda sem parede (beira de plataforma) → reage de alguma forma (parar, virar) em vez de andar pro vazio.
@@ -272,6 +278,37 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - **Achado da auditoria (15/09):** `TargetArea`/`SpawnOffset` existem como campos exportados em `TransitionTrigger` mas nunca são lidos em `TransitionToTarget()` — sempre cai no spawn padrão da cena.
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
+
+> [!warning]- EPIC-C13 — Construção das 4 Áreas da Demo (Floresta Tropical) — 🟡 Parcial · 🔴 Bloqueante
+> *Pronto quando*: todos os casos de teste abaixo passam ✅ — as 4 cenas existem, encadeadas na ordem certa, e o novo jogo começa no Sopé da Mata.
+>
+> > [!warning]- Task C13-T1 — Sopé da Mata (entrada)
+> > - [ ] A cena existe, o Kairo spawna no `Marker2D` de entrada, câmera com limites corretos, inimigos e ponto de restauração presentes.
+> >
+> > Status: 🟡 parcial — a cena existe e carrega (headless, 05/10). Teste em jogo pendente. Build no editor antes (o `MudHazard` e os limites de câmera não estão na DLL de 28/09).
+>
+> > [!warning]- Task C13-T2 — Dossel Vivo (verticalidade)
+> > - [ ] A cena existe, plataforming vertical navegável, mais Voadores que o Sopé da Mata, ponto de restauração presente.
+> > - [ ] Chegando do Sopé da Mata, o Kairo entra no `Marker2D` certo.
+> >
+> > Status: 🟡 parcial — a cena existe, 4 Voadores contra 2 no Sopé, e a transição do Sopé aponta pro marker certo (headless, 05/10). Teste em jogo pendente, principalmente o alcance de todos os galhos.
+>
+> > [!warning]- Task C13-T3 — Igarapé Sufocado (hazard de lama)
+> > - [ ] A cena existe, o `MudHazard` reduz a velocidade do Kairo dentro da área e para de reduzir ao sair.
+> > - [ ] Mais Robustos/Rápidos que as áreas anteriores, ponto de restauração com contraste "antes/depois" visível.
+> > - [ ] Chegando do Dossel Vivo, o Kairo entra no `Marker2D` certo.
+> >
+> > Status: 🟡 parcial — a cena existe, com 3 Robustos e 2 Rápidos, 3 poças de lama e o ponto de restauração (headless, 05/10). O `MudHazard` ainda não rodou: Build no editor antes (o `MudHazard` e os limites de câmera não estão na DLL de 28/09).
+>
+> > [!warning]- Task C13-T4 — Covil de Korrag (arena do boss)
+> > - [ ] A cena existe, sem inimigos comuns, o Korrag ativa normalmente (`EPIC-C06-T0`), chegando do Igarapé Sufocado o Kairo entra no `Marker2D` certo.
+> >
+> > Status: 🟡 parcial — cena nova `CovilDeKorrag.tscn` (a `BossArena` ficou como teste), sem inimigo comum, e a transição do Igarapé aponta pro marker certo (headless, 05/10). Falta lutar com o Korrag nela.
+>
+> > [!warning]- Task C13-T5 — Encadear e validar a demo inteira
+> > - [ ] Novo jogo → Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag → derrotar o Korrag → dash desbloqueado, sem cair fora do mundo nem spawn errado em nenhuma transição.
+> >
+> > Status: 🟡 parcial — as 5 transições da cadeia apontam pra markers existentes e o Novo jogo aponta pro Sopé da Mata (headless, 05/10). O percurso jogado de ponta a ponta continua pendente.
 
 > [!success]- EPIC-C09 — Save, Checkpoint e Respawn — ✅ Passa · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — habilidade desbloqueada persiste em disco imediatamente, e existe uma decisão explícita sobre o fluxo de Continuar.
@@ -372,3 +409,6 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 ## Resumo executivo (o que está bloqueando a demo hoje, em ordem de aparição no fluxo do jogador)
 
 🔴 1. Input Map não bate com a documentação (`C01-T1`). 2. Dois sistemas de movimento em paralelo, risco de ataque duplicado (`C01-T2`). 3. Restauração ODS15 inexistente (`EPIC-C02`). 4. Espada sem toggle nem stats duplos (`C03-T1`/`T2`). 5. Korrag nunca usa Charge/Stomp (`C06-T1`). 6. Dash não implementado nem desbloqueado (`C04-T2`/`T3`). 7. Wall grab/wall jump inexistentes (`EPIC-C05`).
+
+> [!success] Atualização de 28/09 — a maioria dos 7 itens acima já está corrigida
+> `C01-T1`/`T2`, `EPIC-C03`, `C06-T1`, `EPIC-C04` e `EPIC-C05` passaram a ✅ na sessão de código de 28/09. O que falta hoje pra fechar a demo: `EPIC-C02` (posicionar restauração — depende do `EPIC-C13`), `C07-T4` (dados por área), `EPIC-C11` (áudio) e, novo desde 29/09, **`EPIC-C13` — construir as 4 cenas da demo** (Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag), sem o qual nada acima vira uma demo jogável de ponta a ponta.

@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-09-28
+atualizado: 2026-09-29
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: arte
@@ -13,9 +13,9 @@ par: "[[ROADMAP_ARTE]]"
 descricao: Casos de teste da integração código + arte
 epicos_total: 8
 epicos_concluidos: 0
-tasks_total: 19
+tasks_total: 21
 tasks_prontas: 1
-tasks_bloqueadas: 14
+tasks_bloqueadas: 16
 ---
 # Roadmap de QA — Integração (Código + Arte do Higor)
 
@@ -80,8 +80,9 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 >
 > > [!failure]- Task A02-T4/T5 — Reskins Deserto e Tundra
 > > - [ ] Repetir os testes da Task A02-T1/T2/T3 pra cada reskin.
+> > - **Nota (29/09):** fora do escopo da demo (Deserto/Tundra não entram mais no percurso — ver [[🎯 Escopo da Demo]]). Fica pro jogo completo.
 > >
-> > Status: 🔴 bloqueado — depende da Task A02-T1/T2/T3 passar primeiro.
+> > Status: 🔴 bloqueado — pós-demo, sem urgência.
 
 > [!failure]- EPIC-A03 — Faísca — 🔴 Bloqueado · 🟠 Alta
 > *Pronto quando*: `fly`/`investigate` acompanham a troca de estado sem travar num frame parado, e a luz não "pisca" ao trocar de direção.
@@ -113,19 +114,31 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > Status: não aplicável ainda — condicional a sobrar tempo pra arte opcional.
 
 > [!failure]- EPIC-A05 — Cenário — 🔴 Bloqueado · 🟠 Alta
-> *Pronto quando*: as 3 áreas têm identidade visual reconhecível sem texto, o ponto de entrada de cena faz sentido apesar do spawn direcional não existir ainda, e a performance se mantém estável no `gl_compatibility`.
+> *Pronto quando*: as 4 áreas têm identidade visual reconhecível sem texto, os pontos de entrada de cena fazem sentido, e a performance se mantém estável no `gl_compatibility`.
 >
-> > [!failure]- Task A05-T1 — Floresta Tropical
+> Atualizado em 29/09/2026 — a demo passou a ser 4 áreas dentro da Floresta Tropical (era Floresta Tropical/Deserto/Tundra); `TargetArea`/`SpawnOffset` já funcionam desde [[ROADMAP_QA_CODIGO]] `C08-T1` (concluída em 28/09), então a ressalva de posicionamento manual não se aplica mais.
+>
+> > [!failure]- Task A05-T1 — Sopé da Mata
 > > - [ ] Identidade visual clara — dá pra saber que bioma é só de olhar, sem ler texto.
-> > - [ ] Transição de área: como o código hoje **não** usa `TargetArea`/`SpawnOffset` ([[ROADMAP_QA_CODIGO]] `C08-T1`), o ponto de entrada da cena precisa ser posicionado manualmente de forma que faça sentido.
+> > - [ ] Transição de área: o Kairo entra no `Marker2D` certo vindo do menu/novo jogo.
 > > - [ ] Performance: tileset/background + pulsos de luz da Faísca + barras de vida flutuantes (com `Tween`) sem queda perceptível de FPS no renderer `gl_compatibility`.
 > >
-> > Status: 🔴 bloqueado — depende de [[ROADMAP_ARTE]] `A05-T1`.
+> > Status: 🔴 bloqueado — depende de [[ROADMAP_ARTE]] `A05-T1` e de [[ROADMAP_DEV]] `EPIC-C13-T1`.
 >
-> > [!failure]- Task A05-T2/T3 — Deserto e Tundra
-> > - [ ] Repetir os 3 testes da Task A05-T1.
+> > [!failure]- Task A05-T2 — Dossel Vivo
+> > - [ ] Repetir os 3 testes da Task A05-T1, mais: leitura clara das plataformas de pulo vertical.
 > >
-> > Status: 🔴 bloqueado — depende da Task A05-T1 passar primeiro.
+> > Status: 🔴 bloqueado — depende de [[ROADMAP_ARTE]] `A05-T2` e de [[ROADMAP_DEV]] `EPIC-C13-T2`.
+>
+> > [!failure]- Task A05-T3 — Igarapé Sufocado
+> > - [ ] Repetir os 3 testes da Task A05-T1, mais: a lama é visualmente clara (o jogador entende por que ficou mais lento).
+> >
+> > Status: 🔴 bloqueado — depende de [[ROADMAP_ARTE]] `A05-T3` e de [[ROADMAP_DEV]] `EPIC-C13-T3`.
+>
+> > [!failure]- Task A05-T4 — Covil de Korrag
+> > - [ ] Ambientação de arena de boss clara, sem elementos de exploração (ponto de restauração, etc.) — é só a luta.
+> >
+> > Status: 🔴 bloqueado — depende de [[ROADMAP_ARTE]] `A05-T4` e de [[ROADMAP_DEV]] `EPIC-C13-T4`.
 
 > [!failure]- EPIC-A06 — UI — 🔴 Bloqueado · 🟡 Média
 > *Pronto quando*: barra de vida, ícone de habilidade e prompt de interação têm arte final integrada e funcional em jogo.
@@ -158,7 +171,7 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > Status: 🔴 bloqueado — depende de [[ROADMAP_DEV]] `EPIC-C11`.
 >
 > > [!failure]- Task A07-T2 — Ponta a ponta
-> > - [ ] Demo completa sem parar: Floresta Tropical → matar 1 de cada arquétipo → derrotar o Korrag → dash desbloqueado → ponto de encerramento definido (ver [[🎯 Escopo da Demo]]) — sem crash, sem softlock, sem animação quebrada.
+> > - [ ] Demo completa sem parar: Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag → matar 1 de cada arquétipo pelo caminho → derrotar o Korrag → dash desbloqueado (ver [[🎯 Escopo da Demo]]) — sem crash, sem softlock, sem animação quebrada.
 > > - [ ] Repetir morrendo de propósito em cada área (valida respawn/checkpoint com arte e áudio reais).
 > >
 > > Status: 🔴 bloqueado — depende de todos os Épicos anteriores, de código e de arte.

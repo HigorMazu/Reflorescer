@@ -16,7 +16,8 @@ namespace Joguim.Save
         private const string SaveExtension = ".json";
         private const int MaxSlots = 3;
 
-        public const string NewGameScene = "res://scenes/Main.tscn";
+        // Início da demo (EPIC-C13). O TestLevel (Main.tscn) continua só como cena de teste isolada.
+        public const string NewGameScene = "res://scenes/areas/SopeDaMata.tscn";
         public const string MainMenuScene = "res://scenes/ui/MainMenu.tscn";
 
         private SaveData _currentSave;
@@ -87,8 +88,8 @@ namespace Joguim.Save
                 Slot = slot,
                 PlayerHealth = 100,
                 PlayerMaxHealth = 100,
-                CurrentScene = "res://scenes/Main.tscn",
-                CurrentArea = "Area_01"
+                CurrentScene = NewGameScene,
+                CurrentArea = "SopeDaMata"
             };
 
             return _currentSave;

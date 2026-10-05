@@ -1,0 +1,393 @@
+[gd_scene load_steps=26 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/Checkpoint.cs" id="checkpoint"]
+[ext_resource type="Script" path="res://scripts/world/RestorationPoint.cs" id="restoration"]
+[ext_resource type="Resource" path="res://resources/enemies/areas/Robusto_SopeDaMata.tres" id="stats_robusto_SopeDaMata"]
+[ext_resource type="PackedScene" uid="uid://enemyrobusto001" path="res://scenes/enemies/Enemy_Robusto.tscn" id="robusto"]
+[ext_resource type="Resource" path="res://resources/enemies/areas/Voador_SopeDaMata.tres" id="stats_voador_SopeDaMata"]
+[ext_resource type="PackedScene" uid="uid://enemyvoador001" path="res://scenes/enemies/Enemy_Voador.tscn" id="voador"]
+[ext_resource type="Resource" path="res://resources/enemies/areas/Rapido_SopeDaMata.tres" id="stats_rapido_SopeDaMata"]
+[ext_resource type="PackedScene" uid="uid://enemyrapido001" path="res://scenes/enemies/Enemy_Rapido.tscn" id="rapido"]
+[ext_resource type="Script" path="res://scripts/world/TransitionTrigger.cs" id="transition"]
+[ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="player"]
+[ext_resource type="PackedScene" uid="uid://faisca001" path="res://scenes/companion/Faisca.tscn" id="faisca"]
+[ext_resource type="PackedScene" uid="uid://hud001" path="res://scenes/ui/HUD.tscn" id="hud"]
+[ext_resource type="Script" path="res://scripts/world/AreaController.cs" id="area_script"]
+
+[sub_resource type="RectangleShape2D" id="Shape_WallLeft"]
+size = Vector2(40, 800)
+
+[sub_resource type="RectangleShape2D" id="Shape_WallRight"]
+size = Vector2(40, 800)
+
+[sub_resource type="RectangleShape2D" id="Shape_Ground1"]
+size = Vector2(900, 80)
+
+[sub_resource type="RectangleShape2D" id="Shape_Ground2Step"]
+size = Vector2(400, 80)
+
+[sub_resource type="RectangleShape2D" id="Shape_Ground3Ditch"]
+size = Vector2(120, 80)
+
+[sub_resource type="RectangleShape2D" id="Shape_Ground4"]
+size = Vector2(980, 80)
+
+[sub_resource type="RectangleShape2D" id="Shape_Platform1"]
+size = Vector2(140, 20)
+
+[sub_resource type="RectangleShape2D" id="Shape_Platform2"]
+size = Vector2(140, 20)
+
+[sub_resource type="RectangleShape2D" id="Shape_Platform3"]
+size = Vector2(140, 20)
+
+[sub_resource type="RectangleShape2D" id="Shape_Checkpoint1"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="Shape_RestorationPoint1"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="Shape_ToDosselVivo"]
+size = Vector2(60, 100)
+
+[node name="SopeDaMata" type="Node2D"]
+script = ExtResource("area_script")
+AreaName = "SopeDaMata"
+UseCameraLimits = true
+CameraLimits = Rect2i(0, -200, 2400, 720)
+
+[node name="Background" type="ColorRect" parent="."]
+offset_left = 0.0
+offset_top = -200.0
+offset_right = 2400.0
+offset_bottom = 520.0
+mouse_filter = 2
+color = Color(0.16, 0.22, 0.18, 1)
+
+[node name="Geometry" type="Node2D" parent="."]
+
+[node name="Hazards" type="Node2D" parent="."]
+
+[node name="Interactables" type="Node2D" parent="."]
+
+[node name="Transitions" type="Node2D" parent="."]
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="WallLeft" type="StaticBody2D" parent="Geometry"]
+position = Vector2(-20, 200)
+collision_layer = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/WallLeft"]
+shape = SubResource("Shape_WallLeft")
+
+[node name="Visual" type="ColorRect" parent="Geometry/WallLeft"]
+offset_left = -20.0
+offset_top = -400.0
+offset_right = 20.0
+offset_bottom = 400.0
+mouse_filter = 2
+color = Color(0.2, 0.25, 0.18, 1)
+
+[node name="WallRight" type="StaticBody2D" parent="Geometry"]
+position = Vector2(2420, 200)
+collision_layer = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/WallRight"]
+shape = SubResource("Shape_WallRight")
+
+[node name="Visual" type="ColorRect" parent="Geometry/WallRight"]
+offset_left = -20.0
+offset_top = -400.0
+offset_right = 20.0
+offset_bottom = 400.0
+mouse_filter = 2
+color = Color(0.2, 0.25, 0.18, 1)
+
+[node name="Ground1" type="StaticBody2D" parent="Geometry"]
+position = Vector2(450, 520)
+collision_layer = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Ground1"]
+shape = SubResource("Shape_Ground1")
+
+[node name="Visual" type="ColorRect" parent="Geometry/Ground1"]
+offset_left = -450.0
+offset_top = -40.0
+offset_right = 450.0
+offset_bottom = 40.0
+mouse_filter = 2
+color = Color(0.25, 0.3, 0.2, 1)
+
+[node name="Top" type="ColorRect" parent="Geometry/Ground1"]
+offset_left = -450.0
+offset_top = -44.0
+offset_right = 450.0
+offset_bottom = -38.0
+mouse_filter = 2
+color = Color(0.3, 0.55, 0.2, 1)
+
+[node name="Ground2Step" type="StaticBody2D" parent="Geometry"]
+position = Vector2(1100, 480)
+collision_layer = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Ground2Step"]
+shape = SubResource("Shape_Ground2Step")
+
+[node name="Visual" type="ColorRect" parent="Geometry/Ground2Step"]
+offset_left = -200.0
+offset_top = -40.0
+offset_right = 200.0
+offset_bottom = 40.0
+mouse_filter = 2
+color = Color(0.25, 0.3, 0.2, 1)
+
+[node name="Top" type="ColorRect" parent="Geometry/Ground2Step"]
+offset_left = -200.0
+offset_top = -44.0
+offset_right = 200.0
+offset_bottom = -38.0
+mouse_filter = 2
+color = Color(0.3, 0.55, 0.2, 1)
+
+[node name="Ground3Ditch" type="StaticBody2D" parent="Geometry"]
+position = Vector2(1360, 560)
+collision_layer = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Ground3Ditch"]
+shape = SubResource("Shape_Ground3Ditch")
+
+[node name="Visual" type="ColorRect" parent="Geometry/Ground3Ditch"]
+offset_left = -60.0
+offset_top = -40.0
+offset_right = 60.0
+offset_bottom = 40.0
+mouse_filter = 2
+color = Color(0.25, 0.3, 0.2, 1)
+
+[node name="Top" type="ColorRect" parent="Geometry/Ground3Ditch"]
+offset_left = -60.0
+offset_top = -44.0
+offset_right = 60.0
+offset_bottom = -38.0
+mouse_filter = 2
+color = Color(0.3, 0.55, 0.2, 1)
+
+[node name="Ground4" type="StaticBody2D" parent="Geometry"]
+position = Vector2(1910, 520)
+collision_layer = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Ground4"]
+shape = SubResource("Shape_Ground4")
+
+[node name="Visual" type="ColorRect" parent="Geometry/Ground4"]
+offset_left = -490.0
+offset_top = -40.0
+offset_right = 490.0
+offset_bottom = 40.0
+mouse_filter = 2
+color = Color(0.25, 0.3, 0.2, 1)
+
+[node name="Top" type="ColorRect" parent="Geometry/Ground4"]
+offset_left = -490.0
+offset_top = -44.0
+offset_right = 490.0
+offset_bottom = -38.0
+mouse_filter = 2
+color = Color(0.3, 0.55, 0.2, 1)
+
+[node name="Platform1" type="StaticBody2D" parent="Geometry"]
+position = Vector2(620, 410)
+collision_layer = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Platform1"]
+shape = SubResource("Shape_Platform1")
+
+[node name="Visual" type="ColorRect" parent="Geometry/Platform1"]
+offset_left = -70.0
+offset_top = -10.0
+offset_right = 70.0
+offset_bottom = 10.0
+mouse_filter = 2
+color = Color(0.35, 0.4, 0.25, 1)
+
+[node name="Top" type="ColorRect" parent="Geometry/Platform1"]
+offset_left = -70.0
+offset_top = -14.0
+offset_right = 70.0
+offset_bottom = -8.0
+mouse_filter = 2
+color = Color(0.3, 0.55, 0.2, 1)
+
+[node name="Platform2" type="StaticBody2D" parent="Geometry"]
+position = Vector2(1700, 400)
+collision_layer = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Platform2"]
+shape = SubResource("Shape_Platform2")
+
+[node name="Visual" type="ColorRect" parent="Geometry/Platform2"]
+offset_left = -70.0
+offset_top = -10.0
+offset_right = 70.0
+offset_bottom = 10.0
+mouse_filter = 2
+color = Color(0.35, 0.4, 0.25, 1)
+
+[node name="Top" type="ColorRect" parent="Geometry/Platform2"]
+offset_left = -70.0
+offset_top = -14.0
+offset_right = 70.0
+offset_bottom = -8.0
+mouse_filter = 2
+color = Color(0.3, 0.55, 0.2, 1)
+
+[node name="Platform3" type="StaticBody2D" parent="Geometry"]
+position = Vector2(1900, 320)
+collision_layer = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Platform3"]
+shape = SubResource("Shape_Platform3")
+
+[node name="Visual" type="ColorRect" parent="Geometry/Platform3"]
+offset_left = -70.0
+offset_top = -10.0
+offset_right = 70.0
+offset_bottom = 10.0
+mouse_filter = 2
+color = Color(0.35, 0.4, 0.25, 1)
+
+[node name="Top" type="ColorRect" parent="Geometry/Platform3"]
+offset_left = -70.0
+offset_top = -14.0
+offset_right = 70.0
+offset_bottom = -8.0
+mouse_filter = 2
+color = Color(0.3, 0.55, 0.2, 1)
+
+[node name="Checkpoint1" type="Area2D" parent="Interactables"]
+position = Vector2(330, 480)
+collision_layer = 32
+collision_mask = 2
+script = ExtResource("checkpoint")
+CheckpointId = "cp_sope_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/Checkpoint1"]
+position = Vector2(0, -16)
+shape = SubResource("Shape_Checkpoint1")
+
+[node name="FlagPole" type="ColorRect" parent="Interactables/Checkpoint1"]
+offset_left = -2.0
+offset_top = -30.0
+offset_right = 2.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.5, 0.5, 0.5, 1)
+
+[node name="Flag" type="ColorRect" parent="Interactables/Checkpoint1"]
+offset_left = 2.0
+offset_top = -30.0
+offset_right = 16.0
+offset_bottom = -20.0
+mouse_filter = 2
+color = Color(0.2, 0.6, 0.9, 1)
+
+[node name="RestorationPoint1" type="Area2D" parent="Interactables"]
+position = Vector2(1100, 440)
+collision_layer = 32
+collision_mask = 2
+script = ExtResource("restoration")
+PointId = "restoration_sope_01"
+DegradedVisuals = Array[NodePath]([NodePath("DegradedGround"), NodePath("Stump")])
+RestoredVisuals = Array[NodePath]([NodePath("RestoredGround"), NodePath("Sprout")])
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/RestorationPoint1"]
+position = Vector2(0, -16)
+shape = SubResource("Shape_RestorationPoint1")
+
+[node name="DegradedGround" type="ColorRect" parent="Interactables/RestorationPoint1"]
+offset_left = -56.0
+offset_top = -4.0
+offset_right = 56.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.55, 0.45, 0.28, 1)
+
+[node name="Stump" type="ColorRect" parent="Interactables/RestorationPoint1"]
+offset_left = -10.0
+offset_top = -14.0
+offset_right = 10.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.45, 0.32, 0.18, 1)
+
+[node name="RestoredGround" type="ColorRect" parent="Interactables/RestorationPoint1"]
+visible = false
+offset_left = -56.0
+offset_top = -4.0
+offset_right = 56.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.3, 0.72, 0.3, 1)
+
+[node name="Sprout" type="ColorRect" parent="Interactables/RestorationPoint1"]
+visible = false
+offset_left = -5.0
+offset_top = -30.0
+offset_right = 5.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.4, 0.85, 0.35, 1)
+
+[node name="Robusto1" parent="Enemies" instance=ExtResource("robusto")]
+position = Vector2(780, 460)
+StatsResource = ExtResource("stats_robusto_SopeDaMata")
+
+[node name="Voador1" parent="Enemies" instance=ExtResource("voador")]
+position = Vector2(1250, 360)
+StatsResource = ExtResource("stats_voador_SopeDaMata")
+
+[node name="Rapido1" parent="Enemies" instance=ExtResource("rapido")]
+position = Vector2(1600, 460)
+StatsResource = ExtResource("stats_rapido_SopeDaMata")
+
+[node name="Voador2" parent="Enemies" instance=ExtResource("voador")]
+position = Vector2(1950, 250)
+StatsResource = ExtResource("stats_voador_SopeDaMata")
+
+[node name="Rapido2" parent="Enemies" instance=ExtResource("rapido")]
+position = Vector2(2150, 460)
+StatsResource = ExtResource("stats_rapido_SopeDaMata")
+
+[node name="ToDosselVivo" type="Area2D" parent="Transitions"]
+position = Vector2(2370, 430)
+collision_layer = 32
+collision_mask = 2
+script = ExtResource("transition")
+TargetScene = "res://scenes/areas/DosselVivo.tscn"
+TargetArea = "SpawnFromSopeDaMata"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/ToDosselVivo"]
+shape = SubResource("Shape_ToDosselVivo")
+
+[node name="PortalVisual" type="ColorRect" parent="Transitions/ToDosselVivo"]
+offset_left = -15.0
+offset_top = -50.0
+offset_right = 15.0
+offset_bottom = 50.0
+mouse_filter = 2
+color = Color(0.4, 0.2, 0.8, 0.6)
+
+[node name="SpawnInicial" type="Marker2D" parent="." groups=["SpawnPoints"]]
+position = Vector2(160, 460)
+
+[node name="SpawnFromDosselVivo" type="Marker2D" parent="." groups=["SpawnPoints"]]
+position = Vector2(2260, 460)
+
+[node name="Player" parent="." instance=ExtResource("player")]
+position = Vector2(160, 460)
+
+[node name="Faisca" parent="." instance=ExtResource("faisca")]
+position = Vector2(120, 430)
+
+[node name="HUD" parent="." instance=ExtResource("hud")]

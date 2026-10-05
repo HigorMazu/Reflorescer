@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyStatsResource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/enemies/EnemyStatsResource.cs" id="1"]
+
+[resource]
+script = ExtResource("1")
+MaxHealth = 75
+MoveSpeed = 160.0
+AttackDamage = 12
+AttackRange = 30.0
+DetectionRange = 200.0
+PatrolSpeed = 90.0
+ChaseSpeed = 210.0
+AttackCooldown = 0.6
+Gravity = 980.0
+KnockbackResistance = 0.2
+InterruptOnHit = true
+ExperienceReward = 10

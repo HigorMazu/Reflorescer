@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource("1")
-PhaseName = "Phase 1 - Aggressive"
-HealthThreshold = 0.5
+PhaseName = "Fase 1"
+HealthThreshold = 1.0
 AttackCooldown = 2.0
 MoveSpeed = 80.0
 Damage = 20

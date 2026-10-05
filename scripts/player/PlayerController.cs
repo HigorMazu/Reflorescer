@@ -34,7 +34,9 @@ namespace Joguim.Player
         public bool HasSword { get; set; } = true;
         public int CurrentAttackDamage => StatsResource?.AttackDamage ?? 25;
         // Stats duplos: sem a espada o Kairo é mais rápido e pula mais alto
-        public float CurrentMoveSpeed => HasSword ? StatsResource.MoveSpeed : StatsResource.MoveSpeedNoSword;
+        public float CurrentMoveSpeed => (HasSword ? StatsResource.MoveSpeed : StatsResource.MoveSpeedNoSword) * TerrainSpeedMultiplier;
+        // Terreno (ex: MudHazard): com mais de um ativo ao mesmo tempo, vale o mais lento
+        public float TerrainSpeedMultiplier { get; private set; } = 1f;
         public float CurrentJumpVelocity => HasSword ? StatsResource.JumpVelocity : StatsResource.JumpVelocityNoSword;
         // Fonte única de verdade do double jump: AbilityManager
         public bool HasDoubleJump => AbilityManager.Instance?.HasAbility(AbilityId.DoubleJump) ?? false;
@@ -63,6 +65,7 @@ namespace Joguim.Player
         private Vector2? _lastCheckpointPosition;
         private Vector2 _deathPosition;
         private string _currentPrompt = "";
+        private readonly System.Collections.Generic.Dictionary<ulong, float> _terrainSpeedModifiers = new();
 
         public override void _Ready()
         {
@@ -116,6 +119,24 @@ namespace Joguim.Player
         public override void _ExitTree()
         {
             if (EventBus.Instance != null) EventBus.Instance.CheckpointActivated -= OnCheckpointActivated;
+        }
+
+        public void SetTerrainSpeedModifier(GodotObject source, float multiplier)
+        {
+            _terrainSpeedModifiers[source.GetInstanceId()] = multiplier;
+            RecalculateTerrainSpeed();
+        }
+
+        public void ClearTerrainSpeedModifier(GodotObject source)
+        {
+            if (_terrainSpeedModifiers.Remove(source.GetInstanceId())) RecalculateTerrainSpeed();
+        }
+
+        private void RecalculateTerrainSpeed()
+        {
+            float multiplier = 1f;
+            foreach (float m in _terrainSpeedModifiers.Values) multiplier = Mathf.Min(multiplier, m);
+            TerrainSpeedMultiplier = multiplier;
         }
 
         private void ApplyPendingSpawn()

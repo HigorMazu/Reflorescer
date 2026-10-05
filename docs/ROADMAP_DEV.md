@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-09-28
+atualizado: 2026-10-05
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
@@ -11,11 +11,11 @@ papel: execucao
 responsavel: Gustavo
 par: "[[ROADMAP_QA_CODIGO]]"
 descricao: Backlog de implementação da demo (código)
-epicos_total: 12
-epicos_concluidos: 8
-tasks_total: 44
-tasks_prontas: 37
-tasks_bloqueadas: 5
+epicos_total: 13
+epicos_concluidos: 9
+tasks_total: 49
+tasks_prontas: 44
+tasks_bloqueadas: 3
 tasks_liberadas: 0
 ---
 # Roadmap de Desenvolvimento — Código (Gustavo)
@@ -26,7 +26,10 @@ Cada Épico aqui tem um Épico **gêmeo de mesmo ID** no [[ROADMAP_QA_CODIGO]] (
 
 Marcação de disponibilidade na linha `Status:` de cada Task (avaliação de 28/09, após o pull do commit `6153f13`): 🟢 liberado — dá pra começar agora · 🟡 aguarda — depende de outra Task deste roadmap · ⛔ bloqueado — depende de decisão de design, arte/cena ou áudio fora deste roadmap.
 
-Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `EPIC-C03` → `EPIC-C05` → `EPIC-C07` → `EPIC-C08` → `EPIC-C09` → `EPIC-C10` → `EPIC-C11` → `EPIC-C12`. C03, C05 e C07 não têm dependência forte entre si — dá pra reordenar ou paralelizar, desde que C01 já esteja fechado.
+Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `EPIC-C03` → `EPIC-C05` → `EPIC-C07` → `EPIC-C08` → `EPIC-C13` → `EPIC-C09` → `EPIC-C10` → `EPIC-C11` → `EPIC-C12`. C03, C05 e C07 não têm dependência forte entre si — dá pra reordenar ou paralelizar, desde que C01 já esteja fechado.
+
+> [!info] Decidido em 29/09/2026 — a demo virou 4 áreas dentro da Floresta Tropical
+> A demo deixou de ser Floresta Tropical → Deserto → Tundra e passou a ser **4 áreas dentro da própria Floresta Tropical** — Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag —, estilo Hollow Knight (regiões interligadas, mesma identidade visual). Deserto e Tundra saem do escopo da demo. Isso adicionou o `EPIC-C13` (construir as 4 cenas) e mudou o alvo de `C02-T4` e `C07-T4`. Ver [[🌍 Mundo e Biomas#As 4 áreas da demo (dentro da Floresta Tropical)|Mundo e Biomas]] e [[Projetos/Reflorescer/🗳️ Decisões e Configuração|Decisões e Configuração]].
 
 ---
 
@@ -61,7 +64,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 
 > [!info]- EPIC-C02 — Mecânica de Restauração ODS15 — 🔄 Em andamento · 🔴 Bloqueante
-> *Pronto quando*: existe pelo menos 1 ponto de restauração interagível em cada uma das 3 áreas da demo, com efeito visual próprio, evento dedicado no `EventBus`, e persistência em save.
+> *Pronto quando*: existe pelo menos 1 ponto de restauração interagível em 3 das 4 áreas da demo (Sopé da Mata, Dossel Vivo, Igarapé Sufocado — o Covil de Korrag não tem ponto de restauração, é a arena do boss), com efeito visual próprio, evento dedicado no `EventBus`, e persistência em save.
 >
 > Prioridade máxima de conteúdo — sem isso a demo perde a conexão com o pitch (ODS 15). Hoje `Checkpoint` é só um save point genérico, sem nenhum conceito de "restaurar" o bioma.
 >
@@ -86,10 +89,12 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!failure]- Task C02-T4 — Posicionar nas 3 áreas da demo
-> > - [ ] Definir quantos pontos por área (mínimo 1 por bioma) e posicionar nas cenas de Floresta Tropical, Deserto e Tundra.
+> > [!info]- Task C02-T4 — Posicionar no Sopé da Mata, Dossel Vivo e Igarapé Sufocado
+> > - [x] Definir quantos pontos por área (mínimo 1 cada) e posicionar nas 3 cenas — degradação leve no Sopé da Mata, moderada no Dossel Vivo, mais impactante no Igarapé Sufocado (ver [[🌍 Mundo e Biomas#As 4 áreas da demo (dentro da Floresta Tropical)|Mundo e Biomas]]). Sem ponto no Covil de Korrag.
+> > - **Nota (29/09):** título e escopo atualizados — a demo trocou de Floresta Tropical/Deserto/Tundra pras 4 áreas da própria Floresta Tropical (ver decisão no topo do arquivo). Esta Task passa a depender do `EPIC-C13`, não mais do `EPIC-A05` sozinho — as cenas agora são construídas pelo Gustavo (`EPIC-C13`), a arte final entra depois por cima.
+> > - **Nota (05/10) — 1 ponto por área, montado junto com as cenas do `EPIC-C13`:** `restoration_sope_01` (no degrau do Sopé da Mata: chão seco + toco → grama + broto), `restoration_dossel_01` (no galho largo do meio da subida: folhagem seca + 2 galhos mortos → folhagem verde + bromélia + broto) e `restoration_igarape_01` (no trecho entre as poças de lama: água poluída + lixo + 3 tocos → água limpa + margem verde + 2 mudas + flor). A escala de contraste segue a degradação de cada área. Tudo em `ColorRect` placeholder, trocável pelos sprites do Higor sem mexer no código.
 > >
-> > Status: não iniciado — ⛔ bloqueado: as cenas de Floresta Tropical, Deserto e Tundra não existem (só `TestLevel` e `BossArena`) — depende do [[ROADMAP_ARTE]] `EPIC-A05`.
+> > Status: implementado (05/10) — falta restaurar os 3 pontos em jogo (QA C02-T4). Montagem conferida headless: os `NodePath` de antes/depois resolvem nas 3 cenas.
 
 > [!success]- EPIC-C03 — Combate e Espada de Grama — ✅ Concluído · 🟠 Alta
 > *Pronto quando*: Q alterna a espada em tempo real (visual + `HasSword`), o jogador tem stats diferentes com a espada ativada/desativada, e não dá pra atacar com ela desativada.
@@ -201,8 +206,9 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - **Nota (28/09) — implementação:** `BossBase.ChooseAttack()` virtual, sobrescrito em `JavaliBoss`. Stomp (35%, 50% no enraged) quando o jogador está a até `StompRadius`; Charge (60% na fase 1, 80% depois) a partir de `ChargeMinDistance` (180px); no meio-termo, 40% Charge e o resto melee. O Charge agora tem fim (`ChargeDuration` 0.9s ou bater na parede) e aplica `ChargeDamage`. O Stomp ganhou windup de 0.4s. O `MoveAndSlide` saiu do `ExecuteCharge` (o estado já chama). O melee vira a hitbox pro lado do jogador (antes só acertava à direita) e desliga depois de 0.25s.
 > > - **Decisão do Gustavo (28/09) — super armor e timers:** o boss tem `InvulnerabilityDuration = 0` e todo golpe o jogava em `Hurt`, o que zerava o timer de ataque e cancelava o windup do Charge. Na prática, batendo sem parar, ele nunca atacava. Agora: (1) durante Charge/Stomp (`IsBusy`) o dano entra, mas não interrompe nem empurra; (2) o timer de ataque sobrevive às idas ao `Hurt`; (3) as transições de fase 2/enraged tocam uma vez só (antes repetiam a cada hit). Registrada em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]] (28/09).
 > > - **Achado (28/09), não corrigido:** o enraged chama `SetPhase(2)`, mas `JavaliStatsResource` só tem 2 fases (índices 0 e 1), então no enraged o boss cai nos defaults (cooldown 1.5, velocidade 100, dano 20). Fica mais fraco que na fase 2. Precisa de um `JavaliPhase3.tres` ou de ajuste no índice.
+> > - **Bugfix (05/10) — enraged mais fraco que a fase 2:** corrigido com um `JavaliPhase3.tres` novo (o índice 2 fica, porque o `JavaliBoss.ChooseAttack` já usa `_currentPhaseIndex >= 2` pra subir o Stomp a 50%). Valores provisórios do enraged: cooldown 1.0 (×0.7 do estado = 0.7s efetivo), velocidade 140, dano 35 (igual à fase 2; o enraged escala em frequência e velocidade, não em dano, já que o Kairo tem 100 de HP). `PhaseName`/`HealthThreshold`/`IsEnraged` dos 3 `.tres` foram ajustados pra refletir o que cada um é de fato (Fase 1 = 100–50%, Fase 2 = 50–20%, Enraged = ≤20%). Esses campos são só metadado, porque os limiares reais (0.5/0.2) estão no `BossStateMachine`. Conferido headless: `JavaliStatsResource` carrega 3 fases com os valores certos.
 > >
-> > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
+> > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo). Bugfix do enraged (05/10) aguarda conferência em jogo (C06-T0: luta até ≤20% de HP).
 >
 > > [!success]- Task C06-T2 — Corrigir o evento BossDefeated duplicado
 > > - [x] Mesma correção da `EPIC-C04-T1` — fazer uma vez só, referenciar aqui.
@@ -223,8 +229,8 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo). Tempo de 1s aprovado.
 
-> [!info]- EPIC-C07 — Inimigos Comuns (Arquétipos) — 🔄 Em andamento · 🟠 Alta
-> *Pronto quando*: existem 3 arquétipos (Voador/Rápido/Robusto) com comportamento distinto de fato, cada um com `.tres` de stats pra cada uma das 3 áreas da demo.
+> [!success]- EPIC-C07 — Inimigos Comuns (Arquétipos) — ✅ Concluído · 🟠 Alta
+> *Pronto quando*: existem 3 arquétipos (Voador/Rápido/Robusto) com comportamento distinto de fato, cada um com `.tres` de stats pra cada uma das 4 áreas da demo (Sopé da Mata → Dossel Vivo → Igarapé Sufocado, com escalada leve de dificuldade; o Covil de Korrag não tem inimigo comum).
 >
 > > [!success]- Task C07-T0 — Regressão do comportamento base (antes de mexer)
 > > - [x] Rodar a Task C07-T0 do [[ROADMAP_QA_CODIGO]] (idle/patrol/detect/chase/attack/hurt/dead do `EnemyBase` genérico).
@@ -249,10 +255,12 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!failure]- Task C07-T4 — Dados por arquétipo × área da demo
-> > - [ ] Criar os `.tres` de `EnemyStatsResource` pra cada arquétipo × cada uma das 3 áreas (Floresta Tropical primeiro).
+> > [!success]- Task C07-T4 — Dados por arquétipo × área da demo
+> > - [x] Criar os `.tres` de `EnemyStatsResource` pra cada arquétipo × cada uma das 4 áreas (Sopé da Mata primeiro — já são os valores de `EnemyVoadorStats`/`EnemyRapidoStats`/`EnemyRobustoStats` atuais, só renomear/confirmar).
+> > - **Nota (29/09):** proposta de valores pra Dossel Vivo e Igarapé Sufocado já rascunhada em [[👾 Bestiário#Valores por área (Sopé da Mata → Dossel Vivo → Igarapé Sufocado)|Bestiário]] — provisória, ajustável em playtest. O Covil de Korrag não recebe `.tres` de inimigo comum.
+> > - **Nota (05/10) — 9 `.tres` em `resources/enemies/areas/`, nomeados `<Arquétipo>_<Área>.tres`:** os 3 antigos (`EnemyVoadorStats`/`EnemyRapidoStats`/`EnemyRobustoStats`) viraram os `_SopeDaMata`, sem mudar valores, e as cenas `Enemy_Voador/Rapido/Robusto.tscn` passaram a apontar pra eles (são o padrão). Os do Dossel Vivo e do Igarapé Sufocado seguem a tabela do [[👾 Bestiário#Valores por área (Sopé da Mata → Dossel Vivo → Igarapé Sufocado)|Bestiário]] (vida, dano e perseguição; o resto igual ao Sopé). Cada inimigo instanciado nas cenas do `EPIC-C13` sobrescreve o `StatsResource` com o `.tres` da própria área. Valores provisórios, pra ajustar em playtest.
 > >
-> > Status: não iniciado — ⛔ bloqueado: os 3 arquétipos existem (C07-T1/T2/T3); falta definir os valores por área em [[👾 Bestiário]] (os .tres não dependem das cenas existirem).
+> > Status: ✅ concluído (05/10) — conferido headless: os 9 arquivos existem e cada inimigo das 3 cenas usa o `.tres` da própria área. Ajuste fino fica pro playtest.
 >
 > > [!success]- Task C07-T5 — (baixa prioridade) AtPatrolEdge()
 > > - [x] Hoje sempre retorna `false` — corrigir só se o comportamento "parar depois de patrulhar" for desejado. Aceitável pra demo como está.
@@ -274,6 +282,62 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - **Nota (28/09) — Opção A aplicada:** `TargetArea` = nome de um `Marker2D` no grupo `SpawnPoints` da cena de destino; `SpawnOffset` soma na posição. `SceneManager.LoadSceneAtSpawn()` guarda o destino, e o `PlayerController` consome no `_Ready` (deferred) e reseta a câmera. Markers criados: `SpawnFromBossArena` (TestLevel, perto do portal) e `SpawnFromTestLevel` (BossArena).
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
+
+> [!info]- EPIC-C13 — Construção das 4 Áreas da Demo (Floresta Tropical) — 🔄 Em andamento · 🔴 Bloqueante
+> *Pronto quando*: as 4 cenas da demo existem e estão encadeadas na ordem certa — Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag —, cada uma com o conteúdo mínimo da sua identidade (ver [[🌍 Mundo e Biomas#As 4 áreas da demo (dentro da Floresta Tropical)|Mundo e Biomas]]), substituindo o `TestLevel`/`BossArena` isolados como o percurso real da demo.
+>
+> Épico novo, adicionado em 29/09/2026: a demo deixou de ser Floresta Tropical → Deserto → Tundra e virou 4 áreas dentro da própria Floresta Tropical, estilo Hollow Knight (ver [[Projetos/Reflorescer/🗳️ Decisões e Configuração|Decisões e Configuração]]). Pode começar com placeholder (TileMap simples, `ColorRect`), igual o `TestLevel` hoje — a arte final do Higor entra depois por cima ([[ROADMAP_ARTE]] `EPIC-A05`), sem exigir remontar a cena.
+>
+> Implementado em 05/10/2026. As 4 cenas ficam em `scenes/areas/` e todas seguem o mesmo esqueleto: raiz com `AreaController` (nome da área + limites de câmera), nós-grupo `Geometry`/`Hazards`/`Interactables`/`Transitions`/`Enemies`, e instâncias de `Player`, `Faisca` e `HUD.tscn`. A geometria é `StaticBody2D` + `ColorRect`, igual o `TestLevel`. Pra arte do Higor, basta trocar os `Visual`/`Top` de cada bloco por sprites ou um `TileMap` por cima, sem mexer em colisão. As cenas foram geradas por script (geometria consistente: degraus de até ~80px, já que o pulo simples sobe ~108px). Daqui pra frente, editar direto no Godot.
+>
+> **Pendência (05/10) — compilação:** nesta máquina, o `dotnet build` fora do editor é barrado pelo Controle de Aplicativo do Windows (o `Godot.SourceGenerators.dll` é bloqueado). A verificação foi feita headless com a DLL de 28/09, que ainda não tem `MudHazard` nem as mudanças do `AreaController`/`PlayerController`. **Abrir o projeto no editor e dar Build** antes de testar.
+>
+> > [!info]- Task C13-T1 — Sopé da Mata (entrada)
+> > - [x] Criar `scenes/areas/SopeDaMata.tscn`: `TileMap`/geometria placeholder, limites de câmera, `Marker2D` de spawn inicial do Kairo (novo jogo começa aqui).
+> > - [x] Instanciar 1-2 exemplares de cada arquétipo comum, em densidade baixa (área introdutória).
+> > - [x] Instanciar 1 `RestorationPoint` com degradação leve (`DegradedVisuals`/`RestoredVisuals` com o placeholder atual).
+> > - [x] `TransitionTrigger` de saída pro Dossel Vivo, com `Marker2D` `SpawnFromSopeDaMata` do lado de lá (ver `EPIC-C08`).
+> > - **Nota (05/10):** 2400×720 px, horizontal: chão com um degrau (onde fica o ponto de restauração), uma vala rasa e 3 plataformas. Checkpoint `cp_sope_01` logo no começo. Inimigos: 1 Robusto, 2 Voadores, 2 Rápidos. `Marker2D`s: `SpawnInicial` e `SpawnFromDosselVivo` (perto da saída, pra quem volta).
+> > - **Melhoria (05/10) — limites de câmera por área:** a câmera do Kairo não tinha limite nenhum. O `AreaController` ganhou `UseCameraLimits` + `CameraLimits` (`Rect2I`) e aplica na câmera do Player no `_Ready`. As 4 áreas usam, e o `TestLevel`/`BossArena` continuam sem limite. Os limites precisam ter pelo menos 1280×720 (o tamanho da tela).
+> >
+> > Status: implementado (05/10) — conferido headless (cena carrega, markers e transição ok). Falta o teste em jogo (QA C13-T1).
+>
+> > [!info]- Task C13-T2 — Dossel Vivo (verticalidade)
+> > - [x] Criar `scenes/areas/DosselVivo.tscn`: geometria com foco em plataforming vertical (plataformas soltas, sem chão contínuo).
+> > - [x] Maior densidade do arquétipo Voador em relação ao Sopé da Mata.
+> > - [x] Instanciar 1 `RestorationPoint` com degradação moderada.
+> > - [x] `TransitionTrigger`s de entrada (do Sopé da Mata) e saída (pro Igarapé Sufocado), com os `Marker2D` correspondentes.
+> > - **Nota (05/10):** 1600×1440 px. Entra embaixo à esquerda e sobe em zigue-zague por 11 galhos (degraus de ~76px) até o galho do topo à direita, onde fica a saída. Tem chão de mata embaixo só pra quem cair não sair do mundo (não existe zona de morte por queda). Dois troncos (`TrunkA`/`TrunkB`) formam uma chaminé de 132px pra subir no pulo de parede (atalho opcional). Inimigos: 4 Voadores pela subida e 1 Rápido embaixo. Checkpoint `cp_dossel_01` na base.
+> >
+> > Status: implementado (05/10) — conferido headless. Falta o teste em jogo, principalmente se todos os galhos se alcançam com pulo simples ou duplo (QA C13-T2).
+>
+> > [!info]- Task C13-T3 — Igarapé Sufocado (mata alagada e degradada)
+> > - [x] Criar `scenes/areas/IgarapeSufocado.tscn`: geometria de mata baixa alagada.
+> > - [x] Novo componente `MudHazard` (`Area2D`): reduz `CurrentMoveSpeed` do Kairo por um multiplicador enquanto ele estiver dentro da área — primeiro hazard de terreno do jogo, código novo e pequeno.
+> > - [x] Maior densidade dos arquétipos Robusto/Rápido em relação às áreas anteriores.
+> > - [x] Instanciar 1 `RestorationPoint` com o maior contraste "antes/depois" das 3 (área mais degradada da demo).
+> > - [x] `TransitionTrigger`s de entrada (do Dossel Vivo) e saída (pro Covil de Korrag).
+> > - **Nota (05/10) — `MudHazard`:** `scripts/world/MudHazard.cs`, `Area2D` com máscara 2 (corpo do Kairo). Ao entrar chama `PlayerController.SetTerrainSpeedModifier(this, SpeedMultiplier)` e ao sair chama `ClearTerrainSpeedModifier`. `SpeedMultiplier` padrão 0.55 (provisório). Com duas poças sobrepostas vale a mais lenta. Só afeta a corrida (`CurrentMoveSpeed`): pulo, dash e pulo de parede ficam iguais, então dá pra atravessar a lama pulando ou por cima dos troncos.
+> > - **Nota (05/10) — cena:** 2800×720 px, chão contínuo com 3 poças de lama e 3 troncos flutuando por cima. Inimigos: 3 Robustos, 2 Rápidos e 1 Voador. Checkpoints `cp_igarape_01` (começo) e `cp_igarape_02` (logo antes da saída pro boss).
+> >
+> > Status: implementado (05/10) — estrutura conferida headless. O `MudHazard` ainda não rodou (precisa do Build no editor). Falta o teste em jogo (QA C13-T3).
+>
+> > [!info]- Task C13-T4 — Covil de Korrag (arena do boss)
+> > - [x] Decidir: renomear/adaptar a `BossArena.tscn` existente pra virar a cena final (chão revirado pelas escavações do javali, sem inimigos comuns), ou criar uma cena nova e aposentar a `BossArena` de teste.
+> > - [x] `TransitionTrigger` de entrada (do Igarapé Sufocado) — sem saída, a demo termina aqui.
+> > - [x] Sem `RestorationPoint` nesta área — é a arena do boss, não um trecho de exploração.
+> > - **Decisão (05/10) — cena nova, `BossArena` fica como teste:** `scenes/areas/CovilDeKorrag.tscn` é a arena da demo. A `BossArena` continua ligada ao `TestLevel` como par de teste isolado, igual ele. A arena nova tem 1280 px de largura (a `BossArena` tinha 800, menos que a tela, e com o limite de câmera isso não fecharia), chão com montes de terra revirada (placeholder), checkpoint `cp_covil_01` na entrada e nenhum `TransitionTrigger` de saída.
+> > - **Nota (05/10):** "entrada do Igarapé Sufocado" = o `Marker2D` `SpawnFromIgarapeSufocado`, já que não há volta. Sem trigger de retorno: depois de entrar, o jogador fica na arena até derrotar o Korrag.
+> >
+> > Status: implementado (05/10) — conferido headless. Falta o teste em jogo (QA C13-T4).
+>
+> > [!info]- Task C13-T5 — Encadear e validar a demo inteira
+> > - [ ] Conferir a cadeia completa Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag: cada saída cai no `Marker2D` certo da cena seguinte (rodar a Task equivalente do [[ROADMAP_QA_CODIGO]]).
+> > - [x] Novo jogo (menu inicial) começa no Sopé da Mata; `TestLevel` continua existindo só como cena de teste isolada, fora do percurso da demo.
+> > - **Nota (05/10):** `SaveManager.NewGameScene` agora é `res://scenes/areas/SopeDaMata.tscn` e é a única fonte. `CreateNewSave`, o padrão do `SaveData` e o `GameManager.RestartGame` passaram a usar essa constante (antes cada um tinha `Main.tscn` escrito à mão). O `Main.tscn` (que embrulha o `TestLevel`) continua existindo, só saiu do fluxo do menu.
+> > - **Nota (05/10) — conferência estática:** headless, as 5 transições da cadeia (ida e volta entre Sopé, Dossel e Igarapé, mais a ida pro Covil) apontam pra `Marker2D`s que existem na cena de destino. O percurso jogado de ponta a ponta continua pendente.
+> >
+> > Status: implementado (05/10) — falta a primeira subtask, jogar a cadeia inteira no Godot (QA C13-T5).
 
 > [!success]- EPIC-C09 — Save, Checkpoint e Respawn — ✅ Concluído · 🟡 Média
 > *Pronto quando*: uma habilidade desbloqueada persiste em disco mesmo sem passar por um checkpoint depois, e existe uma decisão explícita (implementada ou documentada como "fora de escopo") sobre o fluxo de Continuar.

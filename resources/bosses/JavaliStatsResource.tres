@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="BossStatsResource" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="BossStatsResource" load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://resources/bosses/BossStatsResource.cs" id="1"]
 [ext_resource type="Resource" path="res://resources/bosses/JavaliPhase1.tres" id="2"]
 [ext_resource type="Resource" path="res://resources/bosses/JavaliPhase2.tres" id="3"]
+[ext_resource type="Resource" path="res://resources/bosses/JavaliPhase3.tres" id="4"]
 
 [resource]
 script = ExtResource("1")
@@ -10,4 +11,4 @@ MaxHealth = 200
 BossName = "Korrag, o Javali"
 Gravity = 980.0
 KnockbackResistance = 0.6
-Phases = [ExtResource("2"), ExtResource("3")]
+Phases = [ExtResource("2"), ExtResource("3"), ExtResource("4")]

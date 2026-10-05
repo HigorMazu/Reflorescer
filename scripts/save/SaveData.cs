@@ -35,8 +35,8 @@ namespace Joguim.Save
         public SaveData()
         {
             Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            CurrentScene = "res://scenes/Main.tscn";
-            CurrentArea = "Area_01";
+            CurrentScene = SaveManager.NewGameScene;
+            CurrentArea = "SopeDaMata";
             PlayerHealth = 100;
             PlayerMaxHealth = 100;
             LastCheckpointId = "";

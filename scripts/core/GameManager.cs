@@ -48,7 +48,7 @@ namespace Joguim.Core
             IsGamePaused = false;
             GetTree().Paused = false;
             SaveManager.Instance.DeleteSave(0);
-            SceneManager.Instance.LoadScene("res://scenes/Main.tscn");
+            SceneManager.Instance.LoadScene(SaveManager.NewGameScene);
         }
     }
 }

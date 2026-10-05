@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-PhaseName = "Fase 2 - Aggressive"
-HealthThreshold = 0.5
-AttackCooldown = 1.2
-MoveSpeed = 120.0
+PhaseName = "Enraged"
+HealthThreshold = 0.2
+AttackCooldown = 1.0
+MoveSpeed = 140.0
 Damage = 35
-AnimationPrefix = "phase2_"
-IsEnraged = false
+AnimationPrefix = "enraged_"
+IsEnraged = true
