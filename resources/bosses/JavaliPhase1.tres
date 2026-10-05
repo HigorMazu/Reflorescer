@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="BossPhaseResource" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="BossPhaseResource" format=3 uid="uid://nb2cbyoajpjk"]
 
-[ext_resource type="Script" path="res://resources/bosses/BossPhaseResource.cs" id="1"]
+[ext_resource type="Script" uid="uid://r7mtoenygjru" path="res://resources/bosses/BossPhaseResource.cs" id="1"]
 
 [resource]
 script = ExtResource("1")
@@ -8,6 +8,3 @@ PhaseName = "Fase 1"
 HealthThreshold = 1.0
 AttackCooldown = 2.0
 MoveSpeed = 80.0
-Damage = 20
-AnimationPrefix = "phase1_"
-IsEnraged = false

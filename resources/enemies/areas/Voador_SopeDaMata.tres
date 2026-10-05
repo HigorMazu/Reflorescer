@@ -1,18 +1,11 @@
-[gd_resource type="Resource" script_class="EnemyStatsResource" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="EnemyStatsResource" format=3 uid="uid://cpnjlylulj6iu"]
 
-[ext_resource type="Script" path="res://resources/enemies/EnemyStatsResource.cs" id="1"]
+[ext_resource type="Script" uid="uid://cmtrad85chs2a" path="res://resources/enemies/EnemyStatsResource.cs" id="1"]
 
 [resource]
 script = ExtResource("1")
-MaxHealth = 50
-MoveSpeed = 80.0
 AttackDamage = 12
-AttackRange = 30.0
 DetectionRange = 180.0
 PatrolSpeed = 50.0
 ChaseSpeed = 90.0
-AttackCooldown = 1.0
-Gravity = 980.0
 KnockbackResistance = 0.1
-InterruptOnHit = true
-ExperienceReward = 10

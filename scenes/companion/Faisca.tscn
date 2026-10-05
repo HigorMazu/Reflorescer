@@ -1,8 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://faisca001"]
+[gd_scene format=3 uid="uid://faisca001"]
 
-[ext_resource type="Script" path="res://scripts/companion/FaiscaController.cs" id="1"]
-[ext_resource type="Script" path="res://scripts/companion/FaiscaStateMachine.cs" id="2"]
-[ext_resource type="Script" path="res://scripts/companion/FaiscaLightController.cs" id="3"]
+[ext_resource type="Script" uid="uid://cdg51hjy0jjr1" path="res://scripts/companion/FaiscaController.cs" id="1"]
+[ext_resource type="Script" uid="uid://btj66ywrqbfs2" path="res://scripts/companion/FaiscaStateMachine.cs" id="2"]
+[ext_resource type="Script" uid="uid://278ebwwa65gr" path="res://scripts/companion/FaiscaLightController.cs" id="3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_collision"]
 radius = 6.0
@@ -13,7 +13,7 @@ animations = [{
 "duration": 1.0,
 "texture": null
 }],
-"loop": true,
+"loop": 1,
 "name": &"fly",
 "speed": 8.0
 }, {
@@ -21,7 +21,7 @@ animations = [{
 "duration": 1.0,
 "texture": null
 }],
-"loop": true,
+"loop": 1,
 "name": &"idle",
 "speed": 5.0
 }, {
@@ -29,70 +29,59 @@ animations = [{
 "duration": 1.0,
 "texture": null
 }],
-"loop": true,
+"loop": 1,
 "name": &"investigate",
 "speed": 6.0
 }]
 
-[node name="Faisca" type="Node2D" groups=["Companion"]]
-collision_layer = 64
-collision_mask = 0
+[node name="Faisca" type="Node2D" unique_id=1823088456 groups=["Companion"]]
 script = ExtResource("1")
-FollowDistance = 40.0
-FollowHeight = -30.0
-FollowSpeed = 3.0
 SpritePath = NodePath("AnimatedSprite2D")
 LightPath = NodePath("PointLight2D")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=901659938]
 shape = SubResource("CircleShape2D_collision")
 
-[node name="Body" type="ColorRect" parent="."]
+[node name="Body" type="ColorRect" parent="." unique_id=1334556177]
 offset_left = -3.0
 offset_top = -3.0
 offset_right = 3.0
 offset_bottom = 3.0
 color = Color(1, 0.95, 0.4, 1)
 
-[node name="WingLeft" type="ColorRect" parent="."]
+[node name="WingLeft" type="ColorRect" parent="." unique_id=597390072]
 offset_left = -7.0
 offset_top = -5.0
 offset_right = -2.0
-offset_bottom = 0.0
 color = Color(0.8, 0.95, 1, 0.7)
 
-[node name="WingRight" type="ColorRect" parent="."]
+[node name="WingRight" type="ColorRect" parent="." unique_id=597371066]
 offset_left = 2.0
 offset_top = -5.0
 offset_right = 7.0
-offset_bottom = 0.0
 color = Color(0.8, 0.95, 1, 0.7)
 
-[node name="Eye" type="ColorRect" parent="."]
+[node name="Eye" type="ColorRect" parent="." unique_id=659695829]
 offset_left = -1.0
 offset_top = -2.0
 offset_right = 1.0
-offset_bottom = 0.0
 color = Color(0.1, 0.1, 0.1, 1)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1821947438]
 sprite_frames = SubResource("SpriteFrames_faisca")
 animation = &"fly"
 autoplay = "fly"
 
-[node name="PointLight2D" type="PointLight2D" parent="."]
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1031103702]
 color = Color(1, 0.95, 0.6, 1)
 energy = 1.5
-texture_scale = 2.5
 shadow_enabled = true
+texture_scale = 2.5
 
-[node name="FaiscaLightController" type="Node" parent="."]
+[node name="FaiscaLightController" type="Node" parent="." unique_id=951595221]
 script = ExtResource("3")
-BaseRadius = 128.0
 BaseIntensity = 1.5
-PulseSpeed = 2.0
-PulseAmplitude = 0.15
 LightPath = NodePath("../PointLight2D")
 
-[node name="FaiscaStateMachine" type="Node" parent="."]
+[node name="FaiscaStateMachine" type="Node" parent="." unique_id=115974655]
 script = ExtResource("2")

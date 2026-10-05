@@ -1,19 +1,19 @@
-[gd_scene load_steps=29 format=3]
+[gd_scene format=3 uid="uid://i2cfxei6tkuu"]
 
-[ext_resource type="Script" path="res://scripts/world/MudHazard.cs" id="mud"]
-[ext_resource type="Script" path="res://scripts/world/Checkpoint.cs" id="checkpoint"]
-[ext_resource type="Script" path="res://scripts/world/RestorationPoint.cs" id="restoration"]
-[ext_resource type="Resource" path="res://resources/enemies/areas/Rapido_IgarapeSufocado.tres" id="stats_rapido_IgarapeSufocado"]
-[ext_resource type="PackedScene" uid="uid://enemyrapido001" path="res://scenes/enemies/Enemy_Rapido.tscn" id="rapido"]
-[ext_resource type="Resource" path="res://resources/enemies/areas/Robusto_IgarapeSufocado.tres" id="stats_robusto_IgarapeSufocado"]
-[ext_resource type="PackedScene" uid="uid://enemyrobusto001" path="res://scenes/enemies/Enemy_Robusto.tscn" id="robusto"]
-[ext_resource type="Resource" path="res://resources/enemies/areas/Voador_IgarapeSufocado.tres" id="stats_voador_IgarapeSufocado"]
-[ext_resource type="PackedScene" uid="uid://enemyvoador001" path="res://scenes/enemies/Enemy_Voador.tscn" id="voador"]
-[ext_resource type="Script" path="res://scripts/world/TransitionTrigger.cs" id="transition"]
-[ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="player"]
+[ext_resource type="Script" uid="uid://kuhl1jc0cutg" path="res://scripts/world/AreaController.cs" id="area_script"]
+[ext_resource type="Script" uid="uid://bqc07gusublgs" path="res://scripts/world/Checkpoint.cs" id="checkpoint"]
 [ext_resource type="PackedScene" uid="uid://faisca001" path="res://scenes/companion/Faisca.tscn" id="faisca"]
 [ext_resource type="PackedScene" uid="uid://hud001" path="res://scenes/ui/HUD.tscn" id="hud"]
-[ext_resource type="Script" path="res://scripts/world/AreaController.cs" id="area_script"]
+[ext_resource type="Script" uid="uid://cwfewe2h56qkc" path="res://scripts/world/MudHazard.cs" id="mud"]
+[ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="player"]
+[ext_resource type="PackedScene" uid="uid://ci4wc4rwv0q7y" path="res://scenes/enemies/Enemy_Rapido.tscn" id="rapido"]
+[ext_resource type="Script" uid="uid://bbfsg13luf70a" path="res://scripts/world/RestorationPoint.cs" id="restoration"]
+[ext_resource type="PackedScene" uid="uid://do5tcbtkfllki" path="res://scenes/enemies/Enemy_Robusto.tscn" id="robusto"]
+[ext_resource type="Resource" path="res://resources/enemies/areas/Rapido_IgarapeSufocado.tres" id="stats_rapido_IgarapeSufocado"]
+[ext_resource type="Resource" path="res://resources/enemies/areas/Robusto_IgarapeSufocado.tres" id="stats_robusto_IgarapeSufocado"]
+[ext_resource type="Resource" path="res://resources/enemies/areas/Voador_IgarapeSufocado.tres" id="stats_voador_IgarapeSufocado"]
+[ext_resource type="Script" uid="uid://cpll441xskn7r" path="res://scripts/world/TransitionTrigger.cs" id="transition"]
+[ext_resource type="PackedScene" uid="uid://ci4whjcr73q7y" path="res://scenes/enemies/Enemy_Voador.tscn" id="voador"]
 
 [sub_resource type="RectangleShape2D" id="Shape_WallLeft"]
 size = Vector2(40, 800)
@@ -24,15 +24,6 @@ size = Vector2(40, 800)
 [sub_resource type="RectangleShape2D" id="Shape_Ground"]
 size = Vector2(2800, 80)
 
-[sub_resource type="RectangleShape2D" id="Shape_Mud1"]
-size = Vector2(440, 48)
-
-[sub_resource type="RectangleShape2D" id="Shape_Mud2"]
-size = Vector2(540, 48)
-
-[sub_resource type="RectangleShape2D" id="Shape_Mud3"]
-size = Vector2(240, 48)
-
 [sub_resource type="RectangleShape2D" id="Shape_Log1"]
 size = Vector2(120, 20)
 
@@ -41,6 +32,15 @@ size = Vector2(120, 20)
 
 [sub_resource type="RectangleShape2D" id="Shape_Log3"]
 size = Vector2(120, 20)
+
+[sub_resource type="RectangleShape2D" id="Shape_Mud1"]
+size = Vector2(440, 48)
+
+[sub_resource type="RectangleShape2D" id="Shape_Mud2"]
+size = Vector2(540, 48)
+
+[sub_resource type="RectangleShape2D" id="Shape_Mud3"]
+size = Vector2(240, 48)
 
 [sub_resource type="RectangleShape2D" id="Shape_Checkpoint1"]
 size = Vector2(32, 32)
@@ -57,38 +57,29 @@ size = Vector2(60, 100)
 [sub_resource type="RectangleShape2D" id="Shape_ToCovilDeKorrag"]
 size = Vector2(60, 100)
 
-[node name="IgarapeSufocado" type="Node2D"]
+[node name="IgarapeSufocado" type="Node2D" unique_id=1622802662 node_paths=PackedStringArray("SpawnPoints", "EnemySpawns", "Checkpoints")]
 script = ExtResource("area_script")
 AreaName = "IgarapeSufocado"
-UseCameraLimits = true
-CameraLimits = Rect2i(0, -200, 2800, 720)
+SpawnPoints = []
+EnemySpawns = []
+Checkpoints = []
 
-[node name="Background" type="ColorRect" parent="."]
-offset_left = 0.0
+[node name="Background" type="ColorRect" parent="." unique_id=1047004894]
 offset_top = -200.0
 offset_right = 2800.0
 offset_bottom = 520.0
 mouse_filter = 2
 color = Color(0.13, 0.17, 0.14, 1)
 
-[node name="Geometry" type="Node2D" parent="."]
+[node name="Geometry" type="Node2D" parent="." unique_id=1021510735]
 
-[node name="Hazards" type="Node2D" parent="."]
-
-[node name="Interactables" type="Node2D" parent="."]
-
-[node name="Transitions" type="Node2D" parent="."]
-
-[node name="Enemies" type="Node2D" parent="."]
-
-[node name="WallLeft" type="StaticBody2D" parent="Geometry"]
+[node name="WallLeft" type="StaticBody2D" parent="Geometry" unique_id=1097189896]
 position = Vector2(-20, 200)
-collision_layer = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/WallLeft"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/WallLeft" unique_id=1199160054]
 shape = SubResource("Shape_WallLeft")
 
-[node name="Visual" type="ColorRect" parent="Geometry/WallLeft"]
+[node name="Visual" type="ColorRect" parent="Geometry/WallLeft" unique_id=672814344]
 offset_left = -20.0
 offset_top = -400.0
 offset_right = 20.0
@@ -96,14 +87,13 @@ offset_bottom = 400.0
 mouse_filter = 2
 color = Color(0.2, 0.25, 0.18, 1)
 
-[node name="WallRight" type="StaticBody2D" parent="Geometry"]
+[node name="WallRight" type="StaticBody2D" parent="Geometry" unique_id=848577350]
 position = Vector2(2820, 200)
-collision_layer = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/WallRight"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/WallRight" unique_id=682257365]
 shape = SubResource("Shape_WallRight")
 
-[node name="Visual" type="ColorRect" parent="Geometry/WallRight"]
+[node name="Visual" type="ColorRect" parent="Geometry/WallRight" unique_id=2077210357]
 offset_left = -20.0
 offset_top = -400.0
 offset_right = 20.0
@@ -111,14 +101,13 @@ offset_bottom = 400.0
 mouse_filter = 2
 color = Color(0.2, 0.25, 0.18, 1)
 
-[node name="Ground" type="StaticBody2D" parent="Geometry"]
+[node name="Ground" type="StaticBody2D" parent="Geometry" unique_id=1961621984]
 position = Vector2(1400, 520)
-collision_layer = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Ground"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Ground" unique_id=1130620075]
 shape = SubResource("Shape_Ground")
 
-[node name="Visual" type="ColorRect" parent="Geometry/Ground"]
+[node name="Visual" type="ColorRect" parent="Geometry/Ground" unique_id=1762527003]
 offset_left = -1400.0
 offset_top = -40.0
 offset_right = 1400.0
@@ -126,7 +115,7 @@ offset_bottom = 40.0
 mouse_filter = 2
 color = Color(0.25, 0.3, 0.2, 1)
 
-[node name="Top" type="ColorRect" parent="Geometry/Ground"]
+[node name="Top" type="ColorRect" parent="Geometry/Ground" unique_id=466546765]
 offset_left = -1400.0
 offset_top = -44.0
 offset_right = 1400.0
@@ -134,17 +123,61 @@ offset_bottom = -38.0
 mouse_filter = 2
 color = Color(0.3, 0.55, 0.2, 1)
 
-[node name="Mud1" type="Area2D" parent="Hazards"]
+[node name="Log1" type="StaticBody2D" parent="Geometry" unique_id=852235192]
+position = Vector2(700, 410)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Log1" unique_id=1269071390]
+shape = SubResource("Shape_Log1")
+
+[node name="Visual" type="ColorRect" parent="Geometry/Log1" unique_id=14283606]
+offset_left = -60.0
+offset_top = -10.0
+offset_right = 60.0
+offset_bottom = 10.0
+mouse_filter = 2
+color = Color(0.38, 0.28, 0.18, 1)
+
+[node name="Log2" type="StaticBody2D" parent="Geometry" unique_id=1133999149]
+position = Vector2(1600, 410)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Log2" unique_id=712425713]
+shape = SubResource("Shape_Log2")
+
+[node name="Visual" type="ColorRect" parent="Geometry/Log2" unique_id=2085808203]
+offset_left = -60.0
+offset_top = -10.0
+offset_right = 60.0
+offset_bottom = 10.0
+mouse_filter = 2
+color = Color(0.38, 0.28, 0.18, 1)
+
+[node name="Log3" type="StaticBody2D" parent="Geometry" unique_id=120631137]
+position = Vector2(1800, 340)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Log3" unique_id=1168693489]
+shape = SubResource("Shape_Log3")
+
+[node name="Visual" type="ColorRect" parent="Geometry/Log3" unique_id=1660232445]
+offset_left = -60.0
+offset_top = -10.0
+offset_right = 60.0
+offset_bottom = 10.0
+mouse_filter = 2
+color = Color(0.38, 0.28, 0.18, 1)
+
+[node name="Hazards" type="Node2D" parent="." unique_id=1165549136]
+
+[node name="Mud1" type="Area2D" parent="Hazards" unique_id=379952436]
 position = Vector2(700, 460)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("mud")
 SpeedMultiplier = 0.55
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Mud1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Mud1" unique_id=217998249]
 shape = SubResource("Shape_Mud1")
 
-[node name="Mud" type="ColorRect" parent="Hazards/Mud1"]
+[node name="Mud" type="ColorRect" parent="Hazards/Mud1" unique_id=1766502576]
 offset_left = -220.0
 offset_top = 14.0
 offset_right = 220.0
@@ -152,7 +185,7 @@ offset_bottom = 24.0
 mouse_filter = 2
 color = Color(0.33, 0.24, 0.14, 1)
 
-[node name="Water" type="ColorRect" parent="Hazards/Mud1"]
+[node name="Water" type="ColorRect" parent="Hazards/Mud1" unique_id=203683571]
 offset_left = -220.0
 offset_top = 2.0
 offset_right = 220.0
@@ -160,17 +193,17 @@ offset_bottom = 14.0
 mouse_filter = 2
 color = Color(0.28, 0.34, 0.22, 0.75)
 
-[node name="Mud2" type="Area2D" parent="Hazards"]
+[node name="Mud2" type="Area2D" parent="Hazards" unique_id=78000614]
 position = Vector2(1690, 460)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("mud")
 SpeedMultiplier = 0.55
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Mud2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Mud2" unique_id=1405195815]
 shape = SubResource("Shape_Mud2")
 
-[node name="Mud" type="ColorRect" parent="Hazards/Mud2"]
+[node name="Mud" type="ColorRect" parent="Hazards/Mud2" unique_id=1603127977]
 offset_left = -270.0
 offset_top = 14.0
 offset_right = 270.0
@@ -178,7 +211,7 @@ offset_bottom = 24.0
 mouse_filter = 2
 color = Color(0.33, 0.24, 0.14, 1)
 
-[node name="Water" type="ColorRect" parent="Hazards/Mud2"]
+[node name="Water" type="ColorRect" parent="Hazards/Mud2" unique_id=689550931]
 offset_left = -270.0
 offset_top = 2.0
 offset_right = 270.0
@@ -186,17 +219,17 @@ offset_bottom = 14.0
 mouse_filter = 2
 color = Color(0.28, 0.34, 0.22, 0.75)
 
-[node name="Mud3" type="Area2D" parent="Hazards"]
+[node name="Mud3" type="Area2D" parent="Hazards" unique_id=1375208424]
 position = Vector2(2300, 460)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("mud")
 SpeedMultiplier = 0.55
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Mud3"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Mud3" unique_id=476167283]
 shape = SubResource("Shape_Mud3")
 
-[node name="Mud" type="ColorRect" parent="Hazards/Mud3"]
+[node name="Mud" type="ColorRect" parent="Hazards/Mud3" unique_id=958514551]
 offset_left = -120.0
 offset_top = 14.0
 offset_right = 120.0
@@ -204,7 +237,7 @@ offset_bottom = 24.0
 mouse_filter = 2
 color = Color(0.33, 0.24, 0.14, 1)
 
-[node name="Water" type="ColorRect" parent="Hazards/Mud3"]
+[node name="Water" type="ColorRect" parent="Hazards/Mud3" unique_id=811650824]
 offset_left = -120.0
 offset_top = 2.0
 offset_right = 120.0
@@ -212,71 +245,27 @@ offset_bottom = 14.0
 mouse_filter = 2
 color = Color(0.28, 0.34, 0.22, 0.75)
 
-[node name="Log1" type="StaticBody2D" parent="Geometry"]
-position = Vector2(700, 410)
-collision_layer = 1
+[node name="Interactables" type="Node2D" parent="." unique_id=402884543]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Log1"]
-shape = SubResource("Shape_Log1")
-
-[node name="Visual" type="ColorRect" parent="Geometry/Log1"]
-offset_left = -60.0
-offset_top = -10.0
-offset_right = 60.0
-offset_bottom = 10.0
-mouse_filter = 2
-color = Color(0.38, 0.28, 0.18, 1)
-
-[node name="Log2" type="StaticBody2D" parent="Geometry"]
-position = Vector2(1600, 410)
-collision_layer = 1
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Log2"]
-shape = SubResource("Shape_Log2")
-
-[node name="Visual" type="ColorRect" parent="Geometry/Log2"]
-offset_left = -60.0
-offset_top = -10.0
-offset_right = 60.0
-offset_bottom = 10.0
-mouse_filter = 2
-color = Color(0.38, 0.28, 0.18, 1)
-
-[node name="Log3" type="StaticBody2D" parent="Geometry"]
-position = Vector2(1800, 340)
-collision_layer = 1
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Log3"]
-shape = SubResource("Shape_Log3")
-
-[node name="Visual" type="ColorRect" parent="Geometry/Log3"]
-offset_left = -60.0
-offset_top = -10.0
-offset_right = 60.0
-offset_bottom = 10.0
-mouse_filter = 2
-color = Color(0.38, 0.28, 0.18, 1)
-
-[node name="Checkpoint1" type="Area2D" parent="Interactables"]
+[node name="Checkpoint1" type="Area2D" parent="Interactables" unique_id=582206645]
 position = Vector2(250, 480)
 collision_layer = 32
 collision_mask = 2
 script = ExtResource("checkpoint")
 CheckpointId = "cp_igarape_01"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/Checkpoint1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/Checkpoint1" unique_id=47011873]
 position = Vector2(0, -16)
 shape = SubResource("Shape_Checkpoint1")
 
-[node name="FlagPole" type="ColorRect" parent="Interactables/Checkpoint1"]
+[node name="FlagPole" type="ColorRect" parent="Interactables/Checkpoint1" unique_id=1323632777]
 offset_left = -2.0
 offset_top = -30.0
 offset_right = 2.0
-offset_bottom = 0.0
 mouse_filter = 2
 color = Color(0.5, 0.5, 0.5, 1)
 
-[node name="Flag" type="ColorRect" parent="Interactables/Checkpoint1"]
+[node name="Flag" type="ColorRect" parent="Interactables/Checkpoint1" unique_id=1707114419]
 offset_left = 2.0
 offset_top = -30.0
 offset_right = 16.0
@@ -284,26 +273,25 @@ offset_bottom = -20.0
 mouse_filter = 2
 color = Color(0.2, 0.6, 0.9, 1)
 
-[node name="Checkpoint2" type="Area2D" parent="Interactables"]
+[node name="Checkpoint2" type="Area2D" parent="Interactables" unique_id=54751912]
 position = Vector2(2560, 480)
 collision_layer = 32
 collision_mask = 2
 script = ExtResource("checkpoint")
 CheckpointId = "cp_igarape_02"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/Checkpoint2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/Checkpoint2" unique_id=1398115949]
 position = Vector2(0, -16)
 shape = SubResource("Shape_Checkpoint2")
 
-[node name="FlagPole" type="ColorRect" parent="Interactables/Checkpoint2"]
+[node name="FlagPole" type="ColorRect" parent="Interactables/Checkpoint2" unique_id=1369358130]
 offset_left = -2.0
 offset_top = -30.0
 offset_right = 2.0
-offset_bottom = 0.0
 mouse_filter = 2
 color = Color(0.5, 0.5, 0.5, 1)
 
-[node name="Flag" type="ColorRect" parent="Interactables/Checkpoint2"]
+[node name="Flag" type="ColorRect" parent="Interactables/Checkpoint2" unique_id=1087069876]
 offset_left = 2.0
 offset_top = -30.0
 offset_right = 16.0
@@ -311,7 +299,7 @@ offset_bottom = -20.0
 mouse_filter = 2
 color = Color(0.2, 0.6, 0.9, 1)
 
-[node name="RestorationPoint1" type="Area2D" parent="Interactables"]
+[node name="RestorationPoint1" type="Area2D" parent="Interactables" unique_id=1427585006]
 position = Vector2(1180, 480)
 collision_layer = 32
 collision_mask = 2
@@ -320,19 +308,18 @@ PointId = "restoration_igarape_01"
 DegradedVisuals = Array[NodePath]([NodePath("PollutedWater"), NodePath("Trash"), NodePath("DeadStumpA"), NodePath("DeadStumpB"), NodePath("DeadStumpC")])
 RestoredVisuals = Array[NodePath]([NodePath("ClearWater"), NodePath("Riverbank"), NodePath("SaplingA"), NodePath("SaplingB"), NodePath("Lily")])
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/RestorationPoint1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/RestorationPoint1" unique_id=2011281498]
 position = Vector2(0, -16)
 shape = SubResource("Shape_RestorationPoint1")
 
-[node name="PollutedWater" type="ColorRect" parent="Interactables/RestorationPoint1"]
+[node name="PollutedWater" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=2087670329]
 offset_left = -160.0
 offset_top = -6.0
 offset_right = 160.0
-offset_bottom = 0.0
 mouse_filter = 2
 color = Color(0.3, 0.28, 0.2, 1)
 
-[node name="Trash" type="ColorRect" parent="Interactables/RestorationPoint1"]
+[node name="Trash" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=1095411436]
 offset_left = -40.0
 offset_top = -10.0
 offset_right = -20.0
@@ -340,40 +327,36 @@ offset_bottom = -2.0
 mouse_filter = 2
 color = Color(0.6, 0.6, 0.62, 1)
 
-[node name="DeadStumpA" type="ColorRect" parent="Interactables/RestorationPoint1"]
+[node name="DeadStumpA" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=1188298558]
 offset_left = -120.0
 offset_top = -26.0
 offset_right = -104.0
-offset_bottom = 0.0
 mouse_filter = 2
 color = Color(0.38, 0.27, 0.16, 1)
 
-[node name="DeadStumpB" type="ColorRect" parent="Interactables/RestorationPoint1"]
+[node name="DeadStumpB" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=914047344]
 offset_left = 90.0
 offset_top = -40.0
 offset_right = 108.0
-offset_bottom = 0.0
 mouse_filter = 2
 color = Color(0.38, 0.27, 0.16, 1)
 
-[node name="DeadStumpC" type="ColorRect" parent="Interactables/RestorationPoint1"]
+[node name="DeadStumpC" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=494141671]
 offset_left = 140.0
 offset_top = -18.0
 offset_right = 152.0
-offset_bottom = 0.0
 mouse_filter = 2
 color = Color(0.38, 0.27, 0.16, 1)
 
-[node name="ClearWater" type="ColorRect" parent="Interactables/RestorationPoint1"]
+[node name="ClearWater" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=472925352]
 visible = false
 offset_left = -160.0
 offset_top = -6.0
 offset_right = 160.0
-offset_bottom = 0.0
 mouse_filter = 2
 color = Color(0.25, 0.55, 0.65, 1)
 
-[node name="Riverbank" type="ColorRect" parent="Interactables/RestorationPoint1"]
+[node name="Riverbank" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=1794783724]
 visible = false
 offset_left = -160.0
 offset_top = -10.0
@@ -382,7 +365,7 @@ offset_bottom = -6.0
 mouse_filter = 2
 color = Color(0.3, 0.72, 0.3, 1)
 
-[node name="SaplingA" type="ColorRect" parent="Interactables/RestorationPoint1"]
+[node name="SaplingA" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=859052259]
 visible = false
 offset_left = -118.0
 offset_top = -44.0
@@ -391,7 +374,7 @@ offset_bottom = -6.0
 mouse_filter = 2
 color = Color(0.4, 0.85, 0.35, 1)
 
-[node name="SaplingB" type="ColorRect" parent="Interactables/RestorationPoint1"]
+[node name="SaplingB" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=243833129]
 visible = false
 offset_left = 92.0
 offset_top = -60.0
@@ -400,7 +383,7 @@ offset_bottom = -6.0
 mouse_filter = 2
 color = Color(0.35, 0.78, 0.3, 1)
 
-[node name="Lily" type="ColorRect" parent="Interactables/RestorationPoint1"]
+[node name="Lily" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=258122148]
 visible = false
 offset_left = -20.0
 offset_top = -12.0
@@ -409,31 +392,9 @@ offset_bottom = -6.0
 mouse_filter = 2
 color = Color(0.95, 0.85, 0.9, 1)
 
-[node name="Rapido1" parent="Enemies" instance=ExtResource("rapido")]
-position = Vector2(820, 460)
-StatsResource = ExtResource("stats_rapido_IgarapeSufocado")
+[node name="Transitions" type="Node2D" parent="." unique_id=1540630245]
 
-[node name="Robusto1" parent="Enemies" instance=ExtResource("robusto")]
-position = Vector2(1000, 460)
-StatsResource = ExtResource("stats_robusto_IgarapeSufocado")
-
-[node name="Voador1" parent="Enemies" instance=ExtResource("voador")]
-position = Vector2(1500, 340)
-StatsResource = ExtResource("stats_voador_IgarapeSufocado")
-
-[node name="Rapido2" parent="Enemies" instance=ExtResource("rapido")]
-position = Vector2(1850, 460)
-StatsResource = ExtResource("stats_rapido_IgarapeSufocado")
-
-[node name="Robusto2" parent="Enemies" instance=ExtResource("robusto")]
-position = Vector2(2100, 460)
-StatsResource = ExtResource("stats_robusto_IgarapeSufocado")
-
-[node name="Robusto3" parent="Enemies" instance=ExtResource("robusto")]
-position = Vector2(2380, 460)
-StatsResource = ExtResource("stats_robusto_IgarapeSufocado")
-
-[node name="ToDosselVivo" type="Area2D" parent="Transitions"]
+[node name="ToDosselVivo" type="Area2D" parent="Transitions" unique_id=31299529]
 position = Vector2(20, 430)
 collision_layer = 32
 collision_mask = 2
@@ -441,10 +402,10 @@ script = ExtResource("transition")
 TargetScene = "res://scenes/areas/DosselVivo.tscn"
 TargetArea = "SpawnFromIgarapeSufocado"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/ToDosselVivo"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/ToDosselVivo" unique_id=1462562959]
 shape = SubResource("Shape_ToDosselVivo")
 
-[node name="PortalVisual" type="ColorRect" parent="Transitions/ToDosselVivo"]
+[node name="PortalVisual" type="ColorRect" parent="Transitions/ToDosselVivo" unique_id=1955666230]
 offset_left = -15.0
 offset_top = -50.0
 offset_right = 15.0
@@ -452,7 +413,7 @@ offset_bottom = 50.0
 mouse_filter = 2
 color = Color(0.4, 0.2, 0.8, 0.6)
 
-[node name="ToCovilDeKorrag" type="Area2D" parent="Transitions"]
+[node name="ToCovilDeKorrag" type="Area2D" parent="Transitions" unique_id=141938970]
 position = Vector2(2770, 430)
 collision_layer = 32
 collision_mask = 2
@@ -460,10 +421,10 @@ script = ExtResource("transition")
 TargetScene = "res://scenes/areas/CovilDeKorrag.tscn"
 TargetArea = "SpawnFromIgarapeSufocado"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/ToCovilDeKorrag"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/ToCovilDeKorrag" unique_id=203541112]
 shape = SubResource("Shape_ToCovilDeKorrag")
 
-[node name="PortalVisual" type="ColorRect" parent="Transitions/ToCovilDeKorrag"]
+[node name="PortalVisual" type="ColorRect" parent="Transitions/ToCovilDeKorrag" unique_id=1953951542]
 offset_left = -15.0
 offset_top = -50.0
 offset_right = 15.0
@@ -471,13 +432,42 @@ offset_bottom = 50.0
 mouse_filter = 2
 color = Color(0.4, 0.2, 0.8, 0.6)
 
-[node name="SpawnFromDosselVivo" type="Marker2D" parent="." groups=["SpawnPoints"]]
+[node name="Enemies" type="Node2D" parent="." unique_id=1395938337]
+
+[node name="Rapido1" parent="Enemies" unique_id=244939836 instance=ExtResource("rapido")]
+position = Vector2(820, 460)
+StatsResource = ExtResource("stats_rapido_IgarapeSufocado")
+
+[node name="Robusto1" parent="Enemies" unique_id=1651502551 instance=ExtResource("robusto")]
+position = Vector2(1000, 460)
+StatsResource = ExtResource("stats_robusto_IgarapeSufocado")
+
+[node name="Voador1" parent="Enemies" unique_id=524452041 instance=ExtResource("voador")]
+position = Vector2(1500, 340)
+HoverAmplitude = 10.0
+HoverFrequency = 2.0
+HoverStiffness = 6.0
+StatsResource = ExtResource("stats_voador_IgarapeSufocado")
+
+[node name="Rapido2" parent="Enemies" unique_id=838706145 instance=ExtResource("rapido")]
+position = Vector2(1850, 460)
+StatsResource = ExtResource("stats_rapido_IgarapeSufocado")
+
+[node name="Robusto2" parent="Enemies" unique_id=902904205 instance=ExtResource("robusto")]
+position = Vector2(2100, 460)
+StatsResource = ExtResource("stats_robusto_IgarapeSufocado")
+
+[node name="Robusto3" parent="Enemies" unique_id=764118973 instance=ExtResource("robusto")]
+position = Vector2(2380, 460)
+StatsResource = ExtResource("stats_robusto_IgarapeSufocado")
+
+[node name="SpawnFromDosselVivo" type="Marker2D" parent="." unique_id=726377294 groups=["SpawnPoints"]]
 position = Vector2(110, 460)
 
-[node name="Player" parent="." instance=ExtResource("player")]
+[node name="Player" parent="." unique_id=1458066698 instance=ExtResource("player")]
 position = Vector2(110, 460)
 
-[node name="Faisca" parent="." instance=ExtResource("faisca")]
+[node name="Faisca" parent="." unique_id=707348707 instance=ExtResource("faisca")]
 position = Vector2(70, 430)
 
-[node name="HUD" parent="." instance=ExtResource("hud")]
+[node name="HUD" parent="." unique_id=1220209549 instance=ExtResource("hud")]

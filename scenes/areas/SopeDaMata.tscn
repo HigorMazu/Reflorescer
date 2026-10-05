@@ -1,18 +1,15 @@
-[gd_scene load_steps=26 format=3]
+[gd_scene format=3 uid="uid://xyhomn3homyq"]
 
-[ext_resource type="Script" path="res://scripts/world/Checkpoint.cs" id="checkpoint"]
-[ext_resource type="Script" path="res://scripts/world/RestorationPoint.cs" id="restoration"]
-[ext_resource type="Resource" path="res://resources/enemies/areas/Robusto_SopeDaMata.tres" id="stats_robusto_SopeDaMata"]
-[ext_resource type="PackedScene" uid="uid://enemyrobusto001" path="res://scenes/enemies/Enemy_Robusto.tscn" id="robusto"]
-[ext_resource type="Resource" path="res://resources/enemies/areas/Voador_SopeDaMata.tres" id="stats_voador_SopeDaMata"]
-[ext_resource type="PackedScene" uid="uid://enemyvoador001" path="res://scenes/enemies/Enemy_Voador.tscn" id="voador"]
-[ext_resource type="Resource" path="res://resources/enemies/areas/Rapido_SopeDaMata.tres" id="stats_rapido_SopeDaMata"]
-[ext_resource type="PackedScene" uid="uid://enemyrapido001" path="res://scenes/enemies/Enemy_Rapido.tscn" id="rapido"]
-[ext_resource type="Script" path="res://scripts/world/TransitionTrigger.cs" id="transition"]
-[ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="player"]
+[ext_resource type="Script" uid="uid://kuhl1jc0cutg" path="res://scripts/world/AreaController.cs" id="area_script"]
+[ext_resource type="Script" uid="uid://bqc07gusublgs" path="res://scripts/world/Checkpoint.cs" id="checkpoint"]
 [ext_resource type="PackedScene" uid="uid://faisca001" path="res://scenes/companion/Faisca.tscn" id="faisca"]
 [ext_resource type="PackedScene" uid="uid://hud001" path="res://scenes/ui/HUD.tscn" id="hud"]
-[ext_resource type="Script" path="res://scripts/world/AreaController.cs" id="area_script"]
+[ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="player"]
+[ext_resource type="PackedScene" uid="uid://ci4wc4rwv0q7y" path="res://scenes/enemies/Enemy_Rapido.tscn" id="rapido"]
+[ext_resource type="Script" uid="uid://bbfsg13luf70a" path="res://scripts/world/RestorationPoint.cs" id="restoration"]
+[ext_resource type="PackedScene" uid="uid://do5tcbtkfllki" path="res://scenes/enemies/Enemy_Robusto.tscn" id="robusto"]
+[ext_resource type="Script" uid="uid://cpll441xskn7r" path="res://scripts/world/TransitionTrigger.cs" id="transition"]
+[ext_resource type="PackedScene" uid="uid://ci4whjcr73q7y" path="res://scenes/enemies/Enemy_Voador.tscn" id="voador"]
 
 [sub_resource type="RectangleShape2D" id="Shape_WallLeft"]
 size = Vector2(40, 800)
@@ -50,38 +47,29 @@ size = Vector2(32, 32)
 [sub_resource type="RectangleShape2D" id="Shape_ToDosselVivo"]
 size = Vector2(60, 100)
 
-[node name="SopeDaMata" type="Node2D"]
+[node name="SopeDaMata" type="Node2D" unique_id=832451940 node_paths=PackedStringArray("SpawnPoints", "EnemySpawns", "Checkpoints")]
 script = ExtResource("area_script")
 AreaName = "SopeDaMata"
-UseCameraLimits = true
-CameraLimits = Rect2i(0, -200, 2400, 720)
+SpawnPoints = []
+EnemySpawns = []
+Checkpoints = []
 
-[node name="Background" type="ColorRect" parent="."]
-offset_left = 0.0
+[node name="Background" type="ColorRect" parent="." unique_id=877405262]
 offset_top = -200.0
 offset_right = 2400.0
 offset_bottom = 520.0
 mouse_filter = 2
 color = Color(0.16, 0.22, 0.18, 1)
 
-[node name="Geometry" type="Node2D" parent="."]
+[node name="Geometry" type="Node2D" parent="." unique_id=661400436]
 
-[node name="Hazards" type="Node2D" parent="."]
-
-[node name="Interactables" type="Node2D" parent="."]
-
-[node name="Transitions" type="Node2D" parent="."]
-
-[node name="Enemies" type="Node2D" parent="."]
-
-[node name="WallLeft" type="StaticBody2D" parent="Geometry"]
+[node name="WallLeft" type="StaticBody2D" parent="Geometry" unique_id=1192030252]
 position = Vector2(-20, 200)
-collision_layer = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/WallLeft"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/WallLeft" unique_id=1516362614]
 shape = SubResource("Shape_WallLeft")
 
-[node name="Visual" type="ColorRect" parent="Geometry/WallLeft"]
+[node name="Visual" type="ColorRect" parent="Geometry/WallLeft" unique_id=430967192]
 offset_left = -20.0
 offset_top = -400.0
 offset_right = 20.0
@@ -89,14 +77,13 @@ offset_bottom = 400.0
 mouse_filter = 2
 color = Color(0.2, 0.25, 0.18, 1)
 
-[node name="WallRight" type="StaticBody2D" parent="Geometry"]
+[node name="WallRight" type="StaticBody2D" parent="Geometry" unique_id=1525749017]
 position = Vector2(2420, 200)
-collision_layer = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/WallRight"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/WallRight" unique_id=709680017]
 shape = SubResource("Shape_WallRight")
 
-[node name="Visual" type="ColorRect" parent="Geometry/WallRight"]
+[node name="Visual" type="ColorRect" parent="Geometry/WallRight" unique_id=1847215245]
 offset_left = -20.0
 offset_top = -400.0
 offset_right = 20.0
@@ -104,14 +91,13 @@ offset_bottom = 400.0
 mouse_filter = 2
 color = Color(0.2, 0.25, 0.18, 1)
 
-[node name="Ground1" type="StaticBody2D" parent="Geometry"]
+[node name="Ground1" type="StaticBody2D" parent="Geometry" unique_id=1190446839]
 position = Vector2(450, 520)
-collision_layer = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Ground1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Ground1" unique_id=1121489657]
 shape = SubResource("Shape_Ground1")
 
-[node name="Visual" type="ColorRect" parent="Geometry/Ground1"]
+[node name="Visual" type="ColorRect" parent="Geometry/Ground1" unique_id=853616844]
 offset_left = -450.0
 offset_top = -40.0
 offset_right = 450.0
@@ -119,7 +105,7 @@ offset_bottom = 40.0
 mouse_filter = 2
 color = Color(0.25, 0.3, 0.2, 1)
 
-[node name="Top" type="ColorRect" parent="Geometry/Ground1"]
+[node name="Top" type="ColorRect" parent="Geometry/Ground1" unique_id=972790905]
 offset_left = -450.0
 offset_top = -44.0
 offset_right = 450.0
@@ -127,14 +113,13 @@ offset_bottom = -38.0
 mouse_filter = 2
 color = Color(0.3, 0.55, 0.2, 1)
 
-[node name="Ground2Step" type="StaticBody2D" parent="Geometry"]
+[node name="Ground2Step" type="StaticBody2D" parent="Geometry" unique_id=913689946]
 position = Vector2(1100, 480)
-collision_layer = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Ground2Step"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Ground2Step" unique_id=1630893015]
 shape = SubResource("Shape_Ground2Step")
 
-[node name="Visual" type="ColorRect" parent="Geometry/Ground2Step"]
+[node name="Visual" type="ColorRect" parent="Geometry/Ground2Step" unique_id=705235202]
 offset_left = -200.0
 offset_top = -40.0
 offset_right = 200.0
@@ -142,7 +127,7 @@ offset_bottom = 40.0
 mouse_filter = 2
 color = Color(0.25, 0.3, 0.2, 1)
 
-[node name="Top" type="ColorRect" parent="Geometry/Ground2Step"]
+[node name="Top" type="ColorRect" parent="Geometry/Ground2Step" unique_id=1153889067]
 offset_left = -200.0
 offset_top = -44.0
 offset_right = 200.0
@@ -150,14 +135,13 @@ offset_bottom = -38.0
 mouse_filter = 2
 color = Color(0.3, 0.55, 0.2, 1)
 
-[node name="Ground3Ditch" type="StaticBody2D" parent="Geometry"]
+[node name="Ground3Ditch" type="StaticBody2D" parent="Geometry" unique_id=1774749201]
 position = Vector2(1360, 560)
-collision_layer = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Ground3Ditch"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Ground3Ditch" unique_id=1802616544]
 shape = SubResource("Shape_Ground3Ditch")
 
-[node name="Visual" type="ColorRect" parent="Geometry/Ground3Ditch"]
+[node name="Visual" type="ColorRect" parent="Geometry/Ground3Ditch" unique_id=444387497]
 offset_left = -60.0
 offset_top = -40.0
 offset_right = 60.0
@@ -165,7 +149,7 @@ offset_bottom = 40.0
 mouse_filter = 2
 color = Color(0.25, 0.3, 0.2, 1)
 
-[node name="Top" type="ColorRect" parent="Geometry/Ground3Ditch"]
+[node name="Top" type="ColorRect" parent="Geometry/Ground3Ditch" unique_id=1542287660]
 offset_left = -60.0
 offset_top = -44.0
 offset_right = 60.0
@@ -173,14 +157,13 @@ offset_bottom = -38.0
 mouse_filter = 2
 color = Color(0.3, 0.55, 0.2, 1)
 
-[node name="Ground4" type="StaticBody2D" parent="Geometry"]
+[node name="Ground4" type="StaticBody2D" parent="Geometry" unique_id=1393185225]
 position = Vector2(1910, 520)
-collision_layer = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Ground4"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Ground4" unique_id=1020890094]
 shape = SubResource("Shape_Ground4")
 
-[node name="Visual" type="ColorRect" parent="Geometry/Ground4"]
+[node name="Visual" type="ColorRect" parent="Geometry/Ground4" unique_id=1126293855]
 offset_left = -490.0
 offset_top = -40.0
 offset_right = 490.0
@@ -188,7 +171,7 @@ offset_bottom = 40.0
 mouse_filter = 2
 color = Color(0.25, 0.3, 0.2, 1)
 
-[node name="Top" type="ColorRect" parent="Geometry/Ground4"]
+[node name="Top" type="ColorRect" parent="Geometry/Ground4" unique_id=1047410633]
 offset_left = -490.0
 offset_top = -44.0
 offset_right = 490.0
@@ -196,14 +179,13 @@ offset_bottom = -38.0
 mouse_filter = 2
 color = Color(0.3, 0.55, 0.2, 1)
 
-[node name="Platform1" type="StaticBody2D" parent="Geometry"]
+[node name="Platform1" type="StaticBody2D" parent="Geometry" unique_id=67324683]
 position = Vector2(620, 410)
-collision_layer = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Platform1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Platform1" unique_id=1129938014]
 shape = SubResource("Shape_Platform1")
 
-[node name="Visual" type="ColorRect" parent="Geometry/Platform1"]
+[node name="Visual" type="ColorRect" parent="Geometry/Platform1" unique_id=647838194]
 offset_left = -70.0
 offset_top = -10.0
 offset_right = 70.0
@@ -211,7 +193,7 @@ offset_bottom = 10.0
 mouse_filter = 2
 color = Color(0.35, 0.4, 0.25, 1)
 
-[node name="Top" type="ColorRect" parent="Geometry/Platform1"]
+[node name="Top" type="ColorRect" parent="Geometry/Platform1" unique_id=748599314]
 offset_left = -70.0
 offset_top = -14.0
 offset_right = 70.0
@@ -219,14 +201,13 @@ offset_bottom = -8.0
 mouse_filter = 2
 color = Color(0.3, 0.55, 0.2, 1)
 
-[node name="Platform2" type="StaticBody2D" parent="Geometry"]
+[node name="Platform2" type="StaticBody2D" parent="Geometry" unique_id=1285798840]
 position = Vector2(1700, 400)
-collision_layer = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Platform2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Platform2" unique_id=123094668]
 shape = SubResource("Shape_Platform2")
 
-[node name="Visual" type="ColorRect" parent="Geometry/Platform2"]
+[node name="Visual" type="ColorRect" parent="Geometry/Platform2" unique_id=610287191]
 offset_left = -70.0
 offset_top = -10.0
 offset_right = 70.0
@@ -234,7 +215,7 @@ offset_bottom = 10.0
 mouse_filter = 2
 color = Color(0.35, 0.4, 0.25, 1)
 
-[node name="Top" type="ColorRect" parent="Geometry/Platform2"]
+[node name="Top" type="ColorRect" parent="Geometry/Platform2" unique_id=1999402752]
 offset_left = -70.0
 offset_top = -14.0
 offset_right = 70.0
@@ -242,14 +223,13 @@ offset_bottom = -8.0
 mouse_filter = 2
 color = Color(0.3, 0.55, 0.2, 1)
 
-[node name="Platform3" type="StaticBody2D" parent="Geometry"]
+[node name="Platform3" type="StaticBody2D" parent="Geometry" unique_id=1434833255]
 position = Vector2(1900, 320)
-collision_layer = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Platform3"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Platform3" unique_id=1922787873]
 shape = SubResource("Shape_Platform3")
 
-[node name="Visual" type="ColorRect" parent="Geometry/Platform3"]
+[node name="Visual" type="ColorRect" parent="Geometry/Platform3" unique_id=852182159]
 offset_left = -70.0
 offset_top = -10.0
 offset_right = 70.0
@@ -257,7 +237,7 @@ offset_bottom = 10.0
 mouse_filter = 2
 color = Color(0.35, 0.4, 0.25, 1)
 
-[node name="Top" type="ColorRect" parent="Geometry/Platform3"]
+[node name="Top" type="ColorRect" parent="Geometry/Platform3" unique_id=469892359]
 offset_left = -70.0
 offset_top = -14.0
 offset_right = 70.0
@@ -265,26 +245,29 @@ offset_bottom = -8.0
 mouse_filter = 2
 color = Color(0.3, 0.55, 0.2, 1)
 
-[node name="Checkpoint1" type="Area2D" parent="Interactables"]
+[node name="Hazards" type="Node2D" parent="." unique_id=626162232]
+
+[node name="Interactables" type="Node2D" parent="." unique_id=717940243]
+
+[node name="Checkpoint1" type="Area2D" parent="Interactables" unique_id=1530011241]
 position = Vector2(330, 480)
 collision_layer = 32
 collision_mask = 2
 script = ExtResource("checkpoint")
 CheckpointId = "cp_sope_01"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/Checkpoint1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/Checkpoint1" unique_id=1672038228]
 position = Vector2(0, -16)
 shape = SubResource("Shape_Checkpoint1")
 
-[node name="FlagPole" type="ColorRect" parent="Interactables/Checkpoint1"]
+[node name="FlagPole" type="ColorRect" parent="Interactables/Checkpoint1" unique_id=963203893]
 offset_left = -2.0
 offset_top = -30.0
 offset_right = 2.0
-offset_bottom = 0.0
 mouse_filter = 2
 color = Color(0.5, 0.5, 0.5, 1)
 
-[node name="Flag" type="ColorRect" parent="Interactables/Checkpoint1"]
+[node name="Flag" type="ColorRect" parent="Interactables/Checkpoint1" unique_id=44895776]
 offset_left = 2.0
 offset_top = -30.0
 offset_right = 16.0
@@ -292,7 +275,7 @@ offset_bottom = -20.0
 mouse_filter = 2
 color = Color(0.2, 0.6, 0.9, 1)
 
-[node name="RestorationPoint1" type="Area2D" parent="Interactables"]
+[node name="RestorationPoint1" type="Area2D" parent="Interactables" unique_id=1571835429]
 position = Vector2(1100, 440)
 collision_layer = 32
 collision_mask = 2
@@ -301,65 +284,43 @@ PointId = "restoration_sope_01"
 DegradedVisuals = Array[NodePath]([NodePath("DegradedGround"), NodePath("Stump")])
 RestoredVisuals = Array[NodePath]([NodePath("RestoredGround"), NodePath("Sprout")])
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/RestorationPoint1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/RestorationPoint1" unique_id=1566121383]
 position = Vector2(0, -16)
 shape = SubResource("Shape_RestorationPoint1")
 
-[node name="DegradedGround" type="ColorRect" parent="Interactables/RestorationPoint1"]
+[node name="DegradedGround" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=934682115]
 offset_left = -56.0
 offset_top = -4.0
 offset_right = 56.0
-offset_bottom = 0.0
 mouse_filter = 2
 color = Color(0.55, 0.45, 0.28, 1)
 
-[node name="Stump" type="ColorRect" parent="Interactables/RestorationPoint1"]
+[node name="Stump" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=1033355171]
 offset_left = -10.0
 offset_top = -14.0
 offset_right = 10.0
-offset_bottom = 0.0
 mouse_filter = 2
 color = Color(0.45, 0.32, 0.18, 1)
 
-[node name="RestoredGround" type="ColorRect" parent="Interactables/RestorationPoint1"]
+[node name="RestoredGround" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=694485991]
 visible = false
 offset_left = -56.0
 offset_top = -4.0
 offset_right = 56.0
-offset_bottom = 0.0
 mouse_filter = 2
 color = Color(0.3, 0.72, 0.3, 1)
 
-[node name="Sprout" type="ColorRect" parent="Interactables/RestorationPoint1"]
+[node name="Sprout" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=1396480643]
 visible = false
 offset_left = -5.0
 offset_top = -30.0
 offset_right = 5.0
-offset_bottom = 0.0
 mouse_filter = 2
 color = Color(0.4, 0.85, 0.35, 1)
 
-[node name="Robusto1" parent="Enemies" instance=ExtResource("robusto")]
-position = Vector2(780, 460)
-StatsResource = ExtResource("stats_robusto_SopeDaMata")
+[node name="Transitions" type="Node2D" parent="." unique_id=1976270685]
 
-[node name="Voador1" parent="Enemies" instance=ExtResource("voador")]
-position = Vector2(1250, 360)
-StatsResource = ExtResource("stats_voador_SopeDaMata")
-
-[node name="Rapido1" parent="Enemies" instance=ExtResource("rapido")]
-position = Vector2(1600, 460)
-StatsResource = ExtResource("stats_rapido_SopeDaMata")
-
-[node name="Voador2" parent="Enemies" instance=ExtResource("voador")]
-position = Vector2(1950, 250)
-StatsResource = ExtResource("stats_voador_SopeDaMata")
-
-[node name="Rapido2" parent="Enemies" instance=ExtResource("rapido")]
-position = Vector2(2150, 460)
-StatsResource = ExtResource("stats_rapido_SopeDaMata")
-
-[node name="ToDosselVivo" type="Area2D" parent="Transitions"]
+[node name="ToDosselVivo" type="Area2D" parent="Transitions" unique_id=346809269]
 position = Vector2(2370, 430)
 collision_layer = 32
 collision_mask = 2
@@ -367,10 +328,10 @@ script = ExtResource("transition")
 TargetScene = "res://scenes/areas/DosselVivo.tscn"
 TargetArea = "SpawnFromSopeDaMata"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/ToDosselVivo"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/ToDosselVivo" unique_id=1038180797]
 shape = SubResource("Shape_ToDosselVivo")
 
-[node name="PortalVisual" type="ColorRect" parent="Transitions/ToDosselVivo"]
+[node name="PortalVisual" type="ColorRect" parent="Transitions/ToDosselVivo" unique_id=595144287]
 offset_left = -15.0
 offset_top = -50.0
 offset_right = 15.0
@@ -378,16 +339,39 @@ offset_bottom = 50.0
 mouse_filter = 2
 color = Color(0.4, 0.2, 0.8, 0.6)
 
-[node name="SpawnInicial" type="Marker2D" parent="." groups=["SpawnPoints"]]
+[node name="Enemies" type="Node2D" parent="." unique_id=690855189]
+
+[node name="Robusto1" parent="Enemies" unique_id=1465745793 instance=ExtResource("robusto")]
+position = Vector2(780, 460)
+
+[node name="Voador1" parent="Enemies" unique_id=809296729 instance=ExtResource("voador")]
+position = Vector2(1250, 360)
+HoverAmplitude = 10.0
+HoverFrequency = 2.0
+HoverStiffness = 6.0
+
+[node name="Rapido1" parent="Enemies" unique_id=1745473039 instance=ExtResource("rapido")]
+position = Vector2(1600, 460)
+
+[node name="Voador2" parent="Enemies" unique_id=575249198 instance=ExtResource("voador")]
+position = Vector2(1950, 250)
+HoverAmplitude = 10.0
+HoverFrequency = 2.0
+HoverStiffness = 6.0
+
+[node name="Rapido2" parent="Enemies" unique_id=886523975 instance=ExtResource("rapido")]
+position = Vector2(2150, 460)
+
+[node name="SpawnInicial" type="Marker2D" parent="." unique_id=1594442418 groups=["SpawnPoints"]]
 position = Vector2(160, 460)
 
-[node name="SpawnFromDosselVivo" type="Marker2D" parent="." groups=["SpawnPoints"]]
+[node name="SpawnFromDosselVivo" type="Marker2D" parent="." unique_id=1396213493 groups=["SpawnPoints"]]
 position = Vector2(2260, 460)
 
-[node name="Player" parent="." instance=ExtResource("player")]
+[node name="Player" parent="." unique_id=1485657331 instance=ExtResource("player")]
 position = Vector2(160, 460)
 
-[node name="Faisca" parent="." instance=ExtResource("faisca")]
+[node name="Faisca" parent="." unique_id=1051868798 instance=ExtResource("faisca")]
 position = Vector2(120, 430)
 
-[node name="HUD" parent="." instance=ExtResource("hud")]
+[node name="HUD" parent="." unique_id=1555559757 instance=ExtResource("hud")]

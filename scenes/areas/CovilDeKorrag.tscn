@@ -1,11 +1,11 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene format=3 uid="uid://brf5n7cnogxkb"]
 
-[ext_resource type="Script" path="res://scripts/world/Checkpoint.cs" id="checkpoint"]
+[ext_resource type="Script" uid="uid://kuhl1jc0cutg" path="res://scripts/world/AreaController.cs" id="area_script"]
 [ext_resource type="PackedScene" uid="uid://javali001" path="res://scenes/bosses/Boss_Javali.tscn" id="boss"]
-[ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="player"]
+[ext_resource type="Script" uid="uid://bqc07gusublgs" path="res://scripts/world/Checkpoint.cs" id="checkpoint"]
 [ext_resource type="PackedScene" uid="uid://faisca001" path="res://scenes/companion/Faisca.tscn" id="faisca"]
 [ext_resource type="PackedScene" uid="uid://hud001" path="res://scenes/ui/HUD.tscn" id="hud"]
-[ext_resource type="Script" path="res://scripts/world/AreaController.cs" id="area_script"]
+[ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="player"]
 
 [sub_resource type="RectangleShape2D" id="Shape_WallLeft"]
 size = Vector2(40, 720)
@@ -22,13 +22,14 @@ size = Vector2(1280, 80)
 [sub_resource type="RectangleShape2D" id="Shape_Checkpoint1"]
 size = Vector2(32, 32)
 
-[node name="CovilDeKorrag" type="Node2D"]
+[node name="CovilDeKorrag" type="Node2D" unique_id=1342522587 node_paths=PackedStringArray("SpawnPoints", "EnemySpawns", "Checkpoints")]
 script = ExtResource("area_script")
 AreaName = "CovilDeKorrag"
-UseCameraLimits = true
-CameraLimits = Rect2i(-640, -280, 1280, 720)
+SpawnPoints = []
+EnemySpawns = []
+Checkpoints = []
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1081351090]
 offset_left = -640.0
 offset_top = -280.0
 offset_right = 640.0
@@ -36,24 +37,15 @@ offset_bottom = 440.0
 mouse_filter = 2
 color = Color(0.1, 0.1, 0.13, 1)
 
-[node name="Geometry" type="Node2D" parent="."]
+[node name="Geometry" type="Node2D" parent="." unique_id=1085028862]
 
-[node name="Hazards" type="Node2D" parent="."]
-
-[node name="Interactables" type="Node2D" parent="."]
-
-[node name="Transitions" type="Node2D" parent="."]
-
-[node name="Enemies" type="Node2D" parent="."]
-
-[node name="WallLeft" type="StaticBody2D" parent="Geometry"]
+[node name="WallLeft" type="StaticBody2D" parent="Geometry" unique_id=2136960134]
 position = Vector2(-620, 80)
-collision_layer = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/WallLeft"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/WallLeft" unique_id=457823906]
 shape = SubResource("Shape_WallLeft")
 
-[node name="Visual" type="ColorRect" parent="Geometry/WallLeft"]
+[node name="Visual" type="ColorRect" parent="Geometry/WallLeft" unique_id=1788582262]
 offset_left = -20.0
 offset_top = -360.0
 offset_right = 20.0
@@ -61,14 +53,13 @@ offset_bottom = 360.0
 mouse_filter = 2
 color = Color(0.2, 0.25, 0.18, 1)
 
-[node name="WallRight" type="StaticBody2D" parent="Geometry"]
+[node name="WallRight" type="StaticBody2D" parent="Geometry" unique_id=1981290939]
 position = Vector2(620, 80)
-collision_layer = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/WallRight"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/WallRight" unique_id=455656825]
 shape = SubResource("Shape_WallRight")
 
-[node name="Visual" type="ColorRect" parent="Geometry/WallRight"]
+[node name="Visual" type="ColorRect" parent="Geometry/WallRight" unique_id=734635767]
 offset_left = -20.0
 offset_top = -360.0
 offset_right = 20.0
@@ -76,14 +67,13 @@ offset_bottom = 360.0
 mouse_filter = 2
 color = Color(0.2, 0.25, 0.18, 1)
 
-[node name="Ceiling" type="StaticBody2D" parent="Geometry"]
+[node name="Ceiling" type="StaticBody2D" parent="Geometry" unique_id=2000039548]
 position = Vector2(0, -260)
-collision_layer = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Ceiling"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Ceiling" unique_id=545859000]
 shape = SubResource("Shape_Ceiling")
 
-[node name="Visual" type="ColorRect" parent="Geometry/Ceiling"]
+[node name="Visual" type="ColorRect" parent="Geometry/Ceiling" unique_id=1689771896]
 offset_left = -640.0
 offset_top = -20.0
 offset_right = 640.0
@@ -91,14 +81,13 @@ offset_bottom = 20.0
 mouse_filter = 2
 color = Color(0.2, 0.25, 0.18, 1)
 
-[node name="ArenaFloor" type="StaticBody2D" parent="Geometry"]
+[node name="ArenaFloor" type="StaticBody2D" parent="Geometry" unique_id=1027386656]
 position = Vector2(0, 240)
-collision_layer = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/ArenaFloor"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/ArenaFloor" unique_id=204985391]
 shape = SubResource("Shape_ArenaFloor")
 
-[node name="Visual" type="ColorRect" parent="Geometry/ArenaFloor"]
+[node name="Visual" type="ColorRect" parent="Geometry/ArenaFloor" unique_id=1624149715]
 offset_left = -640.0
 offset_top = -40.0
 offset_right = 640.0
@@ -106,7 +95,7 @@ offset_bottom = 40.0
 mouse_filter = 2
 color = Color(0.25, 0.3, 0.2, 1)
 
-[node name="Top" type="ColorRect" parent="Geometry/ArenaFloor"]
+[node name="Top" type="ColorRect" parent="Geometry/ArenaFloor" unique_id=352954287]
 offset_left = -640.0
 offset_top = -44.0
 offset_right = 640.0
@@ -114,7 +103,7 @@ offset_bottom = -38.0
 mouse_filter = 2
 color = Color(0.3, 0.55, 0.2, 1)
 
-[node name="DugDirt1" type="ColorRect" parent="Geometry"]
+[node name="DugDirt1" type="ColorRect" parent="Geometry" unique_id=392919344]
 offset_left = -420.0
 offset_top = 190.0
 offset_right = -340.0
@@ -122,7 +111,7 @@ offset_bottom = 200.0
 mouse_filter = 2
 color = Color(0.42, 0.3, 0.18, 1)
 
-[node name="DugDirt2" type="ColorRect" parent="Geometry"]
+[node name="DugDirt2" type="ColorRect" parent="Geometry" unique_id=1796068505]
 offset_left = -120.0
 offset_top = 186.0
 offset_right = -30.0
@@ -130,7 +119,7 @@ offset_bottom = 200.0
 mouse_filter = 2
 color = Color(0.42, 0.3, 0.18, 1)
 
-[node name="DugDirt3" type="ColorRect" parent="Geometry"]
+[node name="DugDirt3" type="ColorRect" parent="Geometry" unique_id=620457474]
 offset_left = 180.0
 offset_top = 192.0
 offset_right = 250.0
@@ -138,7 +127,7 @@ offset_bottom = 200.0
 mouse_filter = 2
 color = Color(0.42, 0.3, 0.18, 1)
 
-[node name="DugDirt4" type="ColorRect" parent="Geometry"]
+[node name="DugDirt4" type="ColorRect" parent="Geometry" unique_id=1700204486]
 offset_left = 420.0
 offset_top = 188.0
 offset_right = 520.0
@@ -146,26 +135,29 @@ offset_bottom = 200.0
 mouse_filter = 2
 color = Color(0.42, 0.3, 0.18, 1)
 
-[node name="Checkpoint1" type="Area2D" parent="Interactables"]
+[node name="Hazards" type="Node2D" parent="." unique_id=458264917]
+
+[node name="Interactables" type="Node2D" parent="." unique_id=1757564825]
+
+[node name="Checkpoint1" type="Area2D" parent="Interactables" unique_id=1514295405]
 position = Vector2(-480, 200)
 collision_layer = 32
 collision_mask = 2
 script = ExtResource("checkpoint")
 CheckpointId = "cp_covil_01"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/Checkpoint1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/Checkpoint1" unique_id=1751381556]
 position = Vector2(0, -16)
 shape = SubResource("Shape_Checkpoint1")
 
-[node name="FlagPole" type="ColorRect" parent="Interactables/Checkpoint1"]
+[node name="FlagPole" type="ColorRect" parent="Interactables/Checkpoint1" unique_id=631563391]
 offset_left = -2.0
 offset_top = -30.0
 offset_right = 2.0
-offset_bottom = 0.0
 mouse_filter = 2
 color = Color(0.5, 0.5, 0.5, 1)
 
-[node name="Flag" type="ColorRect" parent="Interactables/Checkpoint1"]
+[node name="Flag" type="ColorRect" parent="Interactables/Checkpoint1" unique_id=1180542125]
 offset_left = 2.0
 offset_top = -30.0
 offset_right = 16.0
@@ -173,16 +165,20 @@ offset_bottom = -20.0
 mouse_filter = 2
 color = Color(0.2, 0.6, 0.9, 1)
 
-[node name="Boss_Javali" parent="." instance=ExtResource("boss")]
+[node name="Transitions" type="Node2D" parent="." unique_id=506839019]
+
+[node name="Enemies" type="Node2D" parent="." unique_id=1592147734]
+
+[node name="Boss_Javali" parent="." unique_id=617206095 instance=ExtResource("boss")]
 position = Vector2(300, 120)
 
-[node name="SpawnFromIgarapeSufocado" type="Marker2D" parent="." groups=["SpawnPoints"]]
+[node name="SpawnFromIgarapeSufocado" type="Marker2D" parent="." unique_id=856218763 groups=["SpawnPoints"]]
 position = Vector2(-560, 180)
 
-[node name="Player" parent="." instance=ExtResource("player")]
+[node name="Player" parent="." unique_id=1291496315 instance=ExtResource("player")]
 position = Vector2(-560, 180)
 
-[node name="Faisca" parent="." instance=ExtResource("faisca")]
+[node name="Faisca" parent="." unique_id=1586471677 instance=ExtResource("faisca")]
 position = Vector2(-600, 150)
 
-[node name="HUD" parent="." instance=ExtResource("hud")]
+[node name="HUD" parent="." unique_id=1067176034 instance=ExtResource("hud")]

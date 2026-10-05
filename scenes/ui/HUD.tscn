@@ -1,23 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://hud001"]
+[gd_scene format=3 uid="uid://hud001"]
 
-[ext_resource type="Script" path="res://scripts/ui/HUDController.cs" id="1"]
-[ext_resource type="Script" path="res://scripts/ui/HealthBar.cs" id="2"]
+[ext_resource type="Script" uid="uid://cvwfurvrew2ua" path="res://scripts/ui/HUDController.cs" id="1"]
+[ext_resource type="Script" uid="uid://cn1mptvs4ffxl" path="res://scripts/ui/HealthBar.cs" id="2"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_healthbg"]
-bg_color = Color(0.2, 0.2, 0.2, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_healthfill"]
-bg_color = Color(0.8, 0.1, 0.1, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[node name="HUD" type="CanvasLayer"]
+[node name="HUD" type="CanvasLayer" unique_id=2089201826]
 layer = 10
 script = ExtResource("1")
 HealthBarPath = NodePath("MarginContainer/VBoxContainer/TopRow/HealthSection/HealthBar")
@@ -26,7 +12,7 @@ InteractionPromptPath = NodePath("MarginContainer/VBoxContainer/BottomRow/Intera
 AbilityDisplayPath = NodePath("MarginContainer/VBoxContainer/TopRow/AbilitySection/AbilityDisplay")
 PauseMenuPath = NodePath("PauseMenu")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2146491278]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -34,68 +20,63 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=636739907]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="TopRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="TopRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=744104147]
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_constants/separation = 20
 
-[node name="HealthSection" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TopRow"]
+[node name="HealthSection" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TopRow" unique_id=1306621387]
 layout_mode = 2
 
-[node name="HealthLabel" type="Label" parent="MarginContainer/VBoxContainer/TopRow/HealthSection"]
+[node name="HealthLabel" type="Label" parent="MarginContainer/VBoxContainer/TopRow/HealthSection" unique_id=268877406]
 layout_mode = 2
-text = "100 / 100"
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "100 / 100"
 
-[node name="HealthBar" type="TextureProgressBar" parent="MarginContainer/VBoxContainer/TopRow/HealthSection"]
-layout_mode = 2
+[node name="HealthBar" type="TextureProgressBar" parent="MarginContainer/VBoxContainer/TopRow/HealthSection" unique_id=719808727]
 custom_minimum_size = Vector2(200, 20)
-max_value = 100.0
+layout_mode = 2
 value = 100.0
 tint_progress = Color(0.8, 0.1, 0.1, 1)
 script = ExtResource("2")
-TweenDuration = 0.3
-AnimateOnDamage = true
 
-[node name="AbilitySection" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TopRow"]
+[node name="AbilitySection" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TopRow" unique_id=1073135904]
 layout_mode = 2
 
-[node name="AbilityDisplay" type="Label" parent="MarginContainer/VBoxContainer/TopRow/AbilitySection"]
-layout_mode = 2
-text = ""
+[node name="AbilityDisplay" type="Label" parent="MarginContainer/VBoxContainer/TopRow/AbilitySection" unique_id=2045137402]
 visible = false
+layout_mode = 2
 theme_override_colors/font_color = Color(0.5, 0.8, 1, 1)
 
-[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer"]
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1124899432]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="BottomRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="BottomRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2049316441]
 layout_mode = 2
 size_flags_vertical = 8
 alignment = 1
 
-[node name="InteractionPrompt" type="Label" parent="MarginContainer/VBoxContainer/BottomRow"]
-layout_mode = 2
-text = ""
+[node name="InteractionPrompt" type="Label" parent="MarginContainer/VBoxContainer/BottomRow" unique_id=1509668777]
 visible = false
+layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 0.5, 1)
 
-[node name="PauseMenu" type="Control" parent="."]
+[node name="PauseMenu" type="Control" parent="." unique_id=26228279]
+visible = false
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-visible = false
-mouse_filter = 0
 
-[node name="Background" type="ColorRect" parent="PauseMenu"]
+[node name="Background" type="ColorRect" parent="PauseMenu" unique_id=682308144]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -104,7 +85,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.7)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu" unique_id=979880661]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -118,20 +99,20 @@ offset_bottom = 100.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Title" type="Label" parent="PauseMenu/VBoxContainer"]
+[node name="Title" type="Label" parent="PauseMenu/VBoxContainer" unique_id=227147313]
 layout_mode = 2
+theme_override_font_sizes/font_size = 32
 text = "PAUSED"
 horizontal_alignment = 1
-theme_override_font_sizes/font_size = 32
 
-[node name="ResumeButton" type="Button" parent="PauseMenu/VBoxContainer"]
+[node name="ResumeButton" type="Button" parent="PauseMenu/VBoxContainer" unique_id=439384176]
 layout_mode = 2
 text = "Resume"
 
-[node name="SaveButton" type="Button" parent="PauseMenu/VBoxContainer"]
+[node name="SaveButton" type="Button" parent="PauseMenu/VBoxContainer" unique_id=2008314519]
 layout_mode = 2
 text = "Save Game"
 
-[node name="MainMenuButton" type="Button" parent="PauseMenu/VBoxContainer"]
+[node name="MainMenuButton" type="Button" parent="PauseMenu/VBoxContainer" unique_id=285056699]
 layout_mode = 2
 text = "Main Menu"

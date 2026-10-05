@@ -1,21 +1,15 @@
-[gd_scene load_steps=9 format=3 uid="uid://enemy001"]
+[gd_scene format=3 uid="uid://enemy001"]
 
-[ext_resource type="Script" path="res://scripts/enemies/EnemyBase.cs" id="1"]
-[ext_resource type="Script" path="res://scripts/enemies/EnemyStateMachine.cs" id="2"]
-[ext_resource type="Script" path="res://scripts/combat/Health.cs" id="3"]
-[ext_resource type="Script" path="res://scripts/combat/CombatController.cs" id="4"]
-[ext_resource type="Script" path="res://scripts/combat/Hitbox.cs" id="5"]
-[ext_resource type="Script" path="res://scripts/combat/Hurtbox.cs" id="6"]
+[ext_resource type="Script" uid="uid://b0108ytfaf1p1" path="res://scripts/enemies/EnemyBase.cs" id="1"]
+[ext_resource type="Script" uid="uid://dh3voo4sajhhy" path="res://scripts/enemies/EnemyStateMachine.cs" id="2"]
+[ext_resource type="Script" uid="uid://c8yg5h6o1ak6h" path="res://scripts/combat/Health.cs" id="3"]
+[ext_resource type="Script" uid="uid://cpbc7f5cqejhl" path="res://scripts/combat/CombatController.cs" id="4"]
+[ext_resource type="Script" uid="uid://d0pqmw7x1pugm" path="res://scripts/combat/Hitbox.cs" id="5"]
+[ext_resource type="Script" uid="uid://dhdoquuekxcq8" path="res://scripts/combat/Hurtbox.cs" id="6"]
 [ext_resource type="Resource" path="res://resources/enemies/BasicEnemyStats.tres" id="7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(28, 32)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_hitbox"]
-size = Vector2(24, 16)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
-size = Vector2(24, 28)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_enemy"]
 animations = [{
@@ -23,31 +17,7 @@ animations = [{
 "duration": 1.0,
 "texture": null
 }],
-"loop": true,
-"name": &"idle",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": true,
-"name": &"walk",
-"speed": 6.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": false,
-"name": &"detect",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": false,
+"loop": 0,
 "name": &"attack",
 "speed": 8.0
 }, {
@@ -55,7 +25,23 @@ animations = [{
 "duration": 1.0,
 "texture": null
 }],
-"loop": false,
+"loop": 0,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": null
+}],
+"loop": 0,
+"name": &"detect",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": null
+}],
+"loop": 0,
 "name": &"hurt",
 "speed": 5.0
 }, {
@@ -63,89 +49,98 @@ animations = [{
 "duration": 1.0,
 "texture": null
 }],
-"loop": false,
-"name": &"dead",
+"loop": 1,
+"name": &"idle",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": null
+}],
+"loop": 1,
+"name": &"walk",
+"speed": 6.0
 }]
 
-[node name="Enemy_Base" type="CharacterBody2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hitbox"]
+size = Vector2(24, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
+size = Vector2(24, 28)
+
+[node name="Enemy_Base" type="CharacterBody2D" unique_id=1668776042]
 collision_layer = 4
-collision_mask = 1
 script = ExtResource("1")
 StatsResource = ExtResource("7")
 SpritePath = NodePath("AnimatedSprite2D")
 CombatControllerPath = NodePath("CombatController")
-EnemyId = "enemy_basic"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=141547714]
 position = Vector2(0, -16)
 shape = SubResource("RectangleShape2D_body")
 
-[node name="Body" type="ColorRect" parent="."]
+[node name="Body" type="ColorRect" parent="." unique_id=1776391430]
 offset_left = -14.0
 offset_top = -32.0
 offset_right = 14.0
-offset_bottom = 0.0
 color = Color(0.7, 0.2, 0.2, 1)
 
-[node name="EyeLeft" type="ColorRect" parent="."]
+[node name="EyeLeft" type="ColorRect" parent="." unique_id=191372932]
 offset_left = -10.0
 offset_top = -28.0
 offset_right = -4.0
 offset_bottom = -22.0
 color = Color(1, 1, 0.2, 1)
 
-[node name="EyeRight" type="ColorRect" parent="."]
+[node name="EyeRight" type="ColorRect" parent="." unique_id=634082582]
 offset_left = 4.0
 offset_top = -28.0
 offset_right = 10.0
 offset_bottom = -22.0
 color = Color(1, 1, 0.2, 1)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=91833473]
 position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_enemy")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="Health" type="Node" parent="."]
+[node name="Health" type="Node" parent="." unique_id=368578608]
 script = ExtResource("3")
 MaxHealth = 75
 InvulnerabilityDuration = 0.0
 
-[node name="CombatController" type="Node" parent="."]
+[node name="CombatController" type="Node" parent="." unique_id=1879345248]
 script = ExtResource("4")
 HealthPath = NodePath("../Health")
 HitboxPath = NodePath("../AttackHitbox")
 HurtboxPath = NodePath("../Hurtbox")
 
-[node name="AttackHitbox" type="Area2D" parent="."]
+[node name="AttackHitbox" type="Area2D" parent="." unique_id=414580035]
 collision_layer = 16
 collision_mask = 2
 script = ExtResource("5")
-Damage = 10
 KnockbackForce = 150.0
 Active = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitbox" unique_id=2130743075]
 position = Vector2(20, 0)
 shape = SubResource("RectangleShape2D_hitbox")
 
-[node name="Hurtbox" type="Area2D" parent="."]
+[node name="Hurtbox" type="Area2D" parent="." unique_id=815467222]
 collision_layer = 4
 collision_mask = 8
 script = ExtResource("6")
-Active = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=1971430015]
 position = Vector2(0, -16)
 shape = SubResource("RectangleShape2D_hurtbox")
 
-[node name="EnemyStateMachine" type="Node" parent="."]
+[node name="EnemyStateMachine" type="Node" parent="." unique_id=635631994]
 script = ExtResource("2")
 
-[node name="PatrolStart" type="Marker2D" parent="."]
+[node name="PatrolStart" type="Marker2D" parent="." unique_id=584320137]
 position = Vector2(-80, 0)
 
-[node name="PatrolEnd" type="Marker2D" parent="."]
+[node name="PatrolEnd" type="Marker2D" parent="." unique_id=192852462]
 position = Vector2(80, 0)

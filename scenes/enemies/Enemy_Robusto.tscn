@@ -1,11 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://enemyrobusto001"]
+[gd_scene format=3 uid="uid://do5tcbtkfllki"]
 
 [ext_resource type="PackedScene" uid="uid://enemy001" path="res://scenes/enemies/Enemy_Base.tscn" id="1"]
 [ext_resource type="Resource" path="res://resources/enemies/areas/Robusto_SopeDaMata.tres" id="2"]
 
-[node name="Enemy_Robusto" instance=ExtResource("1")]
+[node name="Enemy_Robusto" unique_id=1742229192 instance=ExtResource("1")]
 StatsResource = ExtResource("2")
 EnemyId = "enemy_robusto"
 
-[node name="Body" parent="."]
+[node name="Body" parent="." index="1" unique_id=1776391430]
 color = Color(0.35, 0.35, 0.4, 1)

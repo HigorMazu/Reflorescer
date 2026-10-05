@@ -1,11 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://javali001"]
+[gd_scene format=3 uid="uid://javali001"]
 
-[ext_resource type="Script" path="res://scripts/bosses/JavaliBoss.cs" id="1"]
-[ext_resource type="Script" path="res://scripts/bosses/BossStateMachine.cs" id="2"]
-[ext_resource type="Script" path="res://scripts/combat/Health.cs" id="3"]
-[ext_resource type="Script" path="res://scripts/combat/CombatController.cs" id="4"]
-[ext_resource type="Script" path="res://scripts/combat/Hitbox.cs" id="5"]
-[ext_resource type="Script" path="res://scripts/combat/Hurtbox.cs" id="6"]
+[ext_resource type="Script" uid="uid://bv7fsv4jflbvs" path="res://scripts/bosses/JavaliBoss.cs" id="1"]
+[ext_resource type="Script" uid="uid://bjpyp25wtd7sl" path="res://scripts/bosses/BossStateMachine.cs" id="2"]
+[ext_resource type="Script" uid="uid://c8yg5h6o1ak6h" path="res://scripts/combat/Health.cs" id="3"]
+[ext_resource type="Script" uid="uid://cpbc7f5cqejhl" path="res://scripts/combat/CombatController.cs" id="4"]
+[ext_resource type="Script" uid="uid://d0pqmw7x1pugm" path="res://scripts/combat/Hitbox.cs" id="5"]
+[ext_resource type="Script" uid="uid://dhdoquuekxcq8" path="res://scripts/combat/Hurtbox.cs" id="6"]
 [ext_resource type="Resource" path="res://resources/bosses/JavaliStatsResource.tres" id="7"]
 [ext_resource type="SpriteFrames" path="res://assets/sprites/korrag/KorragSpriteFrames.tres" id="8"]
 
@@ -18,126 +18,27 @@ size = Vector2(50, 40)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
 size = Vector2(70, 55)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_javali"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": true,
-"name": &"idle",
-"speed": 4.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": true,
-"name": &"walk",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": false,
-"name": &"intro",
-"speed": 4.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": false,
-"name": &"attack",
-"speed": 6.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": false,
-"name": &"charge_windup",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": false,
-"name": &"hurt",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": false,
-"name": &"dead",
-"speed": 4.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": true,
-"name": &"phase1_idle",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": false,
-"name": &"phase2_transition",
-"speed": 4.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": true,
-"name": &"enraged_transition",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": false,
-"name": &"defeated",
-"speed": 4.0
-}]
-
-[node name="Boss_Javali" type="CharacterBody2D"]
+[node name="Boss_Javali" type="CharacterBody2D" unique_id=1642101020]
 collision_layer = 4
-collision_mask = 1
 script = ExtResource("1")
 StatsResource = ExtResource("7")
 SpritePath = NodePath("AnimatedSprite2D")
 CombatControllerPath = NodePath("CombatController")
 HealthBarPath = NodePath("../CanvasLayer/HealthBar")
 BossId = "boss_javali"
-ChargeSpeed = 300.0
-ChargeDamage = 40.0
-ChargeWindup = 1.0
-StompRadius = 100.0
-StompDamage = 30
-StompKnockback = 400.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1500831147]
 position = Vector2(0, -30)
 shape = SubResource("RectangleShape2D_body")
 
-[node name="Body" type="ColorRect" parent="."]
+[node name="Body" type="ColorRect" parent="." unique_id=701108912]
 visible = false
 offset_left = -40.0
 offset_top = -60.0
 offset_right = 40.0
-offset_bottom = 0.0
 color = Color(0.35, 0.25, 0.15, 1)
 
-[node name="Head" type="ColorRect" parent="."]
+[node name="Head" type="ColorRect" parent="." unique_id=1409947310]
 visible = false
 offset_left = -30.0
 offset_top = -75.0
@@ -145,7 +46,7 @@ offset_right = 30.0
 offset_bottom = -50.0
 color = Color(0.4, 0.3, 0.2, 1)
 
-[node name="TuskLeft" type="ColorRect" parent="."]
+[node name="TuskLeft" type="ColorRect" parent="." unique_id=84451068]
 visible = false
 offset_left = -25.0
 offset_top = -55.0
@@ -153,7 +54,7 @@ offset_right = -15.0
 offset_bottom = -40.0
 color = Color(0.9, 0.9, 0.8, 1)
 
-[node name="TuskRight" type="ColorRect" parent="."]
+[node name="TuskRight" type="ColorRect" parent="." unique_id=145046985]
 visible = false
 offset_left = 15.0
 offset_top = -55.0
@@ -161,7 +62,7 @@ offset_right = 25.0
 offset_bottom = -40.0
 color = Color(0.9, 0.9, 0.8, 1)
 
-[node name="EyeLeft" type="ColorRect" parent="."]
+[node name="EyeLeft" type="ColorRect" parent="." unique_id=1029829474]
 visible = false
 offset_left = -20.0
 offset_top = -68.0
@@ -169,7 +70,7 @@ offset_right = -10.0
 offset_bottom = -60.0
 color = Color(0.9, 0.2, 0.1, 1)
 
-[node name="EyeRight" type="ColorRect" parent="."]
+[node name="EyeRight" type="ColorRect" parent="." unique_id=2099214557]
 visible = false
 offset_left = 10.0
 offset_top = -68.0
@@ -177,7 +78,7 @@ offset_right = 20.0
 offset_bottom = -60.0
 color = Color(0.9, 0.2, 0.1, 1)
 
-[node name="Spikes" type="ColorRect" parent="."]
+[node name="Spikes" type="ColorRect" parent="." unique_id=1114129564]
 visible = false
 offset_left = -35.0
 offset_top = -70.0
@@ -185,7 +86,7 @@ offset_right = 35.0
 offset_bottom = -55.0
 color = Color(0.25, 0.2, 0.12, 1)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=247029865]
 position = Vector2(-85, -117)
 scale = Vector2(0.65, 0.65)
 sprite_frames = ExtResource("8")
@@ -193,18 +94,18 @@ animation = &"idle"
 autoplay = "idle"
 centered = false
 
-[node name="Health" type="Node" parent="."]
+[node name="Health" type="Node" parent="." unique_id=289063783]
 script = ExtResource("3")
 MaxHealth = 200
 InvulnerabilityDuration = 0.0
 
-[node name="CombatController" type="Node" parent="."]
+[node name="CombatController" type="Node" parent="." unique_id=745069743]
 script = ExtResource("4")
 HealthPath = NodePath("../Health")
 HitboxPath = NodePath("../AttackHitbox")
 HurtboxPath = NodePath("../Hurtbox")
 
-[node name="AttackHitbox" type="Area2D" parent="."]
+[node name="AttackHitbox" type="Area2D" parent="." unique_id=872609604]
 collision_layer = 16
 collision_mask = 2
 script = ExtResource("5")
@@ -212,26 +113,25 @@ Damage = 40
 KnockbackForce = 400.0
 Active = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitbox" unique_id=1024689517]
 position = Vector2(50, 0)
 shape = SubResource("RectangleShape2D_hitbox")
 
-[node name="Hurtbox" type="Area2D" parent="."]
+[node name="Hurtbox" type="Area2D" parent="." unique_id=862172247]
 collision_layer = 4
 collision_mask = 8
 script = ExtResource("6")
-Active = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=327606192]
 position = Vector2(0, -30)
 shape = SubResource("RectangleShape2D_hurtbox")
 
-[node name="BossStateMachine" type="Node" parent="."]
+[node name="BossStateMachine" type="Node" parent="." unique_id=915359796]
 script = ExtResource("2")
 
-[node name="BossTrigger" type="Area2D" parent="."]
+[node name="BossTrigger" type="Area2D" parent="." unique_id=964674978]
 collision_layer = 0
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BossTrigger"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BossTrigger" unique_id=1142963665]
 shape = SubResource("RectangleShape2D_body")

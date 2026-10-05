@@ -1,10 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://player001"]
+[gd_scene format=3 uid="uid://player001"]
 
-[ext_resource type="Script" path="res://scripts/player/PlayerController.cs" id="1"]
-[ext_resource type="Script" path="res://scripts/combat/Health.cs" id="3"]
-[ext_resource type="Script" path="res://scripts/combat/CombatController.cs" id="4"]
-[ext_resource type="Script" path="res://scripts/combat/Hitbox.cs" id="5"]
-[ext_resource type="Script" path="res://scripts/combat/Hurtbox.cs" id="6"]
+[ext_resource type="Script" uid="uid://55xaxxcnp7dv" path="res://scripts/player/PlayerController.cs" id="1"]
+[ext_resource type="Script" uid="uid://c8yg5h6o1ak6h" path="res://scripts/combat/Health.cs" id="3"]
+[ext_resource type="Script" uid="uid://cpbc7f5cqejhl" path="res://scripts/combat/CombatController.cs" id="4"]
+[ext_resource type="Script" uid="uid://d0pqmw7x1pugm" path="res://scripts/combat/Hitbox.cs" id="5"]
+[ext_resource type="Script" uid="uid://dhdoquuekxcq8" path="res://scripts/combat/Hurtbox.cs" id="6"]
 [ext_resource type="Resource" path="res://resources/player/PlayerStatsResource.tres" id="7"]
 [ext_resource type="SpriteFrames" path="res://assets/sprites/kairo_faisca/KairoFaiscaSpriteFrames.tres" id="8"]
 
@@ -20,68 +20,8 @@ size = Vector2(20, 36)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_interaction"]
 size = Vector2(50, 50)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_player"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": true,
-"name": &"idle",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": true,
-"name": &"run",
-"speed": 8.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": false,
-"name": &"jump",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": false,
-"name": &"fall",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": false,
-"name": &"attack",
-"speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": false,
-"name": &"hurt",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": null
-}],
-"loop": false,
-"name": &"dead",
-"speed": 5.0
-}]
-
-[node name="Player" type="CharacterBody2D" groups=["Player"]]
+[node name="Player" type="CharacterBody2D" unique_id=1811755639 groups=["Player"]]
 collision_layer = 2
-collision_mask = 1
 script = ExtResource("1")
 StatsResource = ExtResource("7")
 SpritePath = NodePath("Visual/AnimatedSprite2D")
@@ -93,20 +33,19 @@ VisualNodePath = NodePath("Visual")
 RightArmPath = NodePath("Visual/RightArm")
 RightHandPath = NodePath("Visual/RightArm/RightHand")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=823191504]
 shape = SubResource("RectangleShape2D_body")
 
-[node name="Visual" type="Node2D" parent="."]
+[node name="Visual" type="Node2D" parent="." unique_id=40232228]
 
-[node name="BodyPlaceholder" type="ColorRect" parent="Visual"]
+[node name="BodyPlaceholder" type="ColorRect" parent="Visual" unique_id=2099707597]
 visible = false
 offset_left = -12.0
 offset_top = -40.0
 offset_right = 12.0
-offset_bottom = 0.0
 color = Color(0.4, 0.6, 0.8, 1)
 
-[node name="HeadPlaceholder" type="ColorRect" parent="Visual"]
+[node name="HeadPlaceholder" type="ColorRect" parent="Visual" unique_id=1454489594]
 visible = false
 offset_left = -10.0
 offset_top = -52.0
@@ -114,7 +53,7 @@ offset_right = 10.0
 offset_bottom = -38.0
 color = Color(0.5, 0.7, 0.9, 1)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visual"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visual" unique_id=864528375]
 position = Vector2(-45, -85)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("8")
@@ -122,33 +61,31 @@ animation = &"idle"
 autoplay = "idle"
 centered = false
 
-[node name="RightArm" type="Node2D" parent="Visual"]
+[node name="RightArm" type="Node2D" parent="Visual" unique_id=837787773]
 position = Vector2(10, -30)
 
-[node name="RightHand" type="Node2D" parent="Visual/RightArm"]
+[node name="RightHand" type="Node2D" parent="Visual/RightArm" unique_id=1232852014]
 position = Vector2(6, 10)
 
-[node name="Sword" type="Node2D" parent="Visual/RightArm/RightHand"]
+[node name="Sword" type="Node2D" parent="Visual/RightArm/RightHand" unique_id=172097077]
 position = Vector2(4, -4)
 rotation = -0.3
 
-[node name="Blade" type="ColorRect" parent="Visual/RightArm/RightHand/Sword"]
+[node name="Blade" type="ColorRect" parent="Visual/RightArm/RightHand/Sword" unique_id=583863621]
 visible = false
 offset_left = -2.0
 offset_top = -20.0
 offset_right = 2.0
-offset_bottom = 0.0
 color = Color(0.7, 0.9, 0.3, 1)
 
-[node name="Handle" type="ColorRect" parent="Visual/RightArm/RightHand/Sword"]
+[node name="Handle" type="ColorRect" parent="Visual/RightArm/RightHand/Sword" unique_id=2135888109]
 visible = false
 offset_left = -3.0
-offset_top = 0.0
 offset_right = 3.0
 offset_bottom = 8.0
 color = Color(0.4, 0.3, 0.2, 1)
 
-[node name="Bandage" type="ColorRect" parent="Visual/RightArm/RightHand"]
+[node name="Bandage" type="ColorRect" parent="Visual/RightArm/RightHand" unique_id=1037467972]
 visible = false
 offset_left = -4.0
 offset_top = -2.0
@@ -156,7 +93,7 @@ offset_right = 4.0
 offset_bottom = 6.0
 color = Color(0.9, 0.9, 0.8, 1)
 
-[node name="Tail" type="ColorRect" parent="Visual"]
+[node name="Tail" type="ColorRect" parent="Visual" unique_id=378654180]
 visible = false
 offset_left = -16.0
 offset_top = -15.0
@@ -164,55 +101,50 @@ offset_right = -10.0
 offset_bottom = -8.0
 color = Color(0.45, 0.65, 0.85, 1)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1987821513]
 
-[node name="Health" type="Node" parent="."]
+[node name="Health" type="Node" parent="." unique_id=1439567295]
 script = ExtResource("3")
-MaxHealth = 100
-Invulnerable = false
-InvulnerabilityDuration = 1.0
 
-[node name="CombatController" type="Node" parent="."]
+[node name="CombatController" type="Node" parent="." unique_id=629032435]
 script = ExtResource("4")
 HealthPath = NodePath("../Health")
 HitboxPath = NodePath("../AttackHitbox")
 HurtboxPath = NodePath("../Hurtbox")
 
-[node name="AttackHitbox" type="Area2D" parent="."]
+[node name="AttackHitbox" type="Area2D" parent="." unique_id=584541209]
 collision_layer = 8
 collision_mask = 5
 script = ExtResource("5")
 Damage = 25
-KnockbackForce = 200.0
 Active = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitbox" unique_id=1683449360]
 position = Vector2(25, -10)
 shape = SubResource("RectangleShape2D_hitbox")
 
-[node name="Hurtbox" type="Area2D" parent="."]
+[node name="Hurtbox" type="Area2D" parent="." unique_id=2028008821]
 collision_layer = 2
 collision_mask = 20
 script = ExtResource("6")
-Active = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=2010346493]
 position = Vector2(0, -18)
 shape = SubResource("RectangleShape2D_hurtbox")
 
-[node name="InteractionDetector" type="Area2D" parent="."]
+[node name="InteractionDetector" type="Area2D" parent="." unique_id=1326391407]
 collision_layer = 0
 collision_mask = 32
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionDetector"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionDetector" unique_id=1624030611]
 shape = SubResource("RectangleShape2D_interaction")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1461148094]
 position = Vector2(0, -20)
+limit_smoothed = true
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
-limit_smoothed = true
 editor_draw_limits = true
 
-[node name="FaiscaAnchor" type="Marker2D" parent="."]
+[node name="FaiscaAnchor" type="Marker2D" parent="." unique_id=1748625169]
 position = Vector2(-20, -40)

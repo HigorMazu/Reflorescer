@@ -1,10 +1,8 @@
-[gd_resource type="Resource" script_class="BossStatsResource" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="BossStatsResource" format=3 uid="uid://q84sxsw3m5ip"]
 
-[ext_resource type="Script" path="res://resources/bosses/BossStatsResource.cs" id="1"]
+[ext_resource type="Script" uid="uid://utosh3g68o3v" path="res://resources/bosses/BossStatsResource.cs" id="1"]
 
 [resource]
 script = ExtResource("1")
-MaxHealth = 500
 BossName = "Base Boss"
-Gravity = 980.0
-KnockbackResistance = 0.5
+Phases = null
