@@ -309,6 +309,9 @@ namespace Joguim.Bosses
 
             var fade = CreateTween();
             fade.TweenInterval(DeathFadeDelay);
+            // The existing defeated pose follows dead, while the victory event
+            // stays exclusively in BossDeadState (no duplicate rewards/saves).
+            fade.TweenCallback(Callable.From(() => StateMachine?.ChangeState(BossStateType.Defeated)));
             fade.TweenProperty(this, "modulate:a", 0.0f, DeathFadeDuration);
             fade.TweenCallback(Callable.From(QueueFree));
         }

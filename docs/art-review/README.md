@@ -1,6 +1,8 @@
 # Reflorescer — revisão visual de 06/10/2026
 
-Proposta local aguardando aprovação dos designs e autorização para commit/push. Retomada sobre `77ece44`, incluindo os assets incorporados pelo usuário em `f282c1b`. Arte criada com ImageGen; recorte, escala e montagem com Pillow. Referências usadas para direção, sem copiar seus personagens ou cenários.
+Trabalho local na `master`, baseada em `8ccaf4f`. Designs dos três inimigos aprovados pelo Higor; ciclos e integração implementados em seguida. Commit, pull e push ficam por conta do usuário. Arte criada com ImageGen; recorte, escala e montagem com Pillow. Referências usadas para direção, sem copiar seus personagens ou cenários.
+
+Entrega atual: [animações e integração dos inimigos](enemy-animation-delivery.md). Prévia animada em `enemy-cycles.gif`; captura real do painel Godot em `enemy-integration.png`. A02 concluído na integração dirigida. Korrag agora exibe `defeated` depois de `dead`; revisão completa da luta ainda pendente.
 
 ## Direção e integração
 
@@ -11,7 +13,8 @@ Proposta local aguardando aprovação dos designs e autorização para commit/pu
 - Sprite de Kairo deslocado uniformemente 20 pixels para baixo, de (-45,-85) para (-45,-65), alinhando os pés à colisão existente. Escala 0,5 e ancoragem consistente entre frames; física e hitboxes intactas.
 - Faísca independente: 12 quadros 32×32, quatro por `idle` (5 fps), `fly` (12 fps), `investigate` (6 fps). Canvas 24×24 no jogo. Substituídos os quatro ColorRects provisórios; luz radial independente. Escala X negativa do sprite acompanha a convenção do controlador existente.
 - `SopeDaMata.tscn`: fundo/parallax, partículas discretas, franja de grama animada e terreno grama → terra → raízes → pedra. O ponto x=1100 usa as listas existentes de visuais degradados/restaurados, fade e crescimento.
-- Nenhum C#, stat, colisão, trigger ou posição de plataforma alterado. TestLevel, outras áreas, inimigos, boss e UI não receberam mudanças nesta retomada. A edição prévia do usuário em `project.godot` foi preservada.
+- Inimigos comuns: ciclos de quatro quadros para idle/walk/attack, dois para detect/hurt e pose de morte + fade. Canvas 128×96, até 40 px de largura no jogo. Espelhamento centralizado, ataque sincronizado ao cooldown por área e hitbox acompanhando a direção. O inimigo-base conserva o fallback visível no TestLevel.
+- Stats, formas de colisão e plataformas preservados. Corrigidos encerramento da hitbox ao sair de ataque e desativação segura das colisões durante a morte. O PlayerController não foi alterado.
 
 ## Arquivos e prévias
 
@@ -21,15 +24,19 @@ Proposta local aguardando aprovação dos designs e autorização para commit/pu
 - `scenes/art/ArtReview.tscn`: painel isolado. `art-review.png` é captura desse painel, não gameplay.
 - `sope-gameplay.png` e `sope-restored.png`: capturas reais da fase com C# ativo. Inimigos e HUD ainda provisórios.
 - `kairo-animations.gif` e `faisca-animations.gif`: montagem dos PNGs do jogo; Faísca ampliada para inspeção.
+- `enemy-archetypes.png`: estudo original de seis poses por inimigo aprovado pelo usuário. `enemy-cycles.gif` mostra o pacote animado posterior; é uma montagem de quadros, não uma captura de gameplay.
+- `enemy-integration.png`: captura de `scenes/art/EnemyReview.tscn`, com instâncias das cenas reais, nos dois sentidos e ampliadas 2×.
 - `tools/art/`: recorte, montagem, verificação estática e teste de integração. `generation-prompts.md` registra a geração.
 
 ## Validação
 
 Compilação em cópia isolada com Godot .NET 4.7.2 e SDK .NET 10: **zero erros e zero avisos**. Importação e painel renderizados no Godot. Teste real no renderer Compatibility: **zero falhas**, incluindo movimento/run, flip, salto, ataque, pés alinhados, companheiro independente, avanço dos frames nos três estados da Faísca, interação E e troca seco→verde com crescimento. Registro em `validation.txt`.
 
-Verificação estática confirma canvas/alfa, nomes, FPS, contagens, loops, recursos e preservação de colisões/triggers/C#/stats. Inspeção das capturas confirmou o alinhamento corrigido.
+Em 06/10, a `TestLevel` também foi executada por 180 quadros com os três novos inimigos carregados. Não houve erro de cenas, recursos ou C#. O console mantém avisos preexistentes de UIDs antigos nos PNGs do Kairo; o Godot aplica fallback pelo caminho correto e os avisos não foram introduzidos pelos inimigos.
 
-Limites: estados da Faísca acionados diretamente, sem validar investigação automática; comportamento de seguir/altura não foi redesenhado. Não executados C01-T2 completo, dano/morte em gameplay, recarga do save, percurso das quatro áreas ou benchmark de FPS. Três sons já ausentes foram reportados: `player_jump.wav`, `player_attack.wav`, `restoration.wav`.
+Na primeira etapa, a verificação estática confirmou canvas/alfa e preservação de física do Kairo. Na etapa atual, 160 verificações dirigidas dos inimigos e seis da morte do Korrag passaram no Godot .NET. Logs: `enemy-validation.txt` e `boss-defeat-validation.txt`. Os testes de integração exercitam código C# real; não equivalem ao percurso completo da demo.
+
+Limites: investigação automática da Faísca, C01-T2 completo, recarga do save, percurso das quatro áreas e benchmark de FPS continuam pendentes. Sons ausentes: `player_jump.wav`, `player_attack.wav`, `restoration.wav`, `enemy_hit.wav`, `enemy_death.wav` e `boss_defeat.wav`.
 
 ## Como conferir
 
@@ -37,9 +44,10 @@ Limites: estados da Faísca acionados diretamente, sem validar investigação au
 2. A/D para andar/virar, Espaço para pular, K para atacar. Conferir uma única Faísca e pés no chão.
 3. No ponto de restauração x=1100, pressionar E e observar terreno e broto. Usar save ainda não restaurado.
 4. Abrir `scenes/art/ArtReview.tscn` com F6 para inspecionar animações; os GIFs dispensam Godot.
+5. Abrir `scenes/art/EnemyReview.tscn` com F6 para inspecionar os ciclos novos nos dois sentidos.
 
-Este checkout não tem `.csproj` ativo e possui edição prévia em `project.godot`. Para validar sem mudar essa configuração, a cópia local `.godot/game_validation/project.godot` recebeu projeto C# temporário e diretório de save próprio. Ela é ignorada pelo Git e não usa saves reais.
+Este checkout possui `Joguim.csproj` e configuração C# ativa. Use Godot .NET 4.7.2 com SDK .NET 10. Os testes atuais são cenas independentes; não iniciam Novo Jogo nem carregam slots. A fixture do boss não contém jogador, portanto eventuais pedidos de autosave não gravam arquivos.
 
 ## Próxima pequena etapa
 
-Após aprovação: A05-T1, bordas e módulo central contínuo para o Sopé, reduzindo repetição sem alterar colisões. Dossel Vivo, Igarapé Sufocado e Covil de Korrag ficam para depois. O cofre Obsidian citado pelo projeto não foi localizado na pasta-pai; o registro disponível está nesta pasta e nos roadmaps.
+A01-T2: separar os visuais de espada/bandagem do Kairo e validar a troca. Depois A05-T1: bordas e módulo central contínuo para o Sopé, reduzindo repetição sem alterar colisões; em seguida as demais áreas. Wall slide/dash, UI, áudio e playtest completo permanecem no roadmap. O registro disponível está nesta pasta e nos roadmaps.

@@ -1,0 +1,183 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+ENEMY_QA_PASS: base enemy retains visible fallback
+ENEMY_QA_PASS: Rapido: stats preserved
+ENEMY_QA_PASS: Rapido: placeholders hidden
+ENEMY_QA_PASS: Rapido: centered flip axis
+ENEMY_QA_PASS: Rapido: foot baseline at origin
+ENEMY_QA_PASS: Rapido: visual width fits combat scale
+ENEMY_QA_PASS: Rapido: idle exists
+ENEMY_QA_PASS: Rapido: idle/0 canvas
+ENEMY_QA_PASS: Rapido: idle/1 canvas
+ENEMY_QA_PASS: Rapido: idle/2 canvas
+ENEMY_QA_PASS: Rapido: idle/3 canvas
+ENEMY_QA_PASS: Rapido: walk exists
+ENEMY_QA_PASS: Rapido: walk/0 canvas
+ENEMY_QA_PASS: Rapido: walk/1 canvas
+ENEMY_QA_PASS: Rapido: walk/2 canvas
+ENEMY_QA_PASS: Rapido: walk/3 canvas
+ENEMY_QA_PASS: Rapido: detect exists
+ENEMY_QA_PASS: Rapido: detect/0 canvas
+ENEMY_QA_PASS: Rapido: detect/1 canvas
+ENEMY_QA_PASS: Rapido: attack exists
+ENEMY_QA_PASS: Rapido: attack/0 canvas
+ENEMY_QA_PASS: Rapido: attack/1 canvas
+ENEMY_QA_PASS: Rapido: attack/2 canvas
+ENEMY_QA_PASS: Rapido: attack/3 canvas
+ENEMY_QA_PASS: Rapido: hurt exists
+ENEMY_QA_PASS: Rapido: hurt/0 canvas
+ENEMY_QA_PASS: Rapido: hurt/1 canvas
+ENEMY_QA_PASS: Rapido: dead exists
+ENEMY_QA_PASS: Rapido: dead/0 canvas
+ENEMY_QA_PASS: Rapido: patrol movement and walk
+ENEMY_QA_PASS: Rapido: grounded patrol
+ENEMY_QA_PASS: Rapido: natural detection
+ENEMY_QA_PASS: Rapido: natural chase after detection
+ENEMY_QA_PASS: Rapido: idle advances frames
+ENEMY_QA_PASS: Rapido: walk advances frames
+ENEMY_QA_PASS: Rapido: attack advances frames
+ENEMY_QA_PASS: Rapido/SopeDaMata: attack duration matches cooldown
+ENEMY_QA_PASS: Rapido/SopeDaMata: repeated attack restarts
+ENEMY_QA_PASS: Rapido/DosselVivo: attack duration matches cooldown
+ENEMY_QA_PASS: Rapido/DosselVivo: repeated attack restarts
+ENEMY_QA_PASS: Rapido/IgarapeSufocado: attack duration matches cooldown
+ENEMY_QA_PASS: Rapido/IgarapeSufocado: repeated attack restarts
+ENEMY_QA_PASS: Rapido: flip without positional jump
+ENEMY_QA_PASS: Rapido/-1: no damage in windup
+[Hitbox] Enemy_Rapido -> TrainingTarget: 10 dmg
+ENEMY_QA_PASS: Rapido/-1: exactly one directional hit
+ENEMY_QA_PASS: Rapido/-1: attack closes on exit
+ENEMY_QA_PASS: Rapido/1: no damage in windup
+[Hitbox] Enemy_Rapido -> TrainingTarget: 10 dmg
+ENEMY_QA_PASS: Rapido/1: exactly one directional hit
+ENEMY_QA_PASS: Rapido/1: attack closes on exit
+Enemy enemy_rapido levou 1 dano. HP: 49/50
+AudioManager: SFX not found at res://assets/audio/sfx/enemy_hit.wav
+ENEMY_QA_PASS: Rapido: interruption policy preserved
+Enemy enemy_rapido levou 9999 dano. HP: 0/50
+Enemy enemy_rapido MORREU! HP=0 -> sumindo do jogo.
+AudioManager: SFX not found at res://assets/audio/sfx/enemy_death.wav
+[Hitbox] LethalStrike -> Enemy_Rapido: 9999 dmg
+ENEMY_QA_PASS: Rapido: lethal physics hit shows death pose
+ENEMY_QA_PASS: Rapido: death disables combat
+ENEMY_QA_PASS: Rapido: no health bar on corpse
+ENEMY_QA_PASS: Rapido: freed after death fade
+ENEMY_QA_PASS: Robusto: stats preserved
+ENEMY_QA_PASS: Robusto: placeholders hidden
+ENEMY_QA_PASS: Robusto: centered flip axis
+ENEMY_QA_PASS: Robusto: foot baseline at origin
+ENEMY_QA_PASS: Robusto: visual width fits combat scale
+ENEMY_QA_PASS: Robusto: idle exists
+ENEMY_QA_PASS: Robusto: idle/0 canvas
+ENEMY_QA_PASS: Robusto: idle/1 canvas
+ENEMY_QA_PASS: Robusto: idle/2 canvas
+ENEMY_QA_PASS: Robusto: idle/3 canvas
+ENEMY_QA_PASS: Robusto: walk exists
+ENEMY_QA_PASS: Robusto: walk/0 canvas
+ENEMY_QA_PASS: Robusto: walk/1 canvas
+ENEMY_QA_PASS: Robusto: walk/2 canvas
+ENEMY_QA_PASS: Robusto: walk/3 canvas
+ENEMY_QA_PASS: Robusto: detect exists
+ENEMY_QA_PASS: Robusto: detect/0 canvas
+ENEMY_QA_PASS: Robusto: detect/1 canvas
+ENEMY_QA_PASS: Robusto: attack exists
+ENEMY_QA_PASS: Robusto: attack/0 canvas
+ENEMY_QA_PASS: Robusto: attack/1 canvas
+ENEMY_QA_PASS: Robusto: attack/2 canvas
+ENEMY_QA_PASS: Robusto: attack/3 canvas
+ENEMY_QA_PASS: Robusto: hurt exists
+ENEMY_QA_PASS: Robusto: hurt/0 canvas
+ENEMY_QA_PASS: Robusto: hurt/1 canvas
+ENEMY_QA_PASS: Robusto: dead exists
+ENEMY_QA_PASS: Robusto: dead/0 canvas
+ENEMY_QA_PASS: Robusto: patrol movement and walk
+ENEMY_QA_PASS: Robusto: grounded patrol
+ENEMY_QA_PASS: Robusto: natural detection
+ENEMY_QA_PASS: Robusto: natural chase after detection
+ENEMY_QA_PASS: Robusto: idle advances frames
+ENEMY_QA_PASS: Robusto: walk advances frames
+ENEMY_QA_PASS: Robusto: attack advances frames
+ENEMY_QA_PASS: Robusto/SopeDaMata: attack duration matches cooldown
+ENEMY_QA_PASS: Robusto/SopeDaMata: repeated attack restarts
+ENEMY_QA_PASS: Robusto/DosselVivo: attack duration matches cooldown
+ENEMY_QA_PASS: Robusto/DosselVivo: repeated attack restarts
+ENEMY_QA_PASS: Robusto/IgarapeSufocado: attack duration matches cooldown
+ENEMY_QA_PASS: Robusto/IgarapeSufocado: repeated attack restarts
+ENEMY_QA_PASS: Robusto: flip without positional jump
+ENEMY_QA_PASS: Robusto/-1: no damage in windup
+[Hitbox] Enemy_Robusto -> TrainingTarget: 25 dmg
+ENEMY_QA_PASS: Robusto/-1: exactly one directional hit
+ENEMY_QA_PASS: Robusto/-1: attack closes on exit
+ENEMY_QA_PASS: Robusto/1: no damage in windup
+[Hitbox] Enemy_Robusto -> TrainingTarget: 25 dmg
+ENEMY_QA_PASS: Robusto/1: exactly one directional hit
+ENEMY_QA_PASS: Robusto/1: attack closes on exit
+Enemy enemy_robusto levou 1 dano. HP: 149/150
+ENEMY_QA_PASS: Robusto: interruption policy preserved
+Enemy enemy_robusto levou 9999 dano. HP: 0/150
+Enemy enemy_robusto MORREU! HP=0 -> sumindo do jogo.
+[Hitbox] LethalStrike -> Enemy_Robusto: 9999 dmg
+ENEMY_QA_PASS: Robusto: lethal physics hit shows death pose
+ENEMY_QA_PASS: Robusto: death disables combat
+ENEMY_QA_PASS: Robusto: no health bar on corpse
+ENEMY_QA_PASS: Robusto: freed after death fade
+ENEMY_QA_PASS: Voador: stats preserved
+ENEMY_QA_PASS: Voador: placeholders hidden
+ENEMY_QA_PASS: Voador: centered flip axis
+ENEMY_QA_PASS: Voador: foot baseline at origin
+ENEMY_QA_PASS: Voador: visual width fits combat scale
+ENEMY_QA_PASS: Voador: idle exists
+ENEMY_QA_PASS: Voador: idle/0 canvas
+ENEMY_QA_PASS: Voador: idle/1 canvas
+ENEMY_QA_PASS: Voador: idle/2 canvas
+ENEMY_QA_PASS: Voador: idle/3 canvas
+ENEMY_QA_PASS: Voador: walk exists
+ENEMY_QA_PASS: Voador: walk/0 canvas
+ENEMY_QA_PASS: Voador: walk/1 canvas
+ENEMY_QA_PASS: Voador: walk/2 canvas
+ENEMY_QA_PASS: Voador: walk/3 canvas
+ENEMY_QA_PASS: Voador: detect exists
+ENEMY_QA_PASS: Voador: detect/0 canvas
+ENEMY_QA_PASS: Voador: detect/1 canvas
+ENEMY_QA_PASS: Voador: attack exists
+ENEMY_QA_PASS: Voador: attack/0 canvas
+ENEMY_QA_PASS: Voador: attack/1 canvas
+ENEMY_QA_PASS: Voador: attack/2 canvas
+ENEMY_QA_PASS: Voador: attack/3 canvas
+ENEMY_QA_PASS: Voador: hurt exists
+ENEMY_QA_PASS: Voador: hurt/0 canvas
+ENEMY_QA_PASS: Voador: hurt/1 canvas
+ENEMY_QA_PASS: Voador: dead exists
+ENEMY_QA_PASS: Voador: dead/0 canvas
+ENEMY_QA_PASS: Voador: patrol movement and walk
+ENEMY_QA_PASS: Voador: hover ignores gravity
+ENEMY_QA_PASS: Voador: natural detection
+ENEMY_QA_PASS: Voador: natural chase after detection
+ENEMY_QA_PASS: Voador: idle advances frames
+ENEMY_QA_PASS: Voador: walk advances frames
+ENEMY_QA_PASS: Voador: attack advances frames
+ENEMY_QA_PASS: Voador/SopeDaMata: attack duration matches cooldown
+ENEMY_QA_PASS: Voador/SopeDaMata: repeated attack restarts
+ENEMY_QA_PASS: Voador/DosselVivo: attack duration matches cooldown
+ENEMY_QA_PASS: Voador/DosselVivo: repeated attack restarts
+ENEMY_QA_PASS: Voador/IgarapeSufocado: attack duration matches cooldown
+ENEMY_QA_PASS: Voador/IgarapeSufocado: repeated attack restarts
+ENEMY_QA_PASS: Voador: flip without positional jump
+ENEMY_QA_PASS: Voador/-1: no damage in windup
+[Hitbox] Enemy_Voador -> TrainingTarget: 12 dmg
+ENEMY_QA_PASS: Voador/-1: exactly one directional hit
+ENEMY_QA_PASS: Voador/-1: attack closes on exit
+ENEMY_QA_PASS: Voador/1: no damage in windup
+[Hitbox] Enemy_Voador -> TrainingTarget: 12 dmg
+ENEMY_QA_PASS: Voador/1: exactly one directional hit
+ENEMY_QA_PASS: Voador/1: attack closes on exit
+Enemy enemy_voador levou 1 dano. HP: 49/50
+ENEMY_QA_PASS: Voador: interruption policy preserved
+Enemy enemy_voador levou 9999 dano. HP: 0/50
+Enemy enemy_voador MORREU! HP=0 -> sumindo do jogo.
+[Hitbox] LethalStrike -> Enemy_Voador: 9999 dmg
+ENEMY_QA_PASS: Voador: lethal physics hit shows death pose
+ENEMY_QA_PASS: Voador: death disables combat
+ENEMY_QA_PASS: Voador: no health bar on corpse
+ENEMY_QA_PASS: Voador: freed after death fade
+ENEMY_QA_DONE failures=0

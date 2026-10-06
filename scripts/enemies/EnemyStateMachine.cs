@@ -220,6 +220,11 @@ namespace Joguim.Enemies
 
         public EnemyAttackState(EnemyBase enemy, EnemyStateMachine stateMachine) : base(enemy, stateMachine) { }
 
+        public override void Exit()
+        {
+            Enemy.CombatController?.DisableHitbox();
+        }
+
         public override void Enter()
         {
             _attackTimer = Enemy.StatsResource.AttackCooldown;

@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+Boss boss_javali levou 99999 dano HP:0/200
+Boss boss_javali MORREU! HP=0 -> animação de morte e fade.
+SaveManager: Player not found. Cannot save.
+Ability unlocked: Dash
+SaveManager: Player not found. Cannot save.
+AudioManager: SFX not found at res://assets/audio/sfx/boss_defeat.wav
+BOSS_QA_PASS: death starts with visible dead pose
+BOSS_QA_PASS: victory emitted once at death
+BOSS_QA_PASS: defeated pose shown during fade
+BOSS_QA_PASS: fade remains active
+BOSS_QA_PASS: defeated does not emit another victory
+BOSS_QA_PASS: boss freed after existing fade interval
+BOSS_QA_DONE failures=0
