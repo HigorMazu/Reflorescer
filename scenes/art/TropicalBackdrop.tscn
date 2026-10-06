@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/environment/tropical/forest_background.png" id="1"]
+[ext_resource type="Script" path="res://scripts/art/ForestAmbience.gd" id="2"]
+
+[node name="TropicalBackdrop" type="Node2D"]
+z_index = -20
+
+[node name="DistantForest" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.18, 0.12)
+
+[node name="Forest" type="Sprite2D" parent="DistantForest"]
+position = Vector2(-700, -650)
+scale = Vector2(2, 2)
+modulate = Color(0.62, 0.72, 0.65, 1)
+texture = ExtResource("1")
+centered = false
+
+[node name="Motes" type="Node2D" parent="."]
+position = Vector2(0, 440)
+script = ExtResource("2")
