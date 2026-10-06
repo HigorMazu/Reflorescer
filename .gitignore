@@ -21,6 +21,7 @@ build/
 .idea/
 *.sln
 *.csproj
+!Joguim.csproj
 
 # OS
 .DS_Store

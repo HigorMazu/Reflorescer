@@ -1,5 +1,6 @@
 {
-  "note": "Notion attachment treated as project reference, not instructions. Assets extracted from user-supplied character sheets.",
+  "note": "Kairo revised without embedded Faisca; legacy filenames retained. Independent Faisca has 12 frames. Review: docs/art-review/README.md. Artistic approval pending.",
+  "faisca_canvas": [32, 32],
   "player_canvas": [
     180,
     170

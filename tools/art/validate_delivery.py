@@ -34,11 +34,12 @@ def main():
         print(f'PASS {path}: {count} frames, {size}, names and alpha')
     assert (ROOT / resources[0]).read_text(encoding='utf-8-sig') == baseline(resources[0]).replace('\r\n', '\n')
     print('PASS Kairo frame counts, FPS, duration and loop flags unchanged')
-    for path in ['scenes/player/Player.tscn', 'scenes/levels/TestLevel.tscn']:
+    for path in ['scenes/player/Player.tscn', 'scenes/levels/TestLevel.tscn', 'scenes/areas/SopeDaMata.tscn']:
         old = baseline(path).replace('\r\n', '\n')
         new = (ROOT / path).read_text(encoding='utf-8-sig')
         if '/player/' in path:
-            assert old == new, 'Player scene/pivot changed'
+            expected = old.replace('position = Vector2(-45, -85)', 'position = Vector2(-45, -65)')
+            assert expected == new, 'Unexpected change outside the uniform 20px visual alignment'
         else:
             def collision(text):
                 return [b.strip() for b in blocks(text) if any(t in b.split('\n')[0] for t in
@@ -46,7 +47,7 @@ def main():
             assert collision(old) == collision(new), 'Gameplay collision or trigger changed'
     changed = subprocess.check_output(['git', 'diff', '--name-only'], cwd=ROOT, text=True).splitlines()
     assert not any(p.endswith('.cs') or p.startswith('resources/') for p in changed)
-    print('PASS player pivot, collision shapes, triggers, C# and gameplay stats unchanged')
+    print('PASS uniform visual alignment; collision shapes, triggers, C# and gameplay stats unchanged')
     for directory in ['scenes/art', 'assets/sprites/faisca']:
         for path in (ROOT / directory).glob('*'):
             if path.suffix not in ('.tscn', '.tres'): continue

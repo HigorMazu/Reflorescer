@@ -31,6 +31,7 @@ func _ready() -> void:
 	for animation_name in ["idle", "run", "jump", "fall", "attack", "hurt", "dead"]:
 		check(sprite.sprite_frames.has_animation(animation_name), "Kairo " + animation_name)
 	check(player.is_on_floor(), "player lands on unchanged floor")
+	check(is_equal_approx(sprite.position.y + 170.0 * sprite.scale.y, 20.0), "visual foot baseline matches collision bottom")
 	await capture("game-before.png")
 	Input.action_press("move_right")
 	await wait(0.25)
@@ -55,18 +56,19 @@ func _ready() -> void:
 	# C# enum: Follow=0, Idle=1, Investigate=2, ReturnToPlayer=4.
 	for test in [[1, "idle"], [2, "investigate"], [4, "fly"]]:
 		machine.call("ChangeState", test[0])
-		await wait(0.12)
+		var initial_frame := companion_sprite.frame
+		await wait(0.26)
 		check(companion_sprite.animation == StringName(test[1]), "Faísca state " + test[1])
-		check(companion_sprite.is_playing(), "Faísca animation advances")
+		check(companion_sprite.is_playing() and companion_sprite.frame != initial_frame, "Faísca animation advances")
 	machine.call("ChangeState", 0)
-	player.global_position = Vector2(120, 460)
+	player.global_position = Vector2(1100, 420)
 	player.velocity = Vector2.ZERO
 	await wait(0.3)
 	Input.action_press("interact")
 	await wait(0.1)
 	Input.action_release("interact")
 	await wait(0.7)
-	var point := level.get_node("RestorationPoint1")
+	var point := level.get_node("Interactables/RestorationPoint1")
 	check(bool(point.get("Restored")), "E restores the existing point")
 	check(not point.get_node("DegradedGround").visible, "degraded art hidden")
 	check(point.get_node("RestoredGround").visible, "restored art visible")
