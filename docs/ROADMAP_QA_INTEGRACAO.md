@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-09-29
+atualizado: 2026-10-06
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: arte
@@ -14,8 +14,8 @@ descricao: Casos de teste da integração código + arte
 epicos_total: 8
 epicos_concluidos: 0
 tasks_total: 21
-tasks_prontas: 1
-tasks_bloqueadas: 16
+tasks_prontas: 0
+tasks_bloqueadas: 14
 ---
 # Roadmap de QA — Integração (Código + Arte do Higor)
 
@@ -25,7 +25,7 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 
 ---
 
-> [!failure]- EPIC-A00 — Padrões Técnicos — 🔴 Bloqueado · 🔴 Bloqueante
+> [!warning]- EPIC-A00 — Padrões Técnicos — 🟡 Parcial · 🔴 Bloqueante
 > *Pronto quando*: todo `SpriteFrames` entregue segue canvas e pivô consistentes, e o flip (por escala no Kairo, `FlipH` em inimigos/boss) não distorce a arte.
 >
 > > [!warning]- Task A00-T1 — Formato e consistência
@@ -33,23 +33,29 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - [ ] Pivô/ancoragem consistente entre animações do mesmo personagem — sem "pulo" de posição ao trocar.
 > > - **Verificação (28/09, Claude, pelos arquivos):** Kairo: os 11 quadros têm 180×170. Korrag: os 15 quadros têm 260×180 (as folhas `_sheet.png` são só referência, não entram no `SpriteFrames`). Os dois `SpriteFrames` usam `centered = false` com um offset fixo no nó, então canvas igual = mesma âncora. Um "pulo" só aconteceria se o desenho estiver deslocado dentro do canvas, e isso precisa de olho humano.
 > >
-> > Status: 🟡 parcial (28/09) — canvas ✅ nos 2 personagens entregues; pivô ainda precisa de conferência visual quadro a quadro.
+> > - **Integração (06/10):** Canvas verificados: Kairo 180×170 e Faísca 32×32. Offset visual uniforme de Kairo ajustado para (-45,-65), alinhando os pés à colisão sem mudar física. Aprovação visual pendente. Ver `docs/art-review/README.md` e capturas.
+> >
+> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
 >
-> > [!failure]- Task A00-T2 — Flip
+> > [!warning]- Task A00-T2 — Flip
 > > - [ ] Kairo: flip por escala não distorce elementos assimétricos da arte final (ex: espada só de um lado).
 > > - [ ] Inimigos/boss: `FlipH` espelha corretamente sem distorcer asas/antenas/elementos assimétricos.
 > > - **Achado (28/09):** o sprite do Kairo (`kairo_faisca_*.png`) tem a Faísca desenhada no canto superior direito. Com o flip por escala, ela pula pro outro lado do Kairo a cada virada. Além disso, o companheiro `Faisca.tscn` continua desenhando o placeholder (corpo, asas e luz) e segue o Kairo, então aparecem **duas Faíscas**. Proposta pro Higor: Kairo sem a Faísca no sprite, e a arte da Faísca entregue separada pro `Faisca.tscn` (ver [[ROADMAP_ARTE]] A01-T1 e A03). Flip de inimigos/boss por `FlipH`: ainda não conferido.
 > >
-> > Status: 🔴 falha (28/09) — a Faísca está desenhada dentro do sprite do Kairo e troca de lado no flip.
+> > - **Integração (06/10):** Faísca removida dos quadros de Kairo e integrada como companheiro independente. Flip de Kairo testado no Godot .NET. Inimigos/boss não revalidados. Ver `docs/art-review/README.md` e capturas.
+> >
+> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
 
-> [!failure]- EPIC-A01 — Kairo — 🔴 Bloqueado · 🔴 Bloqueante
+> [!warning]- EPIC-A01 — Kairo — 🟡 Parcial · 🔴 Bloqueante
 > *Pronto quando*: as animações núcleo substituem o placeholder sem regressão de física, e a Espada de Grama alterna visual corretamente em jogo.
 >
-> > [!success]- Task A01-T1 — Animações núcleo
-> > - [x] Trocar o placeholder pelo pacote idle/run/jump/fall/attack/hurt/dead e rodar de novo a Task C01-T2 do [[ROADMAP_QA_CODIGO]] — nenhum comportamento de física deve mudar, só o visual.
+> > [!warning]- Task A01-T1 — Animações núcleo
+> > - [ ] Trocar o placeholder pelo pacote idle/run/jump/fall/attack/hurt/dead e rodar de novo a Task C01-T2 do [[ROADMAP_QA_CODIGO]] — nenhum comportamento de física deve mudar, só o visual.
 > > - **Verificação (28/09):** idle 2 quadros/5 fps, run 2/8, jump 1, fall 1, attack 3/10 fps (0.3s, igual ao `AttackCooldown`), hurt 1, dead 1. Os nomes batem com o que o `PlayerController` toca.
 > >
-> > Status: ✅ passa (28/09) — as 7 animações núcleo estão no `KairoFaiscaSpriteFrames.tres` e a regressão de física (C01-T2) foi validada com essa arte. Ressalva de arte: Faísca embutida (ver A00-T2).
+> > - **Integração (06/10):** 11 PNGs limpos; sete nomes, contagens, FPS e loops preservados. Corrigido run_01. Corrida, salto e ataque passaram no teste C#; C01-T2 completo e aprovação artística ainda pendentes. Ver `docs/art-review/README.md` e capturas.
+> >
+> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
 >
 > > [!failure]- Task A01-T2 — Espada de Grama
 > > - [ ] Sprite da espada visível quando ativada, "bandagem" visível quando desativada — nunca os dois ao mesmo tempo.
@@ -84,14 +90,16 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: 🔴 bloqueado — pós-demo, sem urgência.
 
-> [!failure]- EPIC-A03 — Faísca — 🔴 Bloqueado · 🟠 Alta
+> [!warning]- EPIC-A03 — Faísca — 🟡 Parcial · 🟠 Alta
 > *Pronto quando*: `fly`/`investigate` acompanham a troca de estado sem travar num frame parado, e a luz não "pisca" ao trocar de direção.
 >
-> > [!failure]- Task A03-T1
+> > [!warning]- Task A03-T1
 > > - [ ] Com `fly`/`investigate` adicionadas, a troca de animação acompanha a troca de estado (`FollowState`/`IdleFaiscaState`/`InvestigateState`/`ReturnToPlayerState`) sem travar num frame parado.
 > > - [ ] A luz (`PointLight2D`) pulsa e o flip de sprite não "pisca" de forma estranha ao trocar de direção.
 > >
-> > Status: 🔴 bloqueado — depende de [[ROADMAP_ARTE]] `A03-T1`.
+> > - **Integração (06/10):** 12 frames entregues, quatro por idle/fly/investigate; luz independente. Os três estados e avanço de frames passaram em teste dirigido no Godot .NET. Investigação automática e aprovação artística pendentes. Ver `docs/art-review/README.md` e capturas.
+> >
+> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
 
 > [!failure]- EPIC-A04 — Boss KORRAG — 🔴 Bloqueado · 🟠 Alta
 > *Pronto quando*: as transições de fase são claras pro jogador mesmo com `idle` compartilhado, o timing de `charge_windup` bate com o código, e o nome exibido é "Korrag, o Javali".
@@ -113,17 +121,19 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: não aplicável ainda — condicional a sobrar tempo pra arte opcional.
 
-> [!failure]- EPIC-A05 — Cenário — 🔴 Bloqueado · 🟠 Alta
+> [!warning]- EPIC-A05 — Cenário — 🟡 Parcial · 🟠 Alta
 > *Pronto quando*: as 4 áreas têm identidade visual reconhecível sem texto, os pontos de entrada de cena fazem sentido, e a performance se mantém estável no `gl_compatibility`.
 >
 > Atualizado em 29/09/2026 — a demo passou a ser 4 áreas dentro da Floresta Tropical (era Floresta Tropical/Deserto/Tundra); `TargetArea`/`SpawnOffset` já funcionam desde [[ROADMAP_QA_CODIGO]] `C08-T1` (concluída em 28/09), então a ressalva de posicionamento manual não se aplica mais.
 >
-> > [!failure]- Task A05-T1 — Sopé da Mata
+> > [!warning]- Task A05-T1 — Sopé da Mata
 > > - [ ] Identidade visual clara — dá pra saber que bioma é só de olhar, sem ler texto.
 > > - [ ] Transição de área: o Kairo entra no `Marker2D` certo vindo do menu/novo jogo.
 > > - [ ] Performance: tileset/background + pulsos de luz da Faísca + barras de vida flutuantes (com `Tween`) sem queda perceptível de FPS no renderer `gl_compatibility`.
 > >
-> > Status: 🔴 bloqueado — depende de [[ROADMAP_ARTE]] `A05-T1` e de [[ROADMAP_DEV]] `EPIC-C13-T1`.
+> > - **Integração (06/10):** Protótipo integrado ao Sopé da Mata: chão grama/terra/raízes/pedra, parallax, partículas e restauração seco→verde. Interação E e crescimento passaram no Godot .NET. Tileset modular, percurso completo e medição de FPS pendentes. Ver `docs/art-review/README.md` e capturas.
+> >
+> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
 >
 > > [!failure]- Task A05-T2 — Dossel Vivo
 > > - [ ] Repetir os 3 testes da Task A05-T1, mais: leitura clara das plataformas de pulo vertical.

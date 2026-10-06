@@ -11,6 +11,16 @@
 [ext_resource type="Script" uid="uid://cpll441xskn7r" path="res://scripts/world/TransitionTrigger.cs" id="transition"]
 [ext_resource type="PackedScene" uid="uid://ci4whjcr73q7y" path="res://scenes/enemies/Enemy_Voador.tscn" id="voador"]
 
+[ext_resource type="Texture2D" path="res://assets/environment/tropical/ground_restored.png" id="art_ground"]
+[ext_resource type="Texture2D" path="res://assets/environment/tropical/ground_degraded.png" id="art_dry"]
+[ext_resource type="Texture2D" path="res://assets/environment/tropical/sprout_restored.png" id="art_sprout"]
+[ext_resource type="Texture2D" path="res://assets/environment/tropical/sprout_degraded.png" id="art_stump"]
+[ext_resource type="PackedScene" path="res://scenes/art/TropicalBackdrop.tscn" id="art_forest"]
+[ext_resource type="Shader" path="res://assets/shaders/foliage_sway.gdshader" id="art_sway"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_grass"]
+shader = ExtResource("art_sway")
+
 [sub_resource type="RectangleShape2D" id="Shape_WallLeft"]
 size = Vector2(40, 800)
 
@@ -54,12 +64,7 @@ SpawnPoints = []
 EnemySpawns = []
 Checkpoints = []
 
-[node name="Background" type="ColorRect" parent="." unique_id=877405262]
-offset_top = -200.0
-offset_right = 2400.0
-offset_bottom = 520.0
-mouse_filter = 2
-color = Color(0.16, 0.22, 0.18, 1)
+[node name="Background" parent="." instance=ExtResource("art_forest")]
 
 [node name="Geometry" type="Node2D" parent="." unique_id=661400436]
 
@@ -97,21 +102,16 @@ position = Vector2(450, 520)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Ground1" unique_id=1121489657]
 shape = SubResource("Shape_Ground1")
 
-[node name="Visual" type="ColorRect" parent="Geometry/Ground1" unique_id=853616844]
-offset_left = -450.0
-offset_top = -40.0
-offset_right = 450.0
-offset_bottom = 40.0
-mouse_filter = 2
-color = Color(0.25, 0.3, 0.2, 1)
-
-[node name="Top" type="ColorRect" parent="Geometry/Ground1" unique_id=972790905]
+[node name="Visual" type="NinePatchRect" parent="Geometry/Ground1" unique_id=853616844]
 offset_left = -450.0
 offset_top = -44.0
 offset_right = 450.0
-offset_bottom = -38.0
+offset_bottom = 40.0
 mouse_filter = 2
-color = Color(0.3, 0.55, 0.2, 1)
+texture_filter = 1
+material = SubResource("ShaderMaterial_grass")
+texture = ExtResource("art_ground")
+axis_stretch_horizontal = 2
 
 [node name="Ground2Step" type="StaticBody2D" parent="Geometry" unique_id=913689946]
 position = Vector2(1100, 480)
@@ -119,21 +119,16 @@ position = Vector2(1100, 480)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Ground2Step" unique_id=1630893015]
 shape = SubResource("Shape_Ground2Step")
 
-[node name="Visual" type="ColorRect" parent="Geometry/Ground2Step" unique_id=705235202]
-offset_left = -200.0
-offset_top = -40.0
-offset_right = 200.0
-offset_bottom = 40.0
-mouse_filter = 2
-color = Color(0.25, 0.3, 0.2, 1)
-
-[node name="Top" type="ColorRect" parent="Geometry/Ground2Step" unique_id=1153889067]
+[node name="Visual" type="NinePatchRect" parent="Geometry/Ground2Step" unique_id=705235202]
 offset_left = -200.0
 offset_top = -44.0
 offset_right = 200.0
-offset_bottom = -38.0
+offset_bottom = 40.0
 mouse_filter = 2
-color = Color(0.3, 0.55, 0.2, 1)
+texture_filter = 1
+material = SubResource("ShaderMaterial_grass")
+texture = ExtResource("art_ground")
+axis_stretch_horizontal = 2
 
 [node name="Ground3Ditch" type="StaticBody2D" parent="Geometry" unique_id=1774749201]
 position = Vector2(1360, 560)
@@ -141,21 +136,16 @@ position = Vector2(1360, 560)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Ground3Ditch" unique_id=1802616544]
 shape = SubResource("Shape_Ground3Ditch")
 
-[node name="Visual" type="ColorRect" parent="Geometry/Ground3Ditch" unique_id=444387497]
-offset_left = -60.0
-offset_top = -40.0
-offset_right = 60.0
-offset_bottom = 40.0
-mouse_filter = 2
-color = Color(0.25, 0.3, 0.2, 1)
-
-[node name="Top" type="ColorRect" parent="Geometry/Ground3Ditch" unique_id=1542287660]
+[node name="Visual" type="NinePatchRect" parent="Geometry/Ground3Ditch" unique_id=444387497]
 offset_left = -60.0
 offset_top = -44.0
 offset_right = 60.0
-offset_bottom = -38.0
+offset_bottom = 40.0
 mouse_filter = 2
-color = Color(0.3, 0.55, 0.2, 1)
+texture_filter = 1
+material = SubResource("ShaderMaterial_grass")
+texture = ExtResource("art_ground")
+axis_stretch_horizontal = 2
 
 [node name="Ground4" type="StaticBody2D" parent="Geometry" unique_id=1393185225]
 position = Vector2(1910, 520)
@@ -163,21 +153,16 @@ position = Vector2(1910, 520)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Ground4" unique_id=1020890094]
 shape = SubResource("Shape_Ground4")
 
-[node name="Visual" type="ColorRect" parent="Geometry/Ground4" unique_id=1126293855]
-offset_left = -490.0
-offset_top = -40.0
-offset_right = 490.0
-offset_bottom = 40.0
-mouse_filter = 2
-color = Color(0.25, 0.3, 0.2, 1)
-
-[node name="Top" type="ColorRect" parent="Geometry/Ground4" unique_id=1047410633]
+[node name="Visual" type="NinePatchRect" parent="Geometry/Ground4" unique_id=1126293855]
 offset_left = -490.0
 offset_top = -44.0
 offset_right = 490.0
-offset_bottom = -38.0
+offset_bottom = 40.0
 mouse_filter = 2
-color = Color(0.3, 0.55, 0.2, 1)
+texture_filter = 1
+material = SubResource("ShaderMaterial_grass")
+texture = ExtResource("art_ground")
+axis_stretch_horizontal = 2
 
 [node name="Platform1" type="StaticBody2D" parent="Geometry" unique_id=67324683]
 position = Vector2(620, 410)
@@ -185,21 +170,16 @@ position = Vector2(620, 410)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Platform1" unique_id=1129938014]
 shape = SubResource("Shape_Platform1")
 
-[node name="Visual" type="ColorRect" parent="Geometry/Platform1" unique_id=647838194]
-offset_left = -70.0
-offset_top = -10.0
-offset_right = 70.0
-offset_bottom = 10.0
-mouse_filter = 2
-color = Color(0.35, 0.4, 0.25, 1)
-
-[node name="Top" type="ColorRect" parent="Geometry/Platform1" unique_id=748599314]
+[node name="Visual" type="NinePatchRect" parent="Geometry/Platform1" unique_id=647838194]
 offset_left = -70.0
 offset_top = -14.0
 offset_right = 70.0
-offset_bottom = -8.0
+offset_bottom = 10.0
 mouse_filter = 2
-color = Color(0.3, 0.55, 0.2, 1)
+texture_filter = 1
+material = SubResource("ShaderMaterial_grass")
+texture = ExtResource("art_ground")
+axis_stretch_horizontal = 2
 
 [node name="Platform2" type="StaticBody2D" parent="Geometry" unique_id=1285798840]
 position = Vector2(1700, 400)
@@ -207,21 +187,16 @@ position = Vector2(1700, 400)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Platform2" unique_id=123094668]
 shape = SubResource("Shape_Platform2")
 
-[node name="Visual" type="ColorRect" parent="Geometry/Platform2" unique_id=610287191]
-offset_left = -70.0
-offset_top = -10.0
-offset_right = 70.0
-offset_bottom = 10.0
-mouse_filter = 2
-color = Color(0.35, 0.4, 0.25, 1)
-
-[node name="Top" type="ColorRect" parent="Geometry/Platform2" unique_id=1999402752]
+[node name="Visual" type="NinePatchRect" parent="Geometry/Platform2" unique_id=610287191]
 offset_left = -70.0
 offset_top = -14.0
 offset_right = 70.0
-offset_bottom = -8.0
+offset_bottom = 10.0
 mouse_filter = 2
-color = Color(0.3, 0.55, 0.2, 1)
+texture_filter = 1
+material = SubResource("ShaderMaterial_grass")
+texture = ExtResource("art_ground")
+axis_stretch_horizontal = 2
 
 [node name="Platform3" type="StaticBody2D" parent="Geometry" unique_id=1434833255]
 position = Vector2(1900, 320)
@@ -229,21 +204,16 @@ position = Vector2(1900, 320)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Platform3" unique_id=1922787873]
 shape = SubResource("Shape_Platform3")
 
-[node name="Visual" type="ColorRect" parent="Geometry/Platform3" unique_id=852182159]
-offset_left = -70.0
-offset_top = -10.0
-offset_right = 70.0
-offset_bottom = 10.0
-mouse_filter = 2
-color = Color(0.35, 0.4, 0.25, 1)
-
-[node name="Top" type="ColorRect" parent="Geometry/Platform3" unique_id=469892359]
+[node name="Visual" type="NinePatchRect" parent="Geometry/Platform3" unique_id=852182159]
 offset_left = -70.0
 offset_top = -14.0
 offset_right = 70.0
-offset_bottom = -8.0
+offset_bottom = 10.0
 mouse_filter = 2
-color = Color(0.3, 0.55, 0.2, 1)
+texture_filter = 1
+material = SubResource("ShaderMaterial_grass")
+texture = ExtResource("art_ground")
+axis_stretch_horizontal = 2
 
 [node name="Hazards" type="Node2D" parent="." unique_id=626162232]
 
@@ -288,35 +258,45 @@ RestoredVisuals = Array[NodePath]([NodePath("RestoredGround"), NodePath("Sprout"
 position = Vector2(0, -16)
 shape = SubResource("Shape_RestorationPoint1")
 
-[node name="DegradedGround" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=934682115]
+[node name="DegradedGround" type="NinePatchRect" parent="Interactables/RestorationPoint1" unique_id=934682115]
 offset_left = -56.0
 offset_top = -4.0
 offset_right = 56.0
+offset_bottom = 80.0
+axis_stretch_horizontal = 2
+texture_filter = 1
 mouse_filter = 2
-color = Color(0.55, 0.45, 0.28, 1)
+texture = ExtResource("art_dry")
 
-[node name="Stump" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=1033355171]
-offset_left = -10.0
-offset_top = -14.0
-offset_right = 10.0
+[node name="Stump" type="TextureRect" parent="Interactables/RestorationPoint1" unique_id=1033355171]
+offset_left = -20.0
+offset_top = -32.0
+offset_right = 20.0
+offset_bottom = 0.0
+texture_filter = 1
 mouse_filter = 2
-color = Color(0.45, 0.32, 0.18, 1)
+texture = ExtResource("art_stump")
 
-[node name="RestoredGround" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=694485991]
+[node name="RestoredGround" type="NinePatchRect" parent="Interactables/RestorationPoint1" unique_id=694485991]
 visible = false
 offset_left = -56.0
 offset_top = -4.0
 offset_right = 56.0
+offset_bottom = 80.0
+axis_stretch_horizontal = 2
+texture_filter = 1
 mouse_filter = 2
-color = Color(0.3, 0.72, 0.3, 1)
+texture = ExtResource("art_ground")
 
-[node name="Sprout" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=1396480643]
+[node name="Sprout" type="TextureRect" parent="Interactables/RestorationPoint1" unique_id=1396480643]
 visible = false
-offset_left = -5.0
-offset_top = -30.0
-offset_right = 5.0
+offset_left = -20.0
+offset_top = -32.0
+offset_right = 20.0
+offset_bottom = 0.0
+texture_filter = 1
 mouse_filter = 2
-color = Color(0.4, 0.85, 0.35, 1)
+texture = ExtResource("art_sprout")
 
 [node name="Transitions" type="Node2D" parent="." unique_id=1976270685]
 

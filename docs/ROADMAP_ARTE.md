@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-09-29
+atualizado: 2026-10-06
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: arte
@@ -33,31 +33,35 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 
 ---
 
-> [!todo]- EPIC-A00 — Padrões Técnicos de Entrega — ⬜ Não iniciado · 🔴 Bloqueante
+> [!warning]- EPIC-A00 — Padrões Técnicos de Entrega — 🔄 Em andamento · 🔴 Bloqueante
 > *Pronto quando*: o formato de entrega está combinado com o Gustavo, e toda arte entregue a partir daqui segue canvas consistente, pivô consistente e a convenção de flip por personagem.
 >
 > Ler antes de desenhar qualquer frame — não é conteúdo, é a base que evita retrabalho em todo o resto.
 >
-> > [!todo]- Task A00-T1 — Formato e consistência
+> > [!warning]- Task A00-T1 — Formato e consistência
 > > - [ ] Formato de entrega combinado com o Gustavo: sequência de frames numerados (`kairo_idle_00.png`, `kairo_idle_01.png`...) **ou** spritesheet única fatiada no editor do Godot (`SpriteFrames` → "Add frames from Sprite Sheet").
 > > - [ ] Todo frame de um mesmo personagem usa o **mesmo tamanho de canvas** (senão ele "pula" de posição ao trocar de animação).
 > > - [ ] Ponto de pivô/ancoragem consistente entre animações (recomendado: base dos pés).
 > > - [ ] Nomes de animação exatos e minúsculos, batendo com a tabela de cada Épico abaixo (case-sensitive).
 > >
-> > Status: não iniciado.
+> > - **Integração (06/10):** Canvas verificados: Kairo 180×170 e Faísca 32×32. Offset visual uniforme de Kairo ajustado para (-45,-65), alinhando os pés à colisão sem mudar física. Aprovação visual pendente. Ver `docs/art-review/README.md` e capturas.
+> >
+> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
 >
-> > [!todo]- Task A00-T2 — Flip por personagem
+> > [!warning]- Task A00-T2 — Flip por personagem
 > > - [ ] Kairo é espelhado por **escala** (`Visual.Scale.X = ±1`), não por flip de textura — evitar elementos fortemente assimétricos que fiquem estranhos espelhados.
 > > - [ ] Inimigos e boss usam `FlipH` tradicional (espelha só a textura) — menos restritivo.
 > >
-> > Status: não iniciado.
+> > - **Integração (06/10):** Faísca removida dos quadros de Kairo e integrada como companheiro independente. Flip de Kairo testado no Godot .NET. Inimigos/boss não revalidados. Ver `docs/art-review/README.md` e capturas.
+> >
+> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
 
-> [!todo]- EPIC-A01 — Kairo (protagonista) — ⬜ Não iniciado · 🔴 Bloqueante
+> [!warning]- EPIC-A01 — Kairo (protagonista) — 🔄 Em andamento · 🔴 Bloqueante
 > *Pronto quando*: as 7 animações núcleo substituem o placeholder, a Espada de Grama tem os 2 visuais (ativada/desativada), e wall grab/dash têm animação assim que a mecânica correspondente existir no código.
 >
 > Prioridade máxima — desbloqueia testar o jogo inteiro com arte real.
 >
-> > [!todo]- Task A01-T1 — Animações núcleo
+> > [!warning]- Task A01-T1 — Animações núcleo
 > > - [ ] `idle` (parado)
 > > - [ ] `run` (correndo)
 > > - [ ] `jump` (pulando)
@@ -68,7 +72,9 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > > - **Nota:** ao entregar, rodar de novo a Task C01-T2 do [[ROADMAP_QA_CODIGO]] — nenhum comportamento de física deve mudar, só o visual.
 > > - **Achado da integração (28/09) — Faísca embutida no sprite do Kairo:** os quadros `kairo_faisca_*` têm a Faísca desenhada junto. No jogo, ela troca de lado a cada virada do Kairo (flip por escala) e aparece duplicada, porque a Faísca também é um personagem separado (`Faisca.tscn`) que segue o Kairo. Pedido: redesenhar o Kairo sem a Faísca e entregar a Faísca em sprites próprios (A03). Fora isso, as 7 animações núcleo integraram sem regressão (ver [[ROADMAP_QA_INTEGRACAO]] A01-T1).
 > >
-> > Status: não iniciado.
+> > - **Integração (06/10):** 11 PNGs limpos; sete nomes, contagens, FPS e loops preservados. Corrigido run_01. Corrida, salto e ataque passaram no teste C#; C01-T2 completo e aprovação artística ainda pendentes. Ver `docs/art-review/README.md` e capturas.
+> >
+> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
 >
 > > [!todo]- Task A01-T2 — Espada de Grama (2 visuais)
 > > - [ ] Espada empunhada (ativada), sprite separado no braço direito.
@@ -125,7 +131,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: não iniciado — pós-demo, sem urgência.
 
-> [!todo]- EPIC-A03 — Faísca (vaga-lume companheiro) — ⬜ Não iniciado · 🟠 Alta
+> [!warning]- EPIC-A03 — Faísca (vaga-lume companheiro) — 🔄 Em andamento · 🟠 Alta
 > *Pronto quando*: `fly` e `investigate` estão entregues e a troca de animação acompanha a troca de estado sem travar num frame parado.
 >
 > > [!warning]- Task A03-T1 — Animações
@@ -133,7 +139,9 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > > - [ ] `fly` (voando, seguindo o Kairo).
 > > - [ ] `investigate` (investigando).
 > >
-> > Status: parcial — `idle` já existe, `fly`/`investigate` pendentes.
+> > - **Integração (06/10):** 12 frames entregues, quatro por idle/fly/investigate; luz independente. Os três estados e avanço de frames passaram em teste dirigido no Godot .NET. Investigação automática e aprovação artística pendentes. Ver `docs/art-review/README.md` e capturas.
+> >
+> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
 
 > [!todo]- EPIC-A04 — Boss KORRAG — ⬜ Não iniciado · 🟠 Alta
 > *Pronto quando*: `intro`, `charge_windup`, `phase2_transition` e `defeated` estão entregues — escopo já simplificado, fases 1 e 2 compartilham `idle`.
@@ -161,18 +169,20 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: não iniciado — opcional, fora do caminho crítico da demo.
 
-> [!todo]- EPIC-A05 — Cenário das 4 Áreas da Demo (Floresta Tropical) — ⬜ Não iniciado · 🔴 Bloqueante
+> [!warning]- EPIC-A05 — Cenário das 4 Áreas da Demo (Floresta Tropical) — 🔄 Em andamento · 🔴 Bloqueante
 > *Pronto quando*: as 4 áreas têm tileset, background e props temáticos entregues, com identidade visual reconhecível sem precisar de texto, e coerentes entre si (mesmo bioma, mesma paleta-base) — ver [[🌍 Mundo e Biomas#As 4 áreas da demo (dentro da Floresta Tropical)|Mundo e Biomas]].
 >
 > Renomeado em 29/09/2026 (era "Cenário das 3 Áreas da Demo": Floresta Tropical/Deserto/Tundra) — a demo agora fica só na Floresta Tropical, em 4 áreas.
 >
-> > [!todo]- Task A05-T1 — Sopé da Mata (entrada, prioridade)
+> > [!warning]- Task A05-T1 — Sopé da Mata (entrada, prioridade)
 > > - [ ] Tileset de chão/plataformas — vegetação densa mas saudável.
 > > - [ ] Background/parallax.
 > > - [ ] Props temáticos ODS15 (alinhar com [[ROADMAP_DEV]] `EPIC-C02` antes de desenhar) — degradação **leve** aqui, é a área de entrada.
 > > - [ ] Visual do ponto de restauração.
 > >
-> > Status: não iniciado.
+> > - **Integração (06/10):** Protótipo integrado ao Sopé da Mata: chão grama/terra/raízes/pedra, parallax, partículas e restauração seco→verde. Interação E e crescimento passaram no Godot .NET. Tileset modular, percurso completo e medição de FPS pendentes. Ver `docs/art-review/README.md` e capturas.
+> >
+> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
 >
 > > [!todo]- Task A05-T2 — Dossel Vivo (copa das árvores)
 > > - [ ] Tileset com leitura clara de plataforming vertical (silhuetas de galhos/plataformas soltas).

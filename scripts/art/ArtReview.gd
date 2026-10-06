@@ -43,7 +43,7 @@ func _ready() -> void:
 	var backdrop := image_at("res://assets/environment/tropical/forest_background.png", Vector2(0, 0), Vector2(1280, 420))
 	backdrop.modulate = Color(0.6, 0.7, 0.63)
 	label_at("REFLORESCER", Vector2(38, 22), 32)
-	label_at("A vida nasce da terra.  /  estudo de arte · 05.10.2026", Vector2(40, 65), 17)
+	label_at("A vida nasce da terra.  /  estudo de arte · 06.10.2026", Vector2(40, 65), 17)
 	# Terrain shown at its own source proportions in this art board.
 	image_at("res://assets/environment/tropical/platform_restored.png", Vector2(20, 205), Vector2(768, 256))
 	dry = image_at("res://assets/environment/tropical/platform_degraded.png", Vector2(815, 238), Vector2(420, 140))
