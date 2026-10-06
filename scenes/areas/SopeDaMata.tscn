@@ -10,6 +10,11 @@
 [ext_resource type="PackedScene" uid="uid://do5tcbtkfllki" path="res://scenes/enemies/Enemy_Robusto.tscn" id="robusto"]
 [ext_resource type="Script" uid="uid://cpll441xskn7r" path="res://scripts/world/TransitionTrigger.cs" id="transition"]
 [ext_resource type="PackedScene" uid="uid://ci4whjcr73q7y" path="res://scenes/enemies/Enemy_Voador.tscn" id="voador"]
+[ext_resource type="PackedScene" path="res://scenes/art/TropicalBackdrop.tscn" id="backdrop"]
+[ext_resource type="Texture2D" uid="uid://b7pwgs2uc6jxd" path="res://assets/environment/tropical/ground_degraded.png" id="tex_ground_degraded"]
+[ext_resource type="Texture2D" uid="uid://g4fx4roaxjha" path="res://assets/environment/tropical/ground_restored.png" id="tex_ground_restored"]
+[ext_resource type="Texture2D" uid="uid://vo0mnmuh1ct6" path="res://assets/environment/tropical/sprout_degraded.png" id="tex_sprout_degraded"]
+[ext_resource type="Texture2D" uid="uid://dn53h7j8leyhp" path="res://assets/environment/tropical/sprout_restored.png" id="tex_sprout_restored"]
 
 [sub_resource type="RectangleShape2D" id="Shape_WallLeft"]
 size = Vector2(40, 800)
@@ -50,6 +55,8 @@ size = Vector2(60, 100)
 [node name="SopeDaMata" type="Node2D" unique_id=832451940 node_paths=PackedStringArray("SpawnPoints", "EnemySpawns", "Checkpoints")]
 script = ExtResource("area_script")
 AreaName = "SopeDaMata"
+UseCameraLimits = true
+CameraLimits = Rect2i(0, -200, 2400, 720)
 SpawnPoints = []
 EnemySpawns = []
 Checkpoints = []
@@ -60,6 +67,14 @@ offset_right = 2400.0
 offset_bottom = 520.0
 mouse_filter = 2
 color = Color(0.16, 0.22, 0.18, 1)
+z_index = -30
+
+[node name="Backdrop" parent="." instance=ExtResource("backdrop")]
+
+[node name="Motes" parent="Backdrop"]
+position = Vector2(0, 440)
+area = Rect2(0, -320, 2400, 300)
+amount = 18
 
 [node name="Geometry" type="Node2D" parent="." unique_id=661400436]
 
@@ -281,42 +296,47 @@ collision_layer = 32
 collision_mask = 2
 script = ExtResource("restoration")
 PointId = "restoration_sope_01"
-DegradedVisuals = Array[NodePath]([NodePath("DegradedGround"), NodePath("Stump")])
-RestoredVisuals = Array[NodePath]([NodePath("RestoredGround"), NodePath("Sprout")])
+DegradedVisuals = Array[NodePath]([NodePath("DegradedGround"), NodePath("DeadSprout")])
+RestoredVisuals = Array[NodePath]([NodePath("RestoredGround"), NodePath("Sprout"), NodePath("SproutB")])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/RestorationPoint1" unique_id=1566121383]
 position = Vector2(0, -16)
 shape = SubResource("Shape_RestorationPoint1")
 
-[node name="DegradedGround" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=934682115]
-offset_left = -56.0
-offset_top = -4.0
-offset_right = 56.0
-mouse_filter = 2
-color = Color(0.55, 0.45, 0.28, 1)
+[node name="DegradedGround" type="Sprite2D" parent="Interactables/RestorationPoint1"]
+position = Vector2(0, -6)
+texture_repeat = 2
+texture = ExtResource("tex_ground_degraded")
+offset = Vector2(0, 21)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 42)
 
-[node name="Stump" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=1033355171]
-offset_left = -10.0
-offset_top = -14.0
-offset_right = 10.0
-mouse_filter = 2
-color = Color(0.45, 0.32, 0.18, 1)
+[node name="DeadSprout" type="Sprite2D" parent="Interactables/RestorationPoint1"]
+position = Vector2(-30, 0)
+texture = ExtResource("tex_sprout_degraded")
+offset = Vector2(0, -16)
 
-[node name="RestoredGround" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=694485991]
+[node name="RestoredGround" type="Sprite2D" parent="Interactables/RestorationPoint1"]
 visible = false
-offset_left = -56.0
-offset_top = -4.0
-offset_right = 56.0
-mouse_filter = 2
-color = Color(0.3, 0.72, 0.3, 1)
+position = Vector2(0, -6)
+texture_repeat = 2
+texture = ExtResource("tex_ground_restored")
+offset = Vector2(0, 21)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 42)
 
-[node name="Sprout" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=1396480643]
+[node name="Sprout" type="Sprite2D" parent="Interactables/RestorationPoint1"]
 visible = false
-offset_left = -5.0
-offset_top = -30.0
-offset_right = 5.0
-mouse_filter = 2
-color = Color(0.4, 0.85, 0.35, 1)
+position = Vector2(-30, 0)
+texture = ExtResource("tex_sprout_restored")
+offset = Vector2(0, -16)
+
+[node name="SproutB" type="Sprite2D" parent="Interactables/RestorationPoint1"]
+visible = false
+position = Vector2(44, 0)
+texture = ExtResource("tex_sprout_restored")
+flip_h = true
+offset = Vector2(0, -16)
 
 [node name="Transitions" type="Node2D" parent="." unique_id=1976270685]
 

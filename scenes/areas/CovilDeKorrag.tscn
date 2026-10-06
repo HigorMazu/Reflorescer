@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://faisca001" path="res://scenes/companion/Faisca.tscn" id="faisca"]
 [ext_resource type="PackedScene" uid="uid://hud001" path="res://scenes/ui/HUD.tscn" id="hud"]
 [ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="player"]
+[ext_resource type="PackedScene" path="res://scenes/art/TropicalBackdrop.tscn" id="backdrop"]
 
 [sub_resource type="RectangleShape2D" id="Shape_WallLeft"]
 size = Vector2(40, 720)
@@ -25,6 +26,8 @@ size = Vector2(32, 32)
 [node name="CovilDeKorrag" type="Node2D" unique_id=1342522587 node_paths=PackedStringArray("SpawnPoints", "EnemySpawns", "Checkpoints")]
 script = ExtResource("area_script")
 AreaName = "CovilDeKorrag"
+UseCameraLimits = true
+CameraLimits = Rect2i(-640, -280, 1280, 720)
 SpawnPoints = []
 EnemySpawns = []
 Checkpoints = []
@@ -36,6 +39,14 @@ offset_right = 640.0
 offset_bottom = 440.0
 mouse_filter = 2
 color = Color(0.1, 0.1, 0.13, 1)
+z_index = -30
+
+[node name="Backdrop" parent="." instance=ExtResource("backdrop")]
+
+[node name="Motes" parent="Backdrop"]
+position = Vector2(-640, 180)
+area = Rect2(0, -420, 1280, 380)
+amount = 12
 
 [node name="Geometry" type="Node2D" parent="." unique_id=1085028862]
 

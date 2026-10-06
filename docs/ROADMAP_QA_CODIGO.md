@@ -12,9 +12,9 @@ responsavel: Gustavo
 par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 13
-epicos_concluidos: 9
+epicos_concluidos: 10
 tasks_total: 49
-tasks_prontas: 38
+tasks_prontas: 39
 tasks_bloqueadas: 3
 ---
 # Roadmap de QA — Código (Reflorescer)
@@ -58,7 +58,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 
-> [!warning]- EPIC-C02 — Mecânica de Restauração ODS15 — 🟡 Parcial · 🔴 Bloqueante
+> [!success]- EPIC-C02 — Mecânica de Restauração ODS15 — ✅ Passa · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — ponto de restauração interagível em 3 das 4 áreas da demo (Sopé da Mata, Dossel Vivo, Igarapé Sufocado), efeito visual próprio, evento dedicado no `EventBus`, e persistência em save.
 >
 > > [!success]- Task C02-T1 — Interação de restauração existe
@@ -80,13 +80,12 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): evento, persistência na sessão e fechar/reabrir (via Continuar) mantêm o ponto restaurado.
 >
-> > [!warning]- Task C02-T4 — Cobertura no Sopé da Mata, Dossel Vivo e Igarapé Sufocado
-> > - [ ] Pelo menos 1 ponto de restauração ativo e testável em cada uma das 3 áreas (sem ponto no Covil de Korrag).
+> > [!success]- Task C02-T4 — Cobertura no Sopé da Mata, Dossel Vivo e Igarapé Sufocado
+> > - [x] Pelo menos 1 ponto de restauração ativo e testável em cada uma das 3 áreas (sem ponto no Covil de Korrag).
 > > - **Nota (29/09):** escopo atualizado pras 4 áreas da demo (ver [[ROADMAP_DEV]], decisão no topo do arquivo).
-> >
 > > - **Nota (05/10):** as 3 cenas novas têm 1 ponto cada (`restoration_sope_01`, `restoration_dossel_01`, `restoration_igarape_01`, ver [[ROADMAP_DEV]] C02-T4). Conferido headless: os `NodePath` de antes/depois resolvem.
 > >
-> > Status: 🟡 parcial — os pontos existem nas 3 cenas (headless, 05/10). Falta restaurar cada um em jogo.
+> > Status: ✅ passa — teste em execução por script no Godot (05/10, Claude): nos 3 pontos, já com a arte do Higor, os secos somem e os verdes crescem até a escala final.
 
 > [!success]- EPIC-C03 — Combate e Espada de Grama — ✅ Passa · 🟠 Alta
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — Q alterna a espada em tempo real, stats diferentes com espada ativada/desativada, e não dá pra atacar com ela desativada.
@@ -285,7 +284,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > [!warning]- Task C13-T1 — Sopé da Mata (entrada)
 > > - [ ] A cena existe, o Kairo spawna no `Marker2D` de entrada, câmera com limites corretos, inimigos e ponto de restauração presentes.
 > >
-> > Status: 🟡 parcial — a cena existe e carrega (headless, 05/10). Teste em jogo pendente. Build no editor antes (o `MudHazard` e os limites de câmera não estão na DLL de 28/09).
+> > Status: 🟡 parcial — limites de câmera aplicados (0..2400, -200..520) e ponto de restauração funcionando (teste em execução por script no Godot (05/10, Claude)). Falta jogar a área à mão: spawn do Novo jogo e inimigos.
 >
 > > [!warning]- Task C13-T2 — Dossel Vivo (verticalidade)
 > > - [ ] A cena existe, plataforming vertical navegável, mais Voadores que o Sopé da Mata, ponto de restauração presente.
@@ -294,11 +293,11 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > Status: 🟡 parcial — a cena existe, 4 Voadores contra 2 no Sopé, e a transição do Sopé aponta pro marker certo (headless, 05/10). Teste em jogo pendente, principalmente o alcance de todos os galhos.
 >
 > > [!warning]- Task C13-T3 — Igarapé Sufocado (hazard de lama)
-> > - [ ] A cena existe, o `MudHazard` reduz a velocidade do Kairo dentro da área e para de reduzir ao sair.
+> > - [x] A cena existe, o `MudHazard` reduz a velocidade do Kairo dentro da área e para de reduzir ao sair.
 > > - [ ] Mais Robustos/Rápidos que as áreas anteriores, ponto de restauração com contraste "antes/depois" visível.
 > > - [ ] Chegando do Dossel Vivo, o Kairo entra no `Marker2D` certo.
 > >
-> > Status: 🟡 parcial — a cena existe, com 3 Robustos e 2 Rápidos, 3 poças de lama e o ponto de restauração (headless, 05/10). O `MudHazard` ainda não rodou: Build no editor antes (o `MudHazard` e os limites de câmera não estão na DLL de 28/09).
+> > Status: 🟡 parcial — a lama aplica o multiplicador 0.55 dentro e volta a 1.0 fora, e a restauração funciona (teste em execução por script no Godot (05/10, Claude)). Falta jogar a área à mão e a transição vinda do Dossel.
 >
 > > [!warning]- Task C13-T4 — Covil de Korrag (arena do boss)
 > > - [ ] A cena existe, sem inimigos comuns, o Korrag ativa normalmente (`EPIC-C06-T0`), chegando do Igarapé Sufocado o Kairo entra no `Marker2D` certo.

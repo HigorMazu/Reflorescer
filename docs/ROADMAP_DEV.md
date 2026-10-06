@@ -12,7 +12,7 @@ responsavel: Gustavo
 par: "[[ROADMAP_QA_CODIGO]]"
 descricao: Backlog de implementação da demo (código)
 epicos_total: 13
-epicos_concluidos: 9
+epicos_concluidos: 10
 tasks_total: 49
 tasks_prontas: 44
 tasks_bloqueadas: 3
@@ -63,7 +63,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 
-> [!info]- EPIC-C02 — Mecânica de Restauração ODS15 — 🔄 Em andamento · 🔴 Bloqueante
+> [!success]- EPIC-C02 — Mecânica de Restauração ODS15 — ✅ Concluído · 🔴 Bloqueante
 > *Pronto quando*: existe pelo menos 1 ponto de restauração interagível em 3 das 4 áreas da demo (Sopé da Mata, Dossel Vivo, Igarapé Sufocado — o Covil de Korrag não tem ponto de restauração, é a arena do boss), com efeito visual próprio, evento dedicado no `EventBus`, e persistência em save.
 >
 > Prioridade máxima de conteúdo — sem isso a demo perde a conexão com o pitch (ODS 15). Hoje `Checkpoint` é só um save point genérico, sem nenhum conceito de "restaurar" o bioma.
@@ -89,12 +89,14 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!info]- Task C02-T4 — Posicionar no Sopé da Mata, Dossel Vivo e Igarapé Sufocado
+> > [!success]- Task C02-T4 — Posicionar no Sopé da Mata, Dossel Vivo e Igarapé Sufocado
 > > - [x] Definir quantos pontos por área (mínimo 1 cada) e posicionar nas 3 cenas — degradação leve no Sopé da Mata, moderada no Dossel Vivo, mais impactante no Igarapé Sufocado (ver [[🌍 Mundo e Biomas#As 4 áreas da demo (dentro da Floresta Tropical)|Mundo e Biomas]]). Sem ponto no Covil de Korrag.
 > > - **Nota (29/09):** título e escopo atualizados — a demo trocou de Floresta Tropical/Deserto/Tundra pras 4 áreas da própria Floresta Tropical (ver decisão no topo do arquivo). Esta Task passa a depender do `EPIC-C13`, não mais do `EPIC-A05` sozinho — as cenas agora são construídas pelo Gustavo (`EPIC-C13`), a arte final entra depois por cima.
 > > - **Nota (05/10) — 1 ponto por área, montado junto com as cenas do `EPIC-C13`:** `restoration_sope_01` (no degrau do Sopé da Mata: chão seco + toco → grama + broto), `restoration_dossel_01` (no galho largo do meio da subida: folhagem seca + 2 galhos mortos → folhagem verde + bromélia + broto) e `restoration_igarape_01` (no trecho entre as poças de lama: água poluída + lixo + 3 tocos → água limpa + margem verde + 2 mudas + flor). A escala de contraste segue a degradação de cada área. Tudo em `ColorRect` placeholder, trocável pelos sprites do Higor sem mexer no código.
 > >
-> > Status: implementado (05/10) — falta restaurar os 3 pontos em jogo (QA C02-T4). Montagem conferida headless: os `NodePath` de antes/depois resolvem nas 3 cenas.
+> > - **Melhoria (05/10) — arte do Higor nos 3 pontos:** os `ColorRect` viraram `Sprite2D` com os PNGs de `assets/environment/tropical/` (entrega do Higor de 05/10): faixa de chão `ground_degraded`/`ground_restored` (cortada por `region_rect` na largura de cada ponto: 192/224/320 px) e brotos `sprout_degraded`/`sprout_restored`. Os brotos têm a origem na base (`offset` 0,-16), então o crescimento do `RestorationPoint` (escala Y de 0 a 1) sobe do chão. A quantidade segue a degradação de cada área: Sopé com 1 broto seco → 2 verdes, Dossel com 2 → 3 e Igarapé com 3 secos + água parada + lixo → 3 mudas (2 maiores) + água limpa + flor. A água e o lixo continuam em `ColorRect` (não há arte deles). Nenhum código mudou.
+> >
+> > Status: ✅ concluído (05/10) — teste em execução por script no Godot (05/10, Claude): nas 3 áreas, ao restaurar, os visuais secos somem e os verdes crescem até a escala final. Antes/depois conferido nos prints.
 
 > [!success]- EPIC-C03 — Combate e Espada de Grama — ✅ Concluído · 🟠 Alta
 > *Pronto quando*: Q alterna a espada em tempo real (visual + `HasSword`), o jogador tem stats diferentes com a espada ativada/desativada, e não dá pra atacar com ela desativada.
@@ -290,7 +292,11 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 >
 > Implementado em 05/10/2026. As 4 cenas ficam em `scenes/areas/` e todas seguem o mesmo esqueleto: raiz com `AreaController` (nome da área + limites de câmera), nós-grupo `Geometry`/`Hazards`/`Interactables`/`Transitions`/`Enemies`, e instâncias de `Player`, `Faisca` e `HUD.tscn`. A geometria é `StaticBody2D` + `ColorRect`, igual o `TestLevel`. Pra arte do Higor, basta trocar os `Visual`/`Top` de cada bloco por sprites ou um `TileMap` por cima, sem mexer em colisão. As cenas foram geradas por script (geometria consistente: degraus de até ~80px, já que o pulo simples sobe ~108px). Daqui pra frente, editar direto no Godot.
 >
-> **Pendência (05/10) — compilação:** nesta máquina, o `dotnet build` fora do editor é barrado pelo Controle de Aplicativo do Windows (o `Godot.SourceGenerators.dll` é bloqueado). A verificação foi feita headless com a DLL de 28/09, que ainda não tem `MudHazard` nem as mudanças do `AreaController`/`PlayerController`. **Abrir o projeto no editor e dar Build** antes de testar.
+> **Pendência resolvida (05/10) — compilação:** o `dotnet build` era barrado pelo Controle Inteligente de Aplicativos do Windows (Smart App Control), que bloqueava o `Godot.SourceGenerators.dll` sem assinatura. O Gustavo desligou e o projeto compilou no editor (DLL das 21:17).
+>
+> **Bugfix (05/10) — re-save no editor apagou os limites de câmera:** as cenas foram salvas no editor quando a DLL ainda era a de 28/09, que não conhecia `UseCameraLimits`/`CameraLimits`, e o Godot descartou as duas propriedades das 4 raízes. Restaurado. O resto que sumiu no mesmo commit (`e651e40`) era só valor igual ao padrão, que o Godot omite: nada se perdeu. **Regra:** depois de adicionar `[Export]` novo, compilar antes de abrir ou salvar cenas que o usam.
+>
+> **Melhoria (05/10) — fundo tropical do Higor nas 4 áreas:** cada cena instancia `scenes/art/TropicalBackdrop.tscn` (parallax + partículas no ar, só visual) logo depois do `Background`, que passou a `z_index = -30` pra ficar atrás dele (o backdrop é -20). A área das partículas (`Motes`) foi ajustada ao tamanho de cada cena. Com a escala de parallax do Higor (0.18/0.12), a imagem cobre a tela inteira em todos os limites de câmera.
 >
 > > [!info]- Task C13-T1 — Sopé da Mata (entrada)
 > > - [x] Criar `scenes/areas/SopeDaMata.tscn`: `TileMap`/geometria placeholder, limites de câmera, `Marker2D` de spawn inicial do Kairo (novo jogo começa aqui).
@@ -429,4 +435,6 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > [!info]- Task C12-T3 — Integração incremental
 > > - [ ] Rodar o [[ROADMAP_QA_INTEGRACAO]] junto com o Higor assim que a arte de cada bloco chegar — não esperar tudo pronto pra testar.
 > >
-> > Status: em andamento (28/09) — Kairo e Korrag conferidos pelo que dá pra verificar nos arquivos (ver [[ROADMAP_QA_INTEGRACAO]] A00/A01/A04); falta conferência visual e o resto da arte.
+> > - **Nota (05/10) — entrega do Higor (commit `f282c1b`):** chegaram só arquivos novos: Faísca (`FaiscaSpriteFrames.tres` + 12 PNGs), cenário tropical (fundo, faixas de chão, plataformas, brotos), `TropicalBackdrop.tscn`, shader de folhagem e o painel `ArtReview`. Fundo e restauração já integrados nas 4 áreas (ver `EPIC-C13` e C02-T4). **Não vieram** as edições em arquivos existentes que o README dele descreve: os 11 PNGs do Kairo sem a Faísca embutida (por isso continua aparecendo Faísca duplicada em jogo), o `Faisca.tscn` usando o sprite novo e a textura da luz, e o `TestLevel` com o cenário. Pedir pro Higor subir.
+> >
+> > Status: em andamento (05/10) — Kairo e Korrag conferidos nos arquivos (28/09); fundo e restauração do Higor integrados nas 4 áreas (05/10). Faltam o sprite da Faísca, os PNGs do Kairo corrigidos e o resto da arte.

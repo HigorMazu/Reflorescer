@@ -14,6 +14,11 @@
 [ext_resource type="Resource" path="res://resources/enemies/areas/Voador_IgarapeSufocado.tres" id="stats_voador_IgarapeSufocado"]
 [ext_resource type="Script" uid="uid://cpll441xskn7r" path="res://scripts/world/TransitionTrigger.cs" id="transition"]
 [ext_resource type="PackedScene" uid="uid://ci4whjcr73q7y" path="res://scenes/enemies/Enemy_Voador.tscn" id="voador"]
+[ext_resource type="PackedScene" path="res://scenes/art/TropicalBackdrop.tscn" id="backdrop"]
+[ext_resource type="Texture2D" uid="uid://b7pwgs2uc6jxd" path="res://assets/environment/tropical/ground_degraded.png" id="tex_ground_degraded"]
+[ext_resource type="Texture2D" uid="uid://g4fx4roaxjha" path="res://assets/environment/tropical/ground_restored.png" id="tex_ground_restored"]
+[ext_resource type="Texture2D" uid="uid://vo0mnmuh1ct6" path="res://assets/environment/tropical/sprout_degraded.png" id="tex_sprout_degraded"]
+[ext_resource type="Texture2D" uid="uid://dn53h7j8leyhp" path="res://assets/environment/tropical/sprout_restored.png" id="tex_sprout_restored"]
 
 [sub_resource type="RectangleShape2D" id="Shape_WallLeft"]
 size = Vector2(40, 800)
@@ -60,6 +65,8 @@ size = Vector2(60, 100)
 [node name="IgarapeSufocado" type="Node2D" unique_id=1622802662 node_paths=PackedStringArray("SpawnPoints", "EnemySpawns", "Checkpoints")]
 script = ExtResource("area_script")
 AreaName = "IgarapeSufocado"
+UseCameraLimits = true
+CameraLimits = Rect2i(0, -200, 2800, 720)
 SpawnPoints = []
 EnemySpawns = []
 Checkpoints = []
@@ -70,6 +77,14 @@ offset_right = 2800.0
 offset_bottom = 520.0
 mouse_filter = 2
 color = Color(0.13, 0.17, 0.14, 1)
+z_index = -30
+
+[node name="Backdrop" parent="." instance=ExtResource("backdrop")]
+
+[node name="Motes" parent="Backdrop"]
+position = Vector2(0, 440)
+area = Rect2(0, -320, 2800, 300)
+amount = 20
 
 [node name="Geometry" type="Node2D" parent="." unique_id=1021510735]
 
@@ -305,21 +320,30 @@ collision_layer = 32
 collision_mask = 2
 script = ExtResource("restoration")
 PointId = "restoration_igarape_01"
-DegradedVisuals = Array[NodePath]([NodePath("PollutedWater"), NodePath("Trash"), NodePath("DeadStumpA"), NodePath("DeadStumpB"), NodePath("DeadStumpC")])
-RestoredVisuals = Array[NodePath]([NodePath("ClearWater"), NodePath("Riverbank"), NodePath("SaplingA"), NodePath("SaplingB"), NodePath("Lily")])
+DegradedVisuals = Array[NodePath]([NodePath("DegradedGround"), NodePath("PollutedWater"), NodePath("Trash"), NodePath("DeadSproutA"), NodePath("DeadSproutB"), NodePath("DeadSproutC")])
+RestoredVisuals = Array[NodePath]([NodePath("RestoredGround"), NodePath("ClearWater"), NodePath("SaplingA"), NodePath("SaplingB"), NodePath("SproutC"), NodePath("Lily")])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/RestorationPoint1" unique_id=2011281498]
 position = Vector2(0, -16)
 shape = SubResource("Shape_RestorationPoint1")
 
-[node name="PollutedWater" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=2087670329]
-offset_left = -160.0
-offset_top = -6.0
-offset_right = 160.0
-mouse_filter = 2
-color = Color(0.3, 0.28, 0.2, 1)
+[node name="DegradedGround" type="Sprite2D" parent="Interactables/RestorationPoint1"]
+position = Vector2(0, -6)
+texture_repeat = 2
+texture = ExtResource("tex_ground_degraded")
+offset = Vector2(0, 21)
+region_enabled = true
+region_rect = Rect2(0, 0, 320, 42)
 
-[node name="Trash" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=1095411436]
+[node name="PollutedWater" type="ColorRect" parent="Interactables/RestorationPoint1"]
+offset_left = -70.0
+offset_top = -4.0
+offset_right = 70.0
+offset_bottom = 2.0
+mouse_filter = 2
+color = Color(0.3, 0.28, 0.2, 0.85)
+
+[node name="Trash" type="ColorRect" parent="Interactables/RestorationPoint1"]
 offset_left = -40.0
 offset_top = -10.0
 offset_right = -20.0
@@ -327,68 +351,67 @@ offset_bottom = -2.0
 mouse_filter = 2
 color = Color(0.6, 0.6, 0.62, 1)
 
-[node name="DeadStumpA" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=1188298558]
-offset_left = -120.0
-offset_top = -26.0
-offset_right = -104.0
-mouse_filter = 2
-color = Color(0.38, 0.27, 0.16, 1)
+[node name="DeadSproutA" type="Sprite2D" parent="Interactables/RestorationPoint1"]
+position = Vector2(-112, 0)
+texture = ExtResource("tex_sprout_degraded")
+offset = Vector2(0, -16)
 
-[node name="DeadStumpB" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=914047344]
-offset_left = 90.0
-offset_top = -40.0
-offset_right = 108.0
-mouse_filter = 2
-color = Color(0.38, 0.27, 0.16, 1)
+[node name="DeadSproutB" type="Sprite2D" parent="Interactables/RestorationPoint1"]
+position = Vector2(96, 0)
+texture = ExtResource("tex_sprout_degraded")
+flip_h = true
+offset = Vector2(0, -16)
 
-[node name="DeadStumpC" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=494141671]
-offset_left = 140.0
-offset_top = -18.0
-offset_right = 152.0
-mouse_filter = 2
-color = Color(0.38, 0.27, 0.16, 1)
+[node name="DeadSproutC" type="Sprite2D" parent="Interactables/RestorationPoint1"]
+position = Vector2(140, 0)
+texture = ExtResource("tex_sprout_degraded")
+offset = Vector2(0, -16)
 
-[node name="ClearWater" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=472925352]
+[node name="RestoredGround" type="Sprite2D" parent="Interactables/RestorationPoint1"]
 visible = false
-offset_left = -160.0
-offset_top = -6.0
-offset_right = 160.0
-mouse_filter = 2
-color = Color(0.25, 0.55, 0.65, 1)
+position = Vector2(0, -6)
+texture_repeat = 2
+texture = ExtResource("tex_ground_restored")
+offset = Vector2(0, 21)
+region_enabled = true
+region_rect = Rect2(0, 0, 320, 42)
 
-[node name="Riverbank" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=1794783724]
+[node name="ClearWater" type="ColorRect" parent="Interactables/RestorationPoint1"]
 visible = false
-offset_left = -160.0
-offset_top = -10.0
-offset_right = 160.0
-offset_bottom = -6.0
+offset_left = -70.0
+offset_top = -4.0
+offset_right = 70.0
+offset_bottom = 2.0
 mouse_filter = 2
-color = Color(0.3, 0.72, 0.3, 1)
+color = Color(0.25, 0.55, 0.65, 0.8)
 
-[node name="SaplingA" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=859052259]
+[node name="SaplingA" type="Sprite2D" parent="Interactables/RestorationPoint1"]
 visible = false
-offset_left = -118.0
-offset_top = -44.0
-offset_right = -106.0
-offset_bottom = -6.0
-mouse_filter = 2
-color = Color(0.4, 0.85, 0.35, 1)
+position = Vector2(-112, 0)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("tex_sprout_restored")
+offset = Vector2(0, -16)
 
-[node name="SaplingB" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=243833129]
+[node name="SaplingB" type="Sprite2D" parent="Interactables/RestorationPoint1"]
 visible = false
-offset_left = 92.0
-offset_top = -60.0
-offset_right = 106.0
-offset_bottom = -6.0
-mouse_filter = 2
-color = Color(0.35, 0.78, 0.3, 1)
+position = Vector2(96, 0)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("tex_sprout_restored")
+flip_h = true
+offset = Vector2(0, -16)
 
-[node name="Lily" type="ColorRect" parent="Interactables/RestorationPoint1" unique_id=258122148]
+[node name="SproutC" type="Sprite2D" parent="Interactables/RestorationPoint1"]
+visible = false
+position = Vector2(140, 0)
+texture = ExtResource("tex_sprout_restored")
+offset = Vector2(0, -16)
+
+[node name="Lily" type="ColorRect" parent="Interactables/RestorationPoint1"]
 visible = false
 offset_left = -20.0
-offset_top = -12.0
-offset_right = 10.0
-offset_bottom = -6.0
+offset_top = -10.0
+offset_right = -8.0
+offset_bottom = -4.0
 mouse_filter = 2
 color = Color(0.95, 0.85, 0.9, 1)
 
