@@ -60,11 +60,26 @@ size = Vector2(60, 100)
 [node name="SopeDaMata" type="Node2D" unique_id=832451940 node_paths=PackedStringArray("SpawnPoints", "EnemySpawns", "Checkpoints")]
 script = ExtResource("area_script")
 AreaName = "SopeDaMata"
+UseCameraLimits = true
+CameraLimits = Rect2i(0, -200, 2400, 720)
 SpawnPoints = []
 EnemySpawns = []
 Checkpoints = []
 
-[node name="Background" parent="." instance=ExtResource("art_forest")]
+[node name="Background" type="ColorRect" parent="." unique_id=877405262]
+offset_top = -200.0
+offset_right = 2400.0
+offset_bottom = 520.0
+mouse_filter = 2
+color = Color(0.16, 0.22, 0.18, 1)
+z_index = -30
+
+[node name="Backdrop" parent="." instance=ExtResource("art_forest")]
+
+[node name="Motes" parent="Backdrop"]
+position = Vector2(0, 440)
+area = Rect2(0, -320, 2400, 300)
+amount = 18
 
 [node name="Geometry" type="Node2D" parent="." unique_id=661400436]
 
@@ -252,7 +267,7 @@ collision_mask = 2
 script = ExtResource("restoration")
 PointId = "restoration_sope_01"
 DegradedVisuals = Array[NodePath]([NodePath("DegradedGround"), NodePath("Stump")])
-RestoredVisuals = Array[NodePath]([NodePath("RestoredGround"), NodePath("Sprout")])
+RestoredVisuals = Array[NodePath]([NodePath("RestoredGround"), NodePath("Sprout"), NodePath("SproutB")])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/RestorationPoint1" unique_id=1566121383]
 position = Vector2(0, -16)
@@ -297,6 +312,17 @@ offset_bottom = 0.0
 texture_filter = 1
 mouse_filter = 2
 texture = ExtResource("art_sprout")
+
+[node name="SproutB" type="TextureRect" parent="Interactables/RestorationPoint1"]
+visible = false
+offset_left = 24.0
+offset_top = -32.0
+offset_right = 64.0
+offset_bottom = 0.0
+texture_filter = 1
+mouse_filter = 2
+texture = ExtResource("art_sprout")
+flip_h = true
 
 [node name="Transitions" type="Node2D" parent="." unique_id=1976270685]
 
