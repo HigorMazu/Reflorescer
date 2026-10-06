@@ -2,10 +2,25 @@
 
 [ext_resource type="PackedScene" uid="uid://enemy001" path="res://scenes/enemies/Enemy_Base.tscn" id="1"]
 [ext_resource type="Resource" path="res://resources/enemies/areas/Rapido_SopeDaMata.tres" id="2"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/enemies/EnemyRapidoSpriteFrames.tres" id="3"]
 
 [node name="Enemy_Rapido" unique_id=1885357590 instance=ExtResource("1")]
 StatsResource = ExtResource("2")
 EnemyId = "enemy_rapido"
 
 [node name="Body" parent="." index="1" unique_id=1776391430]
+visible = false
 color = Color(0.9, 0.75, 0.2, 1)
+
+[node name="AnimatedSprite2D" parent="." index="4" unique_id=91833473]
+position = Vector2(0, -20)
+scale = Vector2(0.4166667, 0.4166667)
+texture_filter = 1
+sprite_frames = ExtResource("3")
+centered = true
+
+[node name="EyeLeft" parent="." index="2" unique_id=191372932]
+visible = false
+
+[node name="EyeRight" parent="." index="3" unique_id=634082582]
+visible = false

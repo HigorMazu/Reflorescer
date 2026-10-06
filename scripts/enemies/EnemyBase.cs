@@ -205,7 +205,21 @@ namespace Joguim.Enemies
         public void PlayAnimation(string animName)
         {
             if (Sprite != null && Sprite.SpriteFrames != null && Sprite.SpriteFrames.HasAnimation(animName))
+            {
+                // Attack impact is frame 2 of 4, halfway through the existing cooldown.
+                // Rate is per instance: area resources can use different cooldowns.
+                Sprite.Stop();
+                Sprite.SpeedScale = 1.0f;
+                if (animName == "attack" && StatsResource.AttackCooldown > 0)
+                {
+                    double duration = 0;
+                    for (int frame = 0; frame < Sprite.SpriteFrames.GetFrameCount(animName); frame++)
+                        duration += Sprite.SpriteFrames.GetFrameDuration(animName, frame);
+                    double fps = Sprite.SpriteFrames.GetAnimationSpeed(animName);
+                    if (fps > 0) Sprite.SpeedScale = (float)(duration / fps / StatsResource.AttackCooldown);
+                }
                 Sprite.Play(animName);
+            }
         }
 
         public bool IsFacingRight() => _isFacingRight;
@@ -214,6 +228,9 @@ namespace Joguim.Enemies
         {
             _isFacingRight = !_isFacingRight;
             if (Sprite != null) Sprite.FlipH = !_isFacingRight;
+            var attackHitbox = GetNodeOrNull<Node2D>("AttackHitbox");
+            if (attackHitbox != null)
+                attackHitbox.Scale = new Vector2(_isFacingRight ? 1 : -1, attackHitbox.Scale.Y);
         }
 
         protected virtual void OnDamageReceived(int damage, Vector2 knockbackDirection)
@@ -242,29 +259,46 @@ namespace Joguim.Enemies
             _isDead = true;
             GD.Print($"Enemy {EnemyId} MORREU! HP=0 -> sumindo do jogo.");
 
-            Visible = false;
-
             CollisionLayer = 0;
             CollisionMask = 0;
             SetPhysicsProcess(false);
 
             var hurt = GetNodeOrNull<Area2D>("Hurtbox");
-            if (hurt != null) { hurt.Monitoring = false; hurt.Monitorable = false; }
+            if (hurt != null)
+            {
+                CombatController?.DisableHurtbox();
+                hurt.SetDeferred(Area2D.PropertyName.Monitoring, false);
+                hurt.SetDeferred(Area2D.PropertyName.Monitorable, false);
+            }
 
             var hit = GetNodeOrNull<Area2D>("AttackHitbox");
-            if (hit != null) { hit.Monitoring = false; hit.Monitorable = false; }
+            if (hit != null)
+            {
+                CombatController?.DisableHitbox();
+                hit.SetDeferred(Area2D.PropertyName.Monitoring, false);
+                hit.SetDeferred(Area2D.PropertyName.Monitorable, false);
+            }
 
             var col = GetNodeOrNull<CollisionShape2D>("CollisionShape2D");
-            if (col != null) col.Disabled = true;
+            if (col != null) col.SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
+
+            if (_hpBar != null) _hpBar.Hide();
 
             if (StateMachine != null) StateMachine.ChangeState(EnemyStateType.Dead);
 
             EventBus.Instance?.EmitSignal("EnemyDefeated", EnemyId);
             AudioManager.Instance?.PlaySfx("enemy_death.wav");
 
-            GetTree().CreateTimer(0.3).Timeout += () =>
+            // Keep the final frame on screen long enough for the death pose to be
+            // readable. Gameplay is already disabled above, so this changes only
+            // the visual exit.
+            GetTree().CreateTimer(0.55).Timeout += () =>
             {
-                if (GodotObject.IsInstanceValid(this)) QueueFree();
+                if (!GodotObject.IsInstanceValid(this)) return;
+
+                var fade = CreateTween();
+                fade.TweenProperty(this, "modulate:a", 0.0f, 0.35f);
+                fade.TweenCallback(Callable.From(QueueFree));
             };
         }
     }

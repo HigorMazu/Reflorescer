@@ -1,0 +1,38 @@
+06/10/2026 — base 77ece44
+Godot .NET 4.7.2, Compatibility, isolated project and save.
+C# build: 0 errors, 0 warnings.
+Not a full C01-T2 regression or benchmark.
+
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 566.36 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce GTX 1650
+
+ART_QA_PASS: one independent companion
+ART_QA_PASS: Kairo idle
+ART_QA_PASS: Kairo run
+ART_QA_PASS: Kairo jump
+ART_QA_PASS: Kairo fall
+ART_QA_PASS: Kairo attack
+ART_QA_PASS: Kairo hurt
+ART_QA_PASS: Kairo dead
+ART_QA_PASS: player lands on unchanged floor
+ART_QA_PASS: visual foot baseline matches collision bottom
+ART_QA_PASS: movement plays run
+ART_QA_PASS: Kairo flips via Visual scale
+ART_QA_PASS: companion stays outside Visual hierarchy
+ART_QA_PASS: jump plays jump
+ART_QA_PASS: attack plays attack
+ART_QA_PASS: Faísca state idle
+ART_QA_PASS: Faísca animation advances
+ART_QA_PASS: Faísca state investigate
+ART_QA_PASS: Faísca animation advances
+ART_QA_PASS: Faísca state fly
+ART_QA_PASS: Faísca animation advances
+RestorationPoint restoration_sope_01 restaurado.
+Game saved to slot 0.
+Interagiu com RestorationPoint1
+ART_QA_PASS: E restores the existing point
+ART_QA_PASS: degraded art hidden
+ART_QA_PASS: restored art visible
+ART_QA_PASS: growth tween finishes at unit scale
+ART_QA_PASS: independent light has a texture
+ART_QA_DONE failures=0

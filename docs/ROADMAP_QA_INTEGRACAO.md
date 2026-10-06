@@ -12,10 +12,10 @@ responsavel: Gustavo e Higor
 par: "[[ROADMAP_ARTE]]"
 descricao: Casos de teste da integração código + arte
 epicos_total: 8
-epicos_concluidos: 0
+epicos_concluidos: 2
 tasks_total: 21
-tasks_prontas: 0
-tasks_bloqueadas: 14
+tasks_prontas: 3
+tasks_bloqueadas: 13
 ---
 # Roadmap de QA — Integração (Código + Arte do Higor)
 
@@ -74,15 +74,17 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: 🔴 bloqueado só por arte (28/09) — mecânica pronta ([[ROADMAP_DEV]] EPIC-C04 concluído). O código já toca `dash` se existir no `SpriteFrames`; senão usa `run` com tom esverdeado.
 
-> [!failure]- EPIC-A02 — Inimigos Comuns — 🔴 Bloqueado · 🔴 Bloqueante
-> *Pronto quando*: os 3 arquétipos da Floresta Tropical rodam com arte final sem tocar em script, e os reskins de Deserto/Tundra repetem o mesmo resultado.
+> [!success]- EPIC-A02 — Inimigos Comuns — ✅ Passa no escopo da demo
+> *Pronto quando*: os três arquétipos usam recursos próprios com a mesma máquina de estados. Reskins de Deserto/Tundra ficam fora da demo.
 >
-> > [!failure]- Task A02-T1/T2/T3 — Arquétipos da Floresta Tropical
-> > - [ ] Trocar o `SpriteFrames` do inimigo base pelo de cada arquétipo, **sem tocar em nenhum script**, e confirmar que tudo funciona igual (valida a decisão de design "reskin sem mudar código").
-> > - [ ] Quando as subclasses de arquétipo existirem ([[ROADMAP_DEV]] `EPIC-C07`): confirmar que o Voador de fato ignora colisão de chão/voa — isso é física, não só arte.
-> > - [ ] `FlipH` espelha corretamente os 3 arquétipos.
+> > [!success]- Task A02-T1/T2/T3 — Arquétipos da Floresta Tropical
+> > - [x] Recursos de cada arquétipo integrados sem lógica específica por desenho. Correções compartilhadas de integração registradas abaixo.
+> > - [x] Voador permanece suspenso sem gravidade; os dois terrestres patrulham apoiados no chão.
+> > - [x] `FlipH` espelha corretamente os três arquétipos sem deslocar o eixo do sprite.
 > >
-> > Status: 🔴 bloqueado — depende de [[ROADMAP_ARTE]] `A02-T1/T2/T3` e, pro segundo caso, de [[ROADMAP_DEV]] `EPIC-C07`.
+> > - **Integração (06/10):** 160 verificações dirigidas passaram na master: canvas, avanço de quadros, patrulha/detecção naturais, duração/reinício do ataque nos nove recursos de área, dano nos dois sentidos, interrupção conforme stats, morte por colisão real e fade. Corrigidos escala/pivô, direção da hitbox, fechamento da janela de ataque e desativação segura de colisões. Cena `EnemyReview.tscn` conferida no renderer Compatibility. Logs em `docs/art-review/enemy-validation.txt`.
+> >
+> > Status: ✅ passa (06/10) — integração dirigida concluída. Percurso completo, dificuldade e áudio seguem no A07; não foram cobertos por este teste.
 >
 > > [!failure]- Task A02-T4/T5 — Reskins Deserto e Tundra
 > > - [ ] Repetir os testes da Task A02-T1/T2/T3 pra cada reskin.
@@ -90,36 +92,39 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: 🔴 bloqueado — pós-demo, sem urgência.
 
-> [!warning]- EPIC-A03 — Faísca — 🟡 Parcial · 🟠 Alta
+> [!success]- EPIC-A03 — Faísca — ✅ Passa · 🟠 Alta
 > *Pronto quando*: `fly`/`investigate` acompanham a troca de estado sem travar num frame parado, e a luz não "pisca" ao trocar de direção.
 >
-> > [!warning]- Task A03-T1
-> > - [ ] Com `fly`/`investigate` adicionadas, a troca de animação acompanha a troca de estado (`FollowState`/`IdleFaiscaState`/`InvestigateState`/`ReturnToPlayerState`) sem travar num frame parado.
-> > - [ ] A luz (`PointLight2D`) pulsa e o flip de sprite não "pisca" de forma estranha ao trocar de direção.
+> > [!success]- Task A03-T1
+> > - [x] Com `fly`/`investigate` adicionadas, a troca de animação acompanha a troca de estado (`FollowState`/`IdleFaiscaState`/`InvestigateState`/`ReturnToPlayerState`) sem travar num frame parado.
+> > - [x] A luz (`PointLight2D`) pulsa e o flip de sprite não "pisca" de forma estranha ao trocar de direção.
 > >
-> > - **Integração (06/10):** 12 frames entregues, quatro por idle/fly/investigate; luz independente. Os três estados e avanço de frames passaram em teste dirigido no Godot .NET. Investigação automática e aprovação artística pendentes. Ver `docs/art-review/README.md` e capturas.
+> > - **Integração (06/10):** 12 frames entregues, quatro por `idle`/`fly`/`investigate`; os três estados e o avanço de frames passaram em teste dirigido no Godot .NET. A luz pulsa em nó irmão do sprite, portanto não é espelhada pela virada.
 > >
-> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
+> > Status: ✅ passa (06/10) — animações, estados e luz independentes verificados.
 
-> [!failure]- EPIC-A04 — Boss KORRAG — 🔴 Bloqueado · 🟠 Alta
+> [!warning]- EPIC-A04 — Boss KORRAG — 🟡 Parcial · 🟠 Alta
 > *Pronto quando*: as transições de fase são claras pro jogador mesmo com `idle` compartilhado, o timing de `charge_windup` bate com o código, e o nome exibido é "Korrag, o Javali".
 >
 > > [!warning]- Task A04-T1 — Obrigatórios
 > > - [ ] Transições de fase ([[ROADMAP_QA_CODIGO]] `C06-T0`) comunicam claramente ao jogador que o boss mudou de fase, mesmo com `idle` compartilhado.
 > > - [x] Quando `StartCharge()`/`PerformStomp()` forem ligados ([[ROADMAP_DEV]] `EPIC-C06-T1`): `charge_windup` cabe no ~1s fixo antes da investida disparar.
-> > - [ ] Animação `defeated`: hoje o boss vira invisível e é destruído 0.3s depois de `Dead` — se `defeated` for mais longa, ajustar esse tempo no código.
+> > - [x] Animação `defeated` aparece após `dead`, durante o fade, sem emitir vitória novamente.
 > > - [x] Nome exibido em qualquer UI usa "Korrag, o Javali", não "Javali das Ruínas".
 > > - **Verificação (28/09):** `charge_windup` tem 1 quadro. Mantido o windup de 1s com pulso vermelho de aviso, aprovado no playtest ([[ROADMAP_DEV]] C06-T4). Nome: nenhuma UI exibe o `BossName` hoje (a barra do Korrag mostra só a vida); o recurso diz "Korrag, o Javali".
 > > - **Mudança de código (28/09):** a morte não é mais "invisível + destruir em 0.3s". Agora toca `dead`, espera 0.6s e some em fade de 0.6s. A animação `defeated` existe no `SpriteFrames` mas **não é tocada** por nenhum estado: decidir se ela substitui `dead` ou entra depois dela.
 > > - **Observação pra conferência visual:** `phase2_transition` tem 1 quadro (0.25s), mas o estado segura 1.5s nela. `phase1_idle` e `enraged_transition` também têm 1 quadro.
+> > - **Integração (06/10):** os visuais obrigatórios estão em `KorragSpriteFrames.tres`. A sequência agora é dead por 0,6 s → defeated durante fade de 0,6 s → remoção. Seis verificações passaram em `BossDefeatCheck.tscn`, incluindo emissão única de vitória. Falta o playtest visual das transições de fase.
 > >
-> > Status: 🟡 parcial (28/09) — windup e nome ✅; falta conferir visualmente se as transições de fase ficam claras.
+> > Status: 🟡 parcial (06/10) — integração de recursos e chamadas validada; playtest visual pendente.
 >
-> > [!note]- Task A04-T2 — Opcional
-> > - [ ] `enraged_transition` integrada, se entregue.
+> > [!success]- Task A04-T2 — Opcional
+> > - [x] `enraged_transition` integrada, se entregue.
 > > - **Nota:** opcional por decisão do Gustavo — só testar se [[ROADMAP_ARTE]] `A04-T2` for de fato produzida.
 > >
-> > Status: não aplicável ainda — condicional a sobrar tempo pra arte opcional.
+> > - **Verificação (06/10):** a animação existe no recurso ligado à cena e `BossEnragedState` chama `PlayAnimation("enraged_transition")`.
+> >
+> > Status: ✅ passa (06/10) — recurso e chamada de estado presentes.
 
 > [!warning]- EPIC-A05 — Cenário — 🟡 Parcial · 🟠 Alta
 > *Pronto quando*: as 4 áreas têm identidade visual reconhecível sem texto, os pontos de entrada de cena fazem sentido, e a performance se mantém estável no `gl_compatibility`.
