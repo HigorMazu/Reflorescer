@@ -12,6 +12,8 @@ namespace Joguim.UI
         [Export] public NodePath InteractionPromptPath;
         [Export] public NodePath AbilityDisplayPath;
         [Export] public NodePath PauseMenuPath;
+        [Export] public NodePath SwordStatusPath;
+        private SwordStatusIndicator _swordStatus;
 
         private HealthBar _healthBar;
         private Label _healthLabel;
@@ -37,6 +39,7 @@ namespace Joguim.UI
             _interactionPrompt = GetNodeOrNull<Label>(InteractionPromptPath);
             _abilityDisplay = GetNodeOrNull<Label>(AbilityDisplayPath);
             _pauseMenu = GetNodeOrNull<Control>(PauseMenuPath);
+            _swordStatus = GetNodeOrNull<SwordStatusIndicator>(SwordStatusPath);
 
             AddToGroup(GroupName);
 
@@ -81,19 +84,19 @@ namespace Joguim.UI
             {
                 OnPlayerHealthChanged(_player.Health.CurrentHealth, _player.Health.MaxHealth);
             }
-            if (_player != null) OnSwordToggled(_player.HasSword);
+            _swordStatus?.SetState(_player?.HasSword ?? GameManager.Instance?.HasSword ?? true, false);
         }
 
         private void OnSwordToggled(bool hasSword)
         {
-            SetAbilityDisplay(hasSword ? "Espada: ativada [Q]" : "Espada: guardada [Q]");
+            _swordStatus?.SetState(hasSword);
         }
 
         public override void _Process(double delta)
         {
-            if (_player == null)
+            if (!IsInstanceValid(_player))
             {
-                _player = GetTree().GetFirstNodeInGroup("Player") as PlayerController;
+                InitializeHUD();
             }
         }
 
@@ -274,12 +277,14 @@ namespace Joguim.UI
             if (_healthLabel != null) _healthLabel.Visible = false;
             if (_interactionPrompt != null) _interactionPrompt.Visible = false;
             if (_abilityDisplay != null) _abilityDisplay.Visible = false;
+            if (_swordStatus != null) _swordStatus.Visible = false;
         }
 
         public void ShowAll()
         {
             if (_healthBar != null) _healthBar.Visible = true;
             if (_healthLabel != null) _healthLabel.Visible = true;
+            if (_swordStatus != null) _swordStatus.Visible = true;
         }
     }
 }

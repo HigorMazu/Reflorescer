@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-06
+atualizado: 2026-10-07
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: arte
@@ -13,8 +13,8 @@ par: "[[ROADMAP_QA_INTEGRACAO]]"
 descricao: Backlog de sprites, animação e estilização da demo
 epicos_total: 7
 epicos_concluidos: 3
-tasks_total: 21
-tasks_prontas: 7
+tasks_total: 22
+tasks_prontas: 8
 tasks_bloqueadas: 0
 tasks_liberadas: 0
 ---
@@ -77,11 +77,11 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > > Status: ✅ concluída (06/10) — pacote núcleo entregue e integrado.
 >
 > > [!todo]- Task A01-T2 — Espada de Grama (2 visuais)
-> > - [ ] Espada empunhada (ativada), sprite separado no braço direito.
+> > - [x] Espada empunhada (ativada), sprite separado no braço direito.
 > > - [ ] "Bandagem" no pulso (desativada), `RightHand/Bandage`.
 > > - **Dependência:** não depende de código pra ser desenhado, só pra ser testado em jogo — depende de [[ROADMAP_DEV]] `EPIC-C03` (toggle da espada) estar implementado antes de validar a troca em tempo real.
 > >
-> > Status: não iniciado.
+> > Status: 🟡 parcial (07/10) — lâmina reta e maior baseada na referência de Higor (v2, 11×40 px), separada do corpo em idle/run/jump/fall e nos três quadros de ataque. A empunhadura v6 ancora a espada na mão direita anatômica do Kairo (lado esquerdo quando ele olha à direita) e usa o punho fechado do próprio quadro à frente do cabo, para que a espada saia debaixo da mão. A estocada foi refinada com referência no ferrão de Hollow Knight: preparação, avanço horizontal e recuperação; dano sincronizado ao avanço. Saque/recolhimento de 0,24 s e cores originais de Kairo. Pulo e ataques usam quadros sem lâmina embutida. A bandagem no desenho foi mantida; recurso separado `RightHand/Bandage` ainda pendente. Ver `docs/art-review/sword-held-v6-delivery.md`.
 >
 > > [!todo]- Task A01-T3 — Wall grab / wall jump
 > > - [ ] Nome de animação a definir junto com o Gustavo, documentar aqui assim que decidido.
@@ -96,6 +96,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > > Status: não iniciado.
 
 > [!success]- EPIC-A02 — Inimigos Comuns (3 Arquétipos) — ✅ Concluído no escopo da demo
+> **Ajuste solicitado (07/10):** sprites dos três arquétipos ampliados mais 12% em relação à revisão anterior (escala 0,56, total +34,4% ante 0,4166667). Pés alinhados; colisões e stats preservados. Regressão dirigida de combate: 160 verificações passaram. Aprovação visual do novo tamanho pendente.
 > *Pronto quando*: os 3 arquétipos têm o conjunto completo de animação, reaproveitados **sem reskin** nas 4 áreas da demo (mesmo bioma, Floresta Tropical). Reskins de Deserto/Tundra (A02-T4/T5) ficam pro jogo completo, fora do escopo desta demo (decidido em 29/09/2026).
 >
 > Prioridade máxima, junto com o Kairo. Os 3 arquétipos reaproveitam **exatamente os mesmos nomes de animação** — só muda o desenho por trás: `idle` (parado), `walk` (patrulhando/perseguindo), `detect` (detectou o Kairo), `attack` (atacando), `hurt` (tomando dano), `dead` (morrendo).
@@ -229,6 +230,16 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > > Status: não iniciado.
 
 ---
+
+### A06-T4 — Indicador compacto da Espada de Grama (pedido de Higor)
+
+- [x] Indicador de 156×32 abaixo da vida, com espada/ATIVA e bandagem/GUARDADA.
+- [x] Tecla Q visível; texto e desenho distinguem os estados, além da cor.
+- [x] Realce de borda por 0,28 s na troca, sem animação contínua.
+- [x] Integrado ao toggle real; área de avisos de habilidade preservada.
+- [x] Aprovação visual de Higor sobre as capturas no Sopé (07/10).
+
+Status: ✅ concluída (07/10) — indicador aprovado por Higor e integrado. Ver `docs/art-review/sword-hud-delivery.md`. O trabalho da espada no personagem permanece separado em A01-T2; depois segue acabamento modular do Sopé (A05-T1).
 
 ## Ordem de entrega recomendada (resumo)
 

@@ -95,7 +95,6 @@ namespace Joguim.Player
 
             if (GameManager.Instance != null) HasSword = GameManager.Instance.HasSword;
             SetSwordVisible(HasSword);
-            ApplySwordTint();
 
             if (Health == null) GD.PrintErr("PlayerController: Health não encontrado.");
             else
@@ -228,29 +227,23 @@ namespace Joguim.Player
                 _attackTimer = StatsResource.AttackCooldown;
                 AudioManager.Instance?.PlaySfx("player_attack.wav");
 
-                // flash + lean forward
+                // Estocada curta: recuo, avanço e recuperação — inspirada no ferrão de Hollow Knight.
                 if (Visual != null)
                 {
                     Visual.Modulate = new Color(1.4f, 1.4f, 1.1f);
                     GetTree().CreateTimer(0.10).Timeout += () => { if (IsInstanceValid(Visual)) Visual.Modulate = Colors.White; };
-                    // lean
-                    Vector2 leanScale = new Vector2(LastFacingDirection.X > 0 ? 1.15f : -1.15f, 0.88f);
-                    var tLean = CreateTween();
-                    tLean.TweenProperty(Visual, "scale", leanScale, 0.06);
-                    tLean.TweenProperty(Visual, "scale", new Vector2(LastFacingDirection.X > 0 ? 1 : -1, 1), 0.12);
+                    float direction = LastFacingDirection.X;
+                    var thrust = CreateTween().SetParallel(true);
+                    thrust.TweenProperty(Visual, "position", new Vector2(-direction * 2f, 1f), 0.05f);
+                    thrust.TweenProperty(Visual, "scale", new Vector2(direction * .94f, 1.06f), 0.05f);
+                    thrust.Chain().TweenProperty(Visual, "position", new Vector2(direction * 4f, 0), 0.07f);
+                    thrust.TweenProperty(Visual, "scale", new Vector2(direction * 1.12f, .90f), 0.07f);
+                    thrust.Chain().TweenProperty(Visual, "position", Vector2.Zero, 0.12f);
+                    thrust.TweenProperty(Visual, "scale", new Vector2(direction, 1), 0.12f);
                 }
-                // sword swing arco: prepara no ombro e corta
                 if (RightArm != null)
                 {
-                    RightArm.Rotation = 0.55f;
-                    var blade = RightArm.GetNodeOrNull<ColorRect>("RightHand/Sword/Blade");
-                    if (blade != null) blade.Color = new Color(1, 1, 0.6f);
-                    var tween = CreateTween();
-                    tween.TweenProperty(RightArm, "rotation", -1.35f, 0.09).SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
-                    tween.TweenProperty(RightArm, "rotation", 0f, 0.16).SetTrans(Tween.TransitionType.Quad).SetEase(Tween.EaseType.In);
-                    tween.TweenCallback(Callable.From(() => {
-                        if (IsInstanceValid(blade) && blade != null) blade.Color = new Color(0.7f, 0.9f, 0.3f);
-                    }));
+                    RightArm.Rotation = 0;
                 }
             }
             if (_attackTimer <= 0) FinishAttack();
@@ -450,20 +443,24 @@ namespace Joguim.Player
         {
             if (CombatController?.Hitbox != null)
             {
-                // posiciona hitbox conforme direção (mão direita)
+                // A zona horizontal abre junto do segundo quadro, quando a estocada alcança o alvo.
                 var hb = CombatController.Hitbox;
                 float dir = LastFacingDirection.X;
-                hb.Position = new Vector2(dir > 0 ? 32f : -32f, -12f);
-                // gira levemente a área para o arco
-                hb.Rotation = dir > 0 ? -0.25f : 0.25f;
+                hb.Position = new Vector2(dir > 0 ? 34f : -34f, -12f);
+                hb.Rotation = 0;
 
                 hb.SetDamage(CurrentAttackDamage);
-                hb.Active = true;
-                hb.Monitoring = true;
-                hb.Monitorable = true;
-                CombatController.EnableHitbox();
-                // janela de dano curta e precisa
-                GetTree().CreateTimer(0.14).Timeout += () => { if (IsInstanceValid(hb)) { hb.Active = false; CombatController?.DisableHitbox(); } };
+                hb.Active = false;
+                hb.Monitoring = false;
+                GetTree().CreateTimer(0.10).Timeout += () =>
+                {
+                    if (!IsInstanceValid(hb) || _attackTimer <= 0) return;
+                    hb.Active = true;
+                    hb.Monitoring = true;
+                    hb.Monitorable = true;
+                    CombatController?.EnableHitbox();
+                };
+                GetTree().CreateTimer(0.20).Timeout += () => { if (IsInstanceValid(hb)) { hb.Active = false; CombatController?.DisableHitbox(); } };
             }
         }
 
@@ -557,22 +554,16 @@ namespace Joguim.Player
         {
             HasSword = !HasSword;
             if (GameManager.Instance != null) GameManager.Instance.HasSword = HasSword;
-            SetSwordVisible(HasSword);
-            ApplySwordTint();
+            GetNodeOrNull<GrassSwordVisual>("Visual/RightArm/RightHand/Sword")?.SetActive(HasSword, true);
             AudioManager.Instance?.PlaySfx(HasSword ? "sword_on.wav" : "sword_off.wav");
             EventBus.Instance?.EmitSignal(EventBus.SignalName.SwordToggled, HasSword);
             GD.Print($"Espada {(HasSword ? "ativada" : "guardada")}");
         }
 
-        // Indicador provisório até existir arte com/sem espada: tom esverdeado claro com a espada guardada.
-        // Usa SelfModulate do sprite pra não brigar com os flashes de ataque/dano (Modulate do Visual).
-        private void ApplySwordTint()
-        {
-            if (Sprite != null) Sprite.SelfModulate = HasSword ? Colors.White : new Color(0.8f, 1.0f, 0.8f);
-        }
-
         public void SetSwordVisible(bool visible)
         {
+            var presentation = GetNodeOrNull<GrassSwordVisual>("Visual/RightArm/RightHand/Sword");
+            if (presentation != null) { presentation.SetActive(visible, false); return; }
             if (Sword != null) Sword.Visible = visible;
             if (RightHand != null)
             {

@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-06
+atualizado: 2026-10-07
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: arte
@@ -13,9 +13,9 @@ par: "[[ROADMAP_ARTE]]"
 descricao: Casos de teste da integração código + arte
 epicos_total: 8
 epicos_concluidos: 2
-tasks_total: 21
+tasks_total: 22
 tasks_prontas: 3
-tasks_bloqueadas: 13
+tasks_bloqueadas: 12
 ---
 # Roadmap de QA — Integração (Código + Arte do Higor)
 
@@ -57,12 +57,12 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
 >
-> > [!failure]- Task A01-T2 — Espada de Grama
+> > [!warning]- Task A01-T2 — Espada de Grama
 > > - [ ] Sprite da espada visível quando ativada, "bandagem" visível quando desativada — nunca os dois ao mesmo tempo.
 > > - [ ] Animação de ataque: a janela de dano da hitbox é fixa em 0.14s hoje, independente da duração da animação — ajustar o tempo da hitbox (ou o `AttackCooldown`) se a animação final não bater com esse corte.
 > > - **Dependência dupla:** só testável depois que [[ROADMAP_DEV]] `EPIC-C03` (toggle da espada) **e** [[ROADMAP_ARTE]] `A01-T2` (os 2 visuais) estiverem prontos.
 > >
-> > Status: 🔴 bloqueado só por arte (28/09) — o código está pronto ([[ROADMAP_DEV]] EPIC-C03 concluído); faltam os 2 visuais (espada / bandagem). Hoje o estado aparece no HUD e num tom verde provisório.
+> > Status: 🟡 parcial (07/10) — espada reta v2 separada, inclusive nos três ataques com quadros desarmados; extensão/recolhimento e trocas rápidas verificados. Empunhadura v6 segue a mão direita anatômica e usa uma camada do punho fechado em cima do cabo nas poses neutras e no ataque. Estocada tem preparação sem dano, impacto horizontal e recuperação; os sete casos de integração passaram no Godot .NET. Tom verde removido, HUD aprovado. Bandagem independente e aprovação visual da nova empunhadura ainda pendentes. Ver `docs/art-review/sword-held-v6-delivery.md`.
 >
 > > [!failure]- Task A01-T3 — Wall grab / wall jump
 > > - [ ] Animação integrada e sincronizada com a mecânica ([[ROADMAP_DEV]] `EPIC-C05`).
@@ -172,6 +172,17 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - [ ] Prompt de interação com estilo definido (quando [[ROADMAP_QA_CODIGO]] `C10-T1` for resolvido).
 > >
 > > Status: 🔴 bloqueado — depende de código e arte, nenhum dos dois pronto ainda.
+
+> > [!warning]- Task A06-T4 — Indicador compacto da espada
+> > - [x] Estado inicial antes/depois de criar o jogador e ao recriar o HUD.
+> > - [x] Toggle real e sete trocas rápidas; combate bloqueado com espada guardada.
+> > - [x] Texto de habilidade preservado; HideAll/ShowAll incluem indicador.
+> > - [x] Tamanho fixo 156×32 e estado preservado ao pausar.
+> > - [x] Capturas dos dois estados na cena real do Sopé, em 1280×720.
+> > - [x] Aprovação visual do indicador por Higor (07/10).
+> > - [ ] Playtest manual de Higor.
+> >
+> > Status: 🟡 parcial (07/10) — 20 verificações passaram no Godot .NET, incluindo extensão/recolhimento, reversão rápida, ausência de tint e lâmina reta no ataque; build sem erros/avisos. Teste dirigido não substitui percurso completo, teste de teclado nem carregamento de save real. Evidência: `docs/art-review/sword-hud-validation.txt`.
 
 > [!failure]- EPIC-A07 — Validação Final (Playtest Completo) — 🔴 Bloqueado · 🔴 Bloqueante
 > *Pronto quando*: a demo roda de ponta a ponta com áudio, arte e código integrados, sem crash, softlock ou animação quebrada, validada por alguém de fora do grupo.

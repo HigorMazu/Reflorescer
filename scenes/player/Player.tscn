@@ -7,6 +7,13 @@
 [ext_resource type="Script" uid="uid://dhdoquuekxcq8" path="res://scripts/combat/Hurtbox.cs" id="6"]
 [ext_resource type="Resource" path="res://resources/player/PlayerStatsResource.tres" id="7"]
 [ext_resource type="SpriteFrames" path="res://assets/sprites/kairo_faisca/KairoFaiscaSpriteFrames.tres" id="8"]
+[ext_resource type="Script" path="res://scripts/player/GrassSwordVisual.cs" id="9_sword"]
+[ext_resource type="Texture2D" path="res://assets/sprites/kairo_faisca/grass_sword_v2.png" id="10_blade"]
+[ext_resource type="Script" path="res://scripts/player/SwordGripOverlay.cs" id="11_grip"]
+[ext_resource type="Texture2D" path="res://assets/sprites/kairo_faisca/kairo_grip_idle_00.png" id="12_grip_idle"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sword"]
+animations = [{"frames": [{"duration": 1.0, "texture": ExtResource("10_blade")}], "loop": true, "name": &"default", "speed": 5.0}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(24, 40)
@@ -67,9 +74,25 @@ position = Vector2(10, -30)
 [node name="RightHand" type="Node2D" parent="Visual/RightArm" unique_id=1232852014]
 position = Vector2(6, 10)
 
+[node name="SwordGripOverlay" type="Sprite2D" parent="Visual"]
+process_mode = 3
+z_index = 2
+texture_filter = 1
+texture = ExtResource("12_grip_idle")
+scale = Vector2(0.5, 0.5)
+script = ExtResource("11_grip")
+
 [node name="Sword" type="Node2D" parent="Visual/RightArm/RightHand" unique_id=172097077]
+z_index = 1
 position = Vector2(4, -4)
-rotation = -0.3
+rotation = 3.141593
+script = ExtResource("9_sword")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visual/RightArm/RightHand/Sword"]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_sword")
+centered = false
+offset = Vector2(-5, -35)
 
 [node name="Blade" type="ColorRect" parent="Visual/RightArm/RightHand/Sword" unique_id=583863621]
 visible = false

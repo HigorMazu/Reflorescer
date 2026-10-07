@@ -5,7 +5,7 @@ ENEMY_QA_PASS: Rapido: stats preserved
 ENEMY_QA_PASS: Rapido: placeholders hidden
 ENEMY_QA_PASS: Rapido: centered flip axis
 ENEMY_QA_PASS: Rapido: foot baseline at origin
-ENEMY_QA_PASS: Rapido: visual width fits combat scale
+ENEMY_QA_PASS: Rapido: further 12% enlargement, maximum 54 px
 ENEMY_QA_PASS: Rapido: idle exists
 ENEMY_QA_PASS: Rapido: idle/0 canvas
 ENEMY_QA_PASS: Rapido: idle/1 canvas
@@ -66,7 +66,7 @@ ENEMY_QA_PASS: Robusto: stats preserved
 ENEMY_QA_PASS: Robusto: placeholders hidden
 ENEMY_QA_PASS: Robusto: centered flip axis
 ENEMY_QA_PASS: Robusto: foot baseline at origin
-ENEMY_QA_PASS: Robusto: visual width fits combat scale
+ENEMY_QA_PASS: Robusto: further 12% enlargement, maximum 54 px
 ENEMY_QA_PASS: Robusto: idle exists
 ENEMY_QA_PASS: Robusto: idle/0 canvas
 ENEMY_QA_PASS: Robusto: idle/1 canvas
@@ -125,7 +125,7 @@ ENEMY_QA_PASS: Voador: stats preserved
 ENEMY_QA_PASS: Voador: placeholders hidden
 ENEMY_QA_PASS: Voador: centered flip axis
 ENEMY_QA_PASS: Voador: foot baseline at origin
-ENEMY_QA_PASS: Voador: visual width fits combat scale
+ENEMY_QA_PASS: Voador: further 12% enlargement, maximum 54 px
 ENEMY_QA_PASS: Voador: idle exists
 ENEMY_QA_PASS: Voador: idle/0 canvas
 ENEMY_QA_PASS: Voador: idle/1 canvas

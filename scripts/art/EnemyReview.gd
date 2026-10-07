@@ -38,7 +38,7 @@ func _ready() -> void:
 				enemy.call("PlayAnimation", state)
 				if side == 1:
 					enemy.call("Flip")
-	title("Escala real: até 40 px de largura. Colisões e atributos mantidos.", Vector2(44, 674), 16)
+	title("Escala real: até 54 px de largura (+34%). Colisões e atributos mantidos.", Vector2(44, 674), 16)
 	if "--capture-enemies" in OS.get_cmdline_user_args():
 		await get_tree().create_timer(0.35).timeout
 		await RenderingServer.frame_post_draw

@@ -13,8 +13,8 @@ visible = false
 color = Color(0.9, 0.75, 0.2, 1)
 
 [node name="AnimatedSprite2D" parent="." index="4" unique_id=91833473]
-position = Vector2(0, -20)
-scale = Vector2(0.4166667, 0.4166667)
+position = Vector2(0, -26.88)
+scale = Vector2(0.56, 0.56)
 texture_filter = 1
 sprite_frames = ExtResource("3")
 centered = true
