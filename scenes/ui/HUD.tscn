@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cvwfurvrew2ua" path="res://scripts/ui/HUDController.cs" id="1"]
 [ext_resource type="Script" uid="uid://cn1mptvs4ffxl" path="res://scripts/ui/HealthBar.cs" id="2"]
+[ext_resource type="Script" path="res://scripts/ui/SwordStatusIndicator.cs" id="3_sword"]
 
 [node name="HUD" type="CanvasLayer" unique_id=2089201826]
 layer = 10
@@ -11,6 +12,7 @@ HealthLabelPath = NodePath("MarginContainer/VBoxContainer/TopRow/HealthSection/H
 InteractionPromptPath = NodePath("MarginContainer/VBoxContainer/BottomRow/InteractionPrompt")
 AbilityDisplayPath = NodePath("MarginContainer/VBoxContainer/TopRow/AbilitySection/AbilityDisplay")
 PauseMenuPath = NodePath("PauseMenu")
+SwordStatusPath = NodePath("MarginContainer/VBoxContainer/TopRow/HealthSection/SwordStatus")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=2146491278]
 anchors_preset = 15
@@ -19,6 +21,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=636739907]
 layout_mode = 2
@@ -44,6 +50,13 @@ layout_mode = 2
 value = 100.0
 tint_progress = Color(0.8, 0.1, 0.1, 1)
 script = ExtResource("2")
+
+[node name="SwordStatus" type="Control" parent="MarginContainer/VBoxContainer/TopRow/HealthSection"]
+custom_minimum_size = Vector2(156, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+script = ExtResource("3_sword")
 
 [node name="AbilitySection" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TopRow" unique_id=1073135904]
 layout_mode = 2

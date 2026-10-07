@@ -68,7 +68,7 @@ public partial class EnemyIntegrationCheck : Node2D
             !enemy.GetNode<CanvasItem>("EyeRight").Visible, $"{archetype}: placeholders hidden");
         Check(enemy.Sprite.Centered && Mathf.IsEqualApprox(enemy.Sprite.Position.X, 0), $"{archetype}: centered flip axis");
         Check(Mathf.Abs(enemy.Sprite.Position.Y + 48 * enemy.Sprite.Scale.Y) < .001f, $"{archetype}: foot baseline at origin");
-        Check(96 * enemy.Sprite.Scale.X <= 41, $"{archetype}: visual width fits combat scale");
+        Check(Mathf.IsEqualApprox(enemy.Sprite.Scale.X, .56f) && 96 * enemy.Sprite.Scale.X <= 54, $"{archetype}: further 12% enlargement, maximum 54 px");
         foreach (string state in new[] { "idle", "walk", "detect", "attack", "hurt", "dead" })
         {
             var frames = enemy.Sprite.SpriteFrames;
