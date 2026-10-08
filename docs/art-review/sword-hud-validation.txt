@@ -1,0 +1,37 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+SWORD_HUD_PASS: HUD before player uses session state
+SWORD_HUD_PASS: stowed player cannot attack
+SWORD_HUD_PASS: stowed spawn has no blade
+AudioManager: SFX not found at res://assets/audio/sfx/sword_on.wav
+Espada ativada
+SWORD_HUD_PASS: toggle enables both combat and indicator
+SWORD_HUD_PASS: blade grows through intermediate size
+SWORD_HUD_PASS: blade fully appears
+SWORD_HUD_PASS: active character keeps original colors
+SWORD_HUD_PASS: idle sword grip follows Kairo's right closed fist
+SWORD_HUD_PASS: closed fist layer draws over sword grip
+SWORD_HUD_PASS: grip overlay matches the original idle fist center
+SWORD_HUD_PASS: straight sword stays visible in attack
+SWORD_HUD_PASS: attack frames no longer embed old curved sword
+SWORD_HUD_PASS: separate blade follows unarmed jump pose
+AudioManager: SFX not found at res://assets/audio/sfx/sword_off.wav
+Espada guardada
+Espada ativada
+Espada guardada
+Espada ativada
+Espada guardada
+Espada ativada
+Espada guardada
+SWORD_HUD_PASS: rapid toggles leave final state consistent
+SWORD_HUD_PASS: rapid reversal fully retracts blade
+SWORD_HUD_PASS: stowed character keeps original colors
+SWORD_HUD_PASS: ability text preserved
+SWORD_HUD_PASS: HideAll includes sword
+SWORD_HUD_PASS: ShowAll restores sword
+SWORD_HUD_PASS: fixed 156 x 32 footprint
+SWORD_HUD_PASS: replacement HUD restores stowed state
+Espada ativada
+SWORD_HUD_PASS: new HUD subscribed after old HUD freed
+SWORD_HUD_PASS: pause preserves state
+SWORD_HUD_DONE failures=0
