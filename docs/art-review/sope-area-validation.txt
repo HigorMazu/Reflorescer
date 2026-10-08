@@ -1,0 +1,7 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+SOPE_AREA_PASS: new game enters at SpawnInicial
+SOPE_AREA_PASS: Sopé camera bounds are applied
+SOPE_AREA_PASS: Sopé has the restoration point and five enemies
+SOPE_AREA_PASS: return from Dossel enters at SpawnFromDosselVivo
+SOPE_AREA_DONE failures=0

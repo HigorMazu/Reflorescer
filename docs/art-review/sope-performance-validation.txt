@@ -1,0 +1,25 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 566.36 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce GTX 1650
+
+SOPE_AREA_PASS: new game enters at SpawnInicial
+SOPE_AREA_PASS: Sopé camera bounds are applied
+SOPE_AREA_PASS: Sopé has the restoration point and five enemies
+SOPE_AREA_PASS: return from Dossel enters at SpawnFromDosselVivo
+Player tomou 10 dano. HP 90
+AudioManager: SFX not found at res://assets/audio/sfx/player_hurt.wav
+Player HP: 90/100
+Player tomou 10 de contato com enemy_rapido
+SOPE_FPS x=160 avg=60.0 min=60.0 renderer=gl_compatibility
+Player tomou 12 dano. HP 78
+Player HP: 78/100
+Player tomou 12 de contato com enemy_voador
+SOPE_FPS x=1050 avg=60.0 min=60.0 renderer=gl_compatibility
+Player tomou 10 dano. HP 68
+Player HP: 68/100
+Player tomou 10 de contato com enemy_rapido
+Player tomou 10 dano. HP 58
+Player HP: 58/100
+Player tomou 10 de contato com enemy_rapido
+SOPE_FPS x=2000 avg=60.0 min=60.0 renderer=gl_compatibility
+SOPE_FPS x=160 avg=60.0 min=60.0 renderer=gl_compatibility
+SOPE_AREA_DONE failures=0

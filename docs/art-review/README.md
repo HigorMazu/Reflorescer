@@ -50,4 +50,6 @@ Este checkout possui `Joguim.csproj` e configuração C# ativa. Use Godot .NET 4
 
 ## Próxima pequena etapa
 
-A01-T2: separar os visuais de espada/bandagem do Kairo e validar a troca. Depois A05-T1: bordas e módulo central contínuo para o Sopé, reduzindo repetição sem alterar colisões; em seguida as demais áreas. Wall slide/dash, UI, áudio e playtest completo permanecem no roadmap. O registro disponível está nesta pasta e nos roadmaps.
+A espada e a bandagem de A01-T2, bem como as bordas, a variação central e os props do Sopé, foram aprovados em 08/10. O QA dirigido de entrada/FPS do Sopé está em `sope-area-qa-2026-10-08.md`; a travessia jogada continua pendente. Galhos, troncos, fundo e restauração do Dossel também foram aprovados (`dossel-branches-v1.md`, `dossel-canopy-restoration-v1.md`). Wall slide/dash, áudio e playtest completo permanecem no roadmap.
+
+O Igarapé agora tem prévia integrada do fundo, margem alagada, troncos, três poças de lama e restauração (`igarape-visual-v1.md`). As capturas aguardam aprovação de Higor; o TileSet nativo, teste jogado da lentidão e travessia completa seguem pendentes.

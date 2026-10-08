@@ -1,0 +1,11 @@
+# Props do Sopé da Mata — 08/10/2026
+
+Higor aprovou esta revisão visual em 08/10. O Sopé ganhou samambaias e arbustos floridos de tamanho discreto, distribuídos ao longo do percurso. O ponto de restauração usa um toco com broto no estado degradado e revela um arbusto pequeno ao restaurar, além das duas mudas que já existiam. `understory_sway.gdshader` move suavemente as folhas, mantendo a base fixa. Todos os props são decorativos: não há colisões novas.
+
+Capturas reais da cena: `sope-props-entrance-v1.png`, `sope-props-before-v1.png` e `sope-props-restored-v1.png`. A cena de revisão `scenes/art/SopeTerrainReview.tscn` aceita `--restored` para reproduzir a terceira captura.
+
+A folha `assets/environment/tropical/sope_props_candidate_v1.png` foi criada com a ferramenta de geração de imagem integrada, usando `ground_restored.png` e `sprout_restored.png` como referências. Os três props são recortes da própria textura em `Sprite2D`, sem alterar o bitmap. Prompt final:
+
+> Create a transparent sprite sheet for a 2D pixel-art forest platformer. Style and palette must closely match the provided terrain and sprout references: crisp clustered pixels, earthy olive greens, deep umber, muted stone gray, subtle golden highlights, no outlines thicker than one pixel at native sprite scale. Wide horizontal composition divided visually into EXACTLY THREE equal columns, each containing ONE complete isolated environmental prop with generous transparent space between columns: left column a healthy tropical fern clump with curled fronds; middle column a broadleaf understory bush with 3 tiny amber blossoms; right column a lightly degraded dry stump with one small green recovery shoot beside it. Each prop is grounded along the same baseline and occupies most of its column height, with all edges fully visible. Transparent background, no terrain strip, no shadows outside the props, no characters, no letters, no panel divisions, no watermark. These are decorative non-collidable foreground props for Reflorescer's Sopé da Mata entrance, with only mild degradation near the restoration point.
+
+Validação: a cena abriu no Godot 4.7.2 Compatibility, inclusive no estado restaurado; as capturas e a compilação .NET não tiveram erros. A medição de FPS continua pendente.

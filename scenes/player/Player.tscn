@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/kairo_faisca/grass_sword_v2.png" id="10_blade"]
 [ext_resource type="Script" path="res://scripts/player/SwordGripOverlay.cs" id="11_grip"]
 [ext_resource type="Texture2D" path="res://assets/sprites/kairo_faisca/kairo_grip_idle_00.png" id="12_grip_idle"]
+[ext_resource type="Script" path="res://scripts/player/SwordBandageVisual.cs" id="13_bandage"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_sword"]
 animations = [{"frames": [{"duration": 1.0, "texture": ExtResource("10_blade")}], "loop": true, "name": &"default", "speed": 5.0}]
@@ -108,13 +109,10 @@ offset_right = 3.0
 offset_bottom = 8.0
 color = Color(0.4, 0.3, 0.2, 1)
 
-[node name="Bandage" type="ColorRect" parent="Visual/RightArm/RightHand" unique_id=1037467972]
-visible = false
-offset_left = -4.0
-offset_top = -2.0
-offset_right = 4.0
-offset_bottom = 6.0
-color = Color(0.9, 0.9, 0.8, 1)
+[node name="Bandage" type="Node2D" parent="Visual/RightArm/RightHand" unique_id=1037467972]
+process_mode = 3
+z_index = 2
+script = ExtResource("13_bandage")
 
 [node name="Tail" type="ColorRect" parent="Visual" unique_id=378654180]
 visible = false

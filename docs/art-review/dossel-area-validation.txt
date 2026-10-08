@@ -1,0 +1,20 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+DOSSEL_AREA_PASS: Sopé exit enters Dossel at SpawnFromSopeDaMata
+DOSSEL_AREA_PASS: Dossel camera bounds are applied
+DOSSEL_AREA_PASS: Branch1 retains its collision
+DOSSEL_AREA_PASS: Branch2 retains its collision
+DOSSEL_AREA_PASS: Branch3 retains its collision
+DOSSEL_AREA_PASS: Branch4 retains its collision
+DOSSEL_AREA_PASS: Branch5 retains its collision
+DOSSEL_AREA_PASS: Branch6 retains its collision
+DOSSEL_AREA_PASS: Branch7 retains its collision
+DOSSEL_AREA_PASS: Branch8 retains its collision
+DOSSEL_AREA_PASS: Branch9 retains its collision
+DOSSEL_AREA_PASS: Branch10 retains its collision
+DOSSEL_AREA_PASS: Branch11 retains its collision
+DOSSEL_AREA_PASS: TopBranch retains its collision
+DOSSEL_AREA_PASS: Dossel has eleven climbing branches and the top branch
+DOSSEL_AREA_PASS: branch edge gaps fit the base jump's ballistic height and horizontal reach
+DOSSEL_AREA_PASS: Dossel has restoration and five enemies
+DOSSEL_AREA_DONE failures=0

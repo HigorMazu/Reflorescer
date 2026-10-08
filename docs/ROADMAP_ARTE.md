@@ -76,12 +76,12 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ concluída (06/10) — pacote núcleo entregue e integrado.
 >
-> > [!todo]- Task A01-T2 — Espada de Grama (2 visuais)
+> > [!success]- Task A01-T2 — Espada de Grama (2 visuais)
 > > - [x] Espada empunhada (ativada), sprite separado no braço direito.
-> > - [ ] "Bandagem" no pulso (desativada), `RightHand/Bandage`.
+> > - [x] "Bandagem" no pulso (desativada), `RightHand/Bandage`.
 > > - **Dependência:** não depende de código pra ser desenhado, só pra ser testado em jogo — depende de [[ROADMAP_DEV]] `EPIC-C03` (toggle da espada) estar implementado antes de validar a troca em tempo real.
 > >
-> > Status: 🟡 parcial (07/10) — lâmina reta e maior baseada na referência de Higor (v2, 11×40 px), separada do corpo em idle/run/jump/fall e nos três quadros de ataque. A empunhadura v6 ancora a espada na mão direita anatômica do Kairo (lado esquerdo quando ele olha à direita) e usa o punho fechado do próprio quadro à frente do cabo, para que a espada saia debaixo da mão. A estocada foi refinada com referência no ferrão de Hollow Knight: preparação, avanço horizontal e recuperação; dano sincronizado ao avanço. Saque/recolhimento de 0,24 s e cores originais de Kairo. Pulo e ataques usam quadros sem lâmina embutida. A bandagem no desenho foi mantida; recurso separado `RightHand/Bandage` ainda pendente. Ver `docs/art-review/sword-held-v6-delivery.md`.
+> > Status: ✅ concluída (08/10) — Higor aprovou a empunhadura v6 da lâmina reta na mão direita e a bandagem no estado guardado. A bandagem acompanha idle/run/jump/fall sem aparecer junto com a lâmina. A estocada mantém preparação, impacto horizontal e recuperação, com dano sincronizado ao impacto; saque/recolhimento de 0,24 s e cores originais de Kairo. Ver `docs/art-review/sword-held-v6-delivery.md` e `docs/art-review/sword-bandage-v1-delivery.md`.
 >
 > > [!todo]- Task A01-T3 — Wall grab / wall jump
 > > - [ ] Nome de animação a definir junto com o Gustavo, documentar aqui assim que decidido.
@@ -179,27 +179,27 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 >
 > > [!warning]- Task A05-T1 — Sopé da Mata (entrada, prioridade)
 > > - [ ] Tileset de chão/plataformas — vegetação densa mas saudável.
-> > - [ ] Background/parallax.
-> > - [ ] Props temáticos ODS15 (alinhar com [[ROADMAP_DEV]] `EPIC-C02` antes de desenhar) — degradação **leve** aqui, é a área de entrada.
-> > - [ ] Visual do ponto de restauração.
+> > - [x] Background/parallax.
+> > - [x] Props temáticos ODS15 (alinhados com [[ROADMAP_DEV]] `EPIC-C02`) — degradação **leve** aqui, é a área de entrada.
+> > - [x] Visual do ponto de restauração.
 > >
 > > - **Integração (06/10):** Protótipo integrado ao Sopé da Mata: chão grama/terra/raízes/pedra, parallax, partículas e restauração seco→verde. Interação E e crescimento passaram no Godot .NET. Tileset modular, percurso completo e medição de FPS pendentes. Ver `docs/art-review/README.md` e capturas.
 > >
-> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
+> > Status: 🟡 parcial (08/10) — `TropicalBackdrop.tscn` fornece fundo com Parallax2D; o ponto de restauração alterna chão seco/verde e brotos na cena real. Higor aprovou as bordas laterais de 24 px (`docs/art-review/sope-ground-borders-v1.md`), a variação dos módulos centrais (`docs/art-review/sope-ground-modular-v1.md`) e os props de samambaia, arbusto e toco (`docs/art-review/sope-props-v1.md`). As colisões permanecem intactas. O QA dirigido de spawn e FPS passou após aquecimento (`docs/art-review/sope-area-qa-2026-10-08.md`); falta percorrer a fase jogando e finalizar o tileset de produção.
 >
 > > [!todo]- Task A05-T2 — Dossel Vivo (copa das árvores)
 > > - [ ] Tileset com leitura clara de plataforming vertical (silhuetas de galhos/plataformas soltas).
-> > - [ ] Background/parallax com sensação de altura.
-> > - [ ] Props: degradação **moderada** no ponto de restauração.
+> > - [x] Background/parallax com sensação de altura.
+> > - [x] Props: degradação **moderada** no ponto de restauração.
 > >
-> > Status: não iniciado.
+> > Status: 🟡 parcial (08/10) — Higor aprovou galhos, troncos, fundo de copa e restauração moderada (`docs/art-review/dossel-branches-v1.md`, `docs/art-review/dossel-canopy-restoration-v1.md`). Faltam a travessia jogada da subida e um TileSet nativo de produção; os visuais atuais acompanham as colisões existentes.
 >
 > > [!todo]- Task A05-T3 — Igarapé Sufocado (mata alagada)
 > > - [ ] Tileset de mata baixa alagada/degradada.
-> > - [ ] Visual do hazard de lama ([[ROADMAP_DEV]] `EPIC-C13-T3`).
-> > - [ ] Props: o contraste "antes/depois" **mais forte** das 3 áreas no ponto de restauração.
+> > - [x] Visual do hazard de lama ([[ROADMAP_DEV]] `EPIC-C13-T3`): poças de lodo integradas aos três volumes de lentidão.
+> > - [x] Props: o contraste "antes/depois" **mais forte** das 3 áreas no ponto de restauração — três tocos e lixo → duas mudas, água limpa e vitória-régia.
 > >
-> > Status: não iniciado.
+> > Status: parcial — fundo, margem, troncos, lama e restauração integrados em 08/10; aguardam aprovação visual de Higor. Faltam o TileSet nativo e a travessia jogada.
 >
 > > [!todo]- Task A05-T4 — Covil de Korrag (arena do boss)
 > > - [ ] Chão revirado pelas escavações do javali — sem ponto de restauração aqui.
@@ -239,7 +239,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 - [x] Integrado ao toggle real; área de avisos de habilidade preservada.
 - [x] Aprovação visual de Higor sobre as capturas no Sopé (07/10).
 
-Status: ✅ concluída (07/10) — indicador aprovado por Higor e integrado. Ver `docs/art-review/sword-hud-delivery.md`. O trabalho da espada no personagem permanece separado em A01-T2; depois segue acabamento modular do Sopé (A05-T1).
+Status: ✅ concluída (07/10) — indicador aprovado por Higor e integrado. Ver `docs/art-review/sword-hud-delivery.md`. A bandagem final da A01-T2 foi aprovada em 08/10; segue acabamento modular do Sopé (A05-T1).
 
 ## Ordem de entrega recomendada (resumo)
 

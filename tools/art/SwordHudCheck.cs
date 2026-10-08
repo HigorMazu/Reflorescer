@@ -30,10 +30,12 @@ public partial class SwordHudCheck : Node
             player.ProcessMode = ProcessModeEnum.Disabled;
             AddChild(player);
             var sword = player.GetNode<GrassSwordVisual>("Visual/RightArm/RightHand/Sword");
+            var bandage = player.GetNode<SwordBandageVisual>("Visual/RightArm/RightHand/Bandage");
             sword.ProcessMode = ProcessModeEnum.Always;
             await Wait(); await Wait();
             Check(!indicator.HasSword && !player.CanAttack(), "stowed player cannot attack");
             Check(sword.Extension == 0 && !player.Sword.Visible, "stowed spawn has no blade");
+            Check(bandage.Visible, "stowed spawn shows wrist bandage");
             hud.SetAbilityDisplay("Dash disponível");
             player.ToggleSword();
             Check(indicator.HasSword && player.CanAttack(), "toggle enables both combat and indicator");
@@ -41,6 +43,7 @@ public partial class SwordHudCheck : Node
             Check(sword.Extension > 0 && sword.Extension < 1, "blade grows through intermediate size");
             await ToSignal(GetTree().CreateTimer(.2), SceneTreeTimer.SignalName.Timeout);
             Check(Mathf.IsEqualApprox(sword.Extension, 1) && player.Sword.Visible, "blade fully appears");
+            Check(!bandage.Visible, "active blade hides wrist bandage");
             Check(player.Sprite.SelfModulate == Colors.White, "active character keeps original colors");
             player.Sprite.Play("idle"); player.Sprite.Frame = 0; await Wait();
             Check(player.Sword.GlobalPosition.X < player.GlobalPosition.X, "idle sword grip follows Kairo's right closed fist");
@@ -57,6 +60,7 @@ public partial class SwordHudCheck : Node
             Check(!indicator.HasSword && !player.HasSword, "rapid toggles leave final state consistent");
             await ToSignal(GetTree().CreateTimer(.35), SceneTreeTimer.SignalName.Timeout);
             Check(sword.Extension == 0 && !player.Sword.Visible, "rapid reversal fully retracts blade");
+            Check(bandage.Visible, "wrist bandage returns after blade fully retracts");
             Check(player.Sprite.SelfModulate == Colors.White, "stowed character keeps original colors");
             Check(hud.GetNode<Label>("MarginContainer/VBoxContainer/TopRow/AbilitySection/AbilityDisplay").Text == "Dash disponível", "ability text preserved");
             hud.HideAll(); Check(!indicator.Visible, "HideAll includes sword");

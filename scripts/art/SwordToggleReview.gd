@@ -29,16 +29,20 @@ func _ready() -> void:
 	caption.add_theme_font_size_override("font_size", 24)
 	add_child(caption)
 	DirAccess.make_dir_recursive_absolute("res://.godot/sword-toggle-frames")
-	if "--poses" in OS.get_cmdline_user_args():
-		player.call("SetSwordVisible", true)
+	var stowed_poses := "--stowed-poses" in OS.get_cmdline_user_args()
+	if "--poses" in OS.get_cmdline_user_args() or stowed_poses:
+		player.set("HasSword", not stowed_poses)
+		player.call("SetSwordVisible", not stowed_poses)
 		for pose in ["idle", "run", "jump", "fall", "attack"]:
+			if stowed_poses and pose == "attack": continue
 			for frame in range(body.sprite_frames.get_frame_count(pose)):
 				body.animation = pose
 				body.frame = frame
 				label.text = pose + " / " + str(frame)
 				await get_tree().create_timer(0.1).timeout
 				await RenderingServer.frame_post_draw
-				get_viewport().get_texture().get_image().save_png("res://.godot/sword-toggle-frames/pose-" + pose + str(frame) + ".png")
+				var prefix := "pose-stowed-" if stowed_poses else "pose-"
+				get_viewport().get_texture().get_image().save_png("res://.godot/sword-toggle-frames/" + prefix + pose + str(frame) + ".png")
 		get_tree().quit()
 		return
 	for i in range(48):
