@@ -1,0 +1,12 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+COVIL_AREA_PASS: Igarapé exit enters Covil at SpawnFromIgarapeSufocado
+COVIL_AREA_PASS: Covil camera is locked to the boss arena
+COVIL_AREA_PASS: WallLeft collision remains in the arena
+COVIL_AREA_PASS: WallRight collision remains in the arena
+COVIL_AREA_PASS: Ceiling collision remains in the arena
+COVIL_AREA_PASS: ArenaFloor collision remains in the arena
+COVIL_AREA_PASS: churned earth art is integrated over the arena floor
+COVIL_AREA_PASS: Covil contains Korrag and no common enemies
+COVIL_AREA_PASS: Covil has no restoration point
+COVIL_AREA_DONE failures=0

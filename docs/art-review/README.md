@@ -2,7 +2,7 @@
 
 Trabalho local na `master`, baseada em `8ccaf4f`. Designs dos três inimigos aprovados pelo Higor; ciclos e integração implementados em seguida. Commit, pull e push ficam por conta do usuário. Arte criada com ImageGen; recorte, escala e montagem com Pillow. Referências usadas para direção, sem copiar seus personagens ou cenários.
 
-Entrega atual: [animações e integração dos inimigos](enemy-animation-delivery.md). Prévia animada em `enemy-cycles.gif`; captura real do painel Godot em `enemy-integration.png`. A02 concluído na integração dirigida. Korrag agora exibe `defeated` depois de `dead`; revisão completa da luta ainda pendente.
+Entrega atual: revisão final das correções de Kairo e Korrag em `kairo-korrag-correction-v3.md`. Dash/apoio usam o desenho normal de Kairo com efeitos discretos ligados aos estados reais, a espada usa o punho original sem duplicação e o windup de Korrag não contém mais a perna separada. Aprovação visual e luta jogada permanecem pendentes.
 
 ## Direção e integração
 
@@ -52,4 +52,6 @@ Este checkout possui `Joguim.csproj` e configuração C# ativa. Use Godot .NET 4
 
 A espada e a bandagem de A01-T2, bem como as bordas, a variação central e os props do Sopé, foram aprovados em 08/10. O QA dirigido de entrada/FPS do Sopé está em `sope-area-qa-2026-10-08.md`; a travessia jogada continua pendente. Galhos, troncos, fundo e restauração do Dossel também foram aprovados (`dossel-branches-v1.md`, `dossel-canopy-restoration-v1.md`). Wall slide/dash, áudio e playtest completo permanecem no roadmap.
 
-O Igarapé agora tem prévia integrada do fundo, margem alagada, troncos, três poças de lama e restauração (`igarape-visual-v1.md`). As capturas aguardam aprovação de Higor; o TileSet nativo, teste jogado da lentidão e travessia completa seguem pendentes.
+O Igarapé tem fundo, margem alagada modular, troncos, três poças de lama e restauração aprovados por Higor (`igarape-visual-v1.md`, `modular-terrain-v1.md`). Teste jogado da lentidão e travessia completa seguem pendentes.
+
+O Covil de Korrag recebeu uma arena fechada de raízes e terra revirada modular, sem elementos de exploração (`covil-visual-v1.md`, `modular-terrain-v1.md`). O visual foi aprovado por Higor; luta jogada e FPS seguem pendentes.

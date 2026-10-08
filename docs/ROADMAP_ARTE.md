@@ -81,19 +81,19 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > > - [x] "Bandagem" no pulso (desativada), `RightHand/Bandage`.
 > > - **Dependência:** não depende de código pra ser desenhado, só pra ser testado em jogo — depende de [[ROADMAP_DEV]] `EPIC-C03` (toggle da espada) estar implementado antes de validar a troca em tempo real.
 > >
-> > Status: ✅ concluída (08/10) — Higor aprovou a empunhadura v6 da lâmina reta na mão direita e a bandagem no estado guardado. A bandagem acompanha idle/run/jump/fall sem aparecer junto com a lâmina. A estocada mantém preparação, impacto horizontal e recuperação, com dano sincronizado ao impacto; saque/recolhimento de 0,24 s e cores originais de Kairo. Ver `docs/art-review/sword-held-v6-delivery.md` e `docs/art-review/sword-bandage-v1-delivery.md`.
+> > Status: 🟡 corrigida, aguardando aprovação (08/10) — a v9 mantém o cabo na mão direita em todos os quadros, aprofunda a guarda no punho durante o ataque e troca a camada da lâmina para que ela permaneça legível sem criar uma segunda mão. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 >
 > > [!todo]- Task A01-T3 — Wall grab / wall jump
-> > - [ ] Nome de animação a definir junto com o Gustavo, documentar aqui assim que decidido.
-> > - **Dependência:** [[ROADMAP_DEV]] `EPIC-C05` — não começar antes da mecânica existir, pra não desenhar em cima de um comportamento que ainda pode mudar.
+> > - [x] Animação `wall_slide` integrada como pose própria de apoio na parede.
+> > - **Dependência resolvida (08/10):** [[ROADMAP_DEV]] `EPIC-C05` está concluído e o código procura o estado real de wall slide.
 > >
-> > Status: não iniciado.
+> > Status: 🟡 corrigida, aguardando aprovação (08/10) — `wall_slide` usa o Kairo normal e ganhou raspas discretas no ponto de contato. Entrada, colisão, estado e animação passaram no teste de execução. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 >
 > > [!todo]- Task A01-T4 — Variação visual do dash
-> > - [ ] Nome de animação a definir (sugestão: `dash`).
-> > - **Dependência:** [[ROADMAP_DEV]] `EPIC-C04`.
+> > - [x] Animação `dash` integrada com os quadros normais de corrida e squash do impulso.
+> > - **Dependência resolvida (08/10):** [[ROADMAP_DEV]] `EPIC-C04` está concluído e o código já procura `dash`.
 > >
-> > Status: não iniciado.
+> > Status: 🟡 corrigida, aguardando aprovação (08/10) — `dash` preserva o Kairo normal, remove a coloração verde e acrescenta linhas de impulso e poeira. Entrada, desbloqueio, estado e animação passaram no teste de execução. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 
 > [!success]- EPIC-A02 — Inimigos Comuns (3 Arquétipos) — ✅ Concluído no escopo da demo
 > **Ajuste solicitado (07/10):** sprites dos três arquétipos ampliados mais 12% em relação à revisão anterior (escala 0,56, total +34,4% ante 0,4166667). Pés alinhados; colisões e stats preservados. Regressão dirigida de combate: 160 verificações passaram. Aprovação visual do novo tamanho pendente.
@@ -144,7 +144,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ concluída (06/10) — animações entregues e integradas à máquina de estados.
 
-> [!success]- EPIC-A04 — Boss KORRAG — ✅ Concluído · 🟠 Alta
+> [!warning]- EPIC-A04 — Boss KORRAG — 🟡 Corrigido, aguardando aprovação · 🟠 Alta
 > *Pronto quando*: `intro`, `charge_windup`, `phase2_transition` e `defeated` estão entregues — escopo já simplificado, fases 1 e 2 compartilham `idle`.
 >
 > Por último — pacote mais isolado e com o escopo já reduzido de propósito (decisão do Gustavo: manter as 2 fases já modeladas por dados, mas simplificar a arte pra caber no tempo).
@@ -160,9 +160,9 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > > - [x] `defeated` (derrotado, pós-morte).
 > > - **Nota de timing:** `charge_windup` precisa caber (ou ser cortável) em ~1s fixo — combinar com o Gustavo se a animação final não bater com esse corte (ver [[ROADMAP_DEV]] `C06-T4`).
 > > - **Nota:** hoje o boss vira invisível e é destruído 0.3s depois de `Dead` — se `defeated` for mais longa que isso, o Gustavo ajusta esse tempo no código.
-> > - **Integração (06/10):** `KorragSpriteFrames.tres` contém os oito visuais obrigatórios, está ligado a `Boss_Javali.tscn` e os estados chamam `intro`, `charge_windup` e `phase2_transition`. `defeated` está entregue no recurso; o código atual ainda usa `dead` + fade na morte, decisão anotada no QA.
+> > - **Correção (08/10):** o spritesheet anterior tinha contaminação de outros personagens, recortes incompletos e estados de um quadro. A v2 entrega 13 estados limpos; `charge` e `stomp` ganharam animações e chamadas próprias, transições e morte receberam sequências, escala aumentada para 0,9 e pés alinhados ao chão.
 > >
-> > Status: ✅ concluída (06/10) — pacote visual obrigatório entregue.
+> > Status: 🟡 corrigida, aguardando aprovação (08/10) — integração e testes dirigidos passaram; revisão em `docs/art-review/kairo-korrag-correction-v2.md`.
 >
 > > [!success]- Task A04-T2 — Opcional (só se sobrar tempo)
 > > - [x] `enraged_transition`.
@@ -170,64 +170,64 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > - **Integração (06/10):** o recurso contém `enraged_transition` e `BossEnragedState` a toca ao entrar no estado.
 > >
-> > Status: ✅ concluída (06/10) — entregue além do escopo mínimo.
+> > Status: 🟡 corrigida, aguardando aprovação (08/10) — transição refeita com dois quadros coerentes e brilho vermelho controlado.
 
-> [!warning]- EPIC-A05 — Cenário das 4 Áreas da Demo (Floresta Tropical) — 🔄 Em andamento · 🔴 Bloqueante
+> [!success]- EPIC-A05 — Cenário das 4 Áreas da Demo (Floresta Tropical) — ✅ Entrega visual concluída
 > *Pronto quando*: as 4 áreas têm tileset, background e props temáticos entregues, com identidade visual reconhecível sem precisar de texto, e coerentes entre si (mesmo bioma, mesma paleta-base) — ver [[🌍 Mundo e Biomas#As 4 áreas da demo (dentro da Floresta Tropical)|Mundo e Biomas]].
 >
 > Renomeado em 29/09/2026 (era "Cenário das 3 Áreas da Demo": Floresta Tropical/Deserto/Tundra) — a demo agora fica só na Floresta Tropical, em 4 áreas.
 >
-> > [!warning]- Task A05-T1 — Sopé da Mata (entrada, prioridade)
-> > - [ ] Tileset de chão/plataformas — vegetação densa mas saudável.
+> > [!success]- Task A05-T1 — Sopé da Mata (entrada, prioridade)
+> > - [x] Sistema modular de chão/plataformas — vegetação densa mas saudável.
 > > - [x] Background/parallax.
 > > - [x] Props temáticos ODS15 (alinhados com [[ROADMAP_DEV]] `EPIC-C02`) — degradação **leve** aqui, é a área de entrada.
 > > - [x] Visual do ponto de restauração.
 > >
 > > - **Integração (06/10):** Protótipo integrado ao Sopé da Mata: chão grama/terra/raízes/pedra, parallax, partículas e restauração seco→verde. Interação E e crescimento passaram no Godot .NET. Tileset modular, percurso completo e medição de FPS pendentes. Ver `docs/art-review/README.md` e capturas.
 > >
-> > Status: 🟡 parcial (08/10) — `TropicalBackdrop.tscn` fornece fundo com Parallax2D; o ponto de restauração alterna chão seco/verde e brotos na cena real. Higor aprovou as bordas laterais de 24 px (`docs/art-review/sope-ground-borders-v1.md`), a variação dos módulos centrais (`docs/art-review/sope-ground-modular-v1.md`) e os props de samambaia, arbusto e toco (`docs/art-review/sope-props-v1.md`). As colisões permanecem intactas. O QA dirigido de spawn e FPS passou após aquecimento (`docs/art-review/sope-area-qa-2026-10-08.md`); falta percorrer a fase jogando e finalizar o tileset de produção.
+> > Status: ✅ entrega visual concluída (08/10) — `TropicalBackdrop.tscn` fornece fundo com Parallax2D; o ponto de restauração alterna chão seco/verde e brotos na cena real. Higor aprovou as bordas laterais de 24 px (`docs/art-review/sope-ground-borders-v1.md`), a variação dos módulos centrais (`docs/art-review/sope-ground-modular-v1.md`) e os props de samambaia, arbusto e toco (`docs/art-review/sope-props-v1.md`). As colisões permanecem intactas. O sistema modular comum às áreas está documentado em `docs/art-review/modular-terrain-v1.md`. Percurso jogado e FPS permanecem no roadmap de QA.
 >
-> > [!todo]- Task A05-T2 — Dossel Vivo (copa das árvores)
-> > - [ ] Tileset com leitura clara de plataforming vertical (silhuetas de galhos/plataformas soltas).
+> > [!success]- Task A05-T2 — Dossel Vivo (copa das árvores)
+> > - [x] Plataformas modulares com leitura clara de platforming vertical (silhuetas de galhos/plataformas soltas).
 > > - [x] Background/parallax com sensação de altura.
 > > - [x] Props: degradação **moderada** no ponto de restauração.
 > >
-> > Status: 🟡 parcial (08/10) — Higor aprovou galhos, troncos, fundo de copa e restauração moderada (`docs/art-review/dossel-branches-v1.md`, `docs/art-review/dossel-canopy-restoration-v1.md`). Faltam a travessia jogada da subida e um TileSet nativo de produção; os visuais atuais acompanham as colisões existentes.
+> > Status: ✅ entrega visual concluída (08/10) — Higor aprovou galhos, troncos, fundo de copa e restauração moderada (`docs/art-review/dossel-branches-v1.md`, `docs/art-review/dossel-canopy-restoration-v1.md`). A base modular de terreno é compartilhada com o Sopé (`docs/art-review/modular-terrain-v1.md`) e acompanha as colisões existentes. A travessia jogada da subida permanece no roadmap de QA.
 >
-> > [!todo]- Task A05-T3 — Igarapé Sufocado (mata alagada)
-> > - [ ] Tileset de mata baixa alagada/degradada.
+> > [!success]- Task A05-T3 — Igarapé Sufocado (mata alagada)
+> > - [x] Faixa modular de mata baixa alagada/degradada.
 > > - [x] Visual do hazard de lama ([[ROADMAP_DEV]] `EPIC-C13-T3`): poças de lodo integradas aos três volumes de lentidão.
 > > - [x] Props: o contraste "antes/depois" **mais forte** das 3 áreas no ponto de restauração — três tocos e lixo → duas mudas, água limpa e vitória-régia.
 > >
-> > Status: parcial — fundo, margem, troncos, lama e restauração integrados em 08/10; aguardam aprovação visual de Higor. Faltam o TileSet nativo e a travessia jogada.
+> > Status: ✅ entrega visual concluída (08/10) — Higor aprovou fundo, margem, troncos, lama e restauração (`docs/art-review/igarape-visual-v1.md`). A margem agora usa módulos de terreno sem esticar a ilustração (`docs/art-review/modular-terrain-v1.md`). A travessia jogada e a leitura da lentidão permanecem no roadmap de QA.
 >
 > > [!todo]- Task A05-T4 — Covil de Korrag (arena do boss)
-> > - [ ] Chão revirado pelas escavações do javali — sem ponto de restauração aqui.
-> > - [ ] Ambientação de arena de boss (mais fechada, foco na luta).
+> > - [x] Chão revirado pelas escavações do javali — sem ponto de restauração aqui.
+> > - [x] Ambientação de arena de boss (mais fechada, foco na luta).
 > >
-> > Status: não iniciado.
+> > Status: ✅ entrega visual concluída (08/10) — Higor aprovou fundo de arena e chão revirado (`docs/art-review/covil-visual-v1.md`). O chão revirado passou a usar a mesma base modular das áreas (`docs/art-review/modular-terrain-v1.md`). Teste jogado da luta e FPS permanecem no roadmap de QA.
 
-> [!todo]- EPIC-A06 — UI — ⬜ Não iniciado · 🟡 Média
+> [!success]- EPIC-A06 — UI — ✅ Entrega visual concluída
 > *Pronto quando*: barra de vida, ícone de habilidade e prompt de interação têm arte final substituindo os placeholders do Godot.
 >
 > Apoio, menor prioridade — não bloqueia jogabilidade.
 >
 > > [!todo]- Task A06-T1 — Barra de vida
-> > - [ ] Textura final pra `TextureProgressBar` (hoje é o placeholder padrão do Godot).
+> > - [x] Visual final: moldura vegetal escura, preenchimento verde e marcas de leitura.
 > >
-> > Status: não iniciado.
+> > Status: ✅ concluída (08/10) — Higor aprovou a revisão da HUD.
 >
 > > [!todo]- Task A06-T2 — Ícone de habilidade
-> > - [ ] Indicador visual de dash desbloqueado.
-> > - **Dependência:** só faz sentido testar depois que a notificação real existir no código ([[ROADMAP_QA_CODIGO]] `C04-T4`).
+> > - [x] Sem indicador persistente de dash, por decisão de Higor (08/10); a notificação de desbloqueio existente permanece suficiente.
+> > - **Dependência resolvida:** a notificação real existe em [[ROADMAP_QA_CODIGO]] `C04-T4`.
 > >
-> > Status: não iniciado.
+> > Status: ✅ concluída (08/10) — escopo visual aprovado sem badge de dash.
 >
 > > [!todo]- Task A06-T3 — Prompt de interação
-> > - [ ] Estilo visual pro "Pressione E".
-> > - **Dependência:** só faz sentido testar depois que o prompt contínuo existir no código ([[ROADMAP_QA_CODIGO]] `C10-T1`).
+> > - [x] Painel compacto de leitura para o prompt contínuo `[E]`.
+> > - **Dependência resolvida:** o prompt contínuo existe em [[ROADMAP_QA_CODIGO]] `C10-T1`.
 > >
-> > Status: não iniciado.
+> > Status: ✅ concluída (08/10) — Higor aprovou a revisão da HUD.
 
 ---
 

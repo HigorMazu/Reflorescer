@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://ci4whjcr73q7y" path="res://scenes/enemies/Enemy_Voador.tscn" id="voador"]
 [ext_resource type="PackedScene" path="res://scenes/art/IgarapeBackdrop.tscn" id="backdrop"]
 [ext_resource type="Texture2D" path="res://assets/environment/tropical/igarape_ground_candidate_v1.png" id="swamp_ground"]
+[ext_resource type="Script" path="res://scripts/art/ModularTerrainStrip.gd" id="modular_terrain"]
 [ext_resource type="Texture2D" path="res://assets/environment/tropical/igarape_water_log_atlas_candidate_v1.png" id="swamp_atlas"]
 [ext_resource type="Texture2D" path="res://assets/environment/tropical/igarape_restoration_atlas_candidate_v1.png" id="restoration_atlas"]
 [ext_resource type="Script" path="res://scripts/art/MudBubbles.gd" id="mud_bubbles"]
@@ -144,12 +145,16 @@ mouse_filter = 2
 color = Color(0.3, 0.55, 0.2, 1)
 visible = false
 
-[node name="SwampBank" type="Sprite2D" parent="Geometry/Ground"]
+[node name="SwampBank" type="Node2D" parent="Geometry/Ground"]
 position = Vector2(-1400, -120)
-scale = Vector2(1.28913, 0.25)
 texture_filter = 1
-texture = ExtResource("swamp_ground")
-centered = false
+script = ExtResource("modular_terrain")
+terrain_texture = ExtResource("swamp_ground")
+strip_width = 2800.0
+strip_height = 181.0
+cap_source_width = 190.0
+middle_source = Rect2(560, 0, 720, 724)
+alternate_middle_source = Rect2(1180, 0, 720, 724)
 
 [node name="Log1" type="StaticBody2D" parent="Geometry" unique_id=852235192]
 position = Vector2(700, 410)

@@ -40,6 +40,10 @@ func _ready() -> void:
 				body.frame = frame
 				label.text = pose + " / " + str(frame)
 				await get_tree().create_timer(0.1).timeout
+				if DisplayServer.get_name() == "headless":
+					push_error("SwordToggleReview requires a rendering display")
+					get_tree().quit(2)
+					return
 				await RenderingServer.frame_post_draw
 				var prefix := "pose-stowed-" if stowed_poses else "pose-"
 				get_viewport().get_texture().get_image().save_png("res://.godot/sword-toggle-frames/" + prefix + pose + str(frame) + ".png")
@@ -50,6 +54,10 @@ func _ready() -> void:
 		if i == 10 or i == 28: player.call("ToggleSword")
 		label.text = "Kairo · detalhe 4× · " + ("ATIVA" if player.get("HasSword") else "GUARDADA")
 		await get_tree().create_timer(1.0 / 24.0).timeout
+		if DisplayServer.get_name() == "headless":
+			push_error("SwordToggleReview requires a rendering display")
+			get_tree().quit(2)
+			return
 		await RenderingServer.frame_post_draw
 		get_viewport().get_texture().get_image().save_png("res://.godot/sword-toggle-frames/%02d.png" % i)
 	get_tree().quit()

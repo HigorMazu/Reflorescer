@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/environment/tropical/covil_background_candidate_v1.png" id="1"]
+
+[node name="CovilBackdrop" type="Node2D"]
+z_index = -20
+
+[node name="Den" type="Sprite2D" parent="."]
+position = Vector2(-1024, -300)
+modulate = Color(0.72, 0.76, 0.69, 1)
+texture_filter = 4
+texture = ExtResource("1")
+centered = false

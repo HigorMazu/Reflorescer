@@ -180,6 +180,7 @@ namespace Joguim.Bosses
                 {
                     _phaseTransitionDone = true;
                     Boss.SetPhase(1);
+                    Boss.PlayAnimation("walk");
                 }
                 return;
             }
@@ -228,6 +229,7 @@ namespace Joguim.Bosses
                 {
                     _enragedTransitionDone = true;
                     Boss.SetPhase(2);
+                    Boss.PlayAnimation("walk");
                 }
                 return;
             }

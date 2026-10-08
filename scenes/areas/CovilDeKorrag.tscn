@@ -6,7 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://faisca001" path="res://scenes/companion/Faisca.tscn" id="faisca"]
 [ext_resource type="PackedScene" uid="uid://hud001" path="res://scenes/ui/HUD.tscn" id="hud"]
 [ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="player"]
-[ext_resource type="PackedScene" path="res://scenes/art/TropicalBackdrop.tscn" id="backdrop"]
+[ext_resource type="PackedScene" path="res://scenes/art/CovilBackdrop.tscn" id="backdrop"]
+[ext_resource type="Texture2D" path="res://assets/environment/tropical/covil_ground_candidate_v1.png" id="covil_ground"]
+[ext_resource type="Script" path="res://scripts/art/ModularTerrainStrip.gd" id="modular_terrain"]
 
 [sub_resource type="RectangleShape2D" id="Shape_WallLeft"]
 size = Vector2(40, 720)
@@ -43,11 +45,6 @@ z_index = -30
 
 [node name="Backdrop" parent="." instance=ExtResource("backdrop")]
 
-[node name="Motes" parent="Backdrop"]
-position = Vector2(-640, 180)
-area = Rect2(0, -420, 1280, 380)
-amount = 12
-
 [node name="Geometry" type="Node2D" parent="." unique_id=1085028862]
 
 [node name="WallLeft" type="StaticBody2D" parent="Geometry" unique_id=2136960134]
@@ -63,6 +60,7 @@ offset_right = 20.0
 offset_bottom = 360.0
 mouse_filter = 2
 color = Color(0.2, 0.25, 0.18, 1)
+visible = false
 
 [node name="WallRight" type="StaticBody2D" parent="Geometry" unique_id=1981290939]
 position = Vector2(620, 80)
@@ -77,6 +75,7 @@ offset_right = 20.0
 offset_bottom = 360.0
 mouse_filter = 2
 color = Color(0.2, 0.25, 0.18, 1)
+visible = false
 
 [node name="Ceiling" type="StaticBody2D" parent="Geometry" unique_id=2000039548]
 position = Vector2(0, -260)
@@ -91,6 +90,7 @@ offset_right = 640.0
 offset_bottom = 20.0
 mouse_filter = 2
 color = Color(0.2, 0.25, 0.18, 1)
+visible = false
 
 [node name="ArenaFloor" type="StaticBody2D" parent="Geometry" unique_id=1027386656]
 position = Vector2(0, 240)
@@ -105,6 +105,7 @@ offset_right = 640.0
 offset_bottom = 40.0
 mouse_filter = 2
 color = Color(0.25, 0.3, 0.2, 1)
+visible = false
 
 [node name="Top" type="ColorRect" parent="Geometry/ArenaFloor" unique_id=352954287]
 offset_left = -640.0
@@ -113,6 +114,18 @@ offset_right = 640.0
 offset_bottom = -38.0
 mouse_filter = 2
 color = Color(0.3, 0.55, 0.2, 1)
+visible = false
+
+[node name="ChurnedFloor" type="Node2D" parent="Geometry/ArenaFloor"]
+position = Vector2(-640, -44)
+texture_filter = 1
+script = ExtResource("modular_terrain")
+terrain_texture = ExtResource("covil_ground")
+strip_width = 1280.0
+strip_height = 116.0
+cap_source_width = 180.0
+middle_source = Rect2(520, 0, 720, 724)
+alternate_middle_source = Rect2(1240, 0, 720, 724)
 
 [node name="DugDirt1" type="ColorRect" parent="Geometry" unique_id=392919344]
 offset_left = -420.0
@@ -121,6 +134,7 @@ offset_right = -340.0
 offset_bottom = 200.0
 mouse_filter = 2
 color = Color(0.42, 0.3, 0.18, 1)
+visible = false
 
 [node name="DugDirt2" type="ColorRect" parent="Geometry" unique_id=1796068505]
 offset_left = -120.0
@@ -129,6 +143,7 @@ offset_right = -30.0
 offset_bottom = 200.0
 mouse_filter = 2
 color = Color(0.42, 0.3, 0.18, 1)
+visible = false
 
 [node name="DugDirt3" type="ColorRect" parent="Geometry" unique_id=620457474]
 offset_left = 180.0
@@ -137,6 +152,7 @@ offset_right = 250.0
 offset_bottom = 200.0
 mouse_filter = 2
 color = Color(0.42, 0.3, 0.18, 1)
+visible = false
 
 [node name="DugDirt4" type="ColorRect" parent="Geometry" unique_id=1700204486]
 offset_left = 420.0
@@ -145,6 +161,7 @@ offset_right = 520.0
 offset_bottom = 200.0
 mouse_filter = 2
 color = Color(0.42, 0.3, 0.18, 1)
+visible = false
 
 [node name="Hazards" type="Node2D" parent="." unique_id=458264917]
 

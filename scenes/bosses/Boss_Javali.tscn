@@ -87,12 +87,11 @@ offset_bottom = -55.0
 color = Color(0.25, 0.2, 0.12, 1)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=247029865]
-position = Vector2(-85, -117)
-scale = Vector2(0.65, 0.65)
+position = Vector2(0, -100)
+scale = Vector2(0.9, 0.9)
 sprite_frames = ExtResource("8")
 animation = &"idle"
 autoplay = "idle"
-centered = false
 
 [node name="Health" type="Node" parent="." unique_id=289063783]
 script = ExtResource("3")
