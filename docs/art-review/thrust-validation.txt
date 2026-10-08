@@ -1,0 +1,11 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+AudioManager: SFX not found at res://assets/audio/sfx/player_attack.wav
+THRUST_QA_PASS: attack input starts the attack animation
+THRUST_QA_PASS: hitbox stays closed during preparation
+THRUST_QA_PASS: hitbox opens on thrust impact
+THRUST_QA_PASS: hitbox is horizontal and aligned ahead of Kairo
+THRUST_QA_PASS: impact occurs after preparation frame
+THRUST_QA_PASS: hitbox closes for recovery
+THRUST_QA_PASS: attack returns to ready state after recovery
+THRUST_QA_DONE failures=0

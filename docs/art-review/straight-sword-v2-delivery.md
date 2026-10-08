@@ -1,0 +1,19 @@
+# Espada reta e segundo aumento dos mobs — 07/10/2026
+
+Pedido de Higor após ver a versão anterior: lâmina reta e maior baseada na imagem anexada, mantendo animação, e mobs mais um pouco maiores. Implementado em `master`, sem commit/push.
+
+O sprite da espada passa de 8×28 para 11×40 px, com lâmina longa quase reta, guarda de folhas e punho curto. `GrassSwordVisual` mantém o saque/recolhimento de 0,24 s e acompanha mão/espelhamento em idle, run, jump, fall e três quadros de ataque. Os quadros de ataque foram preparados sem a lâmina curva original. A lâmina reta separada aparece nas três poses, com rotação por quadro. Não alteramos hitbox, tempo de ataque nem stats do jogador. Ao guardar, a espada encolhe da mão; Kairo não muda de cor. A bandagem separada ainda é trabalho de A01-T2.
+
+Escalas dos inimigos Rápido/Robusto/Voador: 0,5 → 0,56, mais 12% sobre o visual imediatamente anterior e 34,4% sobre 0,4166667 original. Offset vertical -26,88 mantém a base alinhada. Não altera colisões, IA, dano ou vida. A prévia mostra Kairo e os três mobs todos ampliados 4× sobre o tamanho de jogo, para comparação proporcional.
+
+Validação: build .NET sem erros nem avisos; SwordHudCheck com 20 PASS/0 FAIL, inclusive espada no ataque, quadro sem lâmina antiga, reversão rápida e estado do HUD. EnemyIntegrationCheck com 160 PASS/0 FAIL, inclusive patrulha, dano, sentidos, animações e morte. As três poses de ataque foram renderizadas no Godot (`straight-sword-attacks-v2.png`), assim como o ciclo de ativar/guardar (`straight-sword-toggle-mobs-v2.gif`). São prévias controladas com cenas reais, não substituem playtest completo com teclado ou validação de save. Os SFX sword_on/off continuam ausentes.
+
+## Arquivos e geração
+
+Arte gerada pela ferramenta imagegen integrada (não CLI), em `assets/sprites/kairo_faisca/grass_sword_v2.png` e `kairo_attack_unarmed_v2_00.png` a `_02.png`. As imagens geradas originais e a referência enviada por Higor estão preservadas em `assets/sprites/kairo_faisca/sword_source_v2/`. Scripts `tools/art/prepare_sword_v2.py` e `prepare_attack_unarmed_v2.py` apenas recortam/normalizam os canvas; não redesenham arte.
+
+Prompt da espada: “Use case: precise-object-edit. Asset: standalone grass sword sprite for a 2D pixel-art metroidvania. Edit the attached simple sword silhouette into a polished game sprite while preserving its distinctive exact geometry: ONE long STRAIGHT slender leaf blade (nearly vertical, slight taper to sharp tip), small angular leaf-shaped crossguard, short wrapped grip with forked leaf pommel. The blade must stay straight with no broad curve or saber shape. Blade approximately 75% of total sword height, grip+guard approximately 25%. Olive/chlorophyll green palette, dark outline, subtle pale lime edge and central vein, restrained pixel-art shading matching a woodland game. Exactly one centered sword pointing straight UP. No character, text, aura, particles, drop shadow, background objects. Truly transparent background. Keep substantial transparent margin. This reference is the design to follow closely, not a generic sword.” Referência: `sword_source_v2/user_reference.png`.
+
+Prompts dos ataques (um por quadro): edição precisa do frame transparente 180×170 para remover a lâmina curva e arco verde; preservar a pose, roupa, proporção, posição, faixa verde no pulso e completar a mão como punho fechado. O terceiro remove apenas o trecho verde da mão estendida. Referências: `kairo_faisca_attack_00.png`, `_01.png`, `_02.png`. Texto integral dos três pedidos está no registro de geração da conversa; os originais gerados estão em `sword_source_v2/`.
+
+Prévia reproduzível: executar `scenes/art/SwordToggleReview.tscn` no Godot .NET com renderer gl_compatibility; opção `-- --poses` captura os quadros de ataque. Animação e quadros de sprites originais foram mantidos em arquivos versionados v1/originais para comparação.
