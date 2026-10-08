@@ -44,23 +44,29 @@ namespace Joguim.Player
             if (_player?.Sprite == null) return;
             string state = _player.Sprite.Animation;
             _blade.Visible = Extension > .001f && state != "dead" && state != "hurt";
+            // Neutral poses keep the whole carried blade readable; attack poses seat
+            // the guard deeper inside the closed fist so the thrust never floats.
+            _blade.Offset = state == "attack" ? new Vector2(-5.5f, -27f) : new Vector2(-5.5f, -34f);
             int frame = _player.Sprite.Frame;
+            ZIndex = state == "attack" ? 1 : -1;
             Vector2 hand = state switch
             {
                 // Kairo's anatomical right hand: the closed fist on the left side of his right-facing sprites.
                 // These coordinates are the exact centers of the fist in the 180x170 source frames
                 // after the character sprite's (-45, -65) offset and 0.5 scale are applied.
-                "idle" => frame == 0 ? new Vector2(-25.5f, 0) : new Vector2(-24, -1.5f),
-                "run" => frame == 0 ? new Vector2(-4.5f, -5.5f) : new Vector2(-6.5f, -8.5f),
-                "jump" => new Vector2(-17.5f, -16),
-                "fall" => new Vector2(5, -5),
+                "idle" => frame == 0 ? new Vector2(-27, -13.5f) : new Vector2(-26, -12.5f),
+                "run" => frame == 0 ? new Vector2(-5, -21.5f) : new Vector2(-6, -18),
+                "dash" => frame == 0 ? new Vector2(-5, -21.5f) : new Vector2(-6, -18),
+                "jump" => new Vector2(-18, -27),
+                "wall_slide" => frame == 0 ? new Vector2(-18, -27) : new Vector2(1, -10),
+                "fall" => new Vector2(1, -10),
                 "attack" => frame switch
                 {
-                    0 => new Vector2(-6, -5),
-                    1 => new Vector2(16, -8),
-                    _ => new Vector2(40, -15)
+                    0 => new Vector2(-12, -11.5f),
+                    1 => new Vector2(-24, -7.5f),
+                    _ => new Vector2(36.5f, -13)
                 },
-                _ => new Vector2(-25.5f, 0)
+                _ => new Vector2(-27, -13.5f)
             };
             float armRotation = _player.RightArm.Rotation;
             GripPosition = hand;

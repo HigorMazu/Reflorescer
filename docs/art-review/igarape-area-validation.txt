@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+IGARAPE_AREA_PASS: Dossel exit enters Igarapé at SpawnFromDosselVivo
+IGARAPE_AREA_PASS: Igarapé camera bounds are applied
+IGARAPE_AREA_PASS: swamp bank art is integrated over the ground collision
+IGARAPE_AREA_PASS: Log1 keeps its collision and visible log art
+IGARAPE_AREA_PASS: Log2 keeps its collision and visible log art
+IGARAPE_AREA_PASS: Log3 keeps its collision and visible log art
+IGARAPE_AREA_PASS: Mud1 art spans the 55% speed hazard
+IGARAPE_AREA_PASS: Mud2 art spans the 55% speed hazard
+IGARAPE_AREA_PASS: Mud3 art spans the 55% speed hazard
+IGARAPE_AREA_PASS: three stumps and litter show before restoration
+IGARAPE_AREA_PASS: two saplings, lily and clean water show after restoration
+IGARAPE_AREA_PASS: Igarapé retains its six enemies
+IGARAPE_AREA_DONE failures=0

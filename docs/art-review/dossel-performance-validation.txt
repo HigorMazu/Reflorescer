@@ -1,0 +1,33 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 566.36 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce GTX 1650
+
+DOSSEL_AREA_PASS: Sopé exit enters Dossel at SpawnFromSopeDaMata
+DOSSEL_AREA_PASS: Dossel camera bounds are applied
+DOSSEL_AREA_PASS: Branch1 retains its collision
+DOSSEL_AREA_PASS: Branch2 retains its collision
+DOSSEL_AREA_PASS: Branch3 retains its collision
+DOSSEL_AREA_PASS: Branch4 retains its collision
+DOSSEL_AREA_PASS: Branch5 retains its collision
+DOSSEL_AREA_PASS: Branch6 retains its collision
+DOSSEL_AREA_PASS: Branch7 retains its collision
+DOSSEL_AREA_PASS: Branch8 retains its collision
+DOSSEL_AREA_PASS: Branch9 retains its collision
+DOSSEL_AREA_PASS: Branch10 retains its collision
+DOSSEL_AREA_PASS: Branch11 retains its collision
+DOSSEL_AREA_PASS: TopBranch retains its collision
+DOSSEL_AREA_PASS: Dossel has eleven climbing branches and the top branch
+DOSSEL_AREA_PASS: Dossel has restoration and five enemies
+DOSSEL_FPS x=110 y=460 avg=58.3 min=56.0 renderer=gl_compatibility
+Player tomou 15 dano. HP 85
+AudioManager: SFX not found at res://assets/audio/sfx/player_hurt.wav
+Player HP: 85/100
+Player tomou 15 de contato com enemy_voador
+[Hitbox] Voador1 -> Player: 15 dmg
+Player tomou 15 dano. HP 70
+Player HP: 70/100
+Player tomou 15 de contato com enemy_voador
+[Hitbox] Voador1 -> Player: 15 dmg
+DOSSEL_FPS x=720 y=210 avg=60.0 min=60.0 renderer=gl_compatibility
+DOSSEL_FPS x=1380 y=-450 avg=60.0 min=60.0 renderer=gl_compatibility
+DOSSEL_FPS x=110 y=460 avg=60.0 min=60.0 renderer=gl_compatibility
+DOSSEL_AREA_DONE failures=0

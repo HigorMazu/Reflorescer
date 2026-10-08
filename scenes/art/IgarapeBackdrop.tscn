@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/environment/tropical/igarape_background_candidate_v1.png" id="1"]
+[ext_resource type="Script" path="res://scripts/art/ForestAmbience.gd" id="2"]
+
+[node name="IgarapeBackdrop" type="Node2D"]
+z_index = -20
+
+[node name="FloodedForest" type="Node2D" parent="."]
+
+[node name="Forest" type="Sprite2D" parent="FloodedForest"]
+position = Vector2(-140, -270)
+scale = Vector2(1.5, 1.1)
+modulate = Color(0.67, 0.76, 0.72, 1)
+texture_filter = 4
+texture = ExtResource("1")
+centered = false
+
+[node name="Motes" type="Node2D" parent="."]
+position = Vector2(0, 440)
+script = ExtResource("2")

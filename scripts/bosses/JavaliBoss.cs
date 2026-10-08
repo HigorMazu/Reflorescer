@@ -58,7 +58,11 @@ namespace Joguim.Bosses
                 {
                     _chargeTimer -= (float)delta;
                     StopMovement();
-                    if (_chargeTimer <= 0) StopWindupTelegraph();
+                    if (_chargeTimer <= 0)
+                    {
+                        StopWindupTelegraph();
+                        PlayAnimation("charge");
+                    }
                 }
                 else
                 {
@@ -170,7 +174,7 @@ namespace Joguim.Bosses
         {
             _isStomping = true;
             _stompTimer = StompWindup;
-            PlayAnimation("attack");
+            PlayAnimation("stomp");
             StopMovement();
         }
 

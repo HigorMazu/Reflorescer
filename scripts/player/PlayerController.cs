@@ -421,7 +421,7 @@ namespace Joguim.Player
 
             if (Visual != null)
             {
-                Visual.Modulate = new Color(0.75f, 1.0f, 0.85f, 0.75f);
+                Visual.Modulate = Colors.White;
                 Visual.Scale = new Vector2(_dashDirection * 1.2f, 0.85f);
             }
         }

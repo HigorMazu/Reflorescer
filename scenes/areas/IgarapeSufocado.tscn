@@ -14,7 +14,12 @@
 [ext_resource type="Resource" path="res://resources/enemies/areas/Voador_IgarapeSufocado.tres" id="stats_voador_IgarapeSufocado"]
 [ext_resource type="Script" uid="uid://cpll441xskn7r" path="res://scripts/world/TransitionTrigger.cs" id="transition"]
 [ext_resource type="PackedScene" uid="uid://ci4whjcr73q7y" path="res://scenes/enemies/Enemy_Voador.tscn" id="voador"]
-[ext_resource type="PackedScene" path="res://scenes/art/TropicalBackdrop.tscn" id="backdrop"]
+[ext_resource type="PackedScene" path="res://scenes/art/IgarapeBackdrop.tscn" id="backdrop"]
+[ext_resource type="Texture2D" path="res://assets/environment/tropical/igarape_ground_candidate_v1.png" id="swamp_ground"]
+[ext_resource type="Script" path="res://scripts/art/ModularTerrainStrip.gd" id="modular_terrain"]
+[ext_resource type="Texture2D" path="res://assets/environment/tropical/igarape_water_log_atlas_candidate_v1.png" id="swamp_atlas"]
+[ext_resource type="Texture2D" path="res://assets/environment/tropical/igarape_restoration_atlas_candidate_v1.png" id="restoration_atlas"]
+[ext_resource type="Script" path="res://scripts/art/MudBubbles.gd" id="mud_bubbles"]
 [ext_resource type="Texture2D" uid="uid://b7pwgs2uc6jxd" path="res://assets/environment/tropical/ground_degraded.png" id="tex_ground_degraded"]
 [ext_resource type="Texture2D" uid="uid://g4fx4roaxjha" path="res://assets/environment/tropical/ground_restored.png" id="tex_ground_restored"]
 [ext_resource type="Texture2D" uid="uid://vo0mnmuh1ct6" path="res://assets/environment/tropical/sprout_degraded.png" id="tex_sprout_degraded"]
@@ -129,6 +134,7 @@ offset_right = 1400.0
 offset_bottom = 40.0
 mouse_filter = 2
 color = Color(0.25, 0.3, 0.2, 1)
+visible = false
 
 [node name="Top" type="ColorRect" parent="Geometry/Ground" unique_id=466546765]
 offset_left = -1400.0
@@ -137,6 +143,18 @@ offset_right = 1400.0
 offset_bottom = -38.0
 mouse_filter = 2
 color = Color(0.3, 0.55, 0.2, 1)
+visible = false
+
+[node name="SwampBank" type="Node2D" parent="Geometry/Ground"]
+position = Vector2(-1400, -120)
+texture_filter = 1
+script = ExtResource("modular_terrain")
+terrain_texture = ExtResource("swamp_ground")
+strip_width = 2800.0
+strip_height = 181.0
+cap_source_width = 190.0
+middle_source = Rect2(560, 0, 720, 724)
+alternate_middle_source = Rect2(1180, 0, 720, 724)
 
 [node name="Log1" type="StaticBody2D" parent="Geometry" unique_id=852235192]
 position = Vector2(700, 410)
@@ -151,6 +169,16 @@ offset_right = 60.0
 offset_bottom = 10.0
 mouse_filter = 2
 color = Color(0.38, 0.28, 0.18, 1)
+visible = false
+
+[node name="WaterloggedLog" type="Sprite2D" parent="Geometry/Log1"]
+position = Vector2(-60, -18)
+scale = Vector2(0.10435, 0.14)
+texture_filter = 1
+texture = ExtResource("swamp_atlas")
+centered = false
+region_enabled = true
+region_rect = Rect2(450, 320, 1150, 200)
 
 [node name="Log2" type="StaticBody2D" parent="Geometry" unique_id=1133999149]
 position = Vector2(1600, 410)
@@ -165,6 +193,16 @@ offset_right = 60.0
 offset_bottom = 10.0
 mouse_filter = 2
 color = Color(0.38, 0.28, 0.18, 1)
+visible = false
+
+[node name="WaterloggedLog" type="Sprite2D" parent="Geometry/Log2"]
+position = Vector2(-60, -18)
+scale = Vector2(0.10435, 0.14)
+texture_filter = 1
+texture = ExtResource("swamp_atlas")
+centered = false
+region_enabled = true
+region_rect = Rect2(450, 320, 1150, 200)
 
 [node name="Log3" type="StaticBody2D" parent="Geometry" unique_id=120631137]
 position = Vector2(1800, 340)
@@ -179,6 +217,16 @@ offset_right = 60.0
 offset_bottom = 10.0
 mouse_filter = 2
 color = Color(0.38, 0.28, 0.18, 1)
+visible = false
+
+[node name="WaterloggedLog" type="Sprite2D" parent="Geometry/Log3"]
+position = Vector2(-60, -18)
+scale = Vector2(0.10435, 0.14)
+texture_filter = 1
+texture = ExtResource("swamp_atlas")
+centered = false
+region_enabled = true
+region_rect = Rect2(450, 320, 1150, 200)
 
 [node name="Hazards" type="Node2D" parent="." unique_id=1165549136]
 
@@ -199,6 +247,7 @@ offset_right = 220.0
 offset_bottom = 24.0
 mouse_filter = 2
 color = Color(0.33, 0.24, 0.14, 1)
+visible = false
 
 [node name="Water" type="ColorRect" parent="Hazards/Mud1" unique_id=203683571]
 offset_left = -220.0
@@ -207,6 +256,20 @@ offset_right = 220.0
 offset_bottom = 14.0
 mouse_filter = 2
 color = Color(0.28, 0.34, 0.22, 0.75)
+visible = false
+
+[node name="Sludge" type="Sprite2D" parent="Hazards/Mud1"]
+position = Vector2(-220, -30)
+scale = Vector2(0.21484, 0.17)
+texture_filter = 1
+texture = ExtResource("swamp_atlas")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 2048, 320)
+
+[node name="Bubbles" type="Node2D" parent="Hazards/Mud1"]
+script = ExtResource("mud_bubbles")
+pool_width = 440.0
 
 [node name="Mud2" type="Area2D" parent="Hazards" unique_id=78000614]
 position = Vector2(1690, 460)
@@ -225,6 +288,7 @@ offset_right = 270.0
 offset_bottom = 24.0
 mouse_filter = 2
 color = Color(0.33, 0.24, 0.14, 1)
+visible = false
 
 [node name="Water" type="ColorRect" parent="Hazards/Mud2" unique_id=689550931]
 offset_left = -270.0
@@ -233,6 +297,20 @@ offset_right = 270.0
 offset_bottom = 14.0
 mouse_filter = 2
 color = Color(0.28, 0.34, 0.22, 0.75)
+visible = false
+
+[node name="Sludge" type="Sprite2D" parent="Hazards/Mud2"]
+position = Vector2(-270, -30)
+scale = Vector2(0.26367, 0.17)
+texture_filter = 1
+texture = ExtResource("swamp_atlas")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 2048, 320)
+
+[node name="Bubbles" type="Node2D" parent="Hazards/Mud2"]
+script = ExtResource("mud_bubbles")
+pool_width = 540.0
 
 [node name="Mud3" type="Area2D" parent="Hazards" unique_id=1375208424]
 position = Vector2(2300, 460)
@@ -251,6 +329,7 @@ offset_right = 120.0
 offset_bottom = 24.0
 mouse_filter = 2
 color = Color(0.33, 0.24, 0.14, 1)
+visible = false
 
 [node name="Water" type="ColorRect" parent="Hazards/Mud3" unique_id=811650824]
 offset_left = -120.0
@@ -259,6 +338,20 @@ offset_right = 120.0
 offset_bottom = 14.0
 mouse_filter = 2
 color = Color(0.28, 0.34, 0.22, 0.75)
+visible = false
+
+[node name="Sludge" type="Sprite2D" parent="Hazards/Mud3"]
+position = Vector2(-120, -30)
+scale = Vector2(0.11719, 0.17)
+texture_filter = 1
+texture = ExtResource("swamp_atlas")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 2048, 320)
+
+[node name="Bubbles" type="Node2D" parent="Hazards/Mud3"]
+script = ExtResource("mud_bubbles")
+pool_width = 240.0
 
 [node name="Interactables" type="Node2D" parent="." unique_id=402884543]
 
@@ -320,14 +413,15 @@ collision_layer = 32
 collision_mask = 2
 script = ExtResource("restoration")
 PointId = "restoration_igarape_01"
-DegradedVisuals = Array[NodePath]([NodePath("DegradedGround"), NodePath("PollutedWater"), NodePath("Trash"), NodePath("DeadSproutA"), NodePath("DeadSproutB"), NodePath("DeadSproutC")])
-RestoredVisuals = Array[NodePath]([NodePath("RestoredGround"), NodePath("ClearWater"), NodePath("SaplingA"), NodePath("SaplingB"), NodePath("SproutC"), NodePath("Lily")])
+DegradedVisuals = Array[NodePath]([NodePath("PollutedWaterArt"), NodePath("DeadStumpsArt")])
+RestoredVisuals = Array[NodePath]([NodePath("ClearWaterArt"), NodePath("RenewedPlantsArt")])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/RestorationPoint1" unique_id=2011281498]
 position = Vector2(0, -16)
 shape = SubResource("Shape_RestorationPoint1")
 
 [node name="DegradedGround" type="Sprite2D" parent="Interactables/RestorationPoint1"]
+visible = false
 position = Vector2(0, -6)
 texture_repeat = 2
 texture = ExtResource("tex_ground_degraded")
@@ -336,6 +430,7 @@ region_enabled = true
 region_rect = Rect2(0, 0, 320, 42)
 
 [node name="PollutedWater" type="ColorRect" parent="Interactables/RestorationPoint1"]
+visible = false
 offset_left = -70.0
 offset_top = -4.0
 offset_right = 70.0
@@ -344,6 +439,7 @@ mouse_filter = 2
 color = Color(0.3, 0.28, 0.2, 0.85)
 
 [node name="Trash" type="ColorRect" parent="Interactables/RestorationPoint1"]
+visible = false
 offset_left = -40.0
 offset_top = -10.0
 offset_right = -20.0
@@ -352,17 +448,20 @@ mouse_filter = 2
 color = Color(0.6, 0.6, 0.62, 1)
 
 [node name="DeadSproutA" type="Sprite2D" parent="Interactables/RestorationPoint1"]
+visible = false
 position = Vector2(-112, 0)
 texture = ExtResource("tex_sprout_degraded")
 offset = Vector2(0, -16)
 
 [node name="DeadSproutB" type="Sprite2D" parent="Interactables/RestorationPoint1"]
+visible = false
 position = Vector2(96, 0)
 texture = ExtResource("tex_sprout_degraded")
 flip_h = true
 offset = Vector2(0, -16)
 
 [node name="DeadSproutC" type="Sprite2D" parent="Interactables/RestorationPoint1"]
+visible = false
 position = Vector2(140, 0)
 texture = ExtResource("tex_sprout_degraded")
 offset = Vector2(0, -16)
@@ -414,6 +513,46 @@ offset_right = -8.0
 offset_bottom = -4.0
 mouse_filter = 2
 color = Color(0.95, 0.85, 0.9, 1)
+
+[node name="PollutedWaterArt" type="Sprite2D" parent="Interactables/RestorationPoint1"]
+position = Vector2(-170, -44)
+scale = Vector2(0.166, 0.15)
+z_index = -1
+texture_filter = 1
+texture = ExtResource("swamp_atlas")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 2048, 320)
+
+[node name="DeadStumpsArt" type="Sprite2D" parent="Interactables/RestorationPoint1"]
+position = Vector2(-160, -190)
+scale = Vector2(0.28, 0.27)
+texture_filter = 1
+texture = ExtResource("restoration_atlas")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1130, 768)
+
+[node name="ClearWaterArt" type="Sprite2D" parent="Interactables/RestorationPoint1"]
+visible = false
+position = Vector2(-170, -44)
+scale = Vector2(0.166, 0.2)
+z_index = -1
+texture_filter = 1
+texture = ExtResource("swamp_atlas")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 520, 2048, 248)
+
+[node name="RenewedPlantsArt" type="Sprite2D" parent="Interactables/RestorationPoint1"]
+visible = false
+position = Vector2(-130, -190)
+scale = Vector2(0.28, 0.27)
+texture_filter = 1
+texture = ExtResource("restoration_atlas")
+centered = false
+region_enabled = true
+region_rect = Rect2(1120, 0, 928, 768)
 
 [node name="Transitions" type="Node2D" parent="." unique_id=1540630245]
 

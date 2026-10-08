@@ -57,22 +57,22 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
 >
-> > [!warning]- Task A01-T2 — Espada de Grama
-> > - [ ] Sprite da espada visível quando ativada, "bandagem" visível quando desativada — nunca os dois ao mesmo tempo.
-> > - [ ] Animação de ataque: a janela de dano da hitbox é fixa em 0.14s hoje, independente da duração da animação — ajustar o tempo da hitbox (ou o `AttackCooldown`) se a animação final não bater com esse corte.
+> > [!success]- Task A01-T2 — Espada de Grama
+> > - [x] Sprite da espada visível quando ativada, "bandagem" visível quando desativada — nunca os dois ao mesmo tempo.
+> > - [x] Animação de ataque: janela de dano sincronizada com o impacto da estocada, de 0,10 s a 0,20 s após o início do golpe.
 > > - **Dependência dupla:** só testável depois que [[ROADMAP_DEV]] `EPIC-C03` (toggle da espada) **e** [[ROADMAP_ARTE]] `A01-T2` (os 2 visuais) estiverem prontos.
 > >
-> > Status: 🟡 parcial (07/10) — espada reta v2 separada, inclusive nos três ataques com quadros desarmados; extensão/recolhimento e trocas rápidas verificados. Empunhadura v6 segue a mão direita anatômica e usa uma camada do punho fechado em cima do cabo nas poses neutras e no ataque. Estocada tem preparação sem dano, impacto horizontal e recuperação; os sete casos de integração passaram no Godot .NET. Tom verde removido, HUD aprovado. Bandagem independente e aprovação visual da nova empunhadura ainda pendentes. Ver `docs/art-review/sword-held-v6-delivery.md`.
+> > Status: 🟡 corrigida, aguardando aprovação (08/10) — v9 mantém o punho único, encaixa a guarda durante o ataque e preserva a leitura da lâmina nos três quadros; toggle, bandagem e hitbox seguem aprovados. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 >
 > > [!failure]- Task A01-T3 — Wall grab / wall jump
-> > - [ ] Animação integrada e sincronizada com a mecânica ([[ROADMAP_DEV]] `EPIC-C05`).
+> > - [x] Animação integrada e sincronizada com a mecânica ([[ROADMAP_DEV]] `EPIC-C05`).
 > >
-> > Status: 🔴 bloqueado só por arte (28/09) — mecânica pronta ([[ROADMAP_DEV]] EPIC-C05 concluído). O código já toca `wall_slide` se existir no `SpriteFrames`; senão usa `fall`.
+> > Status: 🟡 corrigida, aguardando aprovação (08/10) — o estado real usa o Kairo normal com raspas discretas; entrada, colisão, estado, animação e efeito passaram em `MovementAnimationRuntimeCheck.tscn`. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 >
 > > [!failure]- Task A01-T4 — Dash
-> > - [ ] Variação visual integrada e sincronizada com a mecânica ([[ROADMAP_DEV]] `EPIC-C04`).
+> > - [x] Variação visual integrada e sincronizada com a mecânica ([[ROADMAP_DEV]] `EPIC-C04`).
 > >
-> > Status: 🔴 bloqueado só por arte (28/09) — mecânica pronta ([[ROADMAP_DEV]] EPIC-C04 concluído). O código já toca `dash` se existir no `SpriteFrames`; senão usa `run` com tom esverdeado.
+> > Status: 🟡 corrigida, aguardando aprovação (08/10) — o estado real usa o Kairo normal, sem coloração verde, com linhas e poeira; entrada, desbloqueio, estado, animação e efeito passaram em `MovementAnimationRuntimeCheck.tscn`. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 
 > [!success]- EPIC-A02 — Inimigos Comuns — ✅ Passa no escopo da demo
 > *Pronto quando*: os três arquétipos usam recursos próprios com a mesma máquina de estados. Reskins de Deserto/Tundra ficam fora da demo.
@@ -113,10 +113,10 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - [x] Nome exibido em qualquer UI usa "Korrag, o Javali", não "Javali das Ruínas".
 > > - **Verificação (28/09):** `charge_windup` tem 1 quadro. Mantido o windup de 1s com pulso vermelho de aviso, aprovado no playtest ([[ROADMAP_DEV]] C06-T4). Nome: nenhuma UI exibe o `BossName` hoje (a barra do Korrag mostra só a vida); o recurso diz "Korrag, o Javali".
 > > - **Mudança de código (28/09):** a morte não é mais "invisível + destruir em 0.3s". Agora toca `dead`, espera 0.6s e some em fade de 0.6s. A animação `defeated` existe no `SpriteFrames` mas **não é tocada** por nenhum estado: decidir se ela substitui `dead` ou entra depois dela.
-> > - **Observação pra conferência visual:** `phase2_transition` tem 1 quadro (0.25s), mas o estado segura 1.5s nela. `phase1_idle` e `enraged_transition` também têm 1 quadro.
+> > - **Correção (08/10):** `phase2_transition` agora tem 3 quadros; `enraged_transition`, 2; `dead`, 3. `charge` e `stomp` são animações próprias chamadas pelas ações correspondentes. O quadro com a perna traseira solta foi removido de `charge_windup` e `stomp`. Todos os 13 estados passaram em `KorragAnimationCheck.gd`.
 > > - **Integração (06/10):** os visuais obrigatórios estão em `KorragSpriteFrames.tres`. A sequência agora é dead por 0,6 s → defeated durante fade de 0,6 s → remoção. Seis verificações passaram em `BossDefeatCheck.tscn`, incluindo emissão única de vitória. Falta o playtest visual das transições de fase.
 > >
-> > Status: 🟡 parcial (06/10) — integração de recursos e chamadas validada; playtest visual pendente.
+> > Status: 🟡 corrigida, aguardando aprovação (08/10) — integração, chamadas, windup sem membro solto, morte e fade validados; playtest visual continua pendente. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 >
 > > [!success]- Task A04-T2 — Opcional
 > > - [x] `enraged_transition` integrada, se entregue.
@@ -132,28 +132,34 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > Atualizado em 29/09/2026 — a demo passou a ser 4 áreas dentro da Floresta Tropical (era Floresta Tropical/Deserto/Tundra); `TargetArea`/`SpawnOffset` já funcionam desde [[ROADMAP_QA_CODIGO]] `C08-T1` (concluída em 28/09), então a ressalva de posicionamento manual não se aplica mais.
 >
 > > [!warning]- Task A05-T1 — Sopé da Mata
-> > - [ ] Identidade visual clara — dá pra saber que bioma é só de olhar, sem ler texto.
-> > - [ ] Transição de área: o Kairo entra no `Marker2D` certo vindo do menu/novo jogo.
+> > - [x] Identidade visual clara — floresta úmida reconhecível nas capturas, com chão, vegetação e restauração aprovados por Higor.
+> > - [x] Transição de área: Kairo nasce em `SpawnInicial` e retorna do Dossel em `SpawnFromDosselVivo`, via `SceneManager`.
 > > - [ ] Performance: tileset/background + pulsos de luz da Faísca + barras de vida flutuantes (com `Tween`) sem queda perceptível de FPS no renderer `gl_compatibility`.
 > >
 > > - **Integração (06/10):** Protótipo integrado ao Sopé da Mata: chão grama/terra/raízes/pedra, parallax, partículas e restauração seco→verde. Interação E e crescimento passaram no Godot .NET. Tileset modular, percurso completo e medição de FPS pendentes. Ver `docs/art-review/README.md` e capturas.
+> > - **Revisão visual (08/10):** Higor aprovou as bordas de 24 px e a variação do miolo nas sete faixas saudáveis (`docs/art-review/sope-ground-modular-v1.md`); os dois visuais da restauração continuam com bordas preservadas. Capturas da cena real em `docs/art-review/sope-ground-borders-v1.md`; colisões não foram editadas.
+> > - **Terreno modular (08/10):** a mesma abordagem de pontas e miolos foi consolidada nas quatro áreas. Igarapé e Covil deixaram de esticar uma ilustração inteira; os testes de área continuam aprovados. Ver `docs/art-review/modular-terrain-v1.md`.
 > >
-> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
+> > - **QA dirigido (08/10):** spawn inicial, câmera, restauração/inimigos presentes e retorno do Dossel passaram na cena real; três trechos renderizados mais a volta ao início sustentaram 60 FPS após aquecimento no `gl_compatibility`/GTX 1650. Ver `docs/art-review/sope-area-qa-2026-10-08.md`.
+> >
+> > Status: 🟡 parcial (08/10) — arte modular, bordas, variação central e props aprovados; QA dirigido de entrada e FPS estável após aquecimento. Falta travessia jogada com combate e avaliação de fluidez perceptiva para concluir a tarefa.
 >
 > > [!failure]- Task A05-T2 — Dossel Vivo
 > > - [ ] Repetir os 3 testes da Task A05-T1, mais: leitura clara das plataformas de pulo vertical.
 > >
-> > Status: 🔴 bloqueado — depende de [[ROADMAP_ARTE]] `A05-T2` e de [[ROADMAP_DEV]] `EPIC-C13-T2`.
+> > - **QA dirigido (08/10):** entrada pelo `Marker2D`, câmera, doze colisões dos galhos, restauração e inimigos passaram. Os vãos dos onze degraus consecutivos cabem no salto base segundo as dimensões e velocidades atuais; a travessia em jogo ainda não foi executada. FPS após aquecimento: 60 nas partes média/alta; base 58,3 (mín. 56) na primeira amostra e 60 ao revisitar. Ver `docs/art-review/dossel-canopy-restoration-v1.md`.
+> >
+> > Status: 🟡 parcial (08/10) — plataformas modulares, galhos, troncos, fundo e restauração aprovados. Falta jogar a subida com combate e avaliar fluidez perceptiva.
 >
 > > [!failure]- Task A05-T3 — Igarapé Sufocado
 > > - [ ] Repetir os 3 testes da Task A05-T1, mais: a lama é visualmente clara (o jogador entende por que ficou mais lento).
 > >
-> > Status: 🔴 bloqueado — depende de [[ROADMAP_ARTE]] `A05-T3` e de [[ROADMAP_DEV]] `EPIC-C13-T3`.
+> > Status: 🟡 parcial — visuais aprovados em 08/10; margem modular, entrada, câmera, três logs, três hazards, restauração e seis inimigos passaram no teste dirigido (`docs/art-review/igarape-area-validation.txt`). Faltam teste jogado da lentidão, travessia e FPS.
 >
 > > [!failure]- Task A05-T4 — Covil de Korrag
 > > - [ ] Ambientação de arena de boss clara, sem elementos de exploração (ponto de restauração, etc.) — é só a luta.
 > >
-> > Status: 🔴 bloqueado — depende de [[ROADMAP_ARTE]] `A05-T4` e de [[ROADMAP_DEV]] `EPIC-C13-T4`.
+> > Status: 🟡 parcial — visual aprovado; chão modular, entrada pelo Igarapé, câmera, quatro colisões, Korrag sem inimigos comuns e ausência de restauração passaram no teste dirigido (`docs/art-review/covil-area-validation.txt`). Faltam luta jogada e FPS.
 
 > [!failure]- EPIC-A06 — UI — 🔴 Bloqueado · 🟡 Média
 > *Pronto quando*: barra de vida, ícone de habilidade e prompt de interação têm arte final integrada e funcional em jogo.
@@ -161,17 +167,17 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > [!failure]- Task A06-T1 — Barra de vida
 > > - [ ] Barra de vida com textura final.
 > >
-> > Status: 🔴 bloqueado — depende de [[ROADMAP_ARTE]] `A06-T1`.
+> > Status: 🟡 parcial — visual aprovado e compilado; falta teste jogado com dano real.
 >
 > > [!failure]- Task A06-T2 — Ícone de habilidade
 > > - [ ] Ícone de habilidade desbloqueada (quando a notificação real existir — [[ROADMAP_QA_CODIGO]] `C04-T4`).
 > >
-> > Status: 🔴 bloqueado — depende de código e arte, nenhum dos dois pronto ainda.
+> > Status: ✅ concluída — Higor decidiu não usar indicador persistente; a notificação de desbloqueio real já existe.
 >
 > > [!failure]- Task A06-T3 — Prompt de interação
 > > - [ ] Prompt de interação com estilo definido (quando [[ROADMAP_QA_CODIGO]] `C10-T1` for resolvido).
 > >
-> > Status: 🔴 bloqueado — depende de código e arte, nenhum dos dois pronto ainda.
+> > Status: 🟡 parcial — visual aprovado e compilado; falta teste jogado de aproximação e interação.
 
 > > [!warning]- Task A06-T4 — Indicador compacto da espada
 > > - [x] Estado inicial antes/depois de criar o jogador e ao recriar o HUD.

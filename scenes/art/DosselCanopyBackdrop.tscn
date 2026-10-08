@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/environment/tropical/dossel_canopy_candidate_v1.png" id="1"]
+[ext_resource type="Script" path="res://scripts/art/ForestAmbience.gd" id="2"]
+
+[node name="DosselCanopyBackdrop" type="Node2D"]
+z_index = -20
+
+[node name="HighForest" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.18, 0.12)
+
+[node name="Forest" type="Sprite2D" parent="HighForest"]
+position = Vector2(-700, -950)
+scale = Vector2(2, 2.2)
+modulate = Color(0.76, 0.85, 0.78, 1)
+texture_filter = 1
+texture = ExtResource("1")
+centered = false
+
+[node name="Motes" type="Node2D" parent="."]
+position = Vector2(0, 440)
+script = ExtResource("2")

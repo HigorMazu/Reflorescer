@@ -30,10 +30,13 @@ public partial class SwordHudCheck : Node
             player.ProcessMode = ProcessModeEnum.Disabled;
             AddChild(player);
             var sword = player.GetNode<GrassSwordVisual>("Visual/RightArm/RightHand/Sword");
+            var bladeSprite = player.GetNode<AnimatedSprite2D>("Visual/RightArm/RightHand/Sword/AnimatedSprite2D");
+            var bandage = player.GetNode<SwordBandageVisual>("Visual/RightArm/RightHand/Bandage");
             sword.ProcessMode = ProcessModeEnum.Always;
             await Wait(); await Wait();
             Check(!indicator.HasSword && !player.CanAttack(), "stowed player cannot attack");
             Check(sword.Extension == 0 && !player.Sword.Visible, "stowed spawn has no blade");
+            Check(bandage.Visible, "stowed spawn shows wrist bandage");
             hud.SetAbilityDisplay("Dash disponível");
             player.ToggleSword();
             Check(indicator.HasSword && player.CanAttack(), "toggle enables both combat and indicator");
@@ -41,13 +44,28 @@ public partial class SwordHudCheck : Node
             Check(sword.Extension > 0 && sword.Extension < 1, "blade grows through intermediate size");
             await ToSignal(GetTree().CreateTimer(.2), SceneTreeTimer.SignalName.Timeout);
             Check(Mathf.IsEqualApprox(sword.Extension, 1) && player.Sword.Visible, "blade fully appears");
+            Check(!bandage.Visible, "active blade hides wrist bandage");
             Check(player.Sprite.SelfModulate == Colors.White, "active character keeps original colors");
-            player.Sprite.Play("idle"); player.Sprite.Frame = 0; await Wait();
+            Check(bladeSprite.Offset.IsEqualApprox(new Vector2(-5.5f, -34f)), "carried sword remains fully readable behind Kairo's closed fist");
+            player.Sprite.Play("idle"); player.Sprite.Frame = 0; await Wait(); await Wait();
             Check(player.Sword.GlobalPosition.X < player.GlobalPosition.X, "idle sword grip follows Kairo's right closed fist");
-            var gripOverlay = player.GetNode<Sprite2D>("Visual/SwordGripOverlay");
-            Check(gripOverlay.ZIndex > player.Sword.GetParent<CanvasItem>().ZIndex, "closed fist layer draws over sword grip");
-            Check(gripOverlay.Position.IsEqualApprox(new Vector2(-25.5f, 0)), "grip overlay matches the original idle fist center");
+            Check(sword.ZIndex < player.Sprite.ZIndex, "original closed fist draws over the sword handle");
+            Check(player.GetNodeOrNull("Visual/SwordGripOverlay") == null, "no duplicate fist overlay remains");
+            foreach (string pose in new[] { "idle", "run", "jump", "fall", "dash", "wall_slide", "attack" })
+            {
+                int frameCount = player.Sprite.SpriteFrames.GetFrameCount(pose);
+                for (int frame = 0; frame < frameCount; frame++)
+                {
+                    player.Sprite.Play(pose);
+                    player.Sprite.Frame = frame;
+                    await Wait(); await Wait();
+                    Check(player.Sword.GlobalPosition.DistanceTo(player.ToGlobal(sword.GripPosition)) < 0.6f,
+                        $"{pose}/{frame} sword handle stays on the measured fist anchor");
+                }
+            }
             player.Sprite.Play("attack"); await Wait(); await Wait();
+            Check(bladeSprite.Offset.IsEqualApprox(new Vector2(-5.5f, -27f)), "attack guard sits inside the closed fist instead of floating ahead of it");
+            Check(sword.ZIndex > player.Sprite.ZIndex, "attack blade stays readable across Kairo's body");
             Check(player.Sword.Visible, "straight sword stays visible in attack");
             Check(player.Sprite.SpriteFrames.GetFrameTexture("attack", 0).ResourcePath.Contains("unarmed_v2"), "attack frames no longer embed old curved sword");
             player.Sprite.Play("jump"); await Wait(); await Wait();
@@ -57,6 +75,7 @@ public partial class SwordHudCheck : Node
             Check(!indicator.HasSword && !player.HasSword, "rapid toggles leave final state consistent");
             await ToSignal(GetTree().CreateTimer(.35), SceneTreeTimer.SignalName.Timeout);
             Check(sword.Extension == 0 && !player.Sword.Visible, "rapid reversal fully retracts blade");
+            Check(bandage.Visible, "wrist bandage returns after blade fully retracts");
             Check(player.Sprite.SelfModulate == Colors.White, "stowed character keeps original colors");
             Check(hud.GetNode<Label>("MarginContainer/VBoxContainer/TopRow/AbilitySection/AbilityDisplay").Text == "Dash disponível", "ability text preserved");
             hud.HideAll(); Check(!indicator.Visible, "HideAll includes sword");

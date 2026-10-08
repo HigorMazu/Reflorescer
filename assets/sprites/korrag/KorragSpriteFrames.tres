@@ -1,120 +1,135 @@
-[gd_resource type="SpriteFrames" format=3 uid="uid://dedxptiplfuan"]
+[gd_resource type="SpriteFrames" load_steps=18 format=3 uid="uid://dedxptiplfuan"]
 
-[ext_resource type="Texture2D" uid="uid://b07n4wi45u1bd" path="res://assets/sprites/korrag/korrag_idle_00.png" id="1"]
-[ext_resource type="Texture2D" uid="uid://c2t7fvwbpw674" path="res://assets/sprites/korrag/korrag_idle_01.png" id="2"]
-[ext_resource type="Texture2D" uid="uid://bme2eqcfoc8d5" path="res://assets/sprites/korrag/korrag_walk_00.png" id="3"]
-[ext_resource type="Texture2D" uid="uid://b55ivsrkk4y5t" path="res://assets/sprites/korrag/korrag_walk_01.png" id="4"]
-[ext_resource type="Texture2D" uid="uid://bdmqg23hsht0" path="res://assets/sprites/korrag/korrag_intro_00.png" id="5"]
-[ext_resource type="Texture2D" uid="uid://dcy8dw2e5omxd" path="res://assets/sprites/korrag/korrag_attack_00.png" id="6"]
-[ext_resource type="Texture2D" uid="uid://d07mfpnwp8fud" path="res://assets/sprites/korrag/korrag_attack_01.png" id="7"]
-[ext_resource type="Texture2D" uid="uid://c6uaklxiabt0h" path="res://assets/sprites/korrag/korrag_attack_02.png" id="8"]
-[ext_resource type="Texture2D" uid="uid://bn68bgmai50y0" path="res://assets/sprites/korrag/korrag_charge_windup_00.png" id="9"]
-[ext_resource type="Texture2D" uid="uid://b4fs71hahxuq4" path="res://assets/sprites/korrag/korrag_hurt_00.png" id="10"]
-[ext_resource type="Texture2D" uid="uid://gqi5xy1311s2" path="res://assets/sprites/korrag/korrag_dead_00.png" id="11"]
-[ext_resource type="Texture2D" uid="uid://vh0ymw0fkfc4" path="res://assets/sprites/korrag/korrag_phase1_idle_00.png" id="12"]
-[ext_resource type="Texture2D" uid="uid://dpjtk581a6sn" path="res://assets/sprites/korrag/korrag_phase2_transition_00.png" id="13"]
-[ext_resource type="Texture2D" uid="uid://dl1e2hbypx7b5" path="res://assets/sprites/korrag/korrag_enraged_transition_00.png" id="14"]
-[ext_resource type="Texture2D" uid="uid://cw3rgrfmge57h" path="res://assets/sprites/korrag/korrag_defeated_00.png" id="15"]
+[ext_resource type="Texture2D" path="res://assets/sprites/korrag/korrag_animation_sheet_v2.png" id="1_sheet"]
+
+[sub_resource type="AtlasTexture" id="Atlas_00"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 0, 350, 280)
+
+[sub_resource type="AtlasTexture" id="Atlas_01"]
+atlas = ExtResource("1_sheet")
+region = Rect2(350, 0, 351, 280)
+
+[sub_resource type="AtlasTexture" id="Atlas_02"]
+atlas = ExtResource("1_sheet")
+region = Rect2(701, 0, 350, 280)
+
+[sub_resource type="AtlasTexture" id="Atlas_03"]
+atlas = ExtResource("1_sheet")
+region = Rect2(1051, 0, 351, 280)
+
+[sub_resource type="AtlasTexture" id="Atlas_10"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 280, 350, 281)
+
+[sub_resource type="AtlasTexture" id="Atlas_11"]
+atlas = ExtResource("1_sheet")
+region = Rect2(350, 280, 351, 281)
+
+[sub_resource type="AtlasTexture" id="Atlas_12"]
+atlas = ExtResource("1_sheet")
+region = Rect2(701, 280, 350, 281)
+
+[sub_resource type="AtlasTexture" id="Atlas_13"]
+atlas = ExtResource("1_sheet")
+region = Rect2(1051, 280, 351, 281)
+
+[sub_resource type="AtlasTexture" id="Atlas_20"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 561, 350, 280)
+
+[sub_resource type="AtlasTexture" id="Atlas_21"]
+atlas = ExtResource("1_sheet")
+region = Rect2(350, 561, 351, 280)
+
+[sub_resource type="AtlasTexture" id="Atlas_22"]
+atlas = ExtResource("1_sheet")
+region = Rect2(701, 561, 350, 280)
+
+[sub_resource type="AtlasTexture" id="Atlas_23"]
+atlas = ExtResource("1_sheet")
+region = Rect2(1051, 561, 351, 280)
+
+[sub_resource type="AtlasTexture" id="Atlas_30"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 841, 350, 281)
+
+[sub_resource type="AtlasTexture" id="Atlas_31"]
+atlas = ExtResource("1_sheet")
+region = Rect2(350, 841, 351, 281)
+
+[sub_resource type="AtlasTexture" id="Atlas_32"]
+atlas = ExtResource("1_sheet")
+region = Rect2(701, 841, 350, 281)
+
+[sub_resource type="AtlasTexture" id="Atlas_33"]
+atlas = ExtResource("1_sheet")
+region = Rect2(1051, 841, 351, 281)
 
 [resource]
 animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("6")
-}, {
-"duration": 1.0,
-"texture": ExtResource("7")
-}, {
-"duration": 1.0,
-"texture": ExtResource("8")
-}],
-"loop": 0,
+"frames": [{"duration": 0.8, "texture": SubResource("Atlas_20")}, {"duration": 0.8, "texture": SubResource("Atlas_21")}, {"duration": 1.0, "texture": SubResource("Atlas_13")}],
+"loop": false,
 "name": &"attack",
-"speed": 6.0
+"speed": 7.0
 }, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("9")
-}],
-"loop": 0,
+"frames": [{"duration": 1.0, "texture": SubResource("Atlas_12")}],
+"loop": true,
+"name": &"charge",
+"speed": 8.0
+}, {
+"frames": [{"duration": 0.7, "texture": SubResource("Atlas_00")}, {"duration": 1.2, "texture": SubResource("Atlas_10")}],
+"loop": false,
 "name": &"charge_windup",
-"speed": 5.0
+"speed": 4.0
 }, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("11")
-}],
-"loop": 0,
+"frames": [{"duration": 0.8, "texture": SubResource("Atlas_31")}, {"duration": 0.8, "texture": SubResource("Atlas_32")}, {"duration": 1.2, "texture": SubResource("Atlas_33")}],
+"loop": false,
 "name": &"dead",
 "speed": 4.0
 }, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("15")
-}],
-"loop": 0,
+"frames": [{"duration": 1.0, "texture": SubResource("Atlas_33")}],
+"loop": false,
 "name": &"defeated",
-"speed": 4.0
+"speed": 2.0
 }, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("14")
-}],
-"loop": 1,
+"frames": [{"duration": 0.7, "texture": SubResource("Atlas_23")}, {"duration": 1.1, "texture": SubResource("Atlas_30")}],
+"loop": false,
 "name": &"enraged_transition",
-"speed": 5.0
+"speed": 4.0
 }, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("10")
-}],
-"loop": 0,
+"frames": [{"duration": 1.0, "texture": SubResource("Atlas_22")}],
+"loop": false,
 "name": &"hurt",
-"speed": 5.0
+"speed": 7.0
 }, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("1")
-}, {
-"duration": 1.0,
-"texture": ExtResource("2")
-}],
-"loop": 1,
+"frames": [{"duration": 1.0, "texture": SubResource("Atlas_00")}, {"duration": 1.0, "texture": SubResource("Atlas_01")}],
+"loop": true,
 "name": &"idle",
-"speed": 4.0
+"speed": 3.0
 }, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("5")
-}],
-"loop": 0,
+"frames": [{"duration": 0.8, "texture": SubResource("Atlas_00")}, {"duration": 1.2, "texture": SubResource("Atlas_10")}],
+"loop": false,
 "name": &"intro",
-"speed": 4.0
+"speed": 3.0
 }, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("12")
-}],
-"loop": 1,
+"frames": [{"duration": 1.0, "texture": SubResource("Atlas_00")}, {"duration": 1.0, "texture": SubResource("Atlas_01")}],
+"loop": true,
 "name": &"phase1_idle",
-"speed": 5.0
+"speed": 3.0
 }, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("13")
-}],
-"loop": 0,
+"frames": [{"duration": 0.6, "texture": SubResource("Atlas_22")}, {"duration": 0.9, "texture": SubResource("Atlas_23")}, {"duration": 1.1, "texture": SubResource("Atlas_30")}],
+"loop": false,
 "name": &"phase2_transition",
 "speed": 4.0
 }, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("3")
+"frames": [{"duration": 0.8, "texture": SubResource("Atlas_10")}, {"duration": 1.2, "texture": SubResource("Atlas_13")}],
+"loop": false,
+"name": &"stomp",
+"speed": 5.0
 }, {
-"duration": 1.0,
-"texture": ExtResource("4")
-}],
-"loop": 1,
+"frames": [{"duration": 1.0, "texture": SubResource("Atlas_02")}, {"duration": 1.0, "texture": SubResource("Atlas_03")}],
+"loop": true,
 "name": &"walk",
 "speed": 5.0
 }]
