@@ -1,5 +1,7 @@
 # Reflorescer — revisão visual de 06/10/2026
 
+Entrega de 09/10: tela de título animada integrada ao menu inicial, com prévias e validação em `title-screen-v1.md`. Aprovação visual pendente. O sheet de lama e a correção da espada na corrida anteriores foram aprovados por Higor em 09/10.
+
 Trabalho local na `master`, baseada em `8ccaf4f`. Designs dos três inimigos aprovados pelo Higor; ciclos e integração implementados em seguida. Commit, pull e push ficam por conta do usuário. Arte criada com ImageGen; recorte, escala e montagem com Pillow. Referências usadas para direção, sem copiar seus personagens ou cenários.
 
 Entrega atual: revisão final das correções de Kairo e Korrag em `kairo-korrag-correction-v3.md`. Dash/apoio usam o desenho normal de Kairo com efeitos discretos ligados aos estados reais, a espada usa o punho original sem duplicação e o windup de Korrag não contém mais a perna separada. Aprovação visual e luta jogada permanecem pendentes.

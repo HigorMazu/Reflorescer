@@ -1,69 +1,191 @@
 [gd_scene format=3 uid="uid://mainmenu001"]
 
-[ext_resource type="Script" uid="uid://q1ukcln8ud1p" path="res://scripts/ui/MainMenu.cs" id="1"]
+[ext_resource type="Script" path="res://scripts/ui/MainMenu.cs" id="controller"]
+[ext_resource type="Texture2D" path="res://assets/ui/title/forest_dawn_v1.png" id="forest"]
+[ext_resource type="FontFile" path="res://assets/fonts/cormorant/CormorantGaramond.ttf" id="serif"]
+[ext_resource type="Shader" path="res://assets/shaders/title_forest.gdshader" id="forest_shader"]
+[ext_resource type="Shader" path="res://assets/shaders/title_mist.gdshader" id="mist_shader"]
+[ext_resource type="Script" path="res://scripts/ui/TitlePresentation.gd" id="presentation"]
 
-[node name="MainMenu" type="Control" unique_id=667467325]
+[sub_resource type="ShaderMaterial" id="ForestMaterial"]
+resource_local_to_scene = true
+shader = ExtResource("forest_shader")
+
+[sub_resource type="ShaderMaterial" id="MistMaterial"]
+resource_local_to_scene = true
+shader = ExtResource("mist_shader")
+
+[sub_resource type="StyleBoxFlat" id="ButtonNormal"]
+content_margin_left = 24.0
+content_margin_right = 24.0
+bg_color = Color(0.025, 0.07, 0.055, 0.18)
+
+[sub_resource type="StyleBoxFlat" id="ButtonSelected"]
+content_margin_left = 24.0
+content_margin_right = 24.0
+bg_color = Color(0.15, 0.23, 0.15, 0.64)
+border_width_left = 2
+border_color = Color(0.83, 0.76, 0.45, 0.95)
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+
+[sub_resource type="StyleBoxFlat" id="ButtonPressed"]
+content_margin_left = 24.0
+content_margin_right = 24.0
+bg_color = Color(0.29, 0.34, 0.20, 0.72)
+border_width_left = 2
+border_color = Color(1, 0.9, 0.61, 1)
+
+[sub_resource type="Theme" id="MenuTheme"]
+default_font_size = 19
+Button/colors/font_color = Color(0.76, 0.81, 0.70, 1)
+Button/colors/font_hover_color = Color(1, 0.95, 0.79, 1)
+Button/colors/font_focus_color = Color(1, 0.95, 0.79, 1)
+Button/colors/font_pressed_color = Color(1, 0.95, 0.79, 1)
+Button/colors/font_disabled_color = Color(0.45, 0.51, 0.45, 1)
+Button/styles/normal = SubResource("ButtonNormal")
+Button/styles/hover = SubResource("ButtonSelected")
+Button/styles/focus = SubResource("ButtonSelected")
+Button/styles/pressed = SubResource("ButtonPressed")
+Button/styles/disabled = SubResource("ButtonNormal")
+
+[node name="MainMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1")
+script = ExtResource("controller")
 NewGameButtonPath = NodePath("Box/NewGameButton")
 ContinueButtonPath = NodePath("Box/ContinueButton")
 QuitButtonPath = NodePath("Box/QuitButton")
 
-[node name="Background" type="ColorRect" parent="." unique_id=1475871407]
+[node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.09, 0.16, 0.12, 1)
+mouse_filter = 2
+texture_filter = 2
+texture = ExtResource("forest")
+expand_mode = 1
+stretch_mode = 6
+material = SubResource("ForestMaterial")
 
-[node name="Box" type="VBoxContainer" parent="." unique_id=1430988723]
+[node name="Mist" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 16
-alignment = 1
+mouse_filter = 2
+material = SubResource("MistMaterial")
 
-[node name="Title" type="Label" parent="Box" unique_id=1708394031]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.55, 0.85, 0.45, 1)
-theme_override_font_sizes/font_size = 64
-text = "Reflorescer"
-horizontal_alignment = 1
+[node name="Presentation" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("presentation")
 
-[node name="Subtitle" type="Label" parent="Box" unique_id=1418678027]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.8, 0.85, 0.8, 1)
-text = "Demo"
-horizontal_alignment = 1
+[node name="Box" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchor_left = 0.085
+anchor_top = 0.23
+anchor_right = 0.585
+anchor_bottom = 0.86
+theme = SubResource("MenuTheme")
+theme_override_constants/separation = 9
 
-[node name="Spacer" type="Control" parent="Box" unique_id=1044302480]
-custom_minimum_size = Vector2(0, 24)
+[node name="Eyebrow" type="Label" parent="Box"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.68, 0.74, 0.60, 1)
+theme_override_font_sizes/font_size = 12
+text = "A VIDA NASCE DA TERRA"
 
-[node name="ContinueButton" type="Button" parent="Box" unique_id=1353546640]
-custom_minimum_size = Vector2(260, 44)
+[node name="Title" type="Label" parent="Box"]
 layout_mode = 2
-size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.94, 0.92, 0.79, 1)
+theme_override_colors/font_shadow_color = Color(0.01, 0.03, 0.02, 0.8)
+theme_override_constants/shadow_offset_y = 4
+theme_override_fonts/font = ExtResource("serif")
+theme_override_font_sizes/font_size = 80
+text = "REFLORESCER"
+
+[node name="Accent" type="ColorRect" parent="Box"]
+custom_minimum_size = Vector2(68, 2)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+color = Color(0.72, 0.65, 0.36, 0.7)
+
+[node name="Spacer" type="Control" parent="Box"]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ContinueButton" type="Button" parent="Box"]
+custom_minimum_size = Vector2(320, 48)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
 text = "Continuar"
+alignment = 0
 
-[node name="NewGameButton" type="Button" parent="Box" unique_id=2320176]
-custom_minimum_size = Vector2(260, 44)
+[node name="NewGameButton" type="Button" parent="Box"]
+custom_minimum_size = Vector2(320, 48)
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
 text = "Novo jogo"
+alignment = 0
 
-[node name="QuitButton" type="Button" parent="Box" unique_id=1791641149]
-custom_minimum_size = Vector2(260, 44)
+[node name="QuitButton" type="Button" parent="Box"]
+custom_minimum_size = Vector2(320, 48)
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
 text = "Sair"
+alignment = 0
+
+[node name="Edition" type="Label" parent="."]
+layout_mode = 1
+anchor_left = 0.085
+anchor_top = 1.0
+anchor_right = 0.50
+anchor_bottom = 1.0
+offset_top = -49.0
+offset_bottom = -27.0
+theme_override_colors/font_color = Color(0.60, 0.65, 0.54, 1)
+theme_override_font_sizes/font_size = 11
+text = "DEMO  /  FLORESTA TROPICAL"
+
+[node name="ControlsHint" type="Label" parent="."]
+layout_mode = 1
+anchor_left = 0.55
+anchor_top = 1.0
+anchor_right = 0.93
+anchor_bottom = 1.0
+offset_top = -49.0
+offset_bottom = -27.0
+theme_override_colors/font_color = Color(0.60, 0.65, 0.54, 1)
+theme_override_font_sizes/font_size = 11
+text = "↑ ↓  Navegar     Enter  Selecionar"
+horizontal_alignment = 2
+
+[node name="Curtain" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
