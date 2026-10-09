@@ -33,6 +33,8 @@ func _run() -> void:
 			"%s collision remains in the arena" % name)
 	_check(geometry.get_node("ArenaFloor/ChurnedFloor").visible,
 		"churned earth art is integrated over the arena floor")
+	_check(geometry.get_node("ArenaFloor/ChurnedFloor").position.y == -84.0,
+		"arena art surface shares the collision baseline used by Kairo and Korrag")
 	_check(area.get_node_or_null("Boss_Javali") != null and area.get_node("Enemies").get_child_count() == 0,
 		"Covil contains Korrag and no common enemies")
 	_check(area.get_node("Interactables").get_node_or_null("RestorationPoint1") == null,

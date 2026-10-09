@@ -44,12 +44,13 @@ public partial class SwordHudCheck : Node
             Check(sword.Extension > 0 && sword.Extension < 1, "blade grows through intermediate size");
             await ToSignal(GetTree().CreateTimer(.2), SceneTreeTimer.SignalName.Timeout);
             Check(Mathf.IsEqualApprox(sword.Extension, 1) && player.Sword.Visible, "blade fully appears");
+            Check(Mathf.IsEqualApprox(bladeSprite.Scale.Y, 1.4f), "extended blade is longer while the grip remains fixed");
             Check(!bandage.Visible, "active blade hides wrist bandage");
             Check(player.Sprite.SelfModulate == Colors.White, "active character keeps original colors");
-            Check(bladeSprite.Offset.IsEqualApprox(new Vector2(-5.5f, -34f)), "carried sword remains fully readable behind Kairo's closed fist");
+            Check(bladeSprite.Offset.IsEqualApprox(new Vector2(-5.5f, -30f)), "only the blade leaves Kairo's closed fist");
             player.Sprite.Play("idle"); player.Sprite.Frame = 0; await Wait(); await Wait();
             Check(player.Sword.GlobalPosition.X < player.GlobalPosition.X, "idle sword grip follows Kairo's right closed fist");
-            Check(sword.ZIndex < player.Sprite.ZIndex, "original closed fist draws over the sword handle");
+            Check(sword.ZIndex < player.Sprite.ZIndex, "Kairo's hand and arm stay in front of the active blade");
             Check(player.GetNodeOrNull("Visual/SwordGripOverlay") == null, "no duplicate fist overlay remains");
             foreach (string pose in new[] { "idle", "run", "jump", "fall", "dash", "wall_slide", "attack" })
             {
@@ -64,8 +65,8 @@ public partial class SwordHudCheck : Node
                 }
             }
             player.Sprite.Play("attack"); await Wait(); await Wait();
-            Check(bladeSprite.Offset.IsEqualApprox(new Vector2(-5.5f, -27f)), "attack guard sits inside the closed fist instead of floating ahead of it");
-            Check(sword.ZIndex > player.Sprite.ZIndex, "attack blade stays readable across Kairo's body");
+            Check(bladeSprite.Offset.IsEqualApprox(new Vector2(-5.5f, -30f)), "attack blade begins inside the closed fist");
+            Check(sword.ZIndex < player.Sprite.ZIndex, "attack grip stays behind Kairo's closed hand");
             Check(player.Sword.Visible, "straight sword stays visible in attack");
             Check(player.Sprite.SpriteFrames.GetFrameTexture("attack", 0).ResourcePath.Contains("unarmed_v2"), "attack frames no longer embed old curved sword");
             player.Sprite.Play("jump"); await Wait(); await Wait();
