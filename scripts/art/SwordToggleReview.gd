@@ -33,7 +33,7 @@ func _ready() -> void:
 	if "--poses" in OS.get_cmdline_user_args() or stowed_poses:
 		player.set("HasSword", not stowed_poses)
 		player.call("SetSwordVisible", not stowed_poses)
-		for pose in ["idle", "run", "jump", "fall", "attack"]:
+		for pose in ["idle", "run", "jump", "fall", "dash", "wall_slide", "attack"]:
 			if stowed_poses and pose == "attack": continue
 			for frame in range(body.sprite_frames.get_frame_count(pose)):
 				body.animation = pose

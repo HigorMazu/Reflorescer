@@ -117,7 +117,7 @@ color = Color(0.3, 0.55, 0.2, 1)
 visible = false
 
 [node name="ChurnedFloor" type="Node2D" parent="Geometry/ArenaFloor"]
-position = Vector2(-640, -44)
+position = Vector2(-640, -84)
 texture_filter = 1
 script = ExtResource("modular_terrain")
 terrain_texture = ExtResource("covil_ground")

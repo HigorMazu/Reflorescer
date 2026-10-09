@@ -12,8 +12,12 @@
 [ext_resource type="Script" path="res://scripts/player/SwordBandageVisual.cs" id="13_bandage"]
 [ext_resource type="Script" path="res://scripts/player/MovementStateEffects.cs" id="14_movement_fx"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_sword_blade"]
+atlas = ExtResource("10_blade")
+region = Rect2(0, 0, 11, 30)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_sword"]
-animations = [{"frames": [{"duration": 1.0, "texture": ExtResource("10_blade")}], "loop": true, "name": &"default", "speed": 5.0}]
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("AtlasTexture_sword_blade")}], "loop": true, "name": &"default", "speed": 5.0}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(24, 40)
@@ -29,6 +33,7 @@ size = Vector2(50, 50)
 
 [node name="Player" type="CharacterBody2D" unique_id=1811755639 groups=["Player"]]
 collision_layer = 2
+z_index = 5
 script = ExtResource("1")
 StatsResource = ExtResource("7")
 SpritePath = NodePath("Visual/AnimatedSprite2D")
@@ -73,6 +78,14 @@ animation = &"idle"
 autoplay = "idle"
 centered = false
 
+[node name="RunHandOverlay" type="Sprite2D" parent="Visual"]
+visible = false
+z_index = 1
+texture_filter = 1
+scale = Vector2(0.5, 0.5)
+centered = false
+region_enabled = true
+
 [node name="RightArm" type="Node2D" parent="Visual" unique_id=837787773]
 position = Vector2(10, -30)
 
@@ -89,7 +102,7 @@ script = ExtResource("9_sword")
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_sword")
 centered = false
-offset = Vector2(-5.5, -34)
+  offset = Vector2(-5.5, -30)
 
 [node name="Blade" type="ColorRect" parent="Visual/RightArm/RightHand/Sword" unique_id=583863621]
 visible = false

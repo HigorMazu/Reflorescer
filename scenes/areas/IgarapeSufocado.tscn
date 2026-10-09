@@ -19,7 +19,10 @@
 [ext_resource type="Script" path="res://scripts/art/ModularTerrainStrip.gd" id="modular_terrain"]
 [ext_resource type="Texture2D" path="res://assets/environment/tropical/igarape_water_log_atlas_candidate_v1.png" id="swamp_atlas"]
 [ext_resource type="Texture2D" path="res://assets/environment/tropical/igarape_restoration_atlas_candidate_v1.png" id="restoration_atlas"]
-[ext_resource type="Script" path="res://scripts/art/MudBubbles.gd" id="mud_bubbles"]
+[ext_resource type="Texture2D" path="res://assets/environment/tropical/igarape_mud_bubble_sheet_v1.png" id="mud_sheet"]
+[ext_resource type="Script" path="res://scripts/art/MudSpriteSheet.gd" id="mud_sprite_sheet"]
+[ext_resource type="Shader" path="res://assets/shaders/igarape_mud_surface.gdshader" id="mud_surface_shader"]
+[ext_resource type="Shader" path="res://assets/shaders/igarape_mud_bed.gdshader" id="mud_bed_shader"]
 [ext_resource type="Texture2D" uid="uid://b7pwgs2uc6jxd" path="res://assets/environment/tropical/ground_degraded.png" id="tex_ground_degraded"]
 [ext_resource type="Texture2D" uid="uid://g4fx4roaxjha" path="res://assets/environment/tropical/ground_restored.png" id="tex_ground_restored"]
 [ext_resource type="Texture2D" uid="uid://vo0mnmuh1ct6" path="res://assets/environment/tropical/sprout_degraded.png" id="tex_sprout_degraded"]
@@ -51,6 +54,12 @@ size = Vector2(540, 48)
 
 [sub_resource type="RectangleShape2D" id="Shape_Mud3"]
 size = Vector2(240, 48)
+
+[sub_resource type="ShaderMaterial" id="MudSurfaceMaterial"]
+shader = ExtResource("mud_surface_shader")
+
+[sub_resource type="ShaderMaterial" id="MudBedMaterial"]
+shader = ExtResource("mud_bed_shader")
 
 [sub_resource type="RectangleShape2D" id="Shape_Checkpoint1"]
 size = Vector2(32, 32)
@@ -155,6 +164,7 @@ strip_height = 181.0
 cap_source_width = 190.0
 middle_source = Rect2(560, 0, 720, 724)
 alternate_middle_source = Rect2(1180, 0, 720, 724)
+cutout_ranges = PackedFloat32Array(492, 908, 1432, 1948, 2192, 2408)
 
 [node name="Log1" type="StaticBody2D" parent="Geometry" unique_id=852235192]
 position = Vector2(700, 410)
@@ -259,17 +269,26 @@ color = Color(0.28, 0.34, 0.22, 0.75)
 visible = false
 
 [node name="Sludge" type="Sprite2D" parent="Hazards/Mud1"]
-position = Vector2(-220, -30)
-scale = Vector2(0.21484, 0.17)
+position = Vector2(-220, 16)
+scale = Vector2(0.4, 0.74286)
 texture_filter = 1
-texture = ExtResource("swamp_atlas")
+material = SubResource("MudSurfaceMaterial")
+texture = ExtResource("mud_sheet")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 2048, 320)
+region_rect = Rect2(0, 0, 1100, 140)
+z_index = 2
+script = ExtResource("mud_sprite_sheet")
 
-[node name="Bubbles" type="Node2D" parent="Hazards/Mud1"]
-script = ExtResource("mud_bubbles")
-pool_width = 440.0
+[node name="PoolBed" type="ColorRect" parent="Hazards/Mud1"]
+offset_left = -220.0
+offset_top = 16.0
+offset_right = 220.0
+offset_bottom = 120.0
+mouse_filter = 2
+color = Color(0.055, 0.12, 0.1, 1)
+material = SubResource("MudBedMaterial")
+z_index = 1
 
 [node name="Mud2" type="Area2D" parent="Hazards" unique_id=78000614]
 position = Vector2(1690, 460)
@@ -300,17 +319,27 @@ color = Color(0.28, 0.34, 0.22, 0.75)
 visible = false
 
 [node name="Sludge" type="Sprite2D" parent="Hazards/Mud2"]
-position = Vector2(-270, -30)
-scale = Vector2(0.26367, 0.17)
+position = Vector2(-270, 16)
+scale = Vector2(0.49091, 0.74286)
 texture_filter = 1
-texture = ExtResource("swamp_atlas")
+material = SubResource("MudSurfaceMaterial")
+texture = ExtResource("mud_sheet")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 2048, 320)
+region_rect = Rect2(0, 0, 1100, 140)
+z_index = 2
+script = ExtResource("mud_sprite_sheet")
+start_frame = 2
 
-[node name="Bubbles" type="Node2D" parent="Hazards/Mud2"]
-script = ExtResource("mud_bubbles")
-pool_width = 540.0
+[node name="PoolBed" type="ColorRect" parent="Hazards/Mud2"]
+offset_left = -270.0
+offset_top = 16.0
+offset_right = 270.0
+offset_bottom = 120.0
+mouse_filter = 2
+color = Color(0.055, 0.12, 0.1, 1)
+material = SubResource("MudBedMaterial")
+z_index = 1
 
 [node name="Mud3" type="Area2D" parent="Hazards" unique_id=1375208424]
 position = Vector2(2300, 460)
@@ -341,17 +370,27 @@ color = Color(0.28, 0.34, 0.22, 0.75)
 visible = false
 
 [node name="Sludge" type="Sprite2D" parent="Hazards/Mud3"]
-position = Vector2(-120, -30)
-scale = Vector2(0.11719, 0.17)
+position = Vector2(-120, 16)
+scale = Vector2(0.21818, 0.74286)
 texture_filter = 1
-texture = ExtResource("swamp_atlas")
+material = SubResource("MudSurfaceMaterial")
+texture = ExtResource("mud_sheet")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 2048, 320)
+region_rect = Rect2(0, 0, 1100, 140)
+z_index = 2
+script = ExtResource("mud_sprite_sheet")
+start_frame = 4
 
-[node name="Bubbles" type="Node2D" parent="Hazards/Mud3"]
-script = ExtResource("mud_bubbles")
-pool_width = 240.0
+[node name="PoolBed" type="ColorRect" parent="Hazards/Mud3"]
+offset_left = -120.0
+offset_top = 16.0
+offset_right = 120.0
+offset_bottom = 120.0
+mouse_filter = 2
+color = Color(0.055, 0.12, 0.1, 1)
+material = SubResource("MudBedMaterial")
+z_index = 1
 
 [node name="Interactables" type="Node2D" parent="." unique_id=402884543]
 

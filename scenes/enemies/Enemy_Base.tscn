@@ -70,6 +70,7 @@ size = Vector2(24, 28)
 
 [node name="Enemy_Base" type="CharacterBody2D" unique_id=1668776042]
 collision_layer = 4
+z_index = 5
 script = ExtResource("1")
 StatsResource = ExtResource("7")
 SpritePath = NodePath("AnimatedSprite2D")

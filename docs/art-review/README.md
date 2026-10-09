@@ -4,6 +4,8 @@ Trabalho local na `master`, baseada em `8ccaf4f`. Designs dos três inimigos apr
 
 Entrega atual: revisão final das correções de Kairo e Korrag em `kairo-korrag-correction-v3.md`. Dash/apoio usam o desenho normal de Kairo com efeitos discretos ligados aos estados reais, a espada usa o punho original sem duplicação e o windup de Korrag não contém mais a perna separada. Aprovação visual e luta jogada permanecem pendentes.
 
+Correção posterior: `ground-and-grip-v1.md` registra a lama nivelada ao chão, o alinhamento do piso do Covil e a Espada de Grama original visível em todas as poses. Aprovação visual dessas correções permanece pendente.
+
 ## Direção e integração
 
 “A vida nasce da terra”: musgo, húmus, raízes e pedra; floresta úmida em profundidade e luz âmbar da Faísca. O terreno é um protótipo de faixas, não um tileset modular completo. A repetição ainda aparece em trechos longos.
