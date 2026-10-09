@@ -241,6 +241,16 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 
 Status: ✅ concluída (07/10) — indicador aprovado por Higor e integrado. Ver `docs/art-review/sword-hud-delivery.md`. A bandagem final da A01-T2 foi aprovada em 08/10; segue acabamento modular do Sopé (A05-T1).
 
+### A06-T5 — Tela de título animada (pedido de Higor, 09/10)
+
+- [x] Cenário exclusivo, tipografia e menu com a identidade de Reflorescer.
+- [x] Névoa, vaga-lumes, água, movimento suave de cenário e fades.
+- [x] Integração com Novo jogo, Continuar e Sair; espaço para futuras opções.
+- [x] Revisão visual em 1280×720 e 960×540; navegação testada com saves isolados.
+- [ ] Aprovação visual de Higor.
+
+Status: 🟡 entregue, aguardando aprovação (09/10). Ver `docs/art-review/title-screen-v1.md`. Falha técnica de salvar/recarregar a fase no mesmo processo reproduzida sem a tela inicial; causa raiz pendente de investigação no código.
+
 ## Ordem de entrega recomendada (resumo)
 
 ```
