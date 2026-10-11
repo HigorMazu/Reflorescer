@@ -209,7 +209,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ entrega visual concluída (08/10) — Higor aprovou fundo, margem, troncos, lama e restauração (`docs/art-review/igarape-visual-v1.md`). A margem agora usa módulos de terreno sem esticar a ilustração (`docs/art-review/modular-terrain-v1.md`). A travessia jogada e a leitura da lentidão permanecem no roadmap de QA.
 >
-> > [!todo]- Task A05-T4 — Covil de Korrag (arena do boss)
+> > [!success]- Task A05-T4 — Covil de Korrag (arena do boss)
 > > - [x] Chão revirado pelas escavações do javali — sem ponto de restauração aqui.
 > > - [x] Ambientação de arena de boss (mais fechada, foco na luta).
 > >
@@ -229,18 +229,18 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 >
 > Apoio, menor prioridade — não bloqueia jogabilidade.
 >
-> > [!todo]- Task A06-T1 — Barra de vida
+> > [!success]- Task A06-T1 — Barra de vida
 > > - [x] Visual final: moldura vegetal escura, preenchimento verde e marcas de leitura.
 > >
 > > Status: ✅ concluída (08/10) — Higor aprovou a revisão da HUD.
 >
-> > [!todo]- Task A06-T2 — Ícone de habilidade
+> > [!success]- Task A06-T2 — Ícone de habilidade
 > > - [x] Sem indicador persistente de dash, por decisão de Higor (08/10); a notificação de desbloqueio existente permanece suficiente.
 > > - **Dependência resolvida:** a notificação real existe em [[ROADMAP_QA_CODIGO]] `C04-T4`.
 > >
 > > Status: ✅ concluída (08/10) — escopo visual aprovado sem badge de dash.
 >
-> > [!todo]- Task A06-T3 — Prompt de interação
+> > [!success]- Task A06-T3 — Prompt de interação
 > > - [x] Painel compacto de leitura para o prompt contínuo `[E]`.
 > > - **Dependência resolvida:** o prompt contínuo existe em [[ROADMAP_QA_CODIGO]] `C10-T1`.
 > >

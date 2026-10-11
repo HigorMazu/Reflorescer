@@ -13,9 +13,9 @@ par: "[[ROADMAP_ARTE]]"
 descricao: Casos de teste da integração código + arte
 epicos_total: 8
 epicos_concluidos: 4
-tasks_total: 22
-tasks_prontas: 10
-tasks_bloqueadas: 4
+tasks_total: 24
+tasks_prontas: 16
+tasks_bloqueadas: 5
 ---
 # Roadmap de QA — Integração (Código + Arte do Higor)
 
@@ -66,6 +66,8 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 >
 > > [!failure]- Task A01-T3 — Wall grab / wall jump
 > > - [x] Animação integrada e sincronizada com a mecânica ([[ROADMAP_DEV]] `EPIC-C05`).
+> >
+> > - [ ] Depois do ajuste do Higor: no jogo, o apoio na parede se distingue de uma queda comum (conferir no tronco do Dossel Vivo, mesma posição da captura). **(pendente: entrega do Higor)**
 > >
 > > Status: 🔧 ajuste pedido (11/10) — mecânica e integração ok, mas no jogo o apoio não se distingue de uma queda (pose de `fall`, raspas invisíveis na escala real). Ver [[ROADMAP_ARTE]] A01-T3 e `docs/art-review/qa-ingame-wallslide-2026-10-11.png`. Histórico: (08/10) o estado real usa o Kairo normal com raspas discretas; entrada, colisão, estado, animação e efeito passaram em `MovementAnimationRuntimeCheck.tscn`. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 >
@@ -126,15 +128,15 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: ✅ passa (06/10) — recurso e chamada de estado presentes.
 
-> [!warning]- EPIC-A05 — Cenário — 🟡 Parcial · 🟠 Alta
+> [!warning]- EPIC-A05 — Cenário — 🟡 Parcial (falta o checkpoint) · 🟠 Alta
 > *Pronto quando*: as 4 áreas têm identidade visual reconhecível sem texto, os pontos de entrada de cena fazem sentido, e a performance se mantém estável no `gl_compatibility`.
 >
 > Atualizado em 29/09/2026 — a demo passou a ser 4 áreas dentro da Floresta Tropical (era Floresta Tropical/Deserto/Tundra); `TargetArea`/`SpawnOffset` já funcionam desde [[ROADMAP_QA_CODIGO]] `C08-T1` (concluída em 28/09), então a ressalva de posicionamento manual não se aplica mais.
 >
-> > [!warning]- Task A05-T1 — Sopé da Mata
+> > [!success]- Task A05-T1 — Sopé da Mata
 > > - [x] Identidade visual clara — floresta úmida reconhecível nas capturas, com chão, vegetação e restauração aprovados por Higor.
 > > - [x] Transição de área: Kairo nasce em `SpawnInicial` e retorna do Dossel em `SpawnFromDosselVivo`, via `SceneManager`.
-> > - [ ] Performance: tileset/background + pulsos de luz da Faísca + barras de vida flutuantes (com `Tween`) sem queda perceptível de FPS no renderer `gl_compatibility`.
+> > - [x] Performance: tileset/background + pulsos de luz da Faísca + barras de vida flutuantes (com `Tween`) sem queda perceptível de FPS no renderer `gl_compatibility`.
 > >
 > > - **Integração (06/10):** Protótipo integrado ao Sopé da Mata: chão grama/terra/raízes/pedra, parallax, partículas e restauração seco→verde. Interação E e crescimento passaram no Godot .NET. Tileset modular, percurso completo e medição de FPS pendentes. Ver `docs/art-review/README.md` e capturas.
 > > - **Revisão visual (08/10):** Higor aprovou as bordas de 24 px e a variação do miolo nas sete faixas saudáveis (`docs/art-review/sope-ground-modular-v1.md`); os dois visuais da restauração continuam com bordas preservadas. Capturas da cena real em `docs/art-review/sope-ground-borders-v1.md`; colisões não foram editadas.
@@ -142,42 +144,50 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > - **QA dirigido (08/10):** spawn inicial, câmera, restauração/inimigos presentes e retorno do Dossel passaram na cena real; três trechos renderizados mais a volta ao início sustentaram 60 FPS após aquecimento no `gl_compatibility`/GTX 1650. Ver `docs/art-review/sope-area-qa-2026-10-08.md`.
 > >
-> > Status: 🟡 parcial (08/10) — arte modular, bordas, variação central e props aprovados; QA dirigido de entrada e FPS estável após aquecimento. Falta travessia jogada com combate e avaliação de fluidez perceptiva para concluir a tarefa.
+> > Status: ✅ passa (11/10) — Gustavo jogou a demo inteira em 11/10 e validou (travessia com combate e fluidez); `tools/qa/FpsCheck.gd` em 11/10 (RTX 3050, gl_compatibility, vsync): média 60 nas 4 áreas, 1% piores 54–56 FPS.
 >
-> > [!failure]- Task A05-T2 — Dossel Vivo
-> > - [ ] Repetir os 3 testes da Task A05-T1, mais: leitura clara das plataformas de pulo vertical.
+> > [!success]- Task A05-T2 — Dossel Vivo
+> > - [x] Repetir os 3 testes da Task A05-T1, mais: leitura clara das plataformas de pulo vertical.
 > >
 > > - **QA dirigido (08/10):** entrada pelo `Marker2D`, câmera, doze colisões dos galhos, restauração e inimigos passaram. Os vãos dos onze degraus consecutivos cabem no salto base segundo as dimensões e velocidades atuais; a travessia em jogo ainda não foi executada. FPS após aquecimento: 60 nas partes média/alta; base 58,3 (mín. 56) na primeira amostra e 60 ao revisitar. Ver `docs/art-review/dossel-canopy-restoration-v1.md`.
 > >
-> > Status: 🟡 parcial (08/10) — plataformas modulares, galhos, troncos, fundo e restauração aprovados. Falta jogar a subida com combate e avaliar fluidez perceptiva.
+> > Status: ✅ passa (11/10) — Gustavo jogou a demo inteira em 11/10 e validou; os 12 saltos alcançáveis só com pulo simples (`tools/qa/DosselReachCheck.gd`); `tools/qa/FpsCheck.gd` em 11/10 (RTX 3050, gl_compatibility, vsync): média 60 nas 4 áreas, 1% piores 54–56 FPS.
 >
-> > [!failure]- Task A05-T3 — Igarapé Sufocado
-> > - [ ] Repetir os 3 testes da Task A05-T1, mais: a lama é visualmente clara (o jogador entende por que ficou mais lento).
+> > [!success]- Task A05-T3 — Igarapé Sufocado
+> > - [x] Repetir os 3 testes da Task A05-T1, mais: a lama é visualmente clara (o jogador entende por que ficou mais lento).
 > >
-> > Status: 🟡 parcial — visuais aprovados em 08/10; margem modular, entrada, câmera, três logs, três hazards, restauração e seis inimigos passaram no teste dirigido (`docs/art-review/igarape-area-validation.txt`). Faltam teste jogado da lentidão, travessia e FPS.
+> > Status: ✅ passa (11/10) — Gustavo jogou a demo inteira em 11/10 e validou (lentidão na lama perceptível); as 3 poças dão x0,55 (`tools/qa/DemoRunCheck.gd`); `tools/qa/FpsCheck.gd` em 11/10 (RTX 3050, gl_compatibility, vsync): média 60 nas 4 áreas, 1% piores 54–56 FPS.
 >
-> > [!failure]- Task A05-T4 — Covil de Korrag
-> > - [ ] Ambientação de arena de boss clara, sem elementos de exploração (ponto de restauração, etc.) — é só a luta.
+> > [!success]- Task A05-T4 — Covil de Korrag
+> > - [x] Ambientação de arena de boss clara, sem elementos de exploração (ponto de restauração, etc.) — é só a luta.
 > >
-> > Status: 🟡 parcial — visual aprovado; chão modular, entrada pelo Igarapé, câmera, quatro colisões, Korrag sem inimigos comuns e ausência de restauração passaram no teste dirigido (`docs/art-review/covil-area-validation.txt`). Faltam luta jogada e FPS.
+> > Status: ✅ passa (11/10) — Gustavo jogou a demo inteira em 11/10 e validou (luta com o Korrag); `tools/qa/FpsCheck.gd` em 11/10 (RTX 3050, gl_compatibility, vsync): média 60 nas 4 áreas, 1% piores 54–56 FPS.
+>
+> > [!failure]- Task A05-T5 — Bandeira de checkpoint
+> > - [ ] Os 5 checkpoints (Sopé, Dossel, Igarapé ×2, Covil) mostram a arte final no estado **apagado** antes de tocar e **ativado** depois — nenhum `ColorRect` azul sobrando.
+> > - [ ] Base alinhada ao chão nas 4 áreas; legível na escala real.
+> > - [ ] Ao continuar um save, os checkpoints já ativados nascem no estado ativado.
+> > - **Origem (11/10):** gêmea da [[ROADMAP_ARTE]] A05-T5 (achado da revisão de arte). Código da troca de estado: [[ROADMAP_DEV]] C09-T3.
+> >
+> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_ARTE]] A05-T5 e [[ROADMAP_DEV]] C09-T3.
 
-> [!failure]- EPIC-A06 — UI — 🔴 Bloqueado · 🟡 Média
+> [!warning]- EPIC-A06 — UI — 🟡 Parcial (validações do Higor pendentes) · 🟡 Média
 > *Pronto quando*: barra de vida, ícone de habilidade e prompt de interação têm arte final integrada e funcional em jogo.
 >
-> > [!failure]- Task A06-T1 — Barra de vida
-> > - [ ] Barra de vida com textura final.
+> > [!success]- Task A06-T1 — Barra de vida
+> > - [x] Barra de vida com textura final.
 > >
-> > Status: 🟡 parcial — visual aprovado e compilado; falta teste jogado com dano real.
+> > Status: ✅ passa (11/10) — Gustavo jogou a demo inteira em 11/10 e validou; a barra cai com dano real (100 → 90) em `tools/qa/DemoRunCheck.gd`.
 >
-> > [!failure]- Task A06-T2 — Ícone de habilidade
-> > - [ ] Ícone de habilidade desbloqueada (quando a notificação real existir — [[ROADMAP_QA_CODIGO]] `C04-T4`).
+> > [!success]- Task A06-T2 — Ícone de habilidade
+> > - [x] Ícone de habilidade desbloqueada (quando a notificação real existir — [[ROADMAP_QA_CODIGO]] `C04-T4`). *(Substituído pela notificação "Nova habilidade: Dash", decisão do Higor.)*
 > >
 > > Status: ✅ concluída — Higor decidiu não usar indicador persistente; a notificação de desbloqueio real já existe.
 >
-> > [!failure]- Task A06-T3 — Prompt de interação
-> > - [ ] Prompt de interação com estilo definido (quando [[ROADMAP_QA_CODIGO]] `C10-T1` for resolvido).
+> > [!success]- Task A06-T3 — Prompt de interação
+> > - [x] Prompt de interação com estilo definido (quando [[ROADMAP_QA_CODIGO]] `C10-T1` for resolvido).
 > >
-> > Status: 🟡 parcial — visual aprovado e compilado; falta teste jogado de aproximação e interação.
+> > Status: ✅ passa (11/10) — Gustavo jogou a demo inteira em 11/10 e validou; `[E] Restaurar` aparece perto dos 3 pontos de restauração e some depois de usar (`tools/qa/DemoRunCheck.gd`).
 
 > > [!warning]- Task A06-T4 — Indicador compacto da espada
 > > - [x] Estado inicial antes/depois de criar o jogador e ao recriar o HUD.
@@ -186,9 +196,19 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - [x] Tamanho fixo 156×32 e estado preservado ao pausar.
 > > - [x] Capturas dos dois estados na cena real do Sopé, em 1280×720.
 > > - [x] Aprovação visual do indicador por Higor (07/10).
-> > - [ ] Playtest manual de Higor.
+> > - [ ] Playtest manual de Higor. **(pendente de validação do Higor)**
+> > - **Nota (11/10):** do lado do código está tudo verificado — Gustavo jogou a demo inteira e `tools/qa/CombatCheck.gd` cobre Q, lâmina, bandagem e HUD (35/35). Falta só o Higor jogar e marcar o item acima.
 > >
-> > Status: 🟡 parcial (07/10) — 20 verificações passaram no Godot .NET, incluindo extensão/recolhimento, reversão rápida, ausência de tint e lâmina reta no ataque; build sem erros/avisos. Teste dirigido não substitui percurso completo, teste de teclado nem carregamento de save real. Evidência: `docs/art-review/sword-hud-validation.txt`.
+> > Status: 🟡 parcial (07/10, revisto em 11/10) — aguarda só o playtest do Higor — 20 verificações passaram no Godot .NET, incluindo extensão/recolhimento, reversão rápida, ausência de tint e lâmina reta no ataque; build sem erros/avisos. Teste dirigido não substitui percurso completo, teste de teclado nem carregamento de save real. Evidência: `docs/art-review/sword-hud-validation.txt`.
+
+> > [!warning]- Task A06-T5 — Tela de título animada
+> > - [x] Novo jogo, Continuar (só com save) e Sair funcionam; cliques repetidos bloqueados durante o fade (`TitleFlowCheck.gd` do Higor).
+> > - [x] Visual aprovado por Gustavo (11/10).
+> > - [ ] Ajuste de contraste da dica "Navegar · Enter Selecionar" entregue e conferido em 1280×720 e 960×540 ([[ROADMAP_ARTE]] A06-T5).
+> > - [ ] Playtest manual de Higor navegando o menu só pelo teclado. **(pendente de validação do Higor)**
+> > - **Origem (11/10):** gêmea da [[ROADMAP_ARTE]] A06-T5, que não tinha par de QA.
+> >
+> > Status: 🟡 parcial (11/10) — visual aprovado; faltam o ajuste de contraste e o playtest do Higor.
 
 > [!failure]- EPIC-A07 — Validação Final (Playtest Completo) — 🔴 Bloqueado · 🔴 Bloqueante
 > *Pronto quando*: a demo roda de ponta a ponta com áudio, arte e código integrados, sem crash, softlock ou animação quebrada, validada por alguém de fora do grupo.

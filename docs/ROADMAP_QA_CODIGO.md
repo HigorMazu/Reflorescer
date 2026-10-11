@@ -12,10 +12,10 @@ responsavel: Gustavo
 par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 13
-epicos_concluidos: 11
-tasks_total: 50
+epicos_concluidos: 10
+tasks_total: 51
 tasks_prontas: 45
-tasks_bloqueadas: 3
+tasks_bloqueadas: 5
 ---
 # Roadmap de QA — Código (Reflorescer)
 
@@ -315,7 +315,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — por script no Godot em 11/10 (Claude, `tools/qa/DemoRunCheck.gd`, 89 verificações, 0 falhas): Novo jogo → Sopé → Dossel → Igarapé → Covil pelos portais reais, com as voltas Dossel→Sopé e Igarapé→Dossel; em todas as 7 transições o Kairo nasce no x do marker, em pé no chão e dentro do mundo. Korrag: fase 2 com ≤50%, enraged com ≤20%, `BossDefeated` uma vez, Dash desbloqueado uma vez, notificação "Nova habilidade: Dash". Teste dirigido: não mede dificuldade, sensação nem FPS (C12-T2/A07).
 
-> [!success]- EPIC-C09 — Save, Checkpoint e Respawn — ✅ Passa · 🟡 Média
+> [!warning]- EPIC-C09 — Save, Checkpoint e Respawn — 🟡 Parcial (visual do checkpoint) · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — habilidade desbloqueada persiste em disco imediatamente, e existe uma decisão explícita sobre o fluxo de Continuar.
 >
 > > [!success]- Task C09-T0 — Regressão básica (baseline antes de mexer)
@@ -349,6 +349,13 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - **Nota (11/10):** depois de um `git pull` com arte nova, rodar `--headless --import` (ou abrir o editor) antes dos testes por script; sem isso os PNGs novos não carregam e o `Player.tscn` falha.
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): menu com Continuar; Continuar volta à cena/posição salvas, inclusive na arena (sem o Korrag, com dash) e depois de fechar/reabrir o jogo. Revalidado em 11/10 (Claude, por script): save/recarga no mesmo processo nas 4 áreas sem crash.
+>
+> > [!failure]- Task C09-T3 — Visual do checkpoint apagado/ativado
+> > - [ ] Antes de tocar: checkpoint apagado. Ao tocar: muda pra ativado na hora e salva.
+> > - [ ] Fechar e Continuar: os checkpoints já ativados nascem ativados; os outros, apagados.
+> > - [ ] `SaveReloadCheck.gd` e `DemoRunCheck.gd` continuam passando.
+> >
+> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_DEV]] C09-T3 e da arte ([[ROADMAP_ARTE]] A05-T5).
 
 > [!success]- EPIC-C10 — HUD e UX — ✅ Passa · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — prompt de interação contínuo funcionando, e decisão sobre Game Over tomada e implementada.
@@ -411,7 +418,9 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > [!failure]- Task C12-T3 — Integração incremental com o Higor
 > > - [ ] Rodar [[ROADMAP_QA_INTEGRACAO]] junto com o Higor assim que a arte de cada bloco chegar, sem esperar tudo pronto.
 > >
-> > Status: 🔴 bloqueado — depende da arte começar a chegar.
+> > - [x] Rodada de 11/10: entregas do Higor de 05/10 a 09/10 integradas e [[ROADMAP_QA_INTEGRACAO]] rodado (A00–A06 passam, exceto pendências cadastradas).
+> >
+> > Status: 🟡 em andamento (11/10) — em dia com tudo que foi entregue; reabrir a cada nova entrega (pendentes: [[ROADMAP_ARTE]] A01-T3, A05-T5, A06-T5 e o áudio). Ver [[ROADMAP_DEV]] C12-T3.
 
 > > [!success]- Task C12-T4 — Sem travamento do runtime .NET
 > > - [x] `tools/qa/CombatCheck.gd -- --stress` roda 5 vezes seguidas sem `FATAL: gchandle.is_released()`.

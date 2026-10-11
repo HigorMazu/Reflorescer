@@ -12,10 +12,10 @@ responsavel: Gustavo
 par: "[[ROADMAP_QA_CODIGO]]"
 descricao: Backlog de implementação da demo (código)
 epicos_total: 13
-epicos_concluidos: 11
-tasks_total: 50
+epicos_concluidos: 10
+tasks_total: 51
 tasks_prontas: 45
-tasks_bloqueadas: 3
+tasks_bloqueadas: 4
 tasks_liberadas: 0
 ---
 # Roadmap de Desenvolvimento — Código (Gustavo)
@@ -349,7 +349,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído (11/10) — cadeia completa validada por script com os portais reais, ida e volta (`tools/qa/DemoRunCheck.gd` (89 verificações, 0 falhas)). A partida jogada à mão, com combate de verdade, fica no C12-T2.
 
-> [!success]- EPIC-C09 — Save, Checkpoint e Respawn — ✅ Concluído · 🟡 Média
+> [!warning]- EPIC-C09 — Save, Checkpoint e Respawn — 🔄 Em andamento (visual do checkpoint) · 🟡 Média
 > *Pronto quando*: uma habilidade desbloqueada persiste em disco mesmo sem passar por um checkpoint depois, e existe uma decisão explícita (implementada ou documentada como "fora de escopo") sobre o fluxo de Continuar.
 >
 > > [!success]- Task C09-T0 — Regressão básica (antes de mexer)
@@ -375,6 +375,13 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - **Verificação (28/09, headless):** menu → Novo jogo → guardar espada + checkpoint + restaurar + salvar → morrer → Tentar de novo → menu → Continuar: cena, posição, espada, dash, checkpoint e área restaurada voltam; na arena, o Korrag já derrotado não reaparece.
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
+>
+> > [!failure]- Task C09-T3 — Visual do checkpoint apagado/ativado
+> > - [ ] Trocar os `ColorRect` placeholder (`FlagPole`/`Flag`) dos 5 checkpoints pela arte do Higor ([[ROADMAP_ARTE]] A05-T5).
+> > - [ ] `Checkpoint.cs`: mostrar o estado **apagado** antes de tocar e **ativado** depois; ao continuar um save, os checkpoints em `ActivatedCheckpoints` já nascem ativados (o `SaveManager.ApplySaveData` já seta `Activated = true`; falta o visual reagir a isso).
+> > - **Origem (11/10):** achado na revisão de arte (item 4). Hoje o checkpoint funciona, mas o visual não muda ao ser tocado.
+> >
+> > Status: não iniciado (11/10) — ⛔ bloqueado: aguarda a arte da [[ROADMAP_ARTE]] A05-T5.
 
 > [!success]- EPIC-C10 — HUD e UX — ✅ Concluído · 🟡 Média
 > *Pronto quando*: um prompt visual aparece ao chegar perto de um `IInteractable` (sem precisar apertar nada), e a decisão sobre Game Over foi tomada e implementada.
@@ -441,7 +448,14 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > - **Nota (05/10) — entrega do Higor (commit `f282c1b`):** chegaram só arquivos novos: Faísca (`FaiscaSpriteFrames.tres` + 12 PNGs), cenário tropical (fundo, faixas de chão, plataformas, brotos), `TropicalBackdrop.tscn`, shader de folhagem e o painel `ArtReview`. Fundo e restauração já integrados nas 4 áreas (ver `EPIC-C13` e C02-T4). **Não vieram** as edições em arquivos existentes que o README dele descreve: os 11 PNGs do Kairo sem a Faísca embutida (por isso continua aparecendo Faísca duplicada em jogo), o `Faisca.tscn` usando o sprite novo e a textura da luz, e o `TestLevel` com o cenário. Pedir pro Higor subir.
 > >
-> > Status: em andamento (05/10) — Kairo e Korrag conferidos nos arquivos (28/09); fundo e restauração do Higor integrados nas 4 áreas (05/10). Faltam o sprite da Faísca, os PNGs do Kairo corrigidos e o resto da arte.
+> > - **Nota (11/10) — rodada de integração das entregas de 05/10 a 09/10:** tudo o que o Higor entregou está integrado e o [[ROADMAP_QA_INTEGRACAO]] foi rodado: A00 a A06 passam, exceto as pendências abaixo. Faísca com sprite próprio, Kairo sem a Faísca embutida, inimigos, Korrag v3, espada v11/v12, dash, cenário das 4 áreas, HUD e tela de título aprovados pelo Gustavo (item 4 da revisão). Evidências: `tools/qa/DemoRunCheck.gd` (89/89), `CombatCheck.gd` (35/35), `DosselReachCheck.gd`, `FpsCheck.gd` (60 FPS médios nas 4 áreas).
+> > - **Pendências abertas (cada uma cadastrada no roadmap):**
+> >   - Higor entregar: wall slide legível ([[ROADMAP_ARTE]] A01-T3), contraste da dica da tela de título (A06-T5), bandeira de checkpoint (A05-T5).
+> >   - Higor validar: playtest manual do indicador da espada ([[ROADMAP_QA_INTEGRACAO]] A06-T4) e do menu pelo teclado (A06-T5).
+> >   - Gustavo: trocar o visual do checkpoint quando a arte chegar (C09-T3).
+> >   - Áudio: nenhum dos 12 `.wav` existe ainda (C11-T2) — bloqueia o [[ROADMAP_QA_INTEGRACAO]] A07.
+> >
+> > Status: em andamento (11/10) — integração em dia com tudo que foi entregue até 09/10; segue aberta até chegarem as 3 entregas pendentes do Higor e o áudio.
 
 > > [!success]- Task C12-T4 — Travamento aleatório do runtime .NET (`gchandle.is_released`)
 > > - [x] Reduzir a chance do travamento no jogo (ver hipóteses abaixo) e medir de novo com `CombatCheck.gd -- --stress`.
