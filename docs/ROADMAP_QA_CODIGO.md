@@ -337,8 +337,11 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [x] Carregar um save feito em outra área troca de cena automaticamente.
 > > - **Achado da auditoria (15/09):** `LoadGame()` existe isolado, nada o chama. `ApplySaveData()` não chama `SceneManager.LoadScene()`.
 > > - **Nota (28/09):** decidido "menu inicial com Continuar". Testar: com save, o menu mostra Continuar; Continuar volta à cena e posição salvas; salvar na arena e continuar abre a arena (troca de cena automática).
+> > - [x] Salvar → Menu inicial → Continuar **no mesmo processo** (sem fechar o jogo) não trava.
+> > - **Investigação (11/10) — crash `gchandle.is_released()` relatado pelo Higor (`docs/art-review/title-save-reload-diagnostic.txt`):** não reproduz no projeto real. Testado no Godot .NET 4.7.2 com renderização e `GC.Collect()` forçado a cada troca de cena: (1) Novo jogo → Pausa → Salvar → Menu inicial → Continuar, 5 ciclos; (2) salvar → menu/cena vazia → `ContinueGame`, 10 ciclos; (3) as 4 áreas, 2 voltas. Zero travamentos e zero erros. Hipótese: efeito do projeto-cópia isolado (`ReflorescerTitleQA`) que o Higor usou no teste, não do jogo. Regressão automatizada em `tools/qa/SaveReloadCheck.gd` (faz backup e devolve o `save_0.json`). Se voltar a aparecer jogando, anotar a sequência exata aqui.
+> > - **Nota (11/10):** depois de um `git pull` com arte nova, rodar `--headless --import` (ou abrir o editor) antes dos testes por script; sem isso os PNGs novos não carregam e o `Player.tscn` falha.
 > >
-> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): menu com Continuar; Continuar volta à cena/posição salvas, inclusive na arena (sem o Korrag, com dash) e depois de fechar/reabrir o jogo.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): menu com Continuar; Continuar volta à cena/posição salvas, inclusive na arena (sem o Korrag, com dash) e depois de fechar/reabrir o jogo. Revalidado em 11/10 (Claude, por script): save/recarga no mesmo processo nas 4 áreas sem crash.
 
 > [!success]- EPIC-C10 — HUD e UX — ✅ Passa · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — prompt de interação contínuo funcionando, e decisão sobre Game Over tomada e implementada.
