@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-05
+atualizado: 2026-10-11
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
@@ -12,9 +12,9 @@ responsavel: Gustavo
 par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 13
-epicos_concluidos: 10
+epicos_concluidos: 11
 tasks_total: 49
-tasks_prontas: 39
+tasks_prontas: 44
 tasks_bloqueadas: 3
 ---
 # Roadmap de QA — Código (Reflorescer)
@@ -197,6 +197,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [x] O boss ainda usa o ataque melee genérico em alguma situação (variedade, não só os ataques especiais).
 > > - **Achado da auditoria (15/09):** `StartCharge()`/`ExecuteCharge()`/`PerformStomp()` já existem em `JavaliBoss.cs`, mas nenhum estado os chama — só `BossBase.PerformAttack()` (hitbox melee genérica) está em uso.
 > > - **Nota (05/10) — revalidar o enraged:** o enraged caía em valores padrão (mais fraco que a fase 2). Corrigido com `JavaliPhase3.tres` (ver [[ROADMAP_DEV]] C06-T1). Ao rodar a C06-T0 de novo, conferir que abaixo de 20% de HP o Korrag fica visivelmente mais rápido e ataca com mais frequência que na fase 2.
+> > - **Revalidado (11/10, script):** no Covil, o enraged entra com ≤20% e usa cooldown 1,0 s / velocidade 140, contra 1,2 s / 120 da fase 2 (fase 1: 2,0 s). Falta só ver na luta jogada se a diferença é perceptível.
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
@@ -278,36 +279,37 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 
-> [!warning]- EPIC-C13 — Construção das 4 Áreas da Demo (Floresta Tropical) — 🟡 Parcial · 🔴 Bloqueante
+> [!success]- EPIC-C13 — Construção das 4 Áreas da Demo (Floresta Tropical) — ✅ Passa · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — as 4 cenas existem, encadeadas na ordem certa, e o novo jogo começa no Sopé da Mata.
 >
-> > [!warning]- Task C13-T1 — Sopé da Mata (entrada)
-> > - [ ] A cena existe, o Kairo spawna no `Marker2D` de entrada, câmera com limites corretos, inimigos e ponto de restauração presentes.
+> > [!success]- Task C13-T1 — Sopé da Mata (entrada)
+> > - [x] A cena existe, o Kairo spawna no `Marker2D` de entrada, câmera com limites corretos, inimigos e ponto de restauração presentes.
 > >
-> > Status: 🟡 parcial — limites de câmera aplicados (0..2400, -200..520) e ponto de restauração funcionando (teste em execução por script no Godot (05/10, Claude)). Falta jogar a área à mão: spawn do Novo jogo e inimigos.
+> > Status: ✅ passa — por script no Godot em 11/10 (Claude, `tools/qa/DemoRunCheck.gd`, 89 verificações, 0 falhas): Novo jogo pelo botão do menu nasce no `SpawnInicial` em pé no chão; câmera (0, -200, 2400, 720); 2 Voadores, 2 Rápidos, 1 Robusto; prompt `[E] Restaurar` aparece, E restaura e o prompt some.
 >
-> > [!warning]- Task C13-T2 — Dossel Vivo (verticalidade)
-> > - [ ] A cena existe, plataforming vertical navegável, mais Voadores que o Sopé da Mata, ponto de restauração presente.
-> > - [ ] Chegando do Sopé da Mata, o Kairo entra no `Marker2D` certo.
+> > [!success]- Task C13-T2 — Dossel Vivo (verticalidade)
+> > - [x] A cena existe, plataforming vertical navegável, mais Voadores que o Sopé da Mata, ponto de restauração presente.
+> > - [x] Chegando do Sopé da Mata, o Kairo entra no `Marker2D` certo.
 > >
-> > Status: 🟡 parcial — a cena existe, 4 Voadores contra 2 no Sopé, e a transição do Sopé aponta pro marker certo (headless, 05/10). Teste em jogo pendente, principalmente o alcance de todos os galhos.
+> > Status: ✅ passa — por script no Godot em 11/10 (Claude). Alcance: um bot com a física real (`tools/qa/DosselReachCheck.gd`) subiu os 12 saltos do chão ao `TopBranch` **só com pulo simples**; a saída pro Igarapé fica em cima do galho do topo. Percurso (`tools/qa/DemoRunCheck.gd`, 89 verificações, 0 falhas): entra no `SpawnFromSopeDaMata`, 4 Voadores contra 2, restauração ok, ida e volta pro Sopé caem nos markers certos e o ponto continua restaurado.
 >
-> > [!warning]- Task C13-T3 — Igarapé Sufocado (hazard de lama)
+> > [!success]- Task C13-T3 — Igarapé Sufocado (hazard de lama)
 > > - [x] A cena existe, o `MudHazard` reduz a velocidade do Kairo dentro da área e para de reduzir ao sair.
-> > - [ ] Mais Robustos/Rápidos que as áreas anteriores, ponto de restauração com contraste "antes/depois" visível.
-> > - [ ] Chegando do Dossel Vivo, o Kairo entra no `Marker2D` certo.
+> > - [x] Mais Robustos/Rápidos que as áreas anteriores, ponto de restauração com contraste "antes/depois" visível.
+> > - [x] Chegando do Dossel Vivo, o Kairo entra no `Marker2D` certo.
 > >
-> > Status: 🟡 parcial — a lama aplica o multiplicador 0.55 dentro e volta a 1.0 fora, e a restauração funciona (teste em execução por script no Godot (05/10, Claude)). Falta jogar a área à mão e a transição vinda do Dossel.
+> > Status: ✅ passa — por script no Godot em 11/10 (Claude, `tools/qa/DemoRunCheck.gd`, 89 verificações, 0 falhas): as 3 poças dão x0,55 dentro e x1,0 fora; 3 Robustos + 2 Rápidos (contra 3 no Sopé e 1 no Dossel); restauração ok (contraste visual aprovado pelo Higor em 08/10); ida e volta pelo Dossel nos markers certos.
 >
-> > [!warning]- Task C13-T4 — Covil de Korrag (arena do boss)
-> > - [ ] A cena existe, sem inimigos comuns, o Korrag ativa normalmente (`EPIC-C06-T0`), chegando do Igarapé Sufocado o Kairo entra no `Marker2D` certo.
+> > [!success]- Task C13-T4 — Covil de Korrag (arena do boss)
+> > - [x] A cena existe, sem inimigos comuns, o Korrag ativa normalmente (`EPIC-C06-T0`), chegando do Igarapé Sufocado o Kairo entra no `Marker2D` certo.
 > >
-> > Status: 🟡 parcial — cena nova `CovilDeKorrag.tscn` (a `BossArena` ficou como teste), sem inimigo comum, e a transição do Igarapé aponta pro marker certo (headless, 05/10). Falta lutar com o Korrag nela.
+> > Status: ✅ passa — por script no Godot em 11/10 (Claude, `tools/qa/DemoRunCheck.gd`, 89 verificações, 0 falhas): entra no `SpawnFromIgarapeSufocado` em pé no chão; sem inimigos comuns nem restauração; o Korrag ativa com o Kairo por perto. A luta foi feita com dano aplicado pelo script, não com a espada; a luta jogada fica no C12-T2.
 >
-> > [!warning]- Task C13-T5 — Encadear e validar a demo inteira
-> > - [ ] Novo jogo → Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag → derrotar o Korrag → dash desbloqueado, sem cair fora do mundo nem spawn errado em nenhuma transição.
+> > [!success]- Task C13-T5 — Encadear e validar a demo inteira
+> > - [x] Novo jogo → Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag → derrotar o Korrag → dash desbloqueado, sem cair fora do mundo nem spawn errado em nenhuma transição.
+> > - **Achado (11/10) — erro do motor a cada transição:** `Removing a CollisionObject node during a physics callback` (o `TransitionTrigger` trocava de cena dentro do `AreaEntered`). Corrigido com `CallDeferred` (ver [[ROADMAP_DEV]] C13-T5); o percurso roda sem nenhum erro do motor.
 > >
-> > Status: 🟡 parcial — as 5 transições da cadeia apontam pra markers existentes e o Novo jogo aponta pro Sopé da Mata (headless, 05/10). O percurso jogado de ponta a ponta continua pendente.
+> > Status: ✅ passa — por script no Godot em 11/10 (Claude, `tools/qa/DemoRunCheck.gd`, 89 verificações, 0 falhas): Novo jogo → Sopé → Dossel → Igarapé → Covil pelos portais reais, com as voltas Dossel→Sopé e Igarapé→Dossel; em todas as 7 transições o Kairo nasce no x do marker, em pé no chão e dentro do mundo. Korrag: fase 2 com ≤50%, enraged com ≤20%, `BossDefeated` uma vez, Dash desbloqueado uma vez, notificação "Nova habilidade: Dash". Teste dirigido: não mede dificuldade, sensação nem FPS (C12-T2/A07).
 
 > [!success]- EPIC-C09 — Save, Checkpoint e Respawn — ✅ Passa · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — habilidade desbloqueada persiste em disco imediatamente, e existe uma decisão explícita sobre o fluxo de Continuar.

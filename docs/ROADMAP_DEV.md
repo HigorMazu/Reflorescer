@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-05
+atualizado: 2026-10-11
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
@@ -12,7 +12,7 @@ responsavel: Gustavo
 par: "[[ROADMAP_QA_CODIGO]]"
 descricao: Backlog de implementação da demo (código)
 epicos_total: 13
-epicos_concluidos: 10
+epicos_concluidos: 11
 tasks_total: 49
 tasks_prontas: 44
 tasks_bloqueadas: 3
@@ -285,7 +285,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 
-> [!info]- EPIC-C13 — Construção das 4 Áreas da Demo (Floresta Tropical) — 🔄 Em andamento · 🔴 Bloqueante
+> [!success]- EPIC-C13 — Construção das 4 Áreas da Demo (Floresta Tropical) — ✅ Concluído · 🔴 Bloqueante
 > *Pronto quando*: as 4 cenas da demo existem e estão encadeadas na ordem certa — Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag —, cada uma com o conteúdo mínimo da sua identidade (ver [[🌍 Mundo e Biomas#As 4 áreas da demo (dentro da Floresta Tropical)|Mundo e Biomas]]), substituindo o `TestLevel`/`BossArena` isolados como o percurso real da demo.
 >
 > Épico novo, adicionado em 29/09/2026: a demo deixou de ser Floresta Tropical → Deserto → Tundra e virou 4 áreas dentro da própria Floresta Tropical, estilo Hollow Knight (ver [[Projetos/Reflorescer/🗳️ Decisões e Configuração|Decisões e Configuração]]). Pode começar com placeholder (TileMap simples, `ColorRect`), igual o `TestLevel` hoje — a arte final do Higor entra depois por cima ([[ROADMAP_ARTE]] `EPIC-A05`), sem exigir remontar a cena.
@@ -298,7 +298,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 >
 > **Melhoria (05/10) — fundo tropical do Higor nas 4 áreas:** cada cena instancia `scenes/art/TropicalBackdrop.tscn` (parallax + partículas no ar, só visual) logo depois do `Background`, que passou a `z_index = -30` pra ficar atrás dele (o backdrop é -20). A área das partículas (`Motes`) foi ajustada ao tamanho de cada cena. Com a escala de parallax do Higor (0.18/0.12), a imagem cobre a tela inteira em todos os limites de câmera.
 >
-> > [!info]- Task C13-T1 — Sopé da Mata (entrada)
+> > [!success]- Task C13-T1 — Sopé da Mata (entrada)
 > > - [x] Criar `scenes/areas/SopeDaMata.tscn`: `TileMap`/geometria placeholder, limites de câmera, `Marker2D` de spawn inicial do Kairo (novo jogo começa aqui).
 > > - [x] Instanciar 1-2 exemplares de cada arquétipo comum, em densidade baixa (área introdutória).
 > > - [x] Instanciar 1 `RestorationPoint` com degradação leve (`DegradedVisuals`/`RestoredVisuals` com o placeholder atual).
@@ -306,18 +306,18 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - **Nota (05/10):** 2400×720 px, horizontal: chão com um degrau (onde fica o ponto de restauração), uma vala rasa e 3 plataformas. Checkpoint `cp_sope_01` logo no começo. Inimigos: 1 Robusto, 2 Voadores, 2 Rápidos. `Marker2D`s: `SpawnInicial` e `SpawnFromDosselVivo` (perto da saída, pra quem volta).
 > > - **Melhoria (05/10) — limites de câmera por área:** a câmera do Kairo não tinha limite nenhum. O `AreaController` ganhou `UseCameraLimits` + `CameraLimits` (`Rect2I`) e aplica na câmera do Player no `_Ready`. As 4 áreas usam, e o `TestLevel`/`BossArena` continuam sem limite. Os limites precisam ter pelo menos 1280×720 (o tamanho da tela).
 > >
-> > Status: implementado (05/10) — conferido headless (cena carrega, markers e transição ok). Falta o teste em jogo (QA C13-T1).
+> > Status: ✅ concluído (11/10) — QA C13-T1 passa por script com a física real e a arte do Higor (`tools/qa/DemoRunCheck.gd` (89 verificações, 0 falhas)): Novo jogo nasce no `SpawnInicial` em pé no chão, câmera com limites, 5 inimigos, restauração com prompt. Sensação de jogo fica pro playtest (C12-T2/A07).
 >
-> > [!info]- Task C13-T2 — Dossel Vivo (verticalidade)
+> > [!success]- Task C13-T2 — Dossel Vivo (verticalidade)
 > > - [x] Criar `scenes/areas/DosselVivo.tscn`: geometria com foco em plataforming vertical (plataformas soltas, sem chão contínuo).
 > > - [x] Maior densidade do arquétipo Voador em relação ao Sopé da Mata.
 > > - [x] Instanciar 1 `RestorationPoint` com degradação moderada.
 > > - [x] `TransitionTrigger`s de entrada (do Sopé da Mata) e saída (pro Igarapé Sufocado), com os `Marker2D` correspondentes.
 > > - **Nota (05/10):** 1600×1440 px. Entra embaixo à esquerda e sobe em zigue-zague por 11 galhos (degraus de ~76px) até o galho do topo à direita, onde fica a saída. Tem chão de mata embaixo só pra quem cair não sair do mundo (não existe zona de morte por queda). Dois troncos (`TrunkA`/`TrunkB`) formam uma chaminé de 132px pra subir no pulo de parede (atalho opcional). Inimigos: 4 Voadores pela subida e 1 Rápido embaixo. Checkpoint `cp_dossel_01` na base.
 > >
-> > Status: implementado (05/10) — conferido headless. Falta o teste em jogo, principalmente se todos os galhos se alcançam com pulo simples ou duplo (QA C13-T2).
+> > Status: ✅ concluído (11/10) — QA C13-T2 passa: os 12 saltos do chão ao galho do topo são alcançáveis **só com pulo simples**, testado por um bot com a física real do Kairo (`tools/qa/DosselReachCheck.gd`); entrada/volta pelos markers certos (`tools/qa/DemoRunCheck.gd` (89 verificações, 0 falhas)).
 >
-> > [!info]- Task C13-T3 — Igarapé Sufocado (mata alagada e degradada)
+> > [!success]- Task C13-T3 — Igarapé Sufocado (mata alagada e degradada)
 > > - [x] Criar `scenes/areas/IgarapeSufocado.tscn`: geometria de mata baixa alagada.
 > > - [x] Novo componente `MudHazard` (`Area2D`): reduz `CurrentMoveSpeed` do Kairo por um multiplicador enquanto ele estiver dentro da área — primeiro hazard de terreno do jogo, código novo e pequeno.
 > > - [x] Maior densidade dos arquétipos Robusto/Rápido em relação às áreas anteriores.
@@ -326,24 +326,26 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - **Nota (05/10) — `MudHazard`:** `scripts/world/MudHazard.cs`, `Area2D` com máscara 2 (corpo do Kairo). Ao entrar chama `PlayerController.SetTerrainSpeedModifier(this, SpeedMultiplier)` e ao sair chama `ClearTerrainSpeedModifier`. `SpeedMultiplier` padrão 0.55 (provisório). Com duas poças sobrepostas vale a mais lenta. Só afeta a corrida (`CurrentMoveSpeed`): pulo, dash e pulo de parede ficam iguais, então dá pra atravessar a lama pulando ou por cima dos troncos.
 > > - **Nota (05/10) — cena:** 2800×720 px, chão contínuo com 3 poças de lama e 3 troncos flutuando por cima. Inimigos: 3 Robustos, 2 Rápidos e 1 Voador. Checkpoints `cp_igarape_01` (começo) e `cp_igarape_02` (logo antes da saída pro boss).
 > >
-> > Status: implementado (05/10) — estrutura conferida headless. O `MudHazard` ainda não rodou (precisa do Build no editor). Falta o teste em jogo (QA C13-T3).
+> > Status: ✅ concluído (11/10) — QA C13-T3 passa (`tools/qa/DemoRunCheck.gd` (89 verificações, 0 falhas)): as 3 poças aplicam x0,55 dentro e voltam a x1,0 fora; 5 Robustos/Rápidos contra 2 e 1 das áreas anteriores; entrada e volta pelo Dossel nos markers certos.
 >
-> > [!info]- Task C13-T4 — Covil de Korrag (arena do boss)
+> > [!success]- Task C13-T4 — Covil de Korrag (arena do boss)
 > > - [x] Decidir: renomear/adaptar a `BossArena.tscn` existente pra virar a cena final (chão revirado pelas escavações do javali, sem inimigos comuns), ou criar uma cena nova e aposentar a `BossArena` de teste.
 > > - [x] `TransitionTrigger` de entrada (do Igarapé Sufocado) — sem saída, a demo termina aqui.
 > > - [x] Sem `RestorationPoint` nesta área — é a arena do boss, não um trecho de exploração.
 > > - **Decisão (05/10) — cena nova, `BossArena` fica como teste:** `scenes/areas/CovilDeKorrag.tscn` é a arena da demo. A `BossArena` continua ligada ao `TestLevel` como par de teste isolado, igual ele. A arena nova tem 1280 px de largura (a `BossArena` tinha 800, menos que a tela, e com o limite de câmera isso não fecharia), chão com montes de terra revirada (placeholder), checkpoint `cp_covil_01` na entrada e nenhum `TransitionTrigger` de saída.
 > > - **Nota (05/10):** "entrada do Igarapé Sufocado" = o `Marker2D` `SpawnFromIgarapeSufocado`, já que não há volta. Sem trigger de retorno: depois de entrar, o jogador fica na arena até derrotar o Korrag.
 > >
-> > Status: implementado (05/10) — conferido headless. Falta o teste em jogo (QA C13-T4).
+> > Status: ✅ concluído (11/10) — QA C13-T4 passa (`tools/qa/DemoRunCheck.gd` (89 verificações, 0 falhas)): entrada no marker certo, sem inimigos comuns nem restauração, Korrag ativa, passa pelas 3 fases, morre uma vez e libera o Dash.
 >
-> > [!info]- Task C13-T5 — Encadear e validar a demo inteira
-> > - [ ] Conferir a cadeia completa Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag: cada saída cai no `Marker2D` certo da cena seguinte (rodar a Task equivalente do [[ROADMAP_QA_CODIGO]]).
+> > [!success]- Task C13-T5 — Encadear e validar a demo inteira
+> > - [x] Conferir a cadeia completa Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag: cada saída cai no `Marker2D` certo da cena seguinte (rodar a Task equivalente do [[ROADMAP_QA_CODIGO]]).
 > > - [x] Novo jogo (menu inicial) começa no Sopé da Mata; `TestLevel` continua existindo só como cena de teste isolada, fora do percurso da demo.
 > > - **Nota (05/10):** `SaveManager.NewGameScene` agora é `res://scenes/areas/SopeDaMata.tscn` e é a única fonte. `CreateNewSave`, o padrão do `SaveData` e o `GameManager.RestartGame` passaram a usar essa constante (antes cada um tinha `Main.tscn` escrito à mão). O `Main.tscn` (que embrulha o `TestLevel`) continua existindo, só saiu do fluxo do menu.
 > > - **Nota (05/10) — conferência estática:** headless, as 5 transições da cadeia (ida e volta entre Sopé, Dossel e Igarapé, mais a ida pro Covil) apontam pra `Marker2D`s que existem na cena de destino. O percurso jogado de ponta a ponta continua pendente.
 > >
-> > Status: implementado (05/10) — falta a primeira subtask, jogar a cadeia inteira no Godot (QA C13-T5).
+> > - **Bugfix (11/10) — troca de cena dentro do callback de física:** o `TransitionTrigger` chamava `ChangeSceneToFile` direto no `AreaEntered`, e o Godot acusava `Removing a CollisionObject node during a physics callback` a cada transição (7 vezes num percurso). Agora a troca é adiada com `CallDeferred`. Depois disso, o percurso inteiro roda sem nenhum erro do motor.
+> >
+> > Status: ✅ concluído (11/10) — cadeia completa validada por script com os portais reais, ida e volta (`tools/qa/DemoRunCheck.gd` (89 verificações, 0 falhas)). A partida jogada à mão, com combate de verdade, fica no C12-T2.
 
 > [!success]- EPIC-C09 — Save, Checkpoint e Respawn — ✅ Concluído · 🟡 Média
 > *Pronto quando*: uma habilidade desbloqueada persiste em disco mesmo sem passar por um checkpoint depois, e existe uma decisão explícita (implementada ou documentada como "fora de escopo") sobre o fluxo de Continuar.
