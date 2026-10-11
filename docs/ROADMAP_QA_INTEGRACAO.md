@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-07
+atualizado: 2026-10-11
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: arte
@@ -12,10 +12,10 @@ responsavel: Gustavo e Higor
 par: "[[ROADMAP_ARTE]]"
 descricao: Casos de teste da integração código + arte
 epicos_total: 8
-epicos_concluidos: 2
+epicos_concluidos: 4
 tasks_total: 22
-tasks_prontas: 3
-tasks_bloqueadas: 12
+tasks_prontas: 10
+tasks_bloqueadas: 4
 ---
 # Roadmap de QA — Integração (Código + Arte do Higor)
 
@@ -25,54 +25,54 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 
 ---
 
-> [!warning]- EPIC-A00 — Padrões Técnicos — 🟡 Parcial · 🔴 Bloqueante
+> [!success]- EPIC-A00 — Padrões Técnicos — ✅ Passa · 🔴 Bloqueante
 > *Pronto quando*: todo `SpriteFrames` entregue segue canvas e pivô consistentes, e o flip (por escala no Kairo, `FlipH` em inimigos/boss) não distorce a arte.
 >
-> > [!warning]- Task A00-T1 — Formato e consistência
+> > [!success]- Task A00-T1 — Formato e consistência
 > > - [x] Cada `SpriteFrames` entregue usa o mesmo tamanho de canvas em todos os frames de um personagem.
-> > - [ ] Pivô/ancoragem consistente entre animações do mesmo personagem — sem "pulo" de posição ao trocar.
+> > - [x] Pivô/ancoragem consistente entre animações do mesmo personagem — sem "pulo" de posição ao trocar.
 > > - **Verificação (28/09, Claude, pelos arquivos):** Kairo: os 11 quadros têm 180×170. Korrag: os 15 quadros têm 260×180 (as folhas `_sheet.png` são só referência, não entram no `SpriteFrames`). Os dois `SpriteFrames` usam `centered = false` com um offset fixo no nó, então canvas igual = mesma âncora. Um "pulo" só aconteceria se o desenho estiver deslocado dentro do canvas, e isso precisa de olho humano.
 > >
 > > - **Integração (06/10):** Canvas verificados: Kairo 180×170 e Faísca 32×32. Offset visual uniforme de Kairo ajustado para (-45,-65), alinhando os pés à colisão sem mudar física. Aprovação visual pendente. Ver `docs/art-review/README.md` e capturas.
 > >
-> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
+> > Status: ✅ passa (11/10) — sem "pulo" de posição nas trocas de animação, conferido por Gustavo jogando a demo inteira; aprovado.
 >
-> > [!warning]- Task A00-T2 — Flip
-> > - [ ] Kairo: flip por escala não distorce elementos assimétricos da arte final (ex: espada só de um lado).
-> > - [ ] Inimigos/boss: `FlipH` espelha corretamente sem distorcer asas/antenas/elementos assimétricos.
+> > [!success]- Task A00-T2 — Flip
+> > - [x] Kairo: flip por escala não distorce elementos assimétricos da arte final (ex: espada só de um lado).
+> > - [x] Inimigos/boss: `FlipH` espelha corretamente sem distorcer asas/antenas/elementos assimétricos.
 > > - **Achado (28/09):** o sprite do Kairo (`kairo_faisca_*.png`) tem a Faísca desenhada no canto superior direito. Com o flip por escala, ela pula pro outro lado do Kairo a cada virada. Além disso, o companheiro `Faisca.tscn` continua desenhando o placeholder (corpo, asas e luz) e segue o Kairo, então aparecem **duas Faíscas**. Proposta pro Higor: Kairo sem a Faísca no sprite, e a arte da Faísca entregue separada pro `Faisca.tscn` (ver [[ROADMAP_ARTE]] A01-T1 e A03). Flip de inimigos/boss por `FlipH`: ainda não conferido.
 > >
 > > - **Integração (06/10):** Faísca removida dos quadros de Kairo e integrada como companheiro independente. Flip de Kairo testado no Godot .NET. Inimigos/boss não revalidados. Ver `docs/art-review/README.md` e capturas.
 > >
-> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
+> > Status: ✅ passa (11/10) — Kairo com a espada nos dois sentidos aprovado por Gustavo; inimigos conferidos nos dois sentidos (`EnemyIntegrationCheck`, `tools/qa/CombatCheck.gd`).
 
 > [!warning]- EPIC-A01 — Kairo — 🟡 Parcial · 🔴 Bloqueante
 > *Pronto quando*: as animações núcleo substituem o placeholder sem regressão de física, e a Espada de Grama alterna visual corretamente em jogo.
 >
-> > [!warning]- Task A01-T1 — Animações núcleo
-> > - [ ] Trocar o placeholder pelo pacote idle/run/jump/fall/attack/hurt/dead e rodar de novo a Task C01-T2 do [[ROADMAP_QA_CODIGO]] — nenhum comportamento de física deve mudar, só o visual.
+> > [!success]- Task A01-T1 — Animações núcleo
+> > - [x] Trocar o placeholder pelo pacote idle/run/jump/fall/attack/hurt/dead e rodar de novo a Task C01-T2 do [[ROADMAP_QA_CODIGO]] — nenhum comportamento de física deve mudar, só o visual.
 > > - **Verificação (28/09):** idle 2 quadros/5 fps, run 2/8, jump 1, fall 1, attack 3/10 fps (0.3s, igual ao `AttackCooldown`), hurt 1, dead 1. Os nomes batem com o que o `PlayerController` toca.
 > >
 > > - **Integração (06/10):** 11 PNGs limpos; sete nomes, contagens, FPS e loops preservados. Corrigido run_01. Corrida, salto e ataque passaram no teste C#; C01-T2 completo e aprovação artística ainda pendentes. Ver `docs/art-review/README.md` e capturas.
 > >
-> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
+> > Status: ✅ passa (11/10) — partida completa sem regressão de movimento (Gustavo) e `tools/qa/DemoRunCheck.gd` 89/89; arte aprovada.
 >
 > > [!success]- Task A01-T2 — Espada de Grama
 > > - [x] Sprite da espada visível quando ativada, "bandagem" visível quando desativada — nunca os dois ao mesmo tempo.
 > > - [x] Animação de ataque: janela de dano sincronizada com o impacto da estocada, de 0,10 s a 0,20 s após o início do golpe.
 > > - **Dependência dupla:** só testável depois que [[ROADMAP_DEV]] `EPIC-C03` (toggle da espada) **e** [[ROADMAP_ARTE]] `A01-T2` (os 2 visuais) estiverem prontos.
 > >
-> > Status: 🟡 corrigida, aguardando aprovação (08/10) — v9 mantém o punho único, encaixa a guarda durante o ataque e preserva a leitura da lâmina nos três quadros; toggle, bandagem e hitbox seguem aprovados. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
+> > Status: ✅ passa (11/10) — versão atual (lâmina v11, corrida v12) aprovada por Gustavo; janela de dano 0,10–0,20 s e alcance simétrico conferidos em `tools/qa/CombatCheck.gd`. Histórico: (08/10) v9 mantém o punho único, encaixa a guarda durante o ataque e preserva a leitura da lâmina nos três quadros; toggle, bandagem e hitbox seguem aprovados. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 >
 > > [!failure]- Task A01-T3 — Wall grab / wall jump
 > > - [x] Animação integrada e sincronizada com a mecânica ([[ROADMAP_DEV]] `EPIC-C05`).
 > >
-> > Status: 🟡 corrigida, aguardando aprovação (08/10) — o estado real usa o Kairo normal com raspas discretas; entrada, colisão, estado, animação e efeito passaram em `MovementAnimationRuntimeCheck.tscn`. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
+> > Status: 🔧 ajuste pedido (11/10) — mecânica e integração ok, mas no jogo o apoio não se distingue de uma queda (pose de `fall`, raspas invisíveis na escala real). Ver [[ROADMAP_ARTE]] A01-T3 e `docs/art-review/qa-ingame-wallslide-2026-10-11.png`. Histórico: (08/10) o estado real usa o Kairo normal com raspas discretas; entrada, colisão, estado, animação e efeito passaram em `MovementAnimationRuntimeCheck.tscn`. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 >
-> > [!failure]- Task A01-T4 — Dash
+> > [!success]- Task A01-T4 — Dash
 > > - [x] Variação visual integrada e sincronizada com a mecânica ([[ROADMAP_DEV]] `EPIC-C04`).
 > >
-> > Status: 🟡 corrigida, aguardando aprovação (08/10) — o estado real usa o Kairo normal, sem coloração verde, com linhas e poeira; entrada, desbloqueio, estado, animação e efeito passaram em `MovementAnimationRuntimeCheck.tscn`. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
+> > Status: ✅ passa (11/10) — aprovado por Gustavo; captura no jogo em `docs/art-review/qa-ingame-dash-2026-10-11.png`. Histórico: (08/10) o estado real usa o Kairo normal, sem coloração verde, com linhas e poeira; entrada, desbloqueio, estado, animação e efeito passaram em `MovementAnimationRuntimeCheck.tscn`. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 
 > [!success]- EPIC-A02 — Inimigos Comuns — ✅ Passa no escopo da demo
 > *Pronto quando*: os três arquétipos usam recursos próprios com a mesma máquina de estados. Reskins de Deserto/Tundra ficam fora da demo.
@@ -103,11 +103,11 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: ✅ passa (06/10) — animações, estados e luz independentes verificados.
 
-> [!warning]- EPIC-A04 — Boss KORRAG — 🟡 Parcial · 🟠 Alta
+> [!success]- EPIC-A04 — Boss KORRAG — ✅ Passa · 🟠 Alta
 > *Pronto quando*: as transições de fase são claras pro jogador mesmo com `idle` compartilhado, o timing de `charge_windup` bate com o código, e o nome exibido é "Korrag, o Javali".
 >
-> > [!warning]- Task A04-T1 — Obrigatórios
-> > - [ ] Transições de fase ([[ROADMAP_QA_CODIGO]] `C06-T0`) comunicam claramente ao jogador que o boss mudou de fase, mesmo com `idle` compartilhado.
+> > [!success]- Task A04-T1 — Obrigatórios
+> > - [x] Transições de fase ([[ROADMAP_QA_CODIGO]] `C06-T0`) comunicam claramente ao jogador que o boss mudou de fase, mesmo com `idle` compartilhado.
 > > - [x] Quando `StartCharge()`/`PerformStomp()` forem ligados ([[ROADMAP_DEV]] `EPIC-C06-T1`): `charge_windup` cabe no ~1s fixo antes da investida disparar.
 > > - [x] Animação `defeated` aparece após `dead`, durante o fade, sem emitir vitória novamente.
 > > - [x] Nome exibido em qualquer UI usa "Korrag, o Javali", não "Javali das Ruínas".
@@ -116,7 +116,7 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - **Correção (08/10):** `phase2_transition` agora tem 3 quadros; `enraged_transition`, 2; `dead`, 3. `charge` e `stomp` são animações próprias chamadas pelas ações correspondentes. O quadro com a perna traseira solta foi removido de `charge_windup` e `stomp`. Todos os 13 estados passaram em `KorragAnimationCheck.gd`.
 > > - **Integração (06/10):** os visuais obrigatórios estão em `KorragSpriteFrames.tres`. A sequência agora é dead por 0,6 s → defeated durante fade de 0,6 s → remoção. Seis verificações passaram em `BossDefeatCheck.tscn`, incluindo emissão única de vitória. Falta o playtest visual das transições de fase.
 > >
-> > Status: 🟡 corrigida, aguardando aprovação (08/10) — integração, chamadas, windup sem membro solto, morte e fade validados; playtest visual continua pendente. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
+> > Status: ✅ passa (11/10) — luta jogada por Gustavo (transições de fase legíveis) e v3 aprovada; fases 2/enraged e vitória única também em `tools/qa/DemoRunCheck.gd`. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 >
 > > [!success]- Task A04-T2 — Opcional
 > > - [x] `enraged_transition` integrada, se entregue.

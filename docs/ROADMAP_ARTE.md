@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-07
+atualizado: 2026-10-11
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: arte
@@ -12,9 +12,9 @@ responsavel: Higor
 par: "[[ROADMAP_QA_INTEGRACAO]]"
 descricao: Backlog de sprites, animação e estilização da demo
 epicos_total: 7
-epicos_concluidos: 3
-tasks_total: 22
-tasks_prontas: 8
+epicos_concluidos: 5
+tasks_total: 24
+tasks_prontas: 20
 tasks_bloqueadas: 0
 tasks_liberadas: 0
 ---
@@ -33,28 +33,32 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 
 ---
 
-> [!warning]- EPIC-A00 — Padrões Técnicos de Entrega — 🔄 Em andamento · 🔴 Bloqueante
+> [!success]- EPIC-A00 — Padrões Técnicos de Entrega — ✅ Concluído · 🔴 Bloqueante
 > *Pronto quando*: o formato de entrega está combinado com o Gustavo, e toda arte entregue a partir daqui segue canvas consistente, pivô consistente e a convenção de flip por personagem.
 >
 > Ler antes de desenhar qualquer frame — não é conteúdo, é a base que evita retrabalho em todo o resto.
 >
-> > [!warning]- Task A00-T1 — Formato e consistência
-> > - [ ] Formato de entrega combinado com o Gustavo: sequência de frames numerados (`kairo_idle_00.png`, `kairo_idle_01.png`...) **ou** spritesheet única fatiada no editor do Godot (`SpriteFrames` → "Add frames from Sprite Sheet").
+> > [!success]- Task A00-T1 — Formato e consistência
+> > - [x] Formato de entrega combinado com o Gustavo: sequência de frames numerados (`kairo_idle_00.png`, `kairo_idle_01.png`...) **ou** spritesheet única fatiada no editor do Godot (`SpriteFrames` → "Add frames from Sprite Sheet").
 > > - [x] Todo frame de um mesmo personagem usa o **mesmo tamanho de canvas** (senão ele "pula" de posição ao trocar de animação).
-> > - [ ] Ponto de pivô/ancoragem consistente entre animações (recomendado: base dos pés).
+> > - [x] Ponto de pivô/ancoragem consistente entre animações (recomendado: base dos pés).
 > > - [x] Nomes de animação exatos e minúsculos, batendo com a tabela de cada Épico abaixo (case-sensitive).
 > >
 > > - **Integração (06/10):** Canvas verificados: Kairo 180×170 e Faísca 32×32. Offset visual uniforme de Kairo ajustado para (-45,-65), alinhando os pés à colisão sem mudar física. Aprovação visual pendente. Ver `docs/art-review/README.md` e capturas.
 > >
-> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
+> > - **Aprovação (11/10):** formato adotado na prática = sequência de frames numerados (`kairo_faisca_idle_00.png`...). Pés alinhados à colisão em todas as animações, sem "pulo" na troca, conferido jogando a demo inteira.
+> >
+> > Status: ✅ concluída (11/10) — Aprovado por Gustavo em 11/10, depois da partida completa da demo.
 >
-> > [!warning]- Task A00-T2 — Flip por personagem
+> > [!success]- Task A00-T2 — Flip por personagem
 > > - [x] Kairo é espelhado por **escala** (`Visual.Scale.X = ±1`), não por flip de textura — evitar elementos fortemente assimétricos que fiquem estranhos espelhados.
-> > - [ ] Inimigos e boss usam `FlipH` tradicional (espelha só a textura) — menos restritivo.
+> > - [x] Inimigos e boss usam `FlipH` tradicional (espelha só a textura) — menos restritivo.
 > >
 > > - **Integração (06/10):** Faísca removida dos quadros de Kairo e integrada como companheiro independente. Flip de Kairo testado no Godot .NET. Inimigos/boss não revalidados. Ver `docs/art-review/README.md` e capturas.
 > >
-> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
+> > - **Aprovação (11/10):** flip dos inimigos conferido nos dois sentidos (`EnemyIntegrationCheck` do Higor e `tools/qa/CombatCheck.gd`); Kairo espelhado com a espada sem distorção.
+> >
+> > Status: ✅ concluída (11/10) — Aprovado por Gustavo em 11/10, depois da partida completa da demo.
 
 > [!warning]- EPIC-A01 — Kairo (protagonista) — 🔄 Em andamento · 🔴 Bloqueante
 > *Pronto quando*: as 7 animações núcleo substituem o placeholder, a Espada de Grama tem os 2 visuais (ativada/desativada), e wall grab/dash têm animação assim que a mecânica correspondente existir no código.
@@ -74,26 +78,30 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > - **Integração (06/10):** 11 PNGs limpos; sete nomes, contagens, FPS e loops preservados. Corrigido `run_01`. Compilação, renderização e teste dirigido dos estados núcleo passaram. A regressão completa C01-T2 fica registrada no roadmap de QA.
 > >
-> > Status: ✅ concluída (06/10) — pacote núcleo entregue e integrado.
+> > Status: ✅ concluída (06/10) — pacote núcleo entregue e integrado. Redesenho sem a Faísca embutida aprovado por Gustavo em 11/10 (partida completa, sem regressão de física).
 >
 > > [!success]- Task A01-T2 — Espada de Grama (2 visuais)
 > > - [x] Espada empunhada (ativada), sprite separado no braço direito.
 > > - [x] "Bandagem" no pulso (desativada), `RightHand/Bandage`.
 > > - **Dependência:** não depende de código pra ser desenhado, só pra ser testado em jogo — depende de [[ROADMAP_DEV]] `EPIC-C03` (toggle da espada) estar implementado antes de validar a troca em tempo real.
 > >
-> > Status: 🟡 corrigida, aguardando aprovação (08/10) — a v9 mantém o cabo na mão direita em todos os quadros, aprofunda a guarda no punho durante o ataque e troca a camada da lâmina para que ela permaneça legível sem criar uma segunda mão. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
+> > - **Aprovação (11/10):** aprovada a versão atual — lâmina longa v11 e empunhadura de corrida v12 (`docs/art-review/ground-and-grip-v1.md`, `sword-long-v11-*.png`, `sword-run-grip-v12.gif`).
+> >
+> > Status: ✅ concluída (11/10) — Aprovado por Gustavo em 11/10, depois da partida completa da demo. Histórico: (08/10) a v9 mantém o cabo na mão direita em todos os quadros, aprofunda a guarda no punho durante o ataque e troca a camada da lâmina para que ela permaneça legível sem criar uma segunda mão. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 >
 > > [!todo]- Task A01-T3 — Wall grab / wall jump
 > > - [x] Animação `wall_slide` integrada como pose própria de apoio na parede.
 > > - **Dependência resolvida (08/10):** [[ROADMAP_DEV]] `EPIC-C05` está concluído e o código procura o estado real de wall slide.
 > >
-> > Status: 🟡 corrigida, aguardando aprovação (08/10) — `wall_slide` usa o Kairo normal e ganhou raspas discretas no ponto de contato. Entrada, colisão, estado e animação passaram no teste de execução. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
+> > - **Ajuste pedido (11/10, Gustavo):** no jogo o wall slide lê como uma queda comum ao lado da parede — o Kairo usa a pose de `fall` e as raspas do contato não aparecem na escala real (captura: `docs/art-review/qa-ingame-wallslide-2026-10-11.png`, tronco do Dossel Vivo). Pedido: deixar o apoio legível — **pose própria** de apoio (mão/pés na parede, coerente com o spritesheet do Kairo) **ou** efeito de contato bem mais visível (raspas/poeira/folhas caindo). A mecânica não muda.
+> >
+> > Status: 🔧 ajuste pedido (11/10). Histórico: (08/10) `wall_slide` usa o Kairo normal e ganhou raspas discretas no ponto de contato. Entrada, colisão, estado e animação passaram no teste de execução. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 >
-> > [!todo]- Task A01-T4 — Variação visual do dash
+> > [!success]- Task A01-T4 — Variação visual do dash
 > > - [x] Animação `dash` integrada com os quadros normais de corrida e squash do impulso.
 > > - **Dependência resolvida (08/10):** [[ROADMAP_DEV]] `EPIC-C04` está concluído e o código já procura `dash`.
 > >
-> > Status: 🟡 corrigida, aguardando aprovação (08/10) — `dash` preserva o Kairo normal, remove a coloração verde e acrescenta linhas de impulso e poeira. Entrada, desbloqueio, estado e animação passaram no teste de execução. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
+> > Status: ✅ concluída (11/10) — Aprovado por Gustavo em 11/10, depois da partida completa da demo (captura no jogo: `docs/art-review/qa-ingame-dash-2026-10-11.png`). Histórico: (08/10) `dash` preserva o Kairo normal, remove a coloração verde e acrescenta linhas de impulso e poeira. Entrada, desbloqueio, estado e animação passaram no teste de execução. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 
 > [!success]- EPIC-A02 — Inimigos Comuns (3 Arquétipos) — ✅ Concluído no escopo da demo
 > **Ajuste solicitado (07/10):** sprites dos três arquétipos ampliados mais 12% em relação à revisão anterior (escala 0,56, total +34,4% ante 0,4166667). Pés alinhados; colisões e stats preservados. Regressão dirigida de combate: 160 verificações passaram. Aprovação visual do novo tamanho pendente.
@@ -144,7 +152,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ concluída (06/10) — animações entregues e integradas à máquina de estados.
 
-> [!warning]- EPIC-A04 — Boss KORRAG — 🟡 Corrigido, aguardando aprovação · 🟠 Alta
+> [!success]- EPIC-A04 — Boss KORRAG — ✅ Concluído · 🟠 Alta
 > *Pronto quando*: `intro`, `charge_windup`, `phase2_transition` e `defeated` estão entregues — escopo já simplificado, fases 1 e 2 compartilham `idle`.
 >
 > Por último — pacote mais isolado e com o escopo já reduzido de propósito (decisão do Gustavo: manter as 2 fases já modeladas por dados, mas simplificar a arte pra caber no tempo).
@@ -162,7 +170,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > > - **Nota:** hoje o boss vira invisível e é destruído 0.3s depois de `Dead` — se `defeated` for mais longa que isso, o Gustavo ajusta esse tempo no código.
 > > - **Correção (08/10):** o spritesheet anterior tinha contaminação de outros personagens, recortes incompletos e estados de um quadro. A v2 entrega 13 estados limpos; `charge` e `stomp` ganharam animações e chamadas próprias, transições e morte receberam sequências, escala aumentada para 0,9 e pés alinhados ao chão.
 > >
-> > Status: 🟡 corrigida, aguardando aprovação (08/10) — integração e testes dirigidos passaram; revisão em `docs/art-review/kairo-korrag-correction-v2.md`.
+> > Status: ✅ concluída (11/10) — Aprovado por Gustavo em 11/10, depois da partida completa da demo e da luta com o Korrag (folha dos 13 estados: `docs/art-review/korrag-animation-v3.png`).
 >
 > > [!success]- Task A04-T2 — Opcional (só se sobrar tempo)
 > > - [x] `enraged_transition`.
@@ -170,9 +178,9 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > - **Integração (06/10):** o recurso contém `enraged_transition` e `BossEnragedState` a toca ao entrar no estado.
 > >
-> > Status: 🟡 corrigida, aguardando aprovação (08/10) — transição refeita com dois quadros coerentes e brilho vermelho controlado.
+> > Status: ✅ concluída (11/10) — Aprovado por Gustavo em 11/10, depois da partida completa da demo. Transição com dois quadros e brilho vermelho controlado.
 
-> [!success]- EPIC-A05 — Cenário das 4 Áreas da Demo (Floresta Tropical) — ✅ Entrega visual concluída
+> [!warning]- EPIC-A05 — Cenário das 4 Áreas da Demo (Floresta Tropical) — 🔄 Em andamento (falta o checkpoint) · 🔴 Bloqueante
 > *Pronto quando*: as 4 áreas têm tileset, background e props temáticos entregues, com identidade visual reconhecível sem precisar de texto, e coerentes entre si (mesmo bioma, mesma paleta-base) — ver [[🌍 Mundo e Biomas#As 4 áreas da demo (dentro da Floresta Tropical)|Mundo e Biomas]].
 >
 > Renomeado em 29/09/2026 (era "Cenário das 3 Áreas da Demo": Floresta Tropical/Deserto/Tundra) — a demo agora fica só na Floresta Tropical, em 4 áreas.
@@ -206,6 +214,15 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > > - [x] Ambientação de arena de boss (mais fechada, foco na luta).
 > >
 > > Status: ✅ entrega visual concluída (08/10) — Higor aprovou fundo de arena e chão revirado (`docs/art-review/covil-visual-v1.md`). O chão revirado passou a usar a mesma base modular das áreas (`docs/art-review/modular-terrain-v1.md`). Teste jogado da luta e FPS permanecem no roadmap de QA.
+>
+> > [!todo]- Task A05-T5 — Bandeira de checkpoint (as 4 áreas)
+> > - [ ] Visual do checkpoint em 2 estados: **apagado** (ainda não tocado) e **ativado** (depois de tocar) — hoje são dois `ColorRect` azuis de placeholder (`FlagPole`/`Flag` dentro de `Interactables/CheckpointN`).
+> > - [ ] Coerente com o bioma (ex.: totem, broto, pedra com musgo que acende) — o checkpoint também salva o jogo, então vale um sinal claro de "salvou".
+> > - [ ] Base na linha do chão; tamanho legível na escala real (a área de colisão é 32×32).
+> > - **Origem (11/10):** achado na revisão de arte do Gustavo — o placeholder aparece no Sopé, Dossel, Igarapé (2) e Covil, 5 checkpoints no total, e não estava em nenhum roadmap. Captura: `docs/art-review/qa-ingame-dash-2026-10-11.png` (bandeira azul à esquerda).
+> > - **Código:** o `Checkpoint.cs` já tem a propriedade `Activated`; a troca de visual entre os 2 estados entra junto com a arte ([[ROADMAP_DEV]]).
+> >
+> > Status: não iniciado (11/10).
 
 > [!success]- EPIC-A06 — UI — ✅ Entrega visual concluída
 > *Pronto quando*: barra de vida, ícone de habilidade e prompt de interação têm arte final substituindo os placeholders do Godot.
@@ -247,9 +264,10 @@ Status: ✅ concluída (07/10) — indicador aprovado por Higor e integrado. Ver
 - [x] Névoa, vaga-lumes, água, movimento suave de cenário e fades.
 - [x] Integração com Novo jogo, Continuar e Sair; espaço para futuras opções.
 - [x] Revisão visual em 1280×720 e 960×540; navegação testada com saves isolados.
-- [ ] Aprovação visual de Higor.
+- [x] Aprovação visual (Gustavo, 11/10).
+- [ ] Ajuste pequeno pedido (11/10): mais contraste na dica "Navegar · Enter Selecionar" do canto inferior direito, hoje quase ilegível sobre o fundo.
 
-Status: 🟡 entregue, aguardando aprovação (09/10). Ver `docs/art-review/title-screen-v1.md`. Falha técnica de salvar/recarregar a fase no mesmo processo reproduzida sem a tela inicial; causa raiz pendente de investigação no código.
+Status: ✅ aprovada (11/10), com um ajuste pequeno pendente. Ver `docs/art-review/title-screen-v1.md`. A falha de salvar/recarregar citada na entrega foi resolvida no código (autoload `ResourceKeeper`, [[ROADMAP_DEV]] C12-T4) — não tinha relação com a tela de título.
 
 ## Ordem de entrega recomendada (resumo)
 
