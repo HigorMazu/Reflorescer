@@ -14,7 +14,7 @@ descricao: Backlog de implementação da demo (código)
 epicos_total: 13
 epicos_concluidos: 11
 tasks_total: 50
-tasks_prontas: 44
+tasks_prontas: 45
 tasks_bloqueadas: 3
 tasks_liberadas: 0
 ---
@@ -443,11 +443,14 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: em andamento (05/10) — Kairo e Korrag conferidos nos arquivos (28/09); fundo e restauração do Higor integrados nas 4 áreas (05/10). Faltam o sprite da Faísca, os PNGs do Kairo corrigidos e o resto da arte.
 
-> > [!failure]- Task C12-T4 — Travamento aleatório do runtime .NET (`gchandle.is_released`)
-> > - [ ] Reduzir a chance do travamento no jogo (ver hipóteses abaixo) e medir de novo com `CombatCheck.gd -- --stress`.
-> > - [ ] Decidir se vale reportar no GitHub do Godot com a reprodução.
+> > [!success]- Task C12-T4 — Travamento aleatório do runtime .NET (`gchandle.is_released`)
+> > - [x] Reduzir a chance do travamento no jogo (ver hipóteses abaixo) e medir de novo com `CombatCheck.gd -- --stress`.
+> > - [ ] Decidir se vale reportar no GitHub do Godot com a reprodução (opcional, não bloqueia a demo).
 > > - **Achado (11/10):** `FATAL: Condition "gchandle.is_released()" is true` em `GodotObject.Finalize()` / `Handle is not initialized` em `SwapGCHandleForType`. É o mesmo erro que o Higor viu ao recarregar o save (09/10) — **não** era efeito do projeto-cópia dele, como foi suposto na C09-T2. Reprodução: `tools/qa/CombatCheck.gd -- --stress` (cria e libera ~40 inimigos com combate) trava quase sempre no mesmo trecho.
 > > - **Causa (11/10):** corrida entre a thread do finalizador do GC do .NET e a thread principal, no Godot 4.7.2 (última versão de manutenção; não há 4.7.3). Forçando `GC.Collect()` + `WaitForPendingFinalizers()` na thread principal a cada inimigo, 6/6 execuções passam; sem isso, quase todas travam. Segurar referências aos `.tres` de stats e `SpriteFrames` **não** resolve sozinho.
 > > - **Hipóteses de mitigação:** (1) GC sincronizado em pontos seguros (troca de cena no `SceneManager`); (2) diminuir lixo de objetos Godot criados por C# (`CreateTimer(...).Timeout += ...` por golpe, `new StyleBoxFlat` a cada `_Draw` no `HealthBar`/`SwordStatusIndicator`); (3) atualizar o Godot quando sair correção. Na partida jogada de 11/10 o Gustavo não viu o travamento: é raro em jogo normal, mas precisa estar resolvido antes do playtest com gente de fora.
 > >
-> > Status: não iniciado (11/10) — causa isolada, reprodução automatizada; correção pendente.
+> > - **Causa exata (11/10, depois):** são os **Resources com script C#** (`EnemyStatsResource`, `BossStatsResource`, `BossPhaseResource`, `PlayerStatsResource`; 16 `.tres` em `resources/`). Quando o último nó que usa um deles é liberado (ex.: o `BasicEnemyStats.tres` herdado do `Enemy_Base.tscn` a cada inimigo morto, ou tudo numa troca de cena), o Godot descarrega o Resource; ao carregar de novo enquanto o finalizador ainda libera o objeto C# antigo, o handle corrompe — às vezes o inimigo nasce sem `StatsResource` ("Using defaults") e logo depois trava. A hipótese (2) foi testada e descartada: trocar os `CreateTimer`/`CreateTween`/`StyleBoxFlat` por versões com `Dispose()` não mudou nada (revertido).
+> > - **Correção (11/10):** autoload `ResourceKeeper` (`scripts/core/ResourceKeeper.cs`), o **primeiro** da lista, carrega todos os `.tres` de `res://resources` uma vez e os mantém vivos (trata o sufixo `.remap` do jogo exportado). Teste novo de estresse `tools/qa/GcStressCheck.gd` (troca de área + inimigos criados/mortos com combate): antes 6/6 travavam; depois 8/8 completas com 24 ciclos (3.840 golpes). Regra pra frente: **todo `.tres` com script C# novo vai em `res://resources/`**, senão fica fora da proteção.
+> >
+> > Status: ✅ concluído (11/10) — travamento eliminado nos testes de estresse; falta só confirmar no jogo exportado quando houver build (o `.remap` foi tratado, mas não testado).

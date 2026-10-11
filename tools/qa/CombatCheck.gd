@@ -3,10 +3,9 @@ extends SceneTree
 ## Usa as ações reais (attack, toggle_sword, move_*, jump) e um Rápido de verdade na frente do Kairo.
 ## A IA do inimigo fica congelada (corpo e EnemyStateMachine parados), só Health/Hurtbox respondem;
 ## antes de cada golpe ele é recolocado no lugar, porque o knockback o empurra pra fora do alcance.
-## O laço de alcance cria e libera dezenas de inimigos; isso expõe uma corrida do runtime .NET do
-## Godot 4.7.2 (finalizador do GC x thread principal -> FATAL gchandle.is_released). Por padrão o teste
-## força o GC na thread principal a cada inimigo pra não travar; `-- --stress` desliga isso e reproduz
-## o travamento (investigação de 11/10, ver ROADMAP_DEV C09-T3).
+## O laço de alcance cria e libera dezenas de inimigos, o que expunha uma corrida do runtime .NET do
+## Godot 4.7.2 (FATAL gchandle.is_released), corrigida pelo autoload ResourceKeeper (ROADMAP_DEV C12-T4).
+## Por padrão o teste ainda força o GC a cada inimigo; `-- --stress` desliga isso (critério da C12-T4).
 ## Rodar: <godot_console.exe> --headless --fixed-fps 60 --path . --script res://tools/qa/CombatCheck.gd
 const SOPE := "res://scenes/areas/SopeDaMata.tscn"
 const RAPIDO := "res://scenes/enemies/Enemy_Rapido.tscn"

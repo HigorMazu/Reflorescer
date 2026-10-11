@@ -17,6 +17,7 @@ config/features=PackedStringArray("4.7", "C#")
 
 [autoload]
 
+ResourceKeeper="*res://scripts/core/ResourceKeeper.cs"
 EventBus="*res://scripts/core/EventBus.cs"
 GameManager="*res://scripts/core/GameManager.cs"
 SceneManager="*res://scripts/core/SceneManager.cs"

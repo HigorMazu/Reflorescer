@@ -14,7 +14,7 @@ descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 13
 epicos_concluidos: 11
 tasks_total: 50
-tasks_prontas: 44
+tasks_prontas: 45
 tasks_bloqueadas: 3
 ---
 # Roadmap de QA — Código (Reflorescer)
@@ -344,7 +344,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - **Achado da auditoria (15/09):** `LoadGame()` existe isolado, nada o chama. `ApplySaveData()` não chama `SceneManager.LoadScene()`.
 > > - **Nota (28/09):** decidido "menu inicial com Continuar". Testar: com save, o menu mostra Continuar; Continuar volta à cena e posição salvas; salvar na arena e continuar abre a arena (troca de cena automática).
 > > - [x] Salvar → Menu inicial → Continuar **no mesmo processo** (sem fechar o jogo) não trava.
-> > - **Correção (11/10, mais tarde):** a hipótese abaixo estava errada. O mesmo crash apareceu no teste de combate e foi isolado: é uma corrida do runtime .NET do Godot 4.7.2, aleatória, que pode acontecer em qualquer troca de cena. Ver C12-T4.
+> > - **Correção (11/10, mais tarde):** a hipótese abaixo estava errada. O mesmo crash apareceu no teste de combate e foi isolado: é uma corrida do runtime .NET do Godot 4.7.2 ao descarregar e recarregar os `.tres` com script C# (troca de cena, inimigos morrendo). Corrigido com o autoload `ResourceKeeper`. Ver C12-T4.
 > > - **Investigação (11/10) — crash `gchandle.is_released()` relatado pelo Higor (`docs/art-review/title-save-reload-diagnostic.txt`):** não reproduz no projeto real. Testado no Godot .NET 4.7.2 com renderização e `GC.Collect()` forçado a cada troca de cena: (1) Novo jogo → Pausa → Salvar → Menu inicial → Continuar, 5 ciclos; (2) salvar → menu/cena vazia → `ContinueGame`, 10 ciclos; (3) as 4 áreas, 2 voltas. Zero travamentos e zero erros. Hipótese: efeito do projeto-cópia isolado (`ReflorescerTitleQA`) que o Higor usou no teste, não do jogo. Regressão automatizada em `tools/qa/SaveReloadCheck.gd` (faz backup e devolve o `save_0.json`). Se voltar a aparecer jogando, anotar a sequência exata aqui.
 > > - **Nota (11/10):** depois de um `git pull` com arte nova, rodar `--headless --import` (ou abrir o editor) antes dos testes por script; sem isso os PNGs novos não carregam e o `Player.tscn` falha.
 > >
@@ -413,11 +413,13 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: 🔴 bloqueado — depende da arte começar a chegar.
 
-> > [!failure]- Task C12-T4 — Sem travamento do runtime .NET
-> > - [ ] `tools/qa/CombatCheck.gd -- --stress` roda 5 vezes seguidas sem `FATAL: gchandle.is_released()`.
-> > - [ ] `SaveReloadCheck.gd` e `DemoRunCheck.gd` continuam passando.
+> > [!success]- Task C12-T4 — Sem travamento do runtime .NET
+> > - [x] `tools/qa/CombatCheck.gd -- --stress` roda 5 vezes seguidas sem `FATAL: gchandle.is_released()`.
+> > - [x] `tools/qa/GcStressCheck.gd` (troca de área + combate, sem GC forçado) completa em várias execuções seguidas.
+> > - [x] `SaveReloadCheck.gd` e `DemoRunCheck.gd` continuam passando.
+> > - [ ] Repetir o `GcStressCheck` no jogo exportado quando houver build.
 > >
-> > Status: 🔴 falha (11/10) — sem mitigação, o `--stress` trava quase sempre. Ver [[ROADMAP_DEV]] C12-T4.
+> > Status: ✅ passa (11/10, Claude) — com o autoload `ResourceKeeper`: `CombatCheck --stress` 5/5 (35/35 cada), `GcStressCheck` 8/8 com 24 ciclos (antes 6/6 travavam), `DemoRunCheck` 89/89 sem erro do motor, `SaveReloadCheck` e `DosselReachCheck` sem falhas. Ver [[ROADMAP_DEV]] C12-T4.
 
 ---
 
