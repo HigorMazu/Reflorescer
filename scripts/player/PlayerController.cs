@@ -448,13 +448,16 @@ namespace Joguim.Player
                 float dir = LastFacingDirection.X;
                 hb.Position = new Vector2(dir > 0 ? 34f : -34f, -12f);
                 hb.Rotation = 0;
+                // A forma tem deslocamento próprio (+25 em x): espelha também, senão à esquerda ela cobre as costas
+                var shape = hb.GetNodeOrNull<CollisionShape2D>("CollisionShape2D");
+                if (shape != null) shape.Position = new Vector2(Mathf.Abs(shape.Position.X) * (dir > 0 ? 1 : -1), shape.Position.Y);
 
                 hb.SetDamage(CurrentAttackDamage);
                 hb.Active = false;
                 hb.Monitoring = false;
                 GetTree().CreateTimer(0.10).Timeout += () =>
                 {
-                    if (!IsInstanceValid(hb) || _attackTimer <= 0) return;
+                    if (!IsInstanceValid(hb) || _attackTimer <= 0 || !HasSword) return;
                     hb.Active = true;
                     hb.Monitoring = true;
                     hb.Monitorable = true;
@@ -554,6 +557,8 @@ namespace Joguim.Player
         {
             HasSword = !HasSword;
             if (GameManager.Instance != null) GameManager.Instance.HasSword = HasSword;
+            // Guardar no meio da estocada cancela o golpe: sem espada não há dano
+            if (!HasSword) FinishAttack();
             GetNodeOrNull<GrassSwordVisual>("Visual/RightArm/RightHand/Sword")?.SetActive(HasSword, true);
             AudioManager.Instance?.PlaySfx(HasSword ? "sword_on.wav" : "sword_off.wav");
             EventBus.Instance?.EmitSignal(EventBus.SignalName.SwordToggled, HasSword);

@@ -13,7 +13,7 @@ par: "[[ROADMAP_QA_CODIGO]]"
 descricao: Backlog de implementação da demo (código)
 epicos_total: 13
 epicos_concluidos: 11
-tasks_total: 49
+tasks_total: 50
 tasks_prontas: 44
 tasks_bloqueadas: 3
 tasks_liberadas: 0
@@ -126,6 +126,8 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - [x] Bloquear `CanAttack()` quando `HasSword == false` (parcialmente já verdade hoje).
 > > - [x] Testar a troca em pleno combate/movimento — sem travar animação/input no meio da troca.
 > > - [x] Rodar de novo a Task C03-T0 pra garantir que nada regrediu.
+> > - **Bugfix (11/10) — hitbox espelhada só pela metade:** a forma da `AttackHitbox` tem deslocamento próprio de +25 px e o código só espelhava a posição da área. Virado pra esquerda, o golpe alcançava pouco e acertava **as costas** (existia desde o protótipo; ficou evidente com a estocada reta do Higor). `PerformAttack()` agora espelha também a forma: alcance de 95 px (centro a centro) dos dois lados, costas protegidas. O lado direito ficou igual ao calibrado pelo Higor.
+> > - **Bugfix (11/10) — golpe saía com a espada guardada:** apertar ataque e Q durante a preparação (0,10 s) ainda abria a janela de dano. Agora `ToggleSword()` encerra o ataque ao guardar e a janela só abre com `HasSword`.
 > > - **Nota (28/09):** o bloqueio já existia (`CanAttack()` exige `HasSword`). Trocar a espada não cancela um golpe em andamento: ele termina a janela de 0.14s normalmente, sem travar animação nem input (verificado no Godot: ataque + Q no mesmo frame, sem erro).
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
@@ -440,3 +442,12 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - **Nota (05/10) — entrega do Higor (commit `f282c1b`):** chegaram só arquivos novos: Faísca (`FaiscaSpriteFrames.tres` + 12 PNGs), cenário tropical (fundo, faixas de chão, plataformas, brotos), `TropicalBackdrop.tscn`, shader de folhagem e o painel `ArtReview`. Fundo e restauração já integrados nas 4 áreas (ver `EPIC-C13` e C02-T4). **Não vieram** as edições em arquivos existentes que o README dele descreve: os 11 PNGs do Kairo sem a Faísca embutida (por isso continua aparecendo Faísca duplicada em jogo), o `Faisca.tscn` usando o sprite novo e a textura da luz, e o `TestLevel` com o cenário. Pedir pro Higor subir.
 > >
 > > Status: em andamento (05/10) — Kairo e Korrag conferidos nos arquivos (28/09); fundo e restauração do Higor integrados nas 4 áreas (05/10). Faltam o sprite da Faísca, os PNGs do Kairo corrigidos e o resto da arte.
+
+> > [!failure]- Task C12-T4 — Travamento aleatório do runtime .NET (`gchandle.is_released`)
+> > - [ ] Reduzir a chance do travamento no jogo (ver hipóteses abaixo) e medir de novo com `CombatCheck.gd -- --stress`.
+> > - [ ] Decidir se vale reportar no GitHub do Godot com a reprodução.
+> > - **Achado (11/10):** `FATAL: Condition "gchandle.is_released()" is true` em `GodotObject.Finalize()` / `Handle is not initialized` em `SwapGCHandleForType`. É o mesmo erro que o Higor viu ao recarregar o save (09/10) — **não** era efeito do projeto-cópia dele, como foi suposto na C09-T2. Reprodução: `tools/qa/CombatCheck.gd -- --stress` (cria e libera ~40 inimigos com combate) trava quase sempre no mesmo trecho.
+> > - **Causa (11/10):** corrida entre a thread do finalizador do GC do .NET e a thread principal, no Godot 4.7.2 (última versão de manutenção; não há 4.7.3). Forçando `GC.Collect()` + `WaitForPendingFinalizers()` na thread principal a cada inimigo, 6/6 execuções passam; sem isso, quase todas travam. Segurar referências aos `.tres` de stats e `SpriteFrames` **não** resolve sozinho.
+> > - **Hipóteses de mitigação:** (1) GC sincronizado em pontos seguros (troca de cena no `SceneManager`); (2) diminuir lixo de objetos Godot criados por C# (`CreateTimer(...).Timeout += ...` por golpe, `new StyleBoxFlat` a cada `_Draw` no `HealthBar`/`SwordStatusIndicator`); (3) atualizar o Godot quando sair correção. Na partida jogada de 11/10 o Gustavo não viu o travamento: é raro em jogo normal, mas precisa estar resolvido antes do playtest com gente de fora.
+> >
+> > Status: não iniciado (11/10) — causa isolada, reprodução automatizada; correção pendente.

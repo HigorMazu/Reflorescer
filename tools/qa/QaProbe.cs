@@ -13,5 +13,11 @@ namespace Joguim.QA
             health.SetInvulnerable(false);
             health.TakeDamage(new DamageInfo(amount, Vector2.Zero, 0f, null));
         }
+
+        // Golpe pelo Hurtbox, como um inimigo faria: respeita os i-frames e aplica knockback.
+        public void Hit(Hurtbox hurtbox, int amount, Vector2 direction)
+        {
+            hurtbox?.ReceiveDamage(new DamageInfo(amount, direction, 200f, null));
+        }
     }
 }

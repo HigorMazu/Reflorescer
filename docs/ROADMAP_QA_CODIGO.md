@@ -13,7 +13,7 @@ par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 13
 epicos_concluidos: 11
-tasks_total: 49
+tasks_total: 50
 tasks_prontas: 44
 tasks_bloqueadas: 3
 ---
@@ -91,33 +91,37 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — Q alterna a espada em tempo real, stats diferentes com espada ativada/desativada, e não dá pra atacar com ela desativada.
 >
 > > [!success]- Task C03-T0 — Regressão de combate básico (baseline antes de mexer)
-> > - [x] Atacar sem inimigo por perto → hitbox ativa 0.14s, sem dano, sem erro no console.
+> > - [x] Atacar sem inimigo por perto → a janela de dano abre depois da preparação (~0,10 s) e dura ~0,10 s, sem dano, sem erro no console. *(Era 0,14 s antes da estocada do Higor, 07/10.)*
 > > - [x] Atacar um inimigo no alcance → recebe 25 de dano, flash vermelho, knockback, hitstop (`TimeScale=0.15` por 0.06s).
+> > - [x] Alcance igual virado pra direita e pra esquerda (95 px centro a centro), e inimigo colado nas costas não é atingido. *(Novo em 11/10, depois do bugfix da hitbox — ver [[ROADMAP_DEV]] C03-T3.)*
 > > - [x] Atacar repetidamente sem soltar o botão → cada inimigo só recebe dano **uma vez** por ativação de hitbox.
 > > - [x] Atacar durante o cooldown (0.30s) → `CanAttack()` falso, ataque não sai.
 > > - [x] Tomar dano de um inimigo → HP cai, knockback, 1s de invulnerabilidade, shake visual.
 > > - [x] Tomar dano durante a invulnerabilidade pós-hit → segundo hit ignorado.
 > >
-> > Status: ✅ passa — baseline revalidada em 28/09 depois da EPIC-C03 (Gustavo).
+> > Status: ✅ passa — baseline revalidada em 28/09 depois da EPIC-C03 (Gustavo). Revalidada em 11/10 com a estocada nova, por script (`tools/qa/CombatCheck.gd`, 35 verificações, 0 falhas em 3 execuções); a hitbox espelhada pela metade foi corrigida nesta rodada.
 >
 > > [!success]- Task C03-T1 — Toggle da espada (Q)
 > > - [x] Apertar Q alterna `HasSword` e a visibilidade do sprite da espada/bandagem.
 > > - **Achado da auditoria (15/09):** `SetSwordVisible()` existe mas nunca é chamado depois do `_Ready()` — não há input ligado a ele ainda.
 > >
-> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo). HUD e tom verde mostram o estado; o estado se mantém ao trocar de cena.
+> > - **Critério atualizado (11/10):** o tom verde no sprite saiu (Higor, 07/10). O estado agora aparece na lâmina (estende/recolhe), na bandagem no pulso (só com a espada guardada) e no indicador do HUD.
+> >
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo). Revalidado em 11/10 por script (`tools/qa/CombatCheck.gd`, 35 verificações, 0 falhas em 3 execuções): Q recolhe a lâmina, mostra a bandagem, atualiza o HUD, sem tom verde, estado guardado no `GameManager`.
 >
 > > [!success]- Task C03-T2 — Stats duplos
 > > - [x] Com a espada desativada: +velocidade, +pulo, sem ataque.
 > > - **Achado da auditoria (15/09):** só existe um conjunto de stats em `PlayerStatsResource`, sem variante "sem espada".
 > >
-> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo). Espada guardada: visivelmente mais rápido e mais alto, sem ataque.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo). Espada guardada: visivelmente mais rápido e mais alto, sem ataque. Revalidado em 11/10 por script: corrida 240 contra 200, pulo -520 contra -460.
 >
 > > [!success]- Task C03-T3 — Bloqueio e regressão final
 > > - [x] Tentar atacar com a espada desativada → bloqueado.
 > > - [x] Alternar a espada em pleno combate/movimento → sem travar animação/input.
+> > - [x] Apertar ataque e guardar a espada durante a preparação → o golpe é cancelado, sem dano. *(Novo em 11/10: antes o golpe saía mesmo com a espada guardada; corrigido, ver [[ROADMAP_DEV]] C03-T3.)*
 > > - [x] Repetir a Task C03-T0 → nada regrediu.
 > >
-> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo). Troca repetida em combate sem travar; C03-T0 repetida sem regressão.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo). Troca repetida em combate sem travar; C03-T0 repetida sem regressão. Revalidado em 11/10 por script (`tools/qa/CombatCheck.gd`, 35 verificações, 0 falhas em 3 execuções), incluindo o caso novo da preparação.
 
 > [!success]- EPIC-C04 — Dash e Desbloqueio Pós-Korrag — ✅ Passa · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — `BossDefeated` dispara uma única vez, dash tem movimento real, é desbloqueado só ao derrotar o Korrag, e a UI avisa o jogador.
@@ -340,6 +344,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - **Achado da auditoria (15/09):** `LoadGame()` existe isolado, nada o chama. `ApplySaveData()` não chama `SceneManager.LoadScene()`.
 > > - **Nota (28/09):** decidido "menu inicial com Continuar". Testar: com save, o menu mostra Continuar; Continuar volta à cena e posição salvas; salvar na arena e continuar abre a arena (troca de cena automática).
 > > - [x] Salvar → Menu inicial → Continuar **no mesmo processo** (sem fechar o jogo) não trava.
+> > - **Correção (11/10, mais tarde):** a hipótese abaixo estava errada. O mesmo crash apareceu no teste de combate e foi isolado: é uma corrida do runtime .NET do Godot 4.7.2, aleatória, que pode acontecer em qualquer troca de cena. Ver C12-T4.
 > > - **Investigação (11/10) — crash `gchandle.is_released()` relatado pelo Higor (`docs/art-review/title-save-reload-diagnostic.txt`):** não reproduz no projeto real. Testado no Godot .NET 4.7.2 com renderização e `GC.Collect()` forçado a cada troca de cena: (1) Novo jogo → Pausa → Salvar → Menu inicial → Continuar, 5 ciclos; (2) salvar → menu/cena vazia → `ContinueGame`, 10 ciclos; (3) as 4 áreas, 2 voltas. Zero travamentos e zero erros. Hipótese: efeito do projeto-cópia isolado (`ReflorescerTitleQA`) que o Higor usou no teste, não do jogo. Regressão automatizada em `tools/qa/SaveReloadCheck.gd` (faz backup e devolve o `save_0.json`). Se voltar a aparecer jogando, anotar a sequência exata aqui.
 > > - **Nota (11/10):** depois de um `git pull` com arte nova, rodar `--headless --import` (ou abrir o editor) antes dos testes por script; sem isso os PNGs novos não carregam e o `Player.tscn` falha.
 > >
@@ -407,6 +412,12 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [ ] Rodar [[ROADMAP_QA_INTEGRACAO]] junto com o Higor assim que a arte de cada bloco chegar, sem esperar tudo pronto.
 > >
 > > Status: 🔴 bloqueado — depende da arte começar a chegar.
+
+> > [!failure]- Task C12-T4 — Sem travamento do runtime .NET
+> > - [ ] `tools/qa/CombatCheck.gd -- --stress` roda 5 vezes seguidas sem `FATAL: gchandle.is_released()`.
+> > - [ ] `SaveReloadCheck.gd` e `DemoRunCheck.gd` continuam passando.
+> >
+> > Status: 🔴 falha (11/10) — sem mitigação, o `--stress` trava quase sempre. Ver [[ROADMAP_DEV]] C12-T4.
 
 ---
 
