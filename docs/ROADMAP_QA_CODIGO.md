@@ -14,8 +14,8 @@ descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 13
 epicos_concluidos: 10
 tasks_total: 53
-tasks_prontas: 46
-tasks_bloqueadas: 5
+tasks_prontas: 47
+tasks_bloqueadas: 3
 ---
 # Roadmap de QA — Código (Reflorescer)
 
@@ -413,23 +413,25 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_DEV]] C11-T5.
 
-> [!failure]- EPIC-C12 — Regressão Final / Release da Demo — 🔴 Bloqueado · 🔴 Bloqueante
+> [!warning]- EPIC-C12 — Regressão Final / Release da Demo — 🟡 Parcial · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — todo o [[ROADMAP_QA_CODIGO]] acima está ✅, e a demo roda de ponta a ponta sem crash/softlock.
 >
 > Só é testável depois que todos os Épicos 🔴/🟠 acima estiverem ✅.
 >
-> > [!failure]- Task C12-T1 — Regressão completa de código
+> > [!warning]- Task C12-T1 — Regressão completa de código
 > > - [ ] Todos os Épicos 🔴/🟠 acima com todas as Tasks ✅.
 > > - [ ] Rodar o [[ROADMAP_QA_CODIGO]] inteiro de ponta a ponta depois de qualquer mudança grande — nenhuma regressão.
 > >
-> > Status: 🔴 bloqueado — a maioria dos épicos ainda falha, não testável ainda.
+> > Status: 🟡 parcial (11/10) — 10 de 13 épicos passam; a bateria `tools/qa/` passa inteira. Faltam C09-T3 (checkpoint) e C11-T4/T5 (música e sons finais) pra rodar a regressão final.
 >
-> > [!failure]- Task C12-T2 — Playtest de ponta a ponta (só código)
-> > - [ ] Floresta Tropical → matar exemplares dos 3 arquétipos → derrotar Korrag → dash desbloqueado → seguir até o ponto de encerramento da demo, sem crash/softlock. Arte placeholder ainda ok aqui.
+> > [!success]- Task C12-T2 — Playtest de ponta a ponta (só código)
+> > - [x] Floresta Tropical → matar exemplares dos 3 arquétipos → derrotar Korrag → dash desbloqueado → seguir até o ponto de encerramento da demo, sem crash/softlock. Arte placeholder ainda ok aqui.
 > >
-> > Status: 🔴 bloqueado — depende de C04, C06 e C07 estarem ✅ primeiro.
+> > - [x] *(11/10)* Sopé → Dossel → Igarapé → Covil → Korrag → Dash jogado pelo Gustavo, sem crash/softlock; `tools/qa/DemoRunCheck.gd` 89/89.
+> >
+> > Status: ✅ passa (11/10) — partida completa do Gustavo + percurso automatizado. O playtest final com arte/áudio completos e alguém de fora fica no [[ROADMAP_QA_INTEGRACAO]] A07.
 >
-> > [!failure]- Task C12-T3 — Integração incremental com o Higor
+> > [!warning]- Task C12-T3 — Integração incremental com o Higor
 > > - [ ] Rodar [[ROADMAP_QA_INTEGRACAO]] junto com o Higor assim que a arte de cada bloco chegar, sem esperar tudo pronto.
 > >
 > > - [x] Rodada de 11/10: entregas do Higor de 05/10 a 09/10 integradas e [[ROADMAP_QA_INTEGRACAO]] rodado (A00–A06 passam, exceto pendências cadastradas).
@@ -446,9 +448,13 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 
 ---
 
-## Resumo executivo (o que está bloqueando a demo hoje, em ordem de aparição no fluxo do jogador)
+## Resumo executivo (o que falta pra demo, em 11/10/2026)
 
-🔴 1. Input Map não bate com a documentação (`C01-T1`). 2. Dois sistemas de movimento em paralelo, risco de ataque duplicado (`C01-T2`). 3. Restauração ODS15 inexistente (`EPIC-C02`). 4. Espada sem toggle nem stats duplos (`C03-T1`/`T2`). 5. Korrag nunca usa Charge/Stomp (`C06-T1`). 6. Dash não implementado nem desbloqueado (`C04-T2`/`T3`). 7. Wall grab/wall jump inexistentes (`EPIC-C05`).
-
-> [!success] Atualização de 28/09 — a maioria dos 7 itens acima já está corrigida
-> `C01-T1`/`T2`, `EPIC-C03`, `C06-T1`, `EPIC-C04` e `EPIC-C05` passaram a ✅ na sessão de código de 28/09. O que falta hoje pra fechar a demo: `EPIC-C02` (posicionar restauração — depende do `EPIC-C13`), `C07-T4` (dados por área), `EPIC-C11` (áudio) e, novo desde 29/09, **`EPIC-C13` — construir as 4 cenas da demo** (Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag), sem o qual nada acima vira uma demo jogável de ponta a ponta.
+> [!info] Retrato de 11/10/2026 — 10 de 13 épicos passam
+> O resumo de 15/09 (Input Map, movimento duplicado, restauração inexistente, espada, Korrag, dash, parede) está todo resolvido. O que ainda falta do lado do código:
+> 1. **C09-T3** — visual do checkpoint apagado/ativado (espera a arte do Higor, [[ROADMAP_ARTE]] A05-T5).
+> 2. **C11-T4** — música por área e na tela de título (faltam as faixas).
+> 3. **C11-T5** — trocar os 12 SFX placeholder pelos sons finais.
+> 4. **C12-T1** — regressão final, depois dos três itens acima.
+>
+> Bateria automática que cobre o resto: `tools/qa/` — rodar com o console do Godot (`--headless --fixed-fps 60 --path . --script res://tools/qa/<Teste>.gd`; o `SaveReloadCheck` e o `FpsCheck` rodam sem `--headless`). Depois de `git pull` com arte nova, rodar `--headless --import` antes.

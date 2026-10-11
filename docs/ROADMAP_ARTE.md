@@ -269,18 +269,15 @@ Status: ✅ concluída (07/10) — indicador aprovado por Higor e integrado. Ver
 
 Status: ✅ aprovada (11/10), com um ajuste pequeno pendente. Ver `docs/art-review/title-screen-v1.md`. A falha de salvar/recarregar citada na entrega foi resolvida no código (autoload `ResourceKeeper`, [[ROADMAP_DEV]] C12-T4) — não tinha relação com a tela de título.
 
-## Ordem de entrega recomendada (resumo)
+## O que falta (11/10/2026)
+
+As 9 etapas da ordem de entrega original (Kairo, inimigos, Faísca, espada, cenário, Korrag, wall jump/dash, UI e `enraged_transition`) foram entregues e aprovadas, com três pendências abertas na revisão de 11/10:
 
 ```
-1. Kairo núcleo (A01-T1)                        ← desbloqueia testar o jogo inteiro
-2. Inimigos comuns, os 3 arquétipos (A02-T1/T2/T3) — reaproveitados sem reskin nas 4 áreas
-3. Faísca (A03-T1)
-4. Espada do Kairo (A01-T2) — pode ser em paralelo com o item 2
-5. Cenário das 4 áreas (A05-T1 Sopé da Mata → A05-T2 Dossel Vivo → A05-T3 Igarapé Sufocado → A05-T4 Covil de Korrag)
-6. Boss Korrag (A04-T1)
-7. Kairo: wall grab/wall jump/dash (A01-T3/T4, conforme o código for ficando pronto)
-8. UI (A06)
-9. enraged_transition do boss (A04-T2) — só se sobrar tempo
+1. Wall slide legível (A01-T3)            ← ajuste pedido: hoje parece uma queda
+2. Bandeira de checkpoint (A05-T5)        ← task nova; destrava o código C09-T3
+3. Contraste da dica da tela de título (A06-T5)
++ Validações do Higor no ROADMAP_QA_INTEGRACAO: playtest do indicador da espada (A06-T4) e do menu pelo teclado (A06-T5)
 
 Pós-demo (jogo completo, fora desta entrega): reskins Deserto/Tundra dos 3 arquétipos (A02-T4/T5).
 ```

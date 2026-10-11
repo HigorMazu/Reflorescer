@@ -15,8 +15,8 @@ epicos_total: 13
 epicos_concluidos: 10
 tasks_total: 53
 tasks_prontas: 46
-tasks_bloqueadas: 4
-tasks_liberadas: 0
+tasks_bloqueadas: 2
+tasks_liberadas: 2
 ---
 # Roadmap de Desenvolvimento — Código (Gustavo)
 
@@ -226,7 +226,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
 > > [!success]- Task C06-T4 — Ajustar timing com a arte real
-> > - [ ] Testar o `charge_windup` (1s) contra a animação real assim que a arte chegar (cruza com [[ROADMAP_QA_INTEGRACAO]] `EPIC-A04`).
+> > - [x] Testar o `charge_windup` (1s) contra a animação real assim que a arte chegar (cruza com [[ROADMAP_QA_INTEGRACAO]] `EPIC-A04`). *(11/10: feito com o Korrag v3 — luta jogada pelo Gustavo e arte aprovada; o windup de 1s ficou.)*
 > > - **Nota (28/09, pós-pull):** `KorragSpriteFrames.tres` já tem `charge_windup` (1 frame, 5 fps) e todos os nomes de animação chamados em `BossStateMachine.cs`/`JavaliBoss.cs` existem no recurso (`walk` existe mas nenhum script chama ainda).
 > > - **Nota (28/09) — arte vs. timing:** a `charge_windup` do Higor tem 1 quadro (5 fps, sem loop), então o Korrag ficava congelado o segundo inteiro do windup. Mantido o `ChargeWindup` de 1s (tempo justo pra reagir) e adicionada telegrafia: pulso vermelho no `SelfModulate` do sprite (0.12s por meia-volta) durante o windup, desligado quando a investida começa, quando ela para ou quando o boss morre. Se 1s parecer lento, é só baixar `ChargeWindup` no inspetor do `Boss_Javali`. Se o Higor fizer um windup com mais quadros, o pulso pode sair. Cruza com [[ROADMAP_QA_INTEGRACAO]] A04.
 > > - **Decisão do Gustavo (28/09):** `ChargeWindup` de 1s aprovado com o pulso vermelho de aviso.
@@ -282,7 +282,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 >
 > > [!success]- Task C08-T1 — Spawn direcional
 > > - [x] **Opção A:** implementar o uso de `TargetArea`/`SpawnOffset` (já existem exportados em `TransitionTrigger`, não são lidos) pra posicionar o jogador no spawn correspondente.
-> > - [ ] **Opção B** (mais simples se o tempo apertar): nomear spawn points por origem (`SpawnFromFlorestaTropical`, `SpawnFromDeserto`) e escolher pelo nome de onde o jogador veio.
+> > - ~~**Opção B** (mais simples se o tempo apertar): nomear spawn points por origem (`SpawnFromFlorestaTropical`, `SpawnFromDeserto`) e escolher pelo nome de onde o jogador veio.~~ *(descartada: a Opção A foi aplicada)*
 > > - **Nota (28/09) — Opção A aplicada:** `TargetArea` = nome de um `Marker2D` no grupo `SpawnPoints` da cena de destino; `SpawnOffset` soma na posição. `SceneManager.LoadSceneAtSpawn()` guarda o destino, e o `PlayerController` consome no `_Ready` (deferred) e reseta a câmera. Markers criados: `SpawnFromBossArena` (TestLevel, perto do portal) e `SpawnFromTestLevel` (BossArena).
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
@@ -368,7 +368,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 >
 > > [!success]- Task C09-T2 — Fluxo de "Continuar"
 > > - [x] Se a demo tiver esse menu: chamar `SaveManager.LoadGame(slot)` e, em `ApplySaveData`, trocar de cena pra `save.CurrentScene` antes de restaurar posição/HP (hoje não troca).
-> > - [ ] Se a demo **não** vai ter esse menu (sempre começa do zero): documentar essa decisão em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].
+> > - ~~Se a demo **não** vai ter esse menu (sempre começa do zero): documentar essa decisão em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]].~~ *(não se aplica: a demo tem o menu com Continuar)*
 > > - **Decisão do Gustavo (28/09) — menu inicial com Continuar:** nova cena principal `scenes/ui/MainMenu.tscn` (`MainMenu.cs`) com "Continuar" (só aparece se existe `save_0.json`), "Novo jogo" e "Sair". A segunda sub-task (não ter o menu) fica descartada. Registrada em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]] (28/09).
 > > - **Nota (28/09) — como funciona:** `SaveManager.ContinueGame()` lê o save, restaura na hora o estado de sessão (habilidades sem notificação, `GameManager.HasSword`), troca pra `save.CurrentScene` e, no `SceneTree.SceneChanged`, aplica posição, HP, checkpoints (o último vira ponto de respawn) e áreas restauradas. `StartNewGame()` apaga o save e zera o estado dos autoloads (`AbilityManager.ResetToInitial()`, espada ativada). Boss que está em `DefeatedBosses` não é instanciado de novo (`BossBase._Ready`). O menu de pausa ganhou os botões ligados (Continuar, Salvar, Menu inicial); antes nenhum funcionava.
 > > - **Bugfix CRÍTICO (28/09) — posição nunca era salva:** o `save_0.json` gravava `"PlayerPosition": {}`, porque o `Vector2` do Godot usa campos (X/Y) e o `System.Text.Json` só serializa propriedades por padrão. Correção: `IncludeFields = true` no `SaveData`. Saves antigos (com `{}`) carregam no spawn padrão da cena. O `HasSword` também passou a ir pro save.
@@ -447,20 +447,24 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: não iniciado (11/10).
 
-> [!todo]- EPIC-C12 — Regressão Final / Release da Demo — ⬜ Não iniciado · 🔴 Bloqueante
+> [!info]- EPIC-C12 — Regressão Final / Release da Demo — 🔄 Em andamento · 🔴 Bloqueante
 > *Pronto quando*: o [[ROADMAP_QA_CODIGO]] inteiro passa, o [[ROADMAP_QA_INTEGRACAO]] inteiro passa, e a demo roda de ponta a ponta sem crash na frente de alguém de fora do grupo.
 >
 > Só começa depois que todos os épicos 🔴/🟠 acima estiverem concluídos.
 >
-> > [!failure]- Task C12-T1 — Regressão completa de código
+> > [!todo]- Task C12-T1 — Regressão completa de código
 > > - [ ] Rodar o [[ROADMAP_QA_CODIGO]] inteiro, de ponta a ponta, e corrigir qualquer regressão.
 > >
-> > Status: não iniciado — ⛔ bloqueado: só depois dos épicos 🔴/🟠.
+> > - **Nota (11/10):** os épicos 🔴/🟠 de código estão concluídos (falta só o visual do checkpoint, C09-T3, e a música, C11-T4). Já existe uma bateria automática que cobre boa parte do [[ROADMAP_QA_CODIGO]]: `tools/qa/` (`DemoRunCheck`, `CombatCheck`, `DosselReachCheck`, `SaveReloadCheck`, `GcStressCheck`, `AudioCheck`, `FpsCheck`).
+> >
+> > Status: 🟢 liberado (11/10) — pode começar; rodar de novo no fim, depois da C09-T3 e da C11-T4.
 >
-> > [!failure]- Task C12-T2 — Handoff pro Higor
+> > [!todo]- Task C12-T2 — Handoff pro Higor
 > > - [ ] Entregar os blocos de mecânica que faltavam pra ele terminar a arte condicional (ex: como fica visualmente o wall grab, pra desenhar a animação certa).
 > >
-> > Status: não iniciado — ⛔ bloqueado: só depois dos épicos 🔴/🟠.
+> > - **Nota (11/10):** útil agora pro ajuste do wall slide ([[ROADMAP_ARTE]] A01-T3): mostrar ao Higor como o estado `IsWallSliding` funciona (quando entra, quanto dura, de que lado fica a parede) pra ele desenhar a pose certa.
+> >
+> > Status: 🟢 liberado (11/10) — as mecânicas estão prontas.
 >
 > > [!info]- Task C12-T3 — Integração incremental
 > > - [ ] Rodar o [[ROADMAP_QA_INTEGRACAO]] junto com o Higor assim que a arte de cada bloco chegar — não esperar tudo pronto pra testar.
