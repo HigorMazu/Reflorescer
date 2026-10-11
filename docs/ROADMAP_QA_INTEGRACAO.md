@@ -164,8 +164,8 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > Status: ✅ passa (11/10) — Gustavo jogou a demo inteira em 11/10 e validou (luta com o Korrag); `tools/qa/FpsCheck.gd` em 11/10 (RTX 3050, gl_compatibility, vsync): média 60 nas 4 áreas, 1% piores 54–56 FPS.
 >
 > > [!failure]- Task A05-T5 — Bandeira de checkpoint
-> > - [ ] Os 5 checkpoints (Sopé, Dossel, Igarapé ×2, Covil) mostram a arte final no estado **apagado** antes de tocar e **ativado** depois — nenhum `ColorRect` azul sobrando.
-> > - [ ] Base alinhada ao chão nas 4 áreas; legível na escala real.
+> > - [ ] A bandeira única do Dossel Vivo mostra a arte final no estado **apagado** antes de tocar e **ativado** depois — nenhum `ColorRect` azul sobrando. *(Eram 5 checkpoints até 11/10; ver [[ROADMAP_DEV]] C09-T4.)*
+> > - [ ] Base alinhada ao chão; legível na escala real.
 > > - [ ] Ao continuar um save, os checkpoints já ativados nascem no estado ativado.
 > > - **Origem (11/10):** gêmea da [[ROADMAP_ARTE]] A05-T5 (achado da revisão de arte). Código da troca de estado: [[ROADMAP_DEV]] C09-T3.
 > >

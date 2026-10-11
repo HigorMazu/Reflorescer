@@ -13,8 +13,8 @@ par: "[[ROADMAP_QA_CODIGO]]"
 descricao: Backlog de implementação da demo (código)
 epicos_total: 13
 epicos_concluidos: 10
-tasks_total: 53
-tasks_prontas: 46
+tasks_total: 54
+tasks_prontas: 47
 tasks_bloqueadas: 2
 tasks_liberadas: 2
 ---
@@ -264,7 +264,9 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - **Nota (29/09):** proposta de valores pra Dossel Vivo e Igarapé Sufocado já rascunhada em [[👾 Bestiário#Valores por área (Sopé da Mata → Dossel Vivo → Igarapé Sufocado)|Bestiário]] — provisória, ajustável em playtest. O Covil de Korrag não recebe `.tres` de inimigo comum.
 > > - **Nota (05/10) — 9 `.tres` em `resources/enemies/areas/`, nomeados `<Arquétipo>_<Área>.tres`:** os 3 antigos (`EnemyVoadorStats`/`EnemyRapidoStats`/`EnemyRobustoStats`) viraram os `_SopeDaMata`, sem mudar valores, e as cenas `Enemy_Voador/Rapido/Robusto.tscn` passaram a apontar pra eles (são o padrão). Os do Dossel Vivo e do Igarapé Sufocado seguem a tabela do [[👾 Bestiário#Valores por área (Sopé da Mata → Dossel Vivo → Igarapé Sufocado)|Bestiário]] (vida, dano e perseguição; o resto igual ao Sopé). Cada inimigo instanciado nas cenas do `EPIC-C13` sobrescreve o `StatsResource` com o `.tres` da própria área. Valores provisórios, pra ajustar em playtest.
 > >
-> > Status: ✅ concluído (05/10) — conferido headless: os 9 arquivos existem e cada inimigo das 3 cenas usa o `.tres` da própria área. Ajuste fino fica pro playtest.
+> > - **Decisão do Gustavo (11/10) — valores oficiais, os 3 arquétipos sobem a cada área:** o rascunho passou no playtest de 11/10, mas o grupo decidiu que a dificuldade sobe a cada área até o Korrag, então **todos** os arquétipos escalam (antes só o dominante de cada área). Mudaram 4 arquivos: `Rapido_DosselVivo` (75 HP / 12 dano / perseguição 200), `Robusto_DosselVivo` (175 / 28), `Voador_IgarapeSufocado` (100 / 18 / 110) e `Rapido_IgarapeSufocado` (100 / 15). Tabela oficial em [[👾 Bestiário#Valores por área (Sopé da Mata → Dossel Vivo → Igarapé Sufocado)|Bestiário]]; decisão em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]] (11/10). Validar jogando junto com a C09-T4.
+> >
+> > Status: ✅ concluído (05/10) — conferido headless: os 9 arquivos existem e cada inimigo das 3 cenas usa o `.tres` da própria área. Valores oficializados e escalados em 11/10; o teste jogando entra na C09-T4.
 >
 > > [!success]- Task C07-T5 — (baixa prioridade) AtPatrolEdge()
 > > - [x] Hoje sempre retorna `false` — corrigir só se o comportamento "parar depois de patrulhar" for desejado. Aceitável pra demo como está.
@@ -377,11 +379,26 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
 > > [!failure]- Task C09-T3 — Visual do checkpoint apagado/ativado
-> > - [ ] Trocar os `ColorRect` placeholder (`FlagPole`/`Flag`) dos 5 checkpoints pela arte do Higor ([[ROADMAP_ARTE]] A05-T5).
+> > - [ ] Trocar os `ColorRect` placeholder (`FlagPole`/`Flag`) da bandeira única do Dossel Vivo (`cp_dossel_01`) pela arte do Higor ([[ROADMAP_ARTE]] A05-T5). *(Eram 5 checkpoints até 11/10; ver C09-T4.)*
 > > - [ ] `Checkpoint.cs`: mostrar o estado **apagado** antes de tocar e **ativado** depois; ao continuar um save, os checkpoints em `ActivatedCheckpoints` já nascem ativados (o `SaveManager.ApplySaveData` já seta `Activated = true`; falta o visual reagir a isso).
 > > - **Origem (11/10):** achado na revisão de arte (item 4). Hoje o checkpoint funciona, mas o visual não muda ao ser tocado.
 > >
+> > - **Nota (11/10, C09-T4):** agora é uma bandeira só. O `Checkpoint.cs` já nasce `Activated` quando o save da sessão diz que ela foi ativada (ao voltar pra cena ou renascer nela); falta só o visual reagir.
+> >
 > > Status: não iniciado (11/10) — ⛔ bloqueado: aguarda a arte da [[ROADMAP_ARTE]] A05-T5.
+>
+> > [!info]- Task C09-T4 — Bandeira única e vida que não enche ao trocar de área
+> > - [x] Tirar os checkpoints do Sopé da Mata, do Igarapé Sufocado (2) e do Covil de Korrag. Fica só `cp_dossel_01`, no começo do Dossel Vivo (x = 200, logo depois do spawn vindo do Sopé).
+> > - [x] Bandeira do Dossel ativa sozinha quando o Kairo passa (`Checkpoint.AutoActivateOnTouch = true`, via `BodyEntered`). O E continua funcionando.
+> > - [x] Morrer em qualquer área → "Tentar de novo" volta pra bandeira, recarregando a cena do Dossel se a morte foi em outra área (`SaveData.LastCheckpointScene` + `SceneManager.LoadSceneAtCheckpoint`). Sem bandeira ativada ainda → começo do Sopé da Mata. Cenas de teste fora de `res://scenes/areas/` mantêm o comportamento antigo.
+> > - [x] Trocar de área não cura: `GameManager.CarriedPlayerHealth` guarda a vida e o `PlayerController` aplica ao nascer na cena nova (`Health.SetCurrentHealth`). Morrer (respawn) e Novo jogo enchem a vida.
+> > - [x] `Checkpoint` nasce ativado se o save da sessão diz que foi ativado (`SaveManager.IsCheckpointActivated`).
+> > - [ ] Compilar no editor e rodar a C09-T4 do [[ROADMAP_QA_CODIGO]].
+> > - **Decisão do Gustavo (11/10):** a demo fica mais difícil até o Korrag: uma bandeira só na 2ª área, morrer volta pra ela, e passar de área não cura mais. Registrada em [[Projetos/Reflorescer/🗳️ Decisões e Configuração|🗳️ Decisões e Configuração]] (11/10).
+> > - **Arquivos:** `scripts/world/Checkpoint.cs`, `scripts/player/PlayerController.cs`, `scripts/core/GameManager.cs`, `scripts/core/SceneManager.cs`, `scripts/save/SaveManager.cs`, `scripts/save/SaveData.cs`, `scripts/combat/Health.cs`, `scenes/areas/*.tscn` (4).
+> > - **Atenção:** feito fora do Godot (sem compilar). Se o editor estiver aberto com alguma das 4 cenas, recarregar antes de salvar, senão ele regrava a versão antiga com as bandeiras.
+> >
+> > Status: implementado (11/10) — aguarda compilar no editor e jogar.
 
 > [!success]- EPIC-C10 — HUD e UX — ✅ Concluído · 🟡 Média
 > *Pronto quando*: um prompt visual aparece ao chegar perto de um `IInteractable` (sem precisar apertar nada), e a decisão sobre Game Over foi tomada e implementada.

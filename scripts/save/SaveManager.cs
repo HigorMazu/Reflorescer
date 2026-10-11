@@ -39,6 +39,16 @@ namespace Joguim.Save
             return _currentSave != null && _currentSave.RestoredPoints.Contains(pointId);
         }
 
+        // Consultado pelos Checkpoint ao entrarem numa cena, pra nascer já ativados
+        public bool IsCheckpointActivated(string checkpointId)
+        {
+            return _currentSave != null && _currentSave.ActivatedCheckpoints.Contains(checkpointId);
+        }
+
+        // Última bandeira ativada nesta sessão (ou no save carregado). Vazio = nenhuma.
+        public string LastCheckpointId => _currentSave?.LastCheckpointId ?? "";
+        public string LastCheckpointScene => _currentSave?.LastCheckpointScene ?? "";
+
         public bool IsBossDefeated(string bossId)
         {
             return _currentSave != null && _currentSave.DefeatedBosses.Contains(bossId);
@@ -50,7 +60,11 @@ namespace Joguim.Save
             DeleteSave(slot);
             _currentSave = null;
             AbilityManager.Instance?.ResetToInitial();
-            if (GameManager.Instance != null) GameManager.Instance.HasSword = true;
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.HasSword = true;
+                GameManager.Instance.CarriedPlayerHealth = -1;
+            }
             SceneManager.Instance.LoadScene(NewGameScene);
         }
 
@@ -281,6 +295,7 @@ namespace Joguim.Save
             }
 
             _currentSave.LastCheckpointId = checkpointId;
+            _currentSave.LastCheckpointScene = GetTree().CurrentScene?.SceneFilePath ?? SceneManager.Instance.CurrentScenePath;
             if (!_currentSave.ActivatedCheckpoints.Contains(checkpointId))
             {
                 _currentSave.ActivatedCheckpoints.Add(checkpointId);

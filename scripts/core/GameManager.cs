@@ -14,6 +14,10 @@ namespace Joguim.Core
         public bool HasSword { get; set; } = true;
         // Tela de Game Over aberta: o jogo fica pausado e o Esc não despausa
         public bool IsGameOver { get; set; }
+        // Vida do Kairo na sessão: o Player é recriado a cada troca de cena e nascia com a vida cheia.
+        // Desde 11/10/2026 trocar de área não cura; só morrer (voltar à bandeira) ou um jogo novo enchem a vida.
+        // -1 (ou 0, depois de morrer) = nascer com a vida cheia.
+        public int CarriedPlayerHealth { get; set; } = -1;
 
         public override void _Ready()
         {
@@ -47,6 +51,7 @@ namespace Joguim.Core
         {
             IsGamePaused = false;
             GetTree().Paused = false;
+            CarriedPlayerHealth = -1;
             SaveManager.Instance.DeleteSave(0);
             SceneManager.Instance.LoadScene(SaveManager.NewGameScene);
         }

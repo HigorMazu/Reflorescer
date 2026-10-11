@@ -461,6 +461,7 @@ collision_layer = 32
 collision_mask = 2
 script = ExtResource("checkpoint")
 CheckpointId = "cp_dossel_01"
+AutoActivateOnTouch = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/Checkpoint1" unique_id=384558023]
 position = Vector2(0, -16)

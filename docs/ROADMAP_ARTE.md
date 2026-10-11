@@ -222,6 +222,8 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > > - **Origem (11/10):** achado na revisão de arte do Gustavo — o placeholder aparece no Sopé, Dossel, Igarapé (2) e Covil, 5 checkpoints no total, e não estava em nenhum roadmap. Captura: `docs/art-review/qa-ingame-dash-2026-10-11.png` (bandeira azul à esquerda).
 > > - **Código:** o `Checkpoint.cs` já tem a propriedade `Activated`; a troca de visual entre os 2 estados entra junto com a arte ([[ROADMAP_DEV]]).
 > >
+> > - **Mudança de escopo (11/10) — agora é uma bandeira só:** o grupo decidiu deixar só a do começo do Dossel Vivo (`Interactables/Checkpoint1`, `cp_dossel_01`); as do Sopé, Igarapé e Covil saíram do jogo ([[ROADMAP_DEV]] C09-T4). Ela agora ativa sozinha quando o Kairo passa, então o estado **ativado** precisa ficar bem visível na hora.
+> >
 > > Status: não iniciado (11/10).
 
 > [!success]- EPIC-A06 — UI — ✅ Entrega visual concluída

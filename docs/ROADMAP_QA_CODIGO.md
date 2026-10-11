@@ -13,7 +13,7 @@ par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 13
 epicos_concluidos: 10
-tasks_total: 53
+tasks_total: 54
 tasks_prontas: 47
 tasks_bloqueadas: 3
 ---
@@ -260,6 +260,8 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > - **Nota (05/10):** 9 `.tres` em `resources/enemies/areas/` (`<Arquétipo>_<Área>.tres`; o Covil de Korrag não tem inimigo comum). Os valores batem com a tabela do [[👾 Bestiário]] e são provisórios.
 > >
+> > - **Nota (11/10):** valores oficializados e escalados (os 3 arquétipos sobem a cada área), ver [[ROADMAP_DEV]] C07-T4. O que muda pra este teste: os valores agora batem com a tabela oficial do [[👾 Bestiário]] de 11/10. A sensação de dificuldade é testada na C09-T4.
+> >
 > > Status: ✅ passa — verificado headless em 05/10 (Claude): os 9 arquivos existem e cada inimigo das cenas do `EPIC-C13` usa o `.tres` da própria área.
 >
 > > [!success]- Task C07-T5 — AtPatrolEdge() (baixa prioridade)
@@ -355,7 +357,23 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [ ] Fechar e Continuar: os checkpoints já ativados nascem ativados; os outros, apagados.
 > > - [ ] `SaveReloadCheck.gd` e `DemoRunCheck.gd` continuam passando.
 > >
+> > - **Nota (11/10):** desde a C09-T4 é uma bandeira só (`cp_dossel_01`).
+> >
 > > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_DEV]] C09-T3 e da arte ([[ROADMAP_ARTE]] A05-T5).
+>
+> > [!warning]- Task C09-T4 — Bandeira única e vida que não enche ao trocar de área
+> > - [ ] O projeto compila no editor sem erro.
+> > - [ ] Só existe uma bandeira na demo, no começo do Dossel Vivo; passar por ela ativa sozinha (som de checkpoint + save).
+> > - [ ] Tomar dano no Sopé e passar pro Dossel: a barra chega com a mesma vida (não enche). Idem Dossel → Igarapé → Covil.
+> > - [ ] Morrer no Dossel depois da bandeira → "Tentar de novo" → renasce na bandeira com a vida cheia.
+> > - [ ] Morrer no Igarapé e no Covil → "Tentar de novo" → carrega o Dossel Vivo e renasce na bandeira com a vida cheia; a bandeira aparece ativada (sem prompt de "Ativar").
+> > - [ ] Morrer no Sopé (antes da bandeira) → volta pro começo do Sopé.
+> > - [ ] Novo jogo depois de morrer começa com a vida cheia; Continuar depois de salvar no Igarapé e morrer volta pra bandeira do Dossel.
+> > - [ ] O caminho até o Korrag ficou difícil mas justo (playtest do Gustavo): dá pra chegar no Korrag com vida razoável sem perfeição.
+> > - [ ] `DemoRunCheck.gd`, `SaveReloadCheck.gd` e `CombatCheck.gd` continuam passando.
+> > - **Origem (11/10):** decisão do grupo de deixar a demo mais difícil até o Korrag ([[ROADMAP_DEV]] C09-T4).
+> >
+> > Status: 🟡 aguarda teste (11/10) — implementado fora do Godot, ainda não compilado nem jogado.
 
 > [!success]- EPIC-C10 — HUD e UX — ✅ Passa · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — prompt de interação contínuo funcionando, e decisão sobre Game Over tomada e implementada.
