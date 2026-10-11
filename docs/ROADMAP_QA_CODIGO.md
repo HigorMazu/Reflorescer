@@ -13,8 +13,8 @@ par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 13
 epicos_concluidos: 10
-tasks_total: 51
-tasks_prontas: 45
+tasks_total: 53
+tasks_prontas: 46
 tasks_bloqueadas: 5
 ---
 # Roadmap de QA — Código (Reflorescer)
@@ -378,7 +378,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): tela "Você caiu"; Esc não despausa; Tentar de novo leva ao checkpoint; Menu inicial funciona.
 
-> [!failure]- EPIC-C11 — Áudio — 🔴 Falha · 🟡 Média
+> [!warning]- EPIC-C11 — Áudio — 🟡 Parcial (falta música) · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — pastas/buses existem, os 3 sons já esperados pelo código tocam de verdade, e dá pra sobrepor música + SFX sem cortar um ao outro.
 >
 > > [!success]- Task C11-T1 — Estrutura de pastas e buses
@@ -388,16 +388,30 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
-> > [!failure]- Task C11-T2 — Arquivos já esperados pelo código
-> > - [ ] Nome bate exatamente (case-sensitive) com o esperado pelo código: `checkpoint_activate.wav`, `boss_stomp.wav`, `boss_defeat.wav` — ou o código foi ajustado junto.
+> > [!success]- Task C11-T2 — Arquivos já esperados pelo código
+> > - [x] Nome bate exatamente (case-sensitive) com o esperado pelo código: `checkpoint_activate.wav`, `boss_stomp.wav`, `boss_defeat.wav` — ou o código foi ajustado junto.
 > >
-> > Status: 🔴 falha — depende de C11-T1 e dos arquivos existirem.
+> > - [x] Os 12 sons tocam pelo caminho real do jogo (não só os 3 originais).
+> >
+> > Status: ✅ passa (11/10, Claude) — `tools/qa/AudioCheck.gd` 12/12 com os placeholders da [[ROADMAP_DEV]] C11-T2; nenhum "SFX not found" no `DemoRunCheck`.
 >
-> > [!failure]- Task C11-T3 — Chamadas que faltam
+> > [!warning]- Task C11-T3 — Chamadas que faltam
 > > - [ ] 8 players de SFX simultâneos + bus de música separado → dá pra tocar música de fundo + vários SFX sem cortar um ao outro.
-> > - [ ] Ataque do jogador, hit em inimigo/jogador, morte de inimigo comum têm som.
+> > - [x] Ataque do jogador, hit em inimigo/jogador, morte de inimigo comum têm som.
 > >
-> > Status: 🔴 falha — chamadas ainda não existem no código de gameplay.
+> > Status: 🟡 parcial (11/10) — as chamadas de SFX existem e tocam (`AudioCheck.gd`); a sobreposição com música só dá pra testar quando houver faixas (C11-T4).
+
+> > [!failure]- Task C11-T4 — Música por área e tela de título
+> > - [ ] Cada área e a tela de título tocam a própria faixa em loop; a troca de área faz fade de uma pra outra, sem corte seco.
+> > - [ ] Música + vários SFX ao mesmo tempo (ex.: luta com o Korrag) sem cortar nenhum.
+> >
+> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_DEV]] C11-T4 (faltam as faixas).
+
+> > [!failure]- Task C11-T5 — Sons finais no lugar dos placeholders
+> > - [ ] `tools/qa/AudioCheck.gd` 12/12 com os sons finais.
+> > - [ ] `assets/audio/CREDITOS.md` lista origem/licença de todo som que não for do grupo.
+> >
+> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_DEV]] C11-T5.
 
 > [!failure]- EPIC-C12 — Regressão Final / Release da Demo — 🔴 Bloqueado · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — todo o [[ROADMAP_QA_CODIGO]] acima está ✅, e a demo roda de ponta a ponta sem crash/softlock.

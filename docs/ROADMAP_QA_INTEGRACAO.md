@@ -15,7 +15,7 @@ epicos_total: 8
 epicos_concluidos: 4
 tasks_total: 24
 tasks_prontas: 16
-tasks_bloqueadas: 5
+tasks_bloqueadas: 4
 ---
 # Roadmap de QA — Integração (Código + Arte do Higor)
 
@@ -215,12 +215,13 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 >
 > Só roda depois que todos os Épicos 🔴 acima (deste arquivo e do [[ROADMAP_QA_CODIGO]]) estiverem ✅.
 >
-> > [!failure]- Task A07-T1 — Áudio integrado
-> > - [ ] Com os primeiros arquivos de SFX/música em `res://assets/audio/`, jogar a demo do início ao fim e confirmar que nenhum som falta silenciosamente (checar o console).
+> > [!warning]- Task A07-T1 — Áudio integrado
+> > - [x] Com os primeiros arquivos de SFX/música em `res://assets/audio/`, jogar a demo do início ao fim e confirmar que nenhum som falta silenciosamente (checar o console). *(SFX: 11/10, `DemoRunCheck` + `AudioCheck` sem nenhum faltando; música ainda não existe.)*
 > > - [ ] Volume relativo entre música de fundo e efeitos.
-> > - [ ] Som de ataque/hit sincronizado com o frame de impacto da animação.
+> > - [x] Som de ataque/hit sincronizado com o frame de impacto da animação. *(O `enemy_hit` toca no mesmo quadro do dano; o `player_attack` toca no início da estocada, como o sopro do golpe.)*
+> > - [ ] Gustavo ouvir os placeholders jogando e anotar os que incomodam (entram primeiro na troca da [[ROADMAP_DEV]] C11-T5).
 > >
-> > Status: 🔴 bloqueado — depende de [[ROADMAP_DEV]] `EPIC-C11`.
+> > Status: 🟡 parcial (11/10) — SFX placeholder integrados e tocando; volume música × efeitos depende da [[ROADMAP_DEV]] C11-T4.
 >
 > > [!failure]- Task A07-T2 — Ponta a ponta
 > > - [ ] Demo completa sem parar: Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag → matar 1 de cada arquétipo pelo caminho → derrotar o Korrag → dash desbloqueado (ver [[🎯 Escopo da Demo]]) — sem crash, sem softlock, sem animação quebrada.

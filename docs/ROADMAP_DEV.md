@@ -13,8 +13,8 @@ par: "[[ROADMAP_QA_CODIGO]]"
 descricao: Backlog de implementação da demo (código)
 epicos_total: 13
 epicos_concluidos: 10
-tasks_total: 51
-tasks_prontas: 45
+tasks_total: 53
+tasks_prontas: 46
 tasks_bloqueadas: 4
 tasks_liberadas: 0
 ---
@@ -416,17 +416,36 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!failure]- Task C11-T2 — Arquivos já esperados pelo código
-> > - [ ] Produzir/conseguir os 3 arquivos já chamados no código (nomes exatos, case-sensitive): `checkpoint_activate.wav`, `boss_stomp.wav`, `boss_defeat.wav`.
+> > [!success]- Task C11-T2 — Arquivos já esperados pelo código
+> > - [x] Produzir/conseguir os 3 arquivos já chamados no código (nomes exatos, case-sensitive): `checkpoint_activate.wav`, `boss_stomp.wav`, `boss_defeat.wav`.
 > >
-> > Status: não iniciado — ⛔ bloqueado: arquivos de áudio ainda não existem. Lista completa esperada pelo código agora (em `sfx/`): `checkpoint_activate.wav`, `boss_stomp.wav`, `boss_defeat.wav`, `player_attack.wav`, `player_jump.wav`, `player_hurt.wav`, `player_dash.wav`, `sword_on.wav`, `sword_off.wav`, `enemy_hit.wav`, `enemy_death.wav`, `restoration.wav`.
+> > - **Entrega (11/10) — placeholders sintetizados:** os 12 `.wav` foram gerados por código (`tools/audio/generate_placeholder_sfx.py`: formas de onda + ruído filtrado, WAV 16 bits mono 44,1 kHz, pico em -3 dBFS, semente fixa). São 100% do projeto, sem licença de terceiros. Decisão do Gustavo: usar agora pra destravar o áudio e o QA, e trocar arquivo por arquivo pelos sons finais depois (C11-T5) — o código não muda, só o arquivo com o mesmo nome.
+> > - **Verificação (11/10):** `tools/qa/AudioCheck.gd` dispara os 12 pelo caminho real do jogo (atacar, pular, dash, Q, dano, acertar/matar inimigo, checkpoint com E, restaurar, pisada e derrota do Korrag) e confere que o `AudioManager` tocou cada um: 12/12. `DemoRunCheck` sem nenhum "SFX not found"; `GcStressCheck` 4/4, `CombatCheck --stress` e `SaveReloadCheck` continuam passando com os sons carregados.
+> >
+> > Status: ✅ concluído (11/10) — com sons placeholder; os finais entram pela C11-T5. Lista completa esperada pelo código (em `sfx/`): `checkpoint_activate.wav`, `boss_stomp.wav`, `boss_defeat.wav`, `player_attack.wav`, `player_jump.wav`, `player_hurt.wav`, `player_dash.wav`, `sword_on.wav`, `sword_off.wav`, `enemy_hit.wav`, `enemy_death.wav`, `restoration.wav`.
 >
 > > [!warning]- Task C11-T3 — Chamadas que faltam
 > > - [x] Adicionar `AudioManager.PlaySfx(...)` pro ataque do jogador, hit em inimigo/jogador, morte de inimigo comum, pulo (opcional).
 > > - [ ] Música de fundo por bioma via `AudioManager.PlayMusic(...)` (fade in/out já pronto no código).
 > > - **Nota (28/09):** `PlaySfx` no ataque, pulo e dano do Kairo e no hit/morte de inimigo comum. `AreaController` ganhou `MusicTrack` (exportado, vazio por padrão), tocado no `_Ready` via `PlayMusic`. O `AudioManager` passou a logar arquivo faltando uma vez só por caminho.
 > >
-> > Status: parcial (28/09) — chamadas de SFX implementadas e gancho de música pronto; som real aguarda C11-T2.
+> > Status: parcial (11/10) — SFX tocando de verdade desde a C11-T2; falta só a música, que agora está na C11-T4.
+
+> > [!failure]- Task C11-T4 — Música por área e tela de título
+> > - [ ] Faixas em `res://assets/audio/music/` (loop): tela de título, Sopé da Mata, Dossel Vivo, Igarapé Sufocado e Covil de Korrag (luta). Opcional: variação pra fase enfurecida do Korrag.
+> > - [ ] Preencher o `MusicTrack` do `AreaController` de cada área (o `PlayMusic` com fade já existe) e tocar a do título no `MainMenu`.
+> > - [ ] Ajustar volume do bus Music × SFX (ver [[ROADMAP_QA_INTEGRACAO]] A07-T1).
+> > - **Decisão (11/10):** música sintetizada por código ficaria fraca; fica pra quando houver faixas de verdade (compostas pelo grupo ou de uso livre com a licença registrada).
+> >
+> > Status: não iniciado (11/10) — ⛔ bloqueado: faltam as faixas.
+
+> > [!todo]- Task C11-T5 — Trocar os SFX placeholder pelos sons finais
+> > - [ ] Substituir os 12 `.wav` de `assets/audio/sfx/` pelos sons finais, **mantendo os nomes**: `player_attack`, `player_jump`, `player_dash`, `player_hurt`, `sword_on`, `sword_off`, `enemy_hit`, `enemy_death`, `checkpoint_activate`, `restoration`, `boss_stomp`, `boss_defeat`.
+> > - [ ] Registrar a origem e a licença de cada som que não for do grupo (ex.: CC0) num `assets/audio/CREDITOS.md`.
+> > - [ ] Rodar `tools/qa/AudioCheck.gd` de novo (12/12) e ouvir na demo.
+> > - **Origem (11/10):** os atuais são placeholders sintetizados (C11-T2). Pra ouvir todos em sequência, gerar a prévia ou abrir os arquivos da pasta.
+> >
+> > Status: não iniciado (11/10).
 
 > [!todo]- EPIC-C12 — Regressão Final / Release da Demo — ⬜ Não iniciado · 🔴 Bloqueante
 > *Pronto quando*: o [[ROADMAP_QA_CODIGO]] inteiro passa, o [[ROADMAP_QA_INTEGRACAO]] inteiro passa, e a demo roda de ponta a ponta sem crash na frente de alguém de fora do grupo.
