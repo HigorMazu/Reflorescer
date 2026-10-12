@@ -228,7 +228,7 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > [!failure]- Task A06-T6 — Tela de fim da demo
 > > - [ ] Aparece depois do Korrag com o número certo de áreas restauradas; legível em 1280×720 e 960×540.
 > >
-> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_DEV]] C14-T3 e [[ROADMAP_ARTE]] A06-T6.
+> > Status: 🔴 bloqueado (11/10) — o código passou ([[ROADMAP_DEV]] C14-T3); depende do acabamento visual ([[ROADMAP_ARTE]] A06-T6).
 
 > [!failure]- EPIC-A07 — Validação Final (Playtest Completo) — 🔴 Bloqueado · 🔴 Bloqueante
 > *Pronto quando*: a demo roda de ponta a ponta com áudio, arte e código integrados, sem crash, softlock ou animação quebrada, validada por alguém de fora do grupo.

@@ -16,7 +16,7 @@ epicos_concluidos: 3
 tasks_total: 28
 tasks_prontas: 20
 tasks_bloqueadas: 2
-tasks_liberadas: 0
+tasks_liberadas: 1
 ---
 # Roadmap de Arte — Sprites, Animação e Estilização (Higor)
 
@@ -289,9 +289,9 @@ Status: ✅ aprovada (11/10), com um ajuste pequeno pendente. Ver `docs/art-revi
 
 ### A06-T6 — Tela de fim da demo (11/10)
 
-- [ ] Tela de encerramento depois do Korrag com "Áreas restauradas: X/3" e mensagem diferente pra 3/3 ([[ROADMAP_DEV]] C14-T3). Pode começar só com texto; o acabamento visual é do Higor.
+- [ ] Acabamento visual da tela de encerramento depois do Korrag ("Áreas restauradas: X/3", mensagem e 3 botões). O código e a versão só com texto já existem ([[ROADMAP_DEV]] C14-T3) — captura em `docs/art-review/qa-demo-end-3de3-2026-10-11.png`. Sugestão: mesma identidade da tela de título (fonte Cormorant, fundo da floresta), com o fundo mudando de seco pra verde conforme as áreas restauradas.
 
-Status: não iniciado (11/10).
+Status: 🟢 liberado (11/10) — a tela funcional já existe; falta o acabamento.
 
 ## O que falta (11/10/2026)
 

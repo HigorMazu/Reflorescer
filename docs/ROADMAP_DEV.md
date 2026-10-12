@@ -14,9 +14,9 @@ descricao: Backlog de implementação da demo (código)
 epicos_total: 14
 epicos_concluidos: 10
 tasks_total: 63
-tasks_prontas: 52
+tasks_prontas: 53
 tasks_bloqueadas: 4
-tasks_liberadas: 3
+tasks_liberadas: 2
 ---
 # Roadmap de Desenvolvimento — Código (Gustavo)
 
@@ -393,12 +393,15 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído (11/10) — `tools/qa/RewardCheck.gd`.
 >
-> > [!todo]- Task C14-T3 — Registro de áreas restauradas no fim da demo
-> > - [ ] Depois de derrotar o Korrag (e do aviso do Dash), uma tela de encerramento da demo mostra **"Áreas restauradas: X/3"**, com mensagem diferente pra 3/3.
-> > - [ ] Botões: voltar ao menu / sair. Hoje a demo não tem tela final: o jogo só segue no Covil depois do Korrag.
+> > [!success]- Task C14-T3 — Registro de áreas restauradas no fim da demo
+> > - [x] Depois de derrotar o Korrag (e do aviso do Dash), uma tela de encerramento da demo mostra **"Áreas restauradas: X/3"**, com mensagem diferente pra 3/3.
+> > - [x] Botões: voltar ao menu / sair. Hoje a demo não tem tela final: o jogo só segue no Covil depois do Korrag.
+> > - **Implementação (11/10):** `HUDController.ShowDemoEnd()`, painel montado em código como o do Game Over: aparece 4 s depois do `BossDefeated` (timer que ignora o hitstop), pausa o jogo e bloqueia o Esc (mesma flag `IsGameOver`); se o Kairo morrer nesse intervalo, o Game Over tem prioridade. Contagem pelos pontos restaurados do save (`SaveManager.RestoredCount`, total `DemoRestorationTotal` = 3). Mensagens: 0 → "Korrag caiu, mas a mata segue ferida..."; 1–2 → "A floresta começou a se recuperar..."; 3/3 → "Você restaurou toda a mata pelo caminho. A floresta volta a respirar."
+> > - **Melhoria (11/10):** além de "Menu inicial" e "Sair", um botão **"Continuar explorando"** fecha a tela pra testar o Dash recém-liberado. Só aparece uma vez: o Continuar num save com o Korrag já derrotado não mostra de novo.
+> > - **Captura:** `docs/art-review/qa-demo-end-3de3-2026-10-11.png` (texto puro; o acabamento visual é do Higor, [[ROADMAP_ARTE]] A06-T6).
 > > - **Arte:** tela simples com texto funciona; acabamento visual com o Higor ([[ROADMAP_ARTE]] A06-T6).
 > >
-> > Status: 🟢 liberado (11/10).
+> > Status: ✅ concluído (11/10) — `tools/qa/DemoEndCheck.gd` 15/15 (0, 1 e 3 áreas restauradas de verdade, Korrag derrotado); regressão (`DemoRunCheck`, `RewardCheck`, `CombatCheck`, `AudioCheck`, `SaveReloadCheck`, `GcStressCheck`) passando.
 >
 > > [!failure]- Task C14-T4 — Faísca fica mais forte ao restaurar
 > > - [ ] Definir o que a Faísca ganha a cada área restaurada (proposta em [[Projetos/Reflorescer/🕹️ Sistemas de Jogo|🕹️ Sistemas de Jogo]]).

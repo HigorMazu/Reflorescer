@@ -14,8 +14,8 @@ descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 14
 epicos_concluidos: 10
 tasks_total: 63
-tasks_prontas: 53
-tasks_bloqueadas: 6
+tasks_prontas: 54
+tasks_bloqueadas: 5
 ---
 # Roadmap de QA — Código (Reflorescer)
 
@@ -232,9 +232,9 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [x] Investindo/andando pra direita e pra esquerda, o Korrag está **de frente** (cabeça na direção do movimento).
 > > - [x] A investida machuca pelas presas, sem o Kairo precisar estar "dentro" do javali.
 > > - [x] Golpe do Kairo na cabeça e no traseiro tira vida (antes só o centro).
-> > - [ ] Conferir jogando: a luta ficou justa com as hitboxes novas (o Korrag ficou maior pra acertar e pra encostar).
+> > - [x] Conferir jogando: a luta ficou justa com as hitboxes novas (o Korrag ficou maior pra acertar e pra encostar).
 > >
-> > Status: ✅ passa (11/10, Claude, por script) — investida de frente nos dois sentidos (40 de dano), cabeça e traseiro 25 cada. Falta a luta jogada pelo Gustavo.
+> > Status: ✅ passa (11/10) — por script (investida de frente nos dois sentidos, 40 de dano; cabeça e traseiro 25 cada) e luta jogada e validada pelo Gustavo.
 
 > [!success]- EPIC-C07 — Inimigos Comuns (Arquétipos) — ✅ Passa · 🟠 Alta
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — 3 arquétipos com comportamento distinto de fato, cada um com dados pras 4 áreas da demo.
@@ -287,9 +287,9 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > [!success]- Task C07-T6 — Dano dos inimigos (ataque + toque)
 > > - [x] O ataque animado de cada arquétipo acerta o Kairo (antes a formiga e a tartaruga nunca acertavam).
 > > - [x] Encostar no corpo visível dá metade do dano; perto mas sem encostar, nada (sem aura invisível).
-> > - [ ] Conferir jogando: a dificuldade continua boa com o ataque acertando de verdade.
+> > - [x] Conferir jogando: a dificuldade continua boa com o ataque acertando de verdade.
 > >
-> > Status: ✅ passa (11/10, Claude, por script) — acertos de ataque em 10 s: 7 / 4 / 7; contato 5 / 12 / 6. Falta a sensação jogando.
+> > Status: ✅ passa (11/10) — por script (acertos de ataque em 10 s: 7 / 4 / 7; contato 5 / 12 / 6) e validado jogando pelo Gustavo.
 
 > [!success]- EPIC-C08 — Transição de Área — ✅ Passa · 🟠 Alta
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — o jogador chega na cena nova numa posição consistente com de onde veio.
@@ -352,10 +352,11 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa (11/10, Claude) — `RewardCheck.gd`.
 >
-> > [!failure]- Task C14-T3 — Registro de áreas restauradas no fim da demo
-> > - [ ] Derrotar o Korrag com 0, 1, 2 e 3 áreas restauradas mostra o número certo, e a mensagem muda com 3/3.
+> > [!success]- Task C14-T3 — Registro de áreas restauradas no fim da demo
+> > - [x] Derrotar o Korrag com 0, 1, 2 e 3 áreas restauradas mostra o número certo, e a mensagem muda com 3/3.
+> > - [x] Jogo pausado com a tela aberta; "Continuar explorando" despausa com o Dash liberado; "Menu inicial" volta ao menu despausado.
 > >
-> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_DEV]] C14-T3.
+> > Status: ✅ passa (11/10, Claude) — `tools/qa/DemoEndCheck.gd` 15/15 (0, 1 e 3 áreas restauradas de verdade, Korrag derrotado).
 >
 > > [!failure]- Task C14-T4 — Faísca fica mais forte ao restaurar
 > > - [ ] Cada restauração muda a Faísca de um jeito perceptível, e o efeito continua depois de trocar de área e Continuar.
