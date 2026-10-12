@@ -442,14 +442,14 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!failure]- Task C09-T3 — Visual do checkpoint apagado/ativado
-> > - [ ] Trocar os `ColorRect` placeholder (`FlagPole`/`Flag`) da bandeira única do Dossel Vivo (`cp_dossel_01`) pela arte do Higor ([[ROADMAP_ARTE]] A05-T5). *(Eram 5 checkpoints até 11/10; ver C09-T4.)*
-> > - [ ] `Checkpoint.cs`: mostrar o estado **apagado** antes de tocar e **ativado** depois; ao continuar um save, os checkpoints em `ActivatedCheckpoints` já nascem ativados (o `SaveManager.ApplySaveData` já seta `Activated = true`; falta o visual reagir a isso).
+> > [!warning]- Task C09-T3 — Visual do checkpoint apagado/ativado
+> > - [x] Trocar os `ColorRect` placeholder (`FlagPole`/`Flag`) da bandeira única do Dossel Vivo (`cp_dossel_01`) pela arte do Higor ([[ROADMAP_ARTE]] A05-T5). *(Eram 5 checkpoints até 11/10; ver C09-T4.)*
+> > - [x] `Checkpoint.cs`: mostrar o estado **apagado** antes de tocar e **ativado** depois; ao continuar um save, os checkpoints em `ActivatedCheckpoints` já nascem ativados.
 > > - **Origem (11/10):** achado na revisão de arte (item 4). Hoje o checkpoint funciona, mas o visual não muda ao ser tocado.
 > >
 > > - **Nota (11/10, C09-T4):** agora é uma bandeira só. O `Checkpoint.cs` já nasce `Activated` quando o save da sessão diz que ela foi ativada (ao voltar pra cena ou renascer nela); falta só o visual reagir.
 > >
-> > Status: não iniciado (11/10) — ⛔ bloqueado: aguarda a arte da [[ROADMAP_ARTE]] A05-T5.
+> > Status: 🟡 entregue (12/10) — `CheckpointTotemVisual` integrado ao estado salvo. `CheckpointVisualCheck.gd` confirma o ciclo novo jogo → toque → salvar → Continuar, sem alterar o save pessoal; revisão visual do Higor pendente.
 >
 > > [!info]- Task C09-T4 — Bandeira única e vida que não enche ao trocar de área
 > > - [x] Tirar os checkpoints do Sopé da Mata, do Igarapé Sufocado (2) e do Covil de Korrag. Fica só `cp_dossel_01`, no começo do Dossel Vivo (x = 200, logo depois do spawn vindo do Sopé).

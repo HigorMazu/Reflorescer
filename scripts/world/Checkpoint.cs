@@ -10,17 +10,20 @@ namespace Joguim.World
         [Export] public string CheckpointId = "checkpoint_01";
         [Export] public bool Activated = false;
         [Export] public NodePath SpritePath;
+        [Export] public NodePath TotemVisualPath;
         [Export] public NodePath ActivationEffectPath;
         // Ativa sozinha quando o Kairo passa por ela (sem precisar do E). Usado na bandeira única do Dossel Vivo
         // (decisão de 11/10/2026): garante que ninguém pule a bandeira e volte pro começo da demo ao morrer.
         [Export] public bool AutoActivateOnTouch = false;
 
         private AnimatedSprite2D _sprite;
+        private CheckpointTotemVisual _totem;
         private GpuParticles2D _activationEffect;
 
         public override void _Ready()
         {
             _sprite = GetNodeOrNull<AnimatedSprite2D>(SpritePath);
+            _totem = GetNodeOrNull<CheckpointTotemVisual>(TotemVisualPath);
             _activationEffect = GetNodeOrNull<GpuParticles2D>(ActivationEffectPath);
 
             if (_activationEffect != null)
@@ -35,6 +38,7 @@ namespace Joguim.World
             {
                 Activated = true;
             }
+            _totem?.SetActivated(Activated, false);
 
             BodyEntered += OnBodyEntered;
         }
@@ -53,6 +57,7 @@ namespace Joguim.World
             if (Activated) return;
 
             Activated = true;
+            _totem?.SetActivated(true, true);
 
             if (_sprite != null)
             {
@@ -88,6 +93,7 @@ namespace Joguim.World
         public void Deactivate()
         {
             Activated = false;
+            _totem?.SetActivated(false, false);
 
             if (_sprite != null)
             {

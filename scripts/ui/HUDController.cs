@@ -25,6 +25,9 @@ namespace Joguim.UI
 
         private Control _gameOverPanel;
         private Control _demoEndPanel;
+        private VBoxContainer _demoEndBox;
+        private ShaderMaterial _demoEndForestMaterial;
+        private PanelContainer _demoEndCard;
 
         private const float UnlockNotificationDuration = 2.5f;
         // Tela de fim da demo (C14-T3): espera o fade do Korrag e o aviso do Dash antes de aparecer
@@ -279,18 +282,25 @@ namespace Joguim.UI
         {
             if (_demoEndPanel == null) BuildDemoEndPanel();
             restored = Mathf.Clamp(restored, 0, DemoRestorationTotal);
-            _demoEndPanel.GetNode<Label>("Box/Count").Text = $"Áreas restauradas: {restored}/{DemoRestorationTotal}";
-            _demoEndPanel.GetNode<Label>("Box/Message").Text = restored switch
+            _demoEndBox.GetNode<Label>("Count").Text = $"Áreas restauradas: {restored}/{DemoRestorationTotal}";
+            _demoEndBox.GetNode<Label>("Message").Text = restored switch
             {
                 DemoRestorationTotal => "Você restaurou toda a mata pelo caminho. A floresta volta a respirar.",
                 0 => "Korrag caiu, mas a mata segue ferida. Restaurar as áreas fortalece o Kairo.",
                 _ => "A floresta começou a se recuperar, mas ainda há áreas degradadas pelo caminho.",
             };
+            _demoEndForestMaterial.SetShaderParameter("recovery", restored / (float)DemoRestorationTotal);
+            for (int i = 0; i < DemoRestorationTotal; i++)
+                _demoEndBox.GetNode<ColorRect>($"Progress/Area{i}").Color = i < restored
+                    ? new Color("a9d878") : new Color("665746");
             _demoEndPanel.Visible = true;
+            _demoEndPanel.Modulate = new Color(1, 1, 1, 0);
             // Mesmo bloqueio da tela de Game Over: o jogo pausa e o Esc não despausa
             if (GameManager.Instance != null) GameManager.Instance.IsGameOver = true;
             GetTree().Paused = true;
-            _demoEndPanel.GetNode<Button>("Box/ExploreButton").GrabFocus();
+            _demoEndPanel.CreateTween().SetPauseMode(Tween.TweenPauseMode.Process)
+                .TweenProperty(_demoEndPanel, "modulate:a", 1f, .65f);
+            _demoEndBox.GetNode<Button>("ExploreButton").GrabFocus();
         }
 
         private void HideDemoEnd()
@@ -306,41 +316,125 @@ namespace Joguim.UI
             AddChild(_demoEndPanel);
             _demoEndPanel.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
 
-            var dim = new ColorRect { Color = new Color(0.03f, 0.08f, 0.05f, 0.82f), MouseFilter = Control.MouseFilterEnum.Stop };
+            var background = new TextureRect
+            {
+                Name = "Forest",
+                Texture = GD.Load<Texture2D>("res://assets/ui/title/forest_dawn_v1.png"),
+                ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
+                StretchMode = TextureRect.StretchModeEnum.KeepAspectCovered,
+                MouseFilter = Control.MouseFilterEnum.Ignore
+            };
+            _demoEndForestMaterial = new ShaderMaterial
+            {
+                Shader = GD.Load<Shader>("res://assets/shaders/demo_end_forest.gdshader")
+            };
+            background.Material = _demoEndForestMaterial;
+            _demoEndPanel.AddChild(background);
+            background.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
+
+            var dim = new ColorRect { Color = new Color(0.012f, 0.03f, 0.025f, 0.50f), MouseFilter = Control.MouseFilterEnum.Stop };
             _demoEndPanel.AddChild(dim);
             dim.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
 
-            var box = new VBoxContainer { Name = "Box", Alignment = BoxContainer.AlignmentMode.Center };
-            box.AddThemeConstantOverride("separation", 16);
-            _demoEndPanel.AddChild(box);
-            box.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
+            var center = new CenterContainer { Name = "Center", MouseFilter = Control.MouseFilterEnum.Ignore };
+            _demoEndPanel.AddChild(center);
+            center.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
 
-            var title = new Label { Name = "Title", Text = "Fim da demo", HorizontalAlignment = HorizontalAlignment.Center };
-            title.AddThemeFontSizeOverride("font_size", 48);
-            box.AddChild(title);
+            var frame = new StyleBoxFlat
+            {
+                BgColor = new Color(.025f, .065f, .048f, .93f),
+                BorderColor = new Color(.74f, .68f, .40f, .88f),
+                BorderWidthLeft = 1, BorderWidthTop = 1, BorderWidthRight = 1, BorderWidthBottom = 1,
+                CornerRadiusTopLeft = 3, CornerRadiusTopRight = 3,
+                CornerRadiusBottomLeft = 3, CornerRadiusBottomRight = 3
+            };
+            _demoEndCard = new PanelContainer { Name = "Card", CustomMinimumSize = new Vector2(620, 0) };
+            _demoEndCard.AddThemeStyleboxOverride("panel", frame);
+            center.AddChild(_demoEndCard);
+
+            var margin = new MarginContainer { Name = "Margin" };
+            margin.AddThemeConstantOverride("margin_left", 42);
+            margin.AddThemeConstantOverride("margin_right", 42);
+            margin.AddThemeConstantOverride("margin_top", 30);
+            margin.AddThemeConstantOverride("margin_bottom", 30);
+            _demoEndCard.AddChild(margin);
+
+            _demoEndBox = new VBoxContainer { Name = "Box", Alignment = BoxContainer.AlignmentMode.Center };
+            _demoEndBox.AddThemeConstantOverride("separation", 13);
+            margin.AddChild(_demoEndBox);
+
+            var eyebrow = new Label { Text = "A FLORESTA AINDA TEM CAMINHO", HorizontalAlignment = HorizontalAlignment.Center };
+            eyebrow.AddThemeFontSizeOverride("font_size", 12);
+            eyebrow.AddThemeColorOverride("font_color", new Color("b6bf94"));
+            _demoEndBox.AddChild(eyebrow);
+
+            var title = new Label { Name = "Title", Text = "Reflorescer", HorizontalAlignment = HorizontalAlignment.Center };
+            title.AddThemeFontOverride("font", GD.Load<Font>("res://assets/fonts/cormorant/CormorantGaramond.ttf"));
+            title.AddThemeFontSizeOverride("font_size", 52);
+            title.AddThemeColorOverride("font_color", new Color("f4edce"));
+            _demoEndBox.AddChild(title);
+
+            var subtitle = new Label { Text = "FIM DA DEMO", HorizontalAlignment = HorizontalAlignment.Center };
+            subtitle.AddThemeFontSizeOverride("font_size", 14);
+            subtitle.AddThemeColorOverride("font_color", new Color("d6bb73"));
+            _demoEndBox.AddChild(subtitle);
 
             var count = new Label { Name = "Count", HorizontalAlignment = HorizontalAlignment.Center };
-            count.AddThemeFontSizeOverride("font_size", 30);
-            count.AddThemeColorOverride("font_color", new Color("b8d98a"));
-            box.AddChild(count);
+            count.AddThemeFontSizeOverride("font_size", 25);
+            count.AddThemeColorOverride("font_color", new Color("c4e69c"));
+            _demoEndBox.AddChild(count);
 
-            var message = new Label { Name = "Message", HorizontalAlignment = HorizontalAlignment.Center, AutowrapMode = TextServer.AutowrapMode.WordSmart, CustomMinimumSize = new Vector2(640, 0), SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter };
-            message.AddThemeFontSizeOverride("font_size", 20);
-            box.AddChild(message);
+            var progress = new HBoxContainer { Name = "Progress", Alignment = BoxContainer.AlignmentMode.Center };
+            progress.AddThemeConstantOverride("separation", 10);
+            _demoEndBox.AddChild(progress);
+            for (int i = 0; i < DemoRestorationTotal; i++)
+                progress.AddChild(new ColorRect
+                {
+                    Name = $"Area{i}", CustomMinimumSize = new Vector2(70, 4),
+                    Color = new Color("665746"), MouseFilter = Control.MouseFilterEnum.Ignore
+                });
 
-            box.AddChild(new Control { CustomMinimumSize = new Vector2(0, 12) });
+            var message = new Label { Name = "Message", HorizontalAlignment = HorizontalAlignment.Center,
+                AutowrapMode = TextServer.AutowrapMode.WordSmart, CustomMinimumSize = new Vector2(520, 0),
+                SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter };
+            message.AddThemeFontSizeOverride("font_size", 18);
+            message.AddThemeColorOverride("font_color", new Color("e1e7d2"));
+            _demoEndBox.AddChild(message);
 
-            var explore = new Button { Name = "ExploreButton", Text = "Continuar explorando", CustomMinimumSize = new Vector2(260, 44), SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter };
+            _demoEndBox.AddChild(new Control { CustomMinimumSize = new Vector2(0, 6) });
+
+            StyleBoxFlat ButtonStyle(bool selected) => new()
+            {
+                BgColor = selected ? new Color(.20f, .29f, .19f, .92f) : new Color(.08f, .14f, .10f, .9f),
+                BorderColor = selected ? new Color("d8c57d") : new Color(.42f, .51f, .36f, .8f),
+                BorderWidthLeft = selected ? 2 : 1,
+                CornerRadiusTopRight = 2, CornerRadiusBottomRight = 2,
+                ContentMarginLeft = 18, ContentMarginRight = 18
+            };
+            Button StyledButton(string name, string text)
+            {
+                var button = new Button { Name = name, Text = text,
+                    CustomMinimumSize = new Vector2(280, 41), SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter };
+                button.AddThemeStyleboxOverride("normal", ButtonStyle(false));
+                button.AddThemeStyleboxOverride("hover", ButtonStyle(true));
+                button.AddThemeStyleboxOverride("focus", ButtonStyle(true));
+                button.AddThemeStyleboxOverride("pressed", ButtonStyle(true));
+                button.AddThemeColorOverride("font_color", new Color("e8e7ce"));
+                button.AddThemeColorOverride("font_focus_color", new Color("fff4ca"));
+                return button;
+            }
+
+            var explore = StyledButton("ExploreButton", "Continuar explorando");
             explore.Pressed += HideDemoEnd;
-            box.AddChild(explore);
+            _demoEndBox.AddChild(explore);
 
-            var menu = new Button { Name = "MenuButton", Text = "Menu inicial", CustomMinimumSize = new Vector2(260, 44), SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter };
+            var menu = StyledButton("MenuButton", "Menu inicial");
             menu.Pressed += () => { HideDemoEnd(); GoToMainMenu(); };
-            box.AddChild(menu);
+            _demoEndBox.AddChild(menu);
 
-            var quit = new Button { Name = "QuitButton", Text = "Sair", CustomMinimumSize = new Vector2(260, 44), SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter };
+            var quit = StyledButton("QuitButton", "Sair");
             quit.Pressed += () => GetTree().Quit();
-            box.AddChild(quit);
+            _demoEndBox.AddChild(quit);
         }
 
         private void BuildGameOverPanel()

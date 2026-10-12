@@ -13,6 +13,7 @@ namespace Joguim.UI
 
         private const int SaveSlot = 0;
         private bool _leaving;
+        private Button[] _navigationButtons;
 
         public override void _Ready()
         {
@@ -37,9 +38,31 @@ namespace Joguim.UI
             }
             if (quit != null) quit.Pressed += () => TransitionTo(() => { GetTree().Quit(); return true; });
 
+            _navigationButtons = new[] { continueButton, newGame, quit };
+
             // foco no teclado: Continuar quando existe save, senão Novo jogo
             if (hasSave && continueButton != null) continueButton.GrabFocus();
             else newGame?.GrabFocus();
+        }
+
+        public override void _UnhandledKeyInput(InputEvent @event)
+        {
+            if (_leaving || @event is not InputEventKey key || !key.Pressed || key.Echo) return;
+            int step = key.PhysicalKeycode switch
+            {
+                Key.W => -1,
+                Key.S => 1,
+                _ => 0
+            };
+            if (step == 0) return;
+
+            var available = Array.FindAll(_navigationButtons,
+                button => button != null && button.Visible && !button.Disabled);
+            if (available.Length == 0) return;
+            int current = Array.IndexOf(available, GetViewport().GuiGetFocusOwner());
+            int next = current < 0 ? 0 : Mathf.PosMod(current + step, available.Length);
+            available[next].GrabFocus();
+            GetViewport().SetInputAsHandled();
         }
 
         private async void TransitionTo(Func<bool> action)

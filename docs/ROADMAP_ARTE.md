@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-11
+atualizado: 2026-10-12
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: arte
@@ -12,11 +12,11 @@ responsavel: Higor
 par: "[[ROADMAP_QA_INTEGRACAO]]"
 descricao: Backlog de sprites, animação e estilização da demo
 epicos_total: 7
-epicos_concluidos: 3
+epicos_concluidos: 2
 tasks_total: 28
-tasks_prontas: 20
+tasks_prontas: 19
 tasks_bloqueadas: 2
-tasks_liberadas: 1
+tasks_liberadas: 0
 ---
 # Roadmap de Arte — Sprites, Animação e Estilização (Higor)
 
@@ -86,6 +86,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > > - **Dependência:** não depende de código pra ser desenhado, só pra ser testado em jogo — depende de [[ROADMAP_DEV]] `EPIC-C03` (toggle da espada) estar implementado antes de validar a troca em tempo real.
 > >
 > > - **Aprovação (11/10):** aprovada a versão atual — lâmina longa v11 e empunhadura de corrida v12 (`docs/art-review/ground-and-grip-v1.md`, `sword-long-v11-*.png`, `sword-run-grip-v12.gif`).
+> > - **Revisão (12/10):** espada ativa e guardada conferidas em todos os quadros de idle, corrida, salto, queda, dash, parede e ataque. A lâmina permanece presa ao punho, fica atrás da mão/braço e a bandagem volta ao guardar; `SwordHudCheck.tscn` passou sem falhas.
 > >
 > > Status: ✅ concluída (11/10) — Aprovado por Gustavo em 11/10, depois da partida completa da demo. Histórico: (08/10) a v9 mantém o cabo na mão direita em todos os quadros, aprofunda a guarda no punho durante o ataque e troca a camada da lâmina para que ela permaneça legível sem criar uma segunda mão. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 >
@@ -95,7 +96,10 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > - **Ajuste pedido (11/10, Gustavo):** no jogo o wall slide lê como uma queda comum ao lado da parede — o Kairo usa a pose de `fall` e as raspas do contato não aparecem na escala real (captura: `docs/art-review/qa-ingame-wallslide-2026-10-11.png`, tronco do Dossel Vivo). Pedido: deixar o apoio legível — **pose própria** de apoio (mão/pés na parede, coerente com o spritesheet do Kairo) **ou** efeito de contato bem mais visível (raspas/poeira/folhas caindo). A mecânica não muda.
 > >
-> > Status: 🔧 ajuste pedido (11/10). Histórico: (08/10) `wall_slide` usa o Kairo normal e ganhou raspas discretas no ponto de contato. Entrada, colisão, estado e animação passaram no teste de execução. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
+> > **Revisão (12/10, após retorno do Higor):** apoio inclina Kairo inteiro, inclusive a espada, para encostar a garra dianteira e o pé dobrado no tronco. Raspas e fragmentos nascem na altura desses pontos; funcionamento conferido dos dois lados da parede. Mecânica e dash preservados. Capturas e testes em `docs/art-review/wall-contact-v3.md`.
+> > - **Ajuste v4 (12/10):** folhas e raspas passam a cair continuamente a partir da garra e do pé reais do sprite, acompanhando a inclinação e o espelhamento da pose. Ver `docs/art-review/wall-contact-v4.md`.
+> >
+> > Status: 🟡 parcial (12/10) — ajuste entregue, aguardando aprovação visual. Histórico: (08/10) `wall_slide` usa o Kairo normal e ganhou raspas discretas no ponto de contato. Entrada, colisão, estado e animação passaram no teste de execução. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 >
 > > [!success]- Task A01-T4 — Variação visual do dash
 > > - [x] Animação `dash` integrada com os quadros normais de corrida e squash do impulso.
@@ -157,7 +161,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: não iniciado (11/10) — ⛔ bloqueado: aguarda a definição do grupo.
 
-> [!warning]- EPIC-A04 — Boss KORRAG — 🔄 Em andamento (ajuste no `attack`) · 🟠 Alta
+> [!warning]- EPIC-A04 — Boss KORRAG — 🟡 Ajuste do `attack` entregue, revisão pendente · 🟠 Alta
 > *Pronto quando*: `intro`, `charge_windup`, `phase2_transition` e `defeated` estão entregues — escopo já simplificado, fases 1 e 2 compartilham `idle`.
 >
 > Por último — pacote mais isolado e com o escopo já reduzido de propósito (decisão do Gustavo: manter as 2 fases já modeladas por dados, mas simplificar a arte pra caber no tempo).
@@ -185,13 +189,14 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ concluída (11/10) — Aprovado por Gustavo em 11/10, depois da partida completa da demo. Transição com dois quadros e brilho vermelho controlado.
 >
-> > [!todo]- Task A04-T3 — `attack` do Korrag virando de lado no meio
-> > - [ ] Na folha `korrag_animation_sheet_v2.png`, os quadros 1 e 2 do `attack` (regiões `Atlas_20` e `Atlas_21`) olham pra **direita**; o 3º e todas as outras 12 animações olham pra **esquerda**. Espelhar os dois quadros pra esquerda.
+> > [!warning]- Task A04-T3 — `attack` do Korrag virando de lado no meio
+> > - [x] Os quadros 1 e 2 do `attack` (regiões `Atlas_20` e `Atlas_21`) são espelhados na exibição; o 3º e as demais animações mantêm a orientação original. Conferido para ataque à esquerda e à direita.
 > > - **Achado (11/10):** ao corrigir o Korrag que investia de costas ([[ROADMAP_DEV]] C06-T5), o código passou a assumir arte virada pra esquerda (`SpriteFacesLeft`). Com isso, o golpe comum mostra a cabeça pro lado errado nos dois primeiros quadros.
+> > - **Entrega (12/10):** `KorragAttackOrientation` corrige os dois quadros no `AnimatedSprite2D` da cena real, sem alterar os outros estados. Seis capturas e verificações de direção: `docs/art-review/roadmap-visual-2026-10-12.md`.
 > >
-> > Status: 🔧 ajuste pedido (11/10).
+> > Status: 🟡 entregue (12/10) — correção integrada e verificada em execução; aguarda avaliação visual do Higor.
 
-> [!warning]- EPIC-A05 — Cenário das 4 Áreas da Demo (Floresta Tropical) — 🔄 Em andamento (falta o checkpoint) · 🔴 Bloqueante
+> [!warning]- EPIC-A05 — Cenário das 4 Áreas da Demo (Floresta Tropical) — 🟡 Marco entregue; caminhos dependem de decisão · 🔴 Bloqueante
 > *Pronto quando*: as 4 áreas têm tileset, background e props temáticos entregues, com identidade visual reconhecível sem precisar de texto, e coerentes entre si (mesmo bioma, mesma paleta-base) — ver [[🌍 Mundo e Biomas#As 4 áreas da demo (dentro da Floresta Tropical)|Mundo e Biomas]].
 >
 > Renomeado em 29/09/2026 (era "Cenário das 3 Áreas da Demo": Floresta Tropical/Deserto/Tundra) — a demo agora fica só na Floresta Tropical, em 4 áreas.
@@ -226,23 +231,24 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ entrega visual concluída (08/10) — Higor aprovou fundo de arena e chão revirado (`docs/art-review/covil-visual-v1.md`). O chão revirado passou a usar a mesma base modular das áreas (`docs/art-review/modular-terrain-v1.md`). Teste jogado da luta e FPS permanecem no roadmap de QA.
 >
-> > [!todo]- Task A05-T5 — Bandeira de checkpoint (as 4 áreas)
-> > - [ ] Visual do checkpoint em 2 estados: **apagado** (ainda não tocado) e **ativado** (depois de tocar) — hoje são dois `ColorRect` azuis de placeholder (`FlagPole`/`Flag` dentro de `Interactables/CheckpointN`).
-> > - [ ] Coerente com o bioma (ex.: totem, broto, pedra com musgo que acende) — o checkpoint também salva o jogo, então vale um sinal claro de "salvou".
-> > - [ ] Base na linha do chão; tamanho legível na escala real (a área de colisão é 32×32).
+> > [!warning]- Task A05-T5 — Marco de checkpoint (único no Dossel Vivo)
+> > - [x] Visual em 2 estados: **apagado** (ainda não tocado) e **ativado** (depois de tocar), sem os `ColorRect` azuis de placeholder.
+> > - [x] Totem de raiz e pedra com broto aceso, pulso de luz e faíscas breves ao salvar.
+> > - [x] Base na linha do chão, conferida na escala real (a área de colisão é 32×32).
 > > - **Origem (11/10):** achado na revisão de arte do Gustavo — o placeholder aparece no Sopé, Dossel, Igarapé (2) e Covil, 5 checkpoints no total, e não estava em nenhum roadmap. Captura: `docs/art-review/qa-ingame-dash-2026-10-11.png` (bandeira azul à esquerda).
 > > - **Código:** o `Checkpoint.cs` já tem a propriedade `Activated`; a troca de visual entre os 2 estados entra junto com a arte ([[ROADMAP_DEV]]).
 > >
 > > - **Mudança de escopo (11/10) — agora é uma bandeira só:** o grupo decidiu deixar só a do começo do Dossel Vivo (`Interactables/Checkpoint1`, `cp_dossel_01`); as do Sopé, Igarapé e Covil saíram do jogo ([[ROADMAP_DEV]] C09-T4). Ela agora ativa sozinha quando o Kairo passa, então o estado **ativado** precisa ficar bem visível na hora.
+> > - **Entrega (12/10):** a cena do Dossel usa `CheckpointTotemVisual`, e `Checkpoint` sincroniza a aparência com `Activated` na entrada, ativação e desativação. Capturas no cenário real: `docs/art-review/roadmap-visual-2026-10-12.md`.
 > >
-> > Status: não iniciado (11/10).
+> > Status: 🟡 entregue (12/10) — dois estados, ativação e Continue verificados no fluxo real; aguarda apenas avaliação visual do Higor. `CheckpointVisualCheck.gd` cobre o save sem alterar o save pessoal.
 >
 > > [!todo]- Task A05-T6 — Vinhas/plataformas que crescem ao restaurar
 > > - [ ] Arte do caminho novo que aparece em cada área restaurada (Sopé, Dossel, Igarapé), conforme o que for definido ([[ROADMAP_DEV]] C14-T5): estado "fechado" (seco/ausente) e "aberto" (crescido), na escala das plataformas atuais.
 > >
 > > Status: não iniciado (11/10) — ⛔ bloqueado: aguarda a definição do grupo.
 
-> [!success]- EPIC-A06 — UI — ✅ Entrega visual concluída
+> [!warning]- EPIC-A06 — UI — 🟡 Tela final entregue; revisão pendente
 > *Pronto quando*: barra de vida, ícone de habilidade e prompt de interação têm arte final substituindo os placeholders do Godot.
 >
 > Apoio, menor prioridade — não bloqueia jogabilidade.
@@ -283,26 +289,29 @@ Status: ✅ concluída (07/10) — indicador aprovado por Higor e integrado. Ver
 - [x] Integração com Novo jogo, Continuar e Sair; espaço para futuras opções.
 - [x] Revisão visual em 1280×720 e 960×540; navegação testada com saves isolados.
 - [x] Aprovação visual (Gustavo, 11/10).
-- [ ] Ajuste pequeno pedido (11/10): mais contraste na dica "Navegar · Enter Selecionar" do canto inferior direito, hoje quase ilegível sobre o fundo.
+- [x] Ajuste de contraste entregue (12/10): dica do canto inferior direito com fonte maior e faixa escura.
+- [x] Revisão pedida por Higor (12/10): W / S e Enter destacados em molduras de tecla, com "Navegar" e "Selecionar" em cor distinta. W/S agora movem o foco no menu; revisado em duas resoluções.
 
-Status: ✅ aprovada (11/10), com um ajuste pequeno pendente. Ver `docs/art-review/title-screen-v1.md`. A falha de salvar/recarregar citada na entrega foi resolvida no código (autoload `ResourceKeeper`, [[ROADMAP_DEV]] C12-T4) — não tinha relação com a tela de título.
+Status: 🟡 parcial (12/10) — título base aprovado em 11/10; ajuste W/S entregue e aguardando avaliação visual de Higor. Ver `docs/art-review/wall-contact-v3.md`. A falha de salvar/recarregar citada na entrega foi resolvida no código (autoload `ResourceKeeper`, [[ROADMAP_DEV]] C12-T4) — não tinha relação com a tela de título.
 
 ### A06-T6 — Tela de fim da demo (11/10)
 
-- [ ] Acabamento visual da tela de encerramento depois do Korrag ("Áreas restauradas: X/3", mensagem e 3 botões). O código e a versão só com texto já existem ([[ROADMAP_DEV]] C14-T3) — captura em `docs/art-review/qa-demo-end-3de3-2026-10-11.png`. Sugestão: mesma identidade da tela de título (fonte Cormorant, fundo da floresta), com o fundo mudando de seco pra verde conforme as áreas restauradas.
+- [x] Acabamento visual da tela de encerramento depois do Korrag ("Áreas restauradas: X/3", mensagem e 3 botões). A tela usa fonte Cormorant, floresta animada e gradação de seco a verde conforme 0–3 áreas restauradas, mantendo as ações existentes.
+- [x] Capturas em 1280×720 e 960×540, com as quatro contagens e foco de teclado conferidos em execução (`docs/art-review/roadmap-visual-2026-10-12.md`).
 
-Status: 🟢 liberado (11/10) — a tela funcional já existe; falta o acabamento.
+Status: 🟡 entregue (12/10) — acabamento integrado e revisado nas duas resoluções; aguarda avaliação visual do Higor e percurso jogado após Korrag.
 
-## O que falta (11/10/2026)
+## O que falta (12/10/2026)
 
-As 9 etapas da ordem de entrega original (Kairo, inimigos, Faísca, espada, cenário, Korrag, wall jump/dash, UI e `enraged_transition`) foram entregues e aprovadas, com três pendências abertas na revisão de 11/10:
+As 9 etapas da ordem de entrega original (Kairo, inimigos, Faísca, espada, cenário, Korrag, wall jump/dash, UI e `enraged_transition`) foram entregues e aprovadas, com os seguintes ajustes e entregas ainda em acompanhamento:
 
 ```
-1. Wall slide legível (A01-T3)            ← ajuste pedido: hoje parece uma queda
-2. Bandeira de checkpoint (A05-T5)        ← task nova; destrava o código C09-T3
-3. Contraste da dica da tela de título (A06-T5)
-4. Korrag: espelhar os quadros 1 e 2 do `attack` (A04-T3)
-5. Depois das definições do grupo: Faísca fortalecida (A03-T2), caminhos que crescem (A05-T6) e tela de fim da demo (A06-T6)
+1. Wall slide legível (A01-T3)            ← efeito entregue em 12/10; aguarda aprovação visual
+2. Marco de checkpoint (A05-T5)           ← entregue em 12/10; falta avaliação visual e teste jogado
+3. Contraste da dica da tela de título (A06-T5) ← entregue em 12/10
+4. Korrag: orientar quadros 1 e 2 do `attack` (A04-T3) ← entregue em 12/10; falta avaliação visual
+5. Tela de fim da demo (A06-T6)           ← entregue em 12/10; falta avaliação visual e percurso jogado
+6. Dependem de decisões do grupo: Faísca fortalecida (A03-T2) e caminhos que crescem (A05-T6)
 + Validações do Higor no ROADMAP_QA_INTEGRACAO: playtest do indicador da espada (A06-T4) e do menu pelo teclado (A06-T5)
 
 Pós-demo (jogo completo, fora desta entrega): reskins Deserto/Tundra dos 3 arquétipos (A02-T4/T5).
