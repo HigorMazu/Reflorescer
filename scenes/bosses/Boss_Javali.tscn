@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://dhdoquuekxcq8" path="res://scripts/combat/Hurtbox.cs" id="6"]
 [ext_resource type="Resource" path="res://resources/bosses/JavaliStatsResource.tres" id="7"]
 [ext_resource type="SpriteFrames" path="res://assets/sprites/korrag/KorragSpriteFrames.tres" id="8"]
+[ext_resource type="Script" path="res://scripts/art/KorragAttackOrientation.cs" id="korrag_attack_orientation"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(80, 60)
@@ -87,6 +88,7 @@ offset_bottom = -55.0
 color = Color(0.25, 0.2, 0.12, 1)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=247029865]
+script = ExtResource("korrag_attack_orientation")
 position = Vector2(0, -100)
 scale = Vector2(0.9, 0.9)
 sprite_frames = ExtResource("8")

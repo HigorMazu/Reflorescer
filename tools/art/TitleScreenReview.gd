@@ -28,5 +28,26 @@ func _run() -> void:
 	menu.get_node("Box/QuitButton").grab_focus()
 	await process_frame
 	assert(root.gui_get_focus_owner() == menu.get_node("Box/QuitButton"))
-	print("TITLE_SCREEN_PASS: animation, save-dependent continue, keyboard focus and layout loaded")
+	var up := InputEventKey.new()
+	up.physical_keycode = KEY_W
+	up.pressed = true
+	Input.parse_input_event(up)
+	for i in range(4):
+		await process_frame
+	assert(root.gui_get_focus_owner() == menu.get_node("Box/NewGameButton"), "W navigates upward")
+	var down := InputEventKey.new()
+	down.physical_keycode = KEY_S
+	down.pressed = true
+	Input.parse_input_event(down)
+	for i in range(4):
+		await process_frame
+	assert(root.gui_get_focus_owner() == menu.get_node("Box/QuitButton"), "S navigates downward")
+	menu.get_node("Box/ContinueButton").visible = false
+	menu.get_node("Box/NewGameButton").grab_focus()
+	await process_frame
+	menu.call("_unhandled_key_input", down)
+	assert(root.gui_get_focus_owner() == menu.get_node("Box/QuitButton"), "S skips unavailable Continue")
+	menu.call("_unhandled_key_input", up)
+	assert(root.gui_get_focus_owner() == menu.get_node("Box/NewGameButton"), "W skips unavailable Continue")
+	print("TITLE_SCREEN_PASS: animation, save-dependent continue, W/S keyboard navigation and layout loaded")
 	quit()

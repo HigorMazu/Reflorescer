@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://kuhl1jc0cutg" path="res://scripts/world/AreaController.cs" id="area_script"]
 [ext_resource type="Script" uid="uid://bqc07gusublgs" path="res://scripts/world/Checkpoint.cs" id="checkpoint"]
+[ext_resource type="Script" path="res://scripts/world/CheckpointTotemVisual.cs" id="checkpoint_art"]
 [ext_resource type="PackedScene" uid="uid://faisca001" path="res://scenes/companion/Faisca.tscn" id="faisca"]
 [ext_resource type="PackedScene" uid="uid://hud001" path="res://scenes/ui/HUD.tscn" id="hud"]
 [ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="player"]
@@ -462,25 +463,15 @@ collision_mask = 2
 script = ExtResource("checkpoint")
 CheckpointId = "cp_dossel_01"
 AutoActivateOnTouch = true
+TotemVisualPath = NodePath("TotemVisual")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/Checkpoint1" unique_id=384558023]
 position = Vector2(0, -16)
 shape = SubResource("Shape_Checkpoint1")
 
-[node name="FlagPole" type="ColorRect" parent="Interactables/Checkpoint1" unique_id=1923703766]
-offset_left = -2.0
-offset_top = -30.0
-offset_right = 2.0
-mouse_filter = 2
-color = Color(0.5, 0.5, 0.5, 1)
-
-[node name="Flag" type="ColorRect" parent="Interactables/Checkpoint1" unique_id=792401590]
-offset_left = 2.0
-offset_top = -30.0
-offset_right = 16.0
-offset_bottom = -20.0
-mouse_filter = 2
-color = Color(0.2, 0.6, 0.9, 1)
+[node name="TotemVisual" type="Node2D" parent="Interactables/Checkpoint1"]
+z_index = 2
+script = ExtResource("checkpoint_art")
 
 [node name="RestorationPoint1" type="Area2D" parent="Interactables" unique_id=958426160]
 position = Vector2(720, 246)

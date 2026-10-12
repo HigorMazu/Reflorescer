@@ -403,14 +403,14 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): menu com Continuar; Continuar volta à cena/posição salvas, inclusive na arena (sem o Korrag, com dash) e depois de fechar/reabrir o jogo. Revalidado em 11/10 (Claude, por script): save/recarga no mesmo processo nas 4 áreas sem crash.
 >
-> > [!failure]- Task C09-T3 — Visual do checkpoint apagado/ativado
-> > - [ ] Antes de tocar: checkpoint apagado. Ao tocar: muda pra ativado na hora e salva.
-> > - [ ] Fechar e Continuar: os checkpoints já ativados nascem ativados; os outros, apagados.
-> > - [ ] `SaveReloadCheck.gd` e `DemoRunCheck.gd` continuam passando.
+> > [!warning]- Task C09-T3 — Visual do checkpoint apagado/ativado
+> > - [x] Antes de tocar: checkpoint apagado. Ao tocar: muda pra ativado na hora e salva.
+> > - [x] Fechar e Continuar: os checkpoints já ativados nascem ativados; os outros, apagados.
+> > - [x] `SaveReloadCheck.gd` e `DemoRunCheck.gd` continuam passando.
 > >
 > > - **Nota (11/10):** desde a C09-T4 é uma bandeira só (`cp_dossel_01`).
 > >
-> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_DEV]] C09-T3 e da arte ([[ROADMAP_ARTE]] A05-T5).
+> > Status: 🟡 parcial (12/10) — `CheckpointVisualCheck.gd` passou no ciclo completo; `SaveReloadCheck.gd` (0 falhas) e `DemoRunCheck.gd` (89/89) continuam passando. Falta só avaliação visual do Higor.
 >
 > > [!warning]- Task C09-T4 — Bandeira única e vida que não enche ao trocar de área
 > > - [ ] O projeto compila no editor sem erro.
