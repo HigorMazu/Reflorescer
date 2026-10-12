@@ -17,6 +17,8 @@ namespace Joguim.Save
         public int PlayerHealth { get; set; }
         public int PlayerMaxHealth { get; set; }
         public string LastCheckpointId { get; set; }
+        // Cena da última bandeira ativada: morrer em outra área recarrega esta cena (decisão de 11/10/2026)
+        public string LastCheckpointScene { get; set; } = "";
         public bool HasSword { get; set; } = true;
 
         // Progression

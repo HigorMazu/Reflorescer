@@ -4,9 +4,11 @@
 
 [resource]
 script = ExtResource("1")
+MaxHealth = 75
 MoveSpeed = 160.0
+AttackDamage = 12
 DetectionRange = 200.0
 PatrolSpeed = 90.0
-ChaseSpeed = 190.0
+ChaseSpeed = 200.0
 AttackCooldown = 0.6
 KnockbackResistance = 0.2

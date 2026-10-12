@@ -15,6 +15,13 @@ namespace Joguim.Enemies
         [Export] public NodePath PatrolEndPath;
         [Export] public string EnemyId = "enemy_basic";
 
+        // Formas por arquétipo, medidas no desenho de cada um (11/10/2026). Zero = mantém a da cena base.
+        // Hurtbox = onde o Kairo acerta; ataque = boca/ferrão, voltado pra direita (o Flip espelha).
+        [Export] public Vector2 HurtboxSize = Vector2.Zero;
+        [Export] public Vector2 HurtboxOffset = Vector2.Zero;
+        [Export] public Vector2 AttackHitboxSize = Vector2.Zero;
+        [Export] public Vector2 AttackHitboxOffset = Vector2.Zero;
+
         public AnimatedSprite2D Sprite { get; private set; }
         public CombatController CombatController { get; private set; }
         public EnemyStateMachine StateMachine { get; private set; }
@@ -65,7 +72,10 @@ namespace Joguim.Enemies
 
             InitializePatrolPoints();
             AddToGroup("Enemies");
-            _contactDamage = Mathf.Max(8, StatsResource.AttackDamage);
+            CombatGeometry.SetRect(GetNodeOrNull<CollisionShape2D>("Hurtbox/CollisionShape2D"), HurtboxSize, HurtboxOffset);
+            CombatGeometry.SetRect(GetNodeOrNull<CollisionShape2D>("AttackHitbox/CollisionShape2D"), AttackHitboxSize, AttackHitboxOffset);
+            // Decisão de 11/10/2026 (estilo Hollow Knight): o ataque dá o dano cheio; encostar no corpo, metade
+            _contactDamage = Mathf.Max(4, StatsResource.AttackDamage / 2);
             CreateHealthBar();
         }
 
@@ -114,8 +124,8 @@ namespace Joguim.Enemies
             if (_player == null) _player = GetTree().GetFirstNodeInGroup("Player") as Node2D;
             if (_player != null && Health != null && !Health.IsDead && _contactTimer <= 0)
             {
-                float dist = GlobalPosition.DistanceTo(_player.GlobalPosition);
-                if (dist < 32f)
+                // Contato = corpo visível encostando no Kairo (hurtbox com hurtbox), não um raio em volta do centro
+                if (CombatGeometry.HurtRect(this).Intersects(CombatGeometry.HurtRect(_player)))
                 {
                     var pHealth = _player.GetNodeOrNull<Health>("Health");
                     if (pHealth != null && !pHealth.IsInvulnerable)

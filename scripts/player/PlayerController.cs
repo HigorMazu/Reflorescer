@@ -4,6 +4,7 @@ using Joguim.Abilities;
 using Joguim.Combat;
 using Joguim.Core;
 using Joguim.Resources;
+using Joguim.Save;
 
 namespace Joguim.Player
 {
@@ -99,16 +100,25 @@ namespace Joguim.Player
             if (Health == null) GD.PrintErr("PlayerController: Health não encontrado.");
             else
             {
-                Health.MaxHealth = StatsResource.MaxHealth;
+                // Cada área restaurada dá +10 de vida máxima (decisão de 11/10/2026): o bônus sai dos pontos
+                // restaurados do save, então vale depois de trocar de área, morrer ou Continuar
+                Health.MaxHealth = StatsResource.MaxHealth + MaxHealthPerRestoration * (SaveManager.Instance?.RestoredCount ?? 0);
                 Health.Reset();
                 Health.HealthChanged += OnHealthChanged;
                 Health.DamageReceived += OnDamageReceived;
                 Health.Died += OnDied;
+                // Trocar de área não cura (decisão de 11/10/2026): o Kairo chega com a vida que tinha
+                int carried = GameManager.Instance?.CarriedPlayerHealth ?? -1;
+                if (carried > 0 && carried < Health.MaxHealth) Health.SetCurrentHealth(carried);
                 // sincroniza HUD imediatamente
                 CallDeferred(nameof(EmitInitialHealth));
             }
 
-            if (EventBus.Instance != null) EventBus.Instance.CheckpointActivated += OnCheckpointActivated;
+            if (EventBus.Instance != null)
+            {
+                EventBus.Instance.CheckpointActivated += OnCheckpointActivated;
+                EventBus.Instance.AreaRestored += OnAreaRestored;
+            }
             else GD.PrintErr("PlayerController: EventBus not ready yet.");
 
             // Spawn direcional: se viemos de um TransitionTrigger, reposiciona no ponto de entrada
@@ -117,7 +127,25 @@ namespace Joguim.Player
 
         public override void _ExitTree()
         {
-            if (EventBus.Instance != null) EventBus.Instance.CheckpointActivated -= OnCheckpointActivated;
+            if (EventBus.Instance == null) return;
+            EventBus.Instance.CheckpointActivated -= OnCheckpointActivated;
+            EventBus.Instance.AreaRestored -= OnAreaRestored;
+        }
+
+        public const int MaxHealthPerRestoration = 10;
+
+        // Restaurar uma área: +10 de vida máxima e vida cheia (recompensa + cura, decisão de 11/10/2026)
+        private void OnAreaRestored(string pointId)
+        {
+            Health?.SetMaxHealth(Health.MaxHealth + MaxHealthPerRestoration, true);
+        }
+
+        // Bandeira: enche a vida ao passar por ela (decisão de 11/10/2026). Retorna se curou alguma coisa.
+        public bool HealToFull()
+        {
+            if (Health == null || Health.IsDead || Health.CurrentHealth >= Health.MaxHealth) return false;
+            Health.Heal(Health.MaxHealth);
+            return true;
         }
 
         public void SetTerrainSpeedModifier(GodotObject source, float multiplier)
@@ -140,7 +168,14 @@ namespace Joguim.Player
 
         private void ApplyPendingSpawn()
         {
-            if (SceneManager.Instance == null || !SceneManager.Instance.TryConsumePendingSpawn(out Vector2 spawnPosition)) return;
+            if (SceneManager.Instance == null) return;
+            Vector2 spawnPosition;
+            if (SceneManager.Instance.TryConsumePendingCheckpoint(out spawnPosition))
+            {
+                // Renasceu na bandeira depois de morrer em outra área: próximas mortes aqui voltam pra ela
+                _lastCheckpointPosition = spawnPosition;
+            }
+            else if (!SceneManager.Instance.TryConsumePendingSpawn(out spawnPosition)) return;
             GlobalPosition = spawnPosition;
             Velocity = Vector2.Zero;
             GetNodeOrNull<Camera2D>("Camera2D")?.ResetSmoothing();
@@ -448,13 +483,16 @@ namespace Joguim.Player
                 float dir = LastFacingDirection.X;
                 hb.Position = new Vector2(dir > 0 ? 34f : -34f, -12f);
                 hb.Rotation = 0;
+                // A forma tem deslocamento próprio (+25 em x): espelha também, senão à esquerda ela cobre as costas
+                var shape = hb.GetNodeOrNull<CollisionShape2D>("CollisionShape2D");
+                if (shape != null) shape.Position = new Vector2(Mathf.Abs(shape.Position.X) * (dir > 0 ? 1 : -1), shape.Position.Y);
 
                 hb.SetDamage(CurrentAttackDamage);
                 hb.Active = false;
                 hb.Monitoring = false;
                 GetTree().CreateTimer(0.10).Timeout += () =>
                 {
-                    if (!IsInstanceValid(hb) || _attackTimer <= 0) return;
+                    if (!IsInstanceValid(hb) || _attackTimer <= 0 || !HasSword) return;
                     hb.Active = true;
                     hb.Monitoring = true;
                     hb.Monitorable = true;
@@ -485,6 +523,7 @@ namespace Joguim.Player
 
         private void OnHealthChanged(int curr, int max)
         {
+            if (GameManager.Instance != null) GameManager.Instance.CarriedPlayerHealth = curr;
             EventBus.Instance?.EmitSignal("PlayerHealthChanged", curr, max);
             GD.Print($"Player HP: {curr}/{max}");
         }
@@ -532,8 +571,37 @@ namespace Joguim.Player
             }
         }
 
-        // Último checkpoint ativado, ou perto de onde morreu
-        public void RespawnAtLastCheckpoint() => Respawn(_lastCheckpointPosition ?? _deathPosition + Vector2.Up * 40);
+        private const string DemoAreasPath = "res://scenes/areas/";
+
+        // Decisão de 11/10/2026: a demo tem uma bandeira só (Dossel Vivo). Morrer em qualquer área volta pra ela,
+        // recarregando a cena dela se for preciso (a área é recarregada, então os inimigos voltam).
+        // Sem bandeira ativada ainda: volta pro começo da demo. Cenas de teste fora da demo mantêm o
+        // comportamento antigo (bandeira da cena, ou perto de onde morreu).
+        public void RespawnAtLastCheckpoint()
+        {
+            string currentScene = GetTree().CurrentScene?.SceneFilePath ?? "";
+            string checkpointScene = SaveManager.Instance?.LastCheckpointScene ?? "";
+            string checkpointId = SaveManager.Instance?.LastCheckpointId ?? "";
+            bool inDemo = currentScene.StartsWith(DemoAreasPath);
+
+            if (_lastCheckpointPosition.HasValue && (checkpointScene == "" || checkpointScene == currentScene))
+            {
+                Respawn(_lastCheckpointPosition.Value);
+                return;
+            }
+
+            if (inDemo && SceneManager.Instance != null)
+            {
+                if (GameManager.Instance != null) GameManager.Instance.CarriedPlayerHealth = -1;
+                if (checkpointScene != "" && checkpointId != "" && ResourceLoader.Exists(checkpointScene))
+                    SceneManager.Instance.LoadSceneAtCheckpoint(checkpointScene, checkpointId);
+                else
+                    SceneManager.Instance.LoadScene(SaveManager.NewGameScene);
+                return;
+            }
+
+            Respawn(_lastCheckpointPosition ?? _deathPosition + Vector2.Up * 40);
+        }
 
         public void SetRespawnPoint(Vector2 position) => _lastCheckpointPosition = position;
 
@@ -554,6 +622,8 @@ namespace Joguim.Player
         {
             HasSword = !HasSword;
             if (GameManager.Instance != null) GameManager.Instance.HasSword = HasSword;
+            // Guardar no meio da estocada cancela o golpe: sem espada não há dano
+            if (!HasSword) FinishAttack();
             GetNodeOrNull<GrassSwordVisual>("Visual/RightArm/RightHand/Sword")?.SetActive(HasSword, true);
             AudioManager.Instance?.PlaySfx(HasSword ? "sword_on.wav" : "sword_off.wav");
             EventBus.Instance?.EmitSignal(EventBus.SignalName.SwordToggled, HasSword);

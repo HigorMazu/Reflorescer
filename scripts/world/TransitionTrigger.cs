@@ -19,7 +19,8 @@ namespace Joguim.World
         {
             if (area.GetParent().IsInGroup("Player"))
             {
-                TransitionToTarget();
+                // Adiado: trocar de cena dentro do callback de física remove CollisionObjects no meio dele (erro do Godot)
+                CallDeferred(MethodName.TransitionToTarget);
             }
         }
 

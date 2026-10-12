@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-07
+atualizado: 2026-10-11
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: arte
@@ -13,9 +13,9 @@ par: "[[ROADMAP_ARTE]]"
 descricao: Casos de teste da integração código + arte
 epicos_total: 8
 epicos_concluidos: 2
-tasks_total: 22
-tasks_prontas: 3
-tasks_bloqueadas: 12
+tasks_total: 28
+tasks_prontas: 16
+tasks_bloqueadas: 8
 ---
 # Roadmap de QA — Integração (Código + Arte do Higor)
 
@@ -25,54 +25,56 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 
 ---
 
-> [!warning]- EPIC-A00 — Padrões Técnicos — 🟡 Parcial · 🔴 Bloqueante
+> [!success]- EPIC-A00 — Padrões Técnicos — ✅ Passa · 🔴 Bloqueante
 > *Pronto quando*: todo `SpriteFrames` entregue segue canvas e pivô consistentes, e o flip (por escala no Kairo, `FlipH` em inimigos/boss) não distorce a arte.
 >
-> > [!warning]- Task A00-T1 — Formato e consistência
+> > [!success]- Task A00-T1 — Formato e consistência
 > > - [x] Cada `SpriteFrames` entregue usa o mesmo tamanho de canvas em todos os frames de um personagem.
-> > - [ ] Pivô/ancoragem consistente entre animações do mesmo personagem — sem "pulo" de posição ao trocar.
+> > - [x] Pivô/ancoragem consistente entre animações do mesmo personagem — sem "pulo" de posição ao trocar.
 > > - **Verificação (28/09, Claude, pelos arquivos):** Kairo: os 11 quadros têm 180×170. Korrag: os 15 quadros têm 260×180 (as folhas `_sheet.png` são só referência, não entram no `SpriteFrames`). Os dois `SpriteFrames` usam `centered = false` com um offset fixo no nó, então canvas igual = mesma âncora. Um "pulo" só aconteceria se o desenho estiver deslocado dentro do canvas, e isso precisa de olho humano.
 > >
 > > - **Integração (06/10):** Canvas verificados: Kairo 180×170 e Faísca 32×32. Offset visual uniforme de Kairo ajustado para (-45,-65), alinhando os pés à colisão sem mudar física. Aprovação visual pendente. Ver `docs/art-review/README.md` e capturas.
 > >
-> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
+> > Status: ✅ passa (11/10) — sem "pulo" de posição nas trocas de animação, conferido por Gustavo jogando a demo inteira; aprovado.
 >
-> > [!warning]- Task A00-T2 — Flip
-> > - [ ] Kairo: flip por escala não distorce elementos assimétricos da arte final (ex: espada só de um lado).
-> > - [ ] Inimigos/boss: `FlipH` espelha corretamente sem distorcer asas/antenas/elementos assimétricos.
+> > [!success]- Task A00-T2 — Flip
+> > - [x] Kairo: flip por escala não distorce elementos assimétricos da arte final (ex: espada só de um lado).
+> > - [x] Inimigos/boss: `FlipH` espelha corretamente sem distorcer asas/antenas/elementos assimétricos.
 > > - **Achado (28/09):** o sprite do Kairo (`kairo_faisca_*.png`) tem a Faísca desenhada no canto superior direito. Com o flip por escala, ela pula pro outro lado do Kairo a cada virada. Além disso, o companheiro `Faisca.tscn` continua desenhando o placeholder (corpo, asas e luz) e segue o Kairo, então aparecem **duas Faíscas**. Proposta pro Higor: Kairo sem a Faísca no sprite, e a arte da Faísca entregue separada pro `Faisca.tscn` (ver [[ROADMAP_ARTE]] A01-T1 e A03). Flip de inimigos/boss por `FlipH`: ainda não conferido.
 > >
 > > - **Integração (06/10):** Faísca removida dos quadros de Kairo e integrada como companheiro independente. Flip de Kairo testado no Godot .NET. Inimigos/boss não revalidados. Ver `docs/art-review/README.md` e capturas.
 > >
-> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
+> > Status: ✅ passa (11/10) — Kairo com a espada nos dois sentidos aprovado por Gustavo; inimigos conferidos nos dois sentidos (`EnemyIntegrationCheck`, `tools/qa/CombatCheck.gd`).
 
 > [!warning]- EPIC-A01 — Kairo — 🟡 Parcial · 🔴 Bloqueante
 > *Pronto quando*: as animações núcleo substituem o placeholder sem regressão de física, e a Espada de Grama alterna visual corretamente em jogo.
 >
-> > [!warning]- Task A01-T1 — Animações núcleo
-> > - [ ] Trocar o placeholder pelo pacote idle/run/jump/fall/attack/hurt/dead e rodar de novo a Task C01-T2 do [[ROADMAP_QA_CODIGO]] — nenhum comportamento de física deve mudar, só o visual.
+> > [!success]- Task A01-T1 — Animações núcleo
+> > - [x] Trocar o placeholder pelo pacote idle/run/jump/fall/attack/hurt/dead e rodar de novo a Task C01-T2 do [[ROADMAP_QA_CODIGO]] — nenhum comportamento de física deve mudar, só o visual.
 > > - **Verificação (28/09):** idle 2 quadros/5 fps, run 2/8, jump 1, fall 1, attack 3/10 fps (0.3s, igual ao `AttackCooldown`), hurt 1, dead 1. Os nomes batem com o que o `PlayerController` toca.
 > >
 > > - **Integração (06/10):** 11 PNGs limpos; sete nomes, contagens, FPS e loops preservados. Corrigido run_01. Corrida, salto e ataque passaram no teste C#; C01-T2 completo e aprovação artística ainda pendentes. Ver `docs/art-review/README.md` e capturas.
 > >
-> > Status: 🟡 parcial (06/10) — integração local verificada; aprovação e verificações restantes pendentes.
+> > Status: ✅ passa (11/10) — partida completa sem regressão de movimento (Gustavo) e `tools/qa/DemoRunCheck.gd` 89/89; arte aprovada.
 >
 > > [!success]- Task A01-T2 — Espada de Grama
 > > - [x] Sprite da espada visível quando ativada, "bandagem" visível quando desativada — nunca os dois ao mesmo tempo.
 > > - [x] Animação de ataque: janela de dano sincronizada com o impacto da estocada, de 0,10 s a 0,20 s após o início do golpe.
 > > - **Dependência dupla:** só testável depois que [[ROADMAP_DEV]] `EPIC-C03` (toggle da espada) **e** [[ROADMAP_ARTE]] `A01-T2` (os 2 visuais) estiverem prontos.
 > >
-> > Status: 🟡 corrigida, aguardando aprovação (08/10) — v9 mantém o punho único, encaixa a guarda durante o ataque e preserva a leitura da lâmina nos três quadros; toggle, bandagem e hitbox seguem aprovados. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
+> > Status: ✅ passa (11/10) — versão atual (lâmina v11, corrida v12) aprovada por Gustavo; janela de dano 0,10–0,20 s e alcance simétrico conferidos em `tools/qa/CombatCheck.gd`. Histórico: (08/10) v9 mantém o punho único, encaixa a guarda durante o ataque e preserva a leitura da lâmina nos três quadros; toggle, bandagem e hitbox seguem aprovados. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 >
 > > [!failure]- Task A01-T3 — Wall grab / wall jump
 > > - [x] Animação integrada e sincronizada com a mecânica ([[ROADMAP_DEV]] `EPIC-C05`).
 > >
-> > Status: 🟡 corrigida, aguardando aprovação (08/10) — o estado real usa o Kairo normal com raspas discretas; entrada, colisão, estado, animação e efeito passaram em `MovementAnimationRuntimeCheck.tscn`. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
+> > - [ ] Depois do ajuste do Higor: no jogo, o apoio na parede se distingue de uma queda comum (conferir no tronco do Dossel Vivo, mesma posição da captura). **(pendente: entrega do Higor)**
+> >
+> > Status: 🔧 ajuste pedido (11/10) — mecânica e integração ok, mas no jogo o apoio não se distingue de uma queda (pose de `fall`, raspas invisíveis na escala real). Ver [[ROADMAP_ARTE]] A01-T3 e `docs/art-review/qa-ingame-wallslide-2026-10-11.png`. Histórico: (08/10) o estado real usa o Kairo normal com raspas discretas; entrada, colisão, estado, animação e efeito passaram em `MovementAnimationRuntimeCheck.tscn`. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 >
-> > [!failure]- Task A01-T4 — Dash
+> > [!success]- Task A01-T4 — Dash
 > > - [x] Variação visual integrada e sincronizada com a mecânica ([[ROADMAP_DEV]] `EPIC-C04`).
 > >
-> > Status: 🟡 corrigida, aguardando aprovação (08/10) — o estado real usa o Kairo normal, sem coloração verde, com linhas e poeira; entrada, desbloqueio, estado, animação e efeito passaram em `MovementAnimationRuntimeCheck.tscn`. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
+> > Status: ✅ passa (11/10) — aprovado por Gustavo; captura no jogo em `docs/art-review/qa-ingame-dash-2026-10-11.png`. Histórico: (08/10) o estado real usa o Kairo normal, sem coloração verde, com linhas e poeira; entrada, desbloqueio, estado, animação e efeito passaram em `MovementAnimationRuntimeCheck.tscn`. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 
 > [!success]- EPIC-A02 — Inimigos Comuns — ✅ Passa no escopo da demo
 > *Pronto quando*: os três arquétipos usam recursos próprios com a mesma máquina de estados. Reskins de Deserto/Tundra ficam fora da demo.
@@ -92,7 +94,7 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: 🔴 bloqueado — pós-demo, sem urgência.
 
-> [!success]- EPIC-A03 — Faísca — ✅ Passa · 🟠 Alta
+> [!warning]- EPIC-A03 — Faísca — 🟡 Parcial (Faísca fortalecida) · 🟠 Alta
 > *Pronto quando*: `fly`/`investigate` acompanham a troca de estado sem travar num frame parado, e a luz não "pisca" ao trocar de direção.
 >
 > > [!success]- Task A03-T1
@@ -102,12 +104,17 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - **Integração (06/10):** 12 frames entregues, quatro por `idle`/`fly`/`investigate`; os três estados e o avanço de frames passaram em teste dirigido no Godot .NET. A luz pulsa em nó irmão do sprite, portanto não é espelhada pela virada.
 > >
 > > Status: ✅ passa (06/10) — animações, estados e luz independentes verificados.
+>
+> > [!failure]- Task A03-T2 — Faísca fortalecida
+> > - [ ] Cada nível da Faísca se distingue no jogo e acompanha a troca de área e o Continuar.
+> >
+> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_ARTE]] A03-T2 e [[ROADMAP_DEV]] C14-T4.
 
-> [!warning]- EPIC-A04 — Boss KORRAG — 🟡 Parcial · 🟠 Alta
+> [!warning]- EPIC-A04 — Boss KORRAG — 🟡 Parcial (ajuste no `attack`) · 🟠 Alta
 > *Pronto quando*: as transições de fase são claras pro jogador mesmo com `idle` compartilhado, o timing de `charge_windup` bate com o código, e o nome exibido é "Korrag, o Javali".
 >
-> > [!warning]- Task A04-T1 — Obrigatórios
-> > - [ ] Transições de fase ([[ROADMAP_QA_CODIGO]] `C06-T0`) comunicam claramente ao jogador que o boss mudou de fase, mesmo com `idle` compartilhado.
+> > [!success]- Task A04-T1 — Obrigatórios
+> > - [x] Transições de fase ([[ROADMAP_QA_CODIGO]] `C06-T0`) comunicam claramente ao jogador que o boss mudou de fase, mesmo com `idle` compartilhado.
 > > - [x] Quando `StartCharge()`/`PerformStomp()` forem ligados ([[ROADMAP_DEV]] `EPIC-C06-T1`): `charge_windup` cabe no ~1s fixo antes da investida disparar.
 > > - [x] Animação `defeated` aparece após `dead`, durante o fade, sem emitir vitória novamente.
 > > - [x] Nome exibido em qualquer UI usa "Korrag, o Javali", não "Javali das Ruínas".
@@ -116,7 +123,7 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - **Correção (08/10):** `phase2_transition` agora tem 3 quadros; `enraged_transition`, 2; `dead`, 3. `charge` e `stomp` são animações próprias chamadas pelas ações correspondentes. O quadro com a perna traseira solta foi removido de `charge_windup` e `stomp`. Todos os 13 estados passaram em `KorragAnimationCheck.gd`.
 > > - **Integração (06/10):** os visuais obrigatórios estão em `KorragSpriteFrames.tres`. A sequência agora é dead por 0,6 s → defeated durante fade de 0,6 s → remoção. Seis verificações passaram em `BossDefeatCheck.tscn`, incluindo emissão única de vitória. Falta o playtest visual das transições de fase.
 > >
-> > Status: 🟡 corrigida, aguardando aprovação (08/10) — integração, chamadas, windup sem membro solto, morte e fade validados; playtest visual continua pendente. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
+> > Status: ✅ passa (11/10) — luta jogada por Gustavo (transições de fase legíveis) e v3 aprovada; fases 2/enraged e vitória única também em `tools/qa/DemoRunCheck.gd`. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 >
 > > [!success]- Task A04-T2 — Opcional
 > > - [x] `enraged_transition` integrada, se entregue.
@@ -125,16 +132,21 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - **Verificação (06/10):** a animação existe no recurso ligado à cena e `BossEnragedState` chama `PlayAnimation("enraged_transition")`.
 > >
 > > Status: ✅ passa (06/10) — recurso e chamada de estado presentes.
+>
+> > [!failure]- Task A04-T3 — `attack` do Korrag sem virar de lado
+> > - [ ] Golpe comum pros dois lados: os 3 quadros com a cabeça virada pro Kairo.
+> >
+> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_ARTE]] A04-T3.
 
-> [!warning]- EPIC-A05 — Cenário — 🟡 Parcial · 🟠 Alta
+> [!warning]- EPIC-A05 — Cenário — 🟡 Parcial (falta o checkpoint) · 🟠 Alta
 > *Pronto quando*: as 4 áreas têm identidade visual reconhecível sem texto, os pontos de entrada de cena fazem sentido, e a performance se mantém estável no `gl_compatibility`.
 >
 > Atualizado em 29/09/2026 — a demo passou a ser 4 áreas dentro da Floresta Tropical (era Floresta Tropical/Deserto/Tundra); `TargetArea`/`SpawnOffset` já funcionam desde [[ROADMAP_QA_CODIGO]] `C08-T1` (concluída em 28/09), então a ressalva de posicionamento manual não se aplica mais.
 >
-> > [!warning]- Task A05-T1 — Sopé da Mata
+> > [!success]- Task A05-T1 — Sopé da Mata
 > > - [x] Identidade visual clara — floresta úmida reconhecível nas capturas, com chão, vegetação e restauração aprovados por Higor.
 > > - [x] Transição de área: Kairo nasce em `SpawnInicial` e retorna do Dossel em `SpawnFromDosselVivo`, via `SceneManager`.
-> > - [ ] Performance: tileset/background + pulsos de luz da Faísca + barras de vida flutuantes (com `Tween`) sem queda perceptível de FPS no renderer `gl_compatibility`.
+> > - [x] Performance: tileset/background + pulsos de luz da Faísca + barras de vida flutuantes (com `Tween`) sem queda perceptível de FPS no renderer `gl_compatibility`.
 > >
 > > - **Integração (06/10):** Protótipo integrado ao Sopé da Mata: chão grama/terra/raízes/pedra, parallax, partículas e restauração seco→verde. Interação E e crescimento passaram no Godot .NET. Tileset modular, percurso completo e medição de FPS pendentes. Ver `docs/art-review/README.md` e capturas.
 > > - **Revisão visual (08/10):** Higor aprovou as bordas de 24 px e a variação do miolo nas sete faixas saudáveis (`docs/art-review/sope-ground-modular-v1.md`); os dois visuais da restauração continuam com bordas preservadas. Capturas da cena real em `docs/art-review/sope-ground-borders-v1.md`; colisões não foram editadas.
@@ -142,42 +154,55 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > - **QA dirigido (08/10):** spawn inicial, câmera, restauração/inimigos presentes e retorno do Dossel passaram na cena real; três trechos renderizados mais a volta ao início sustentaram 60 FPS após aquecimento no `gl_compatibility`/GTX 1650. Ver `docs/art-review/sope-area-qa-2026-10-08.md`.
 > >
-> > Status: 🟡 parcial (08/10) — arte modular, bordas, variação central e props aprovados; QA dirigido de entrada e FPS estável após aquecimento. Falta travessia jogada com combate e avaliação de fluidez perceptiva para concluir a tarefa.
+> > Status: ✅ passa (11/10) — Gustavo jogou a demo inteira em 11/10 e validou (travessia com combate e fluidez); `tools/qa/FpsCheck.gd` em 11/10 (RTX 3050, gl_compatibility, vsync): média 60 nas 4 áreas, 1% piores 54–56 FPS.
 >
-> > [!failure]- Task A05-T2 — Dossel Vivo
-> > - [ ] Repetir os 3 testes da Task A05-T1, mais: leitura clara das plataformas de pulo vertical.
+> > [!success]- Task A05-T2 — Dossel Vivo
+> > - [x] Repetir os 3 testes da Task A05-T1, mais: leitura clara das plataformas de pulo vertical.
 > >
 > > - **QA dirigido (08/10):** entrada pelo `Marker2D`, câmera, doze colisões dos galhos, restauração e inimigos passaram. Os vãos dos onze degraus consecutivos cabem no salto base segundo as dimensões e velocidades atuais; a travessia em jogo ainda não foi executada. FPS após aquecimento: 60 nas partes média/alta; base 58,3 (mín. 56) na primeira amostra e 60 ao revisitar. Ver `docs/art-review/dossel-canopy-restoration-v1.md`.
 > >
-> > Status: 🟡 parcial (08/10) — plataformas modulares, galhos, troncos, fundo e restauração aprovados. Falta jogar a subida com combate e avaliar fluidez perceptiva.
+> > Status: ✅ passa (11/10) — Gustavo jogou a demo inteira em 11/10 e validou; os 12 saltos alcançáveis só com pulo simples (`tools/qa/DosselReachCheck.gd`); `tools/qa/FpsCheck.gd` em 11/10 (RTX 3050, gl_compatibility, vsync): média 60 nas 4 áreas, 1% piores 54–56 FPS.
 >
-> > [!failure]- Task A05-T3 — Igarapé Sufocado
-> > - [ ] Repetir os 3 testes da Task A05-T1, mais: a lama é visualmente clara (o jogador entende por que ficou mais lento).
+> > [!success]- Task A05-T3 — Igarapé Sufocado
+> > - [x] Repetir os 3 testes da Task A05-T1, mais: a lama é visualmente clara (o jogador entende por que ficou mais lento).
 > >
-> > Status: 🟡 parcial — visuais aprovados em 08/10; margem modular, entrada, câmera, três logs, três hazards, restauração e seis inimigos passaram no teste dirigido (`docs/art-review/igarape-area-validation.txt`). Faltam teste jogado da lentidão, travessia e FPS.
+> > Status: ✅ passa (11/10) — Gustavo jogou a demo inteira em 11/10 e validou (lentidão na lama perceptível); as 3 poças dão x0,55 (`tools/qa/DemoRunCheck.gd`); `tools/qa/FpsCheck.gd` em 11/10 (RTX 3050, gl_compatibility, vsync): média 60 nas 4 áreas, 1% piores 54–56 FPS.
 >
-> > [!failure]- Task A05-T4 — Covil de Korrag
-> > - [ ] Ambientação de arena de boss clara, sem elementos de exploração (ponto de restauração, etc.) — é só a luta.
+> > [!success]- Task A05-T4 — Covil de Korrag
+> > - [x] Ambientação de arena de boss clara, sem elementos de exploração (ponto de restauração, etc.) — é só a luta.
 > >
-> > Status: 🟡 parcial — visual aprovado; chão modular, entrada pelo Igarapé, câmera, quatro colisões, Korrag sem inimigos comuns e ausência de restauração passaram no teste dirigido (`docs/art-review/covil-area-validation.txt`). Faltam luta jogada e FPS.
+> > Status: ✅ passa (11/10) — Gustavo jogou a demo inteira em 11/10 e validou (luta com o Korrag); `tools/qa/FpsCheck.gd` em 11/10 (RTX 3050, gl_compatibility, vsync): média 60 nas 4 áreas, 1% piores 54–56 FPS.
+>
+> > [!failure]- Task A05-T5 — Bandeira de checkpoint
+> > - [ ] A bandeira única do Dossel Vivo mostra a arte final no estado **apagado** antes de tocar e **ativado** depois — nenhum `ColorRect` azul sobrando. *(Eram 5 checkpoints até 11/10; ver [[ROADMAP_DEV]] C09-T4.)*
+> > - [ ] Base alinhada ao chão; legível na escala real.
+> > - [ ] Ao continuar um save, os checkpoints já ativados nascem no estado ativado.
+> > - **Origem (11/10):** gêmea da [[ROADMAP_ARTE]] A05-T5 (achado da revisão de arte). Código da troca de estado: [[ROADMAP_DEV]] C09-T3.
+> >
+> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_ARTE]] A05-T5 e [[ROADMAP_DEV]] C09-T3.
+>
+> > [!failure]- Task A05-T6 — Caminhos que crescem ao restaurar
+> > - [ ] O caminho fechado não parece uma plataforma usável; o aberto é legível e alcançável; colisão bate com a arte.
+> >
+> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_ARTE]] A05-T6 e [[ROADMAP_DEV]] C14-T5.
 
-> [!failure]- EPIC-A06 — UI — 🔴 Bloqueado · 🟡 Média
+> [!warning]- EPIC-A06 — UI — 🟡 Parcial (validações do Higor pendentes) · 🟡 Média
 > *Pronto quando*: barra de vida, ícone de habilidade e prompt de interação têm arte final integrada e funcional em jogo.
 >
-> > [!failure]- Task A06-T1 — Barra de vida
-> > - [ ] Barra de vida com textura final.
+> > [!success]- Task A06-T1 — Barra de vida
+> > - [x] Barra de vida com textura final.
 > >
-> > Status: 🟡 parcial — visual aprovado e compilado; falta teste jogado com dano real.
+> > Status: ✅ passa (11/10) — Gustavo jogou a demo inteira em 11/10 e validou; a barra cai com dano real (100 → 90) em `tools/qa/DemoRunCheck.gd`.
 >
-> > [!failure]- Task A06-T2 — Ícone de habilidade
-> > - [ ] Ícone de habilidade desbloqueada (quando a notificação real existir — [[ROADMAP_QA_CODIGO]] `C04-T4`).
+> > [!success]- Task A06-T2 — Ícone de habilidade
+> > - [x] Ícone de habilidade desbloqueada (quando a notificação real existir — [[ROADMAP_QA_CODIGO]] `C04-T4`). *(Substituído pela notificação "Nova habilidade: Dash", decisão do Higor.)*
 > >
 > > Status: ✅ concluída — Higor decidiu não usar indicador persistente; a notificação de desbloqueio real já existe.
 >
-> > [!failure]- Task A06-T3 — Prompt de interação
-> > - [ ] Prompt de interação com estilo definido (quando [[ROADMAP_QA_CODIGO]] `C10-T1` for resolvido).
+> > [!success]- Task A06-T3 — Prompt de interação
+> > - [x] Prompt de interação com estilo definido (quando [[ROADMAP_QA_CODIGO]] `C10-T1` for resolvido).
 > >
-> > Status: 🟡 parcial — visual aprovado e compilado; falta teste jogado de aproximação e interação.
+> > Status: ✅ passa (11/10) — Gustavo jogou a demo inteira em 11/10 e validou; `[E] Restaurar` aparece perto dos 3 pontos de restauração e some depois de usar (`tools/qa/DemoRunCheck.gd`).
 
 > > [!warning]- Task A06-T4 — Indicador compacto da espada
 > > - [x] Estado inicial antes/depois de criar o jogador e ao recriar o HUD.
@@ -186,21 +211,37 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - [x] Tamanho fixo 156×32 e estado preservado ao pausar.
 > > - [x] Capturas dos dois estados na cena real do Sopé, em 1280×720.
 > > - [x] Aprovação visual do indicador por Higor (07/10).
-> > - [ ] Playtest manual de Higor.
+> > - [ ] Playtest manual de Higor. **(pendente de validação do Higor)**
+> > - **Nota (11/10):** do lado do código está tudo verificado — Gustavo jogou a demo inteira e `tools/qa/CombatCheck.gd` cobre Q, lâmina, bandagem e HUD (35/35). Falta só o Higor jogar e marcar o item acima.
 > >
-> > Status: 🟡 parcial (07/10) — 20 verificações passaram no Godot .NET, incluindo extensão/recolhimento, reversão rápida, ausência de tint e lâmina reta no ataque; build sem erros/avisos. Teste dirigido não substitui percurso completo, teste de teclado nem carregamento de save real. Evidência: `docs/art-review/sword-hud-validation.txt`.
+> > Status: 🟡 parcial (07/10, revisto em 11/10) — aguarda só o playtest do Higor — 20 verificações passaram no Godot .NET, incluindo extensão/recolhimento, reversão rápida, ausência de tint e lâmina reta no ataque; build sem erros/avisos. Teste dirigido não substitui percurso completo, teste de teclado nem carregamento de save real. Evidência: `docs/art-review/sword-hud-validation.txt`.
+
+> > [!warning]- Task A06-T5 — Tela de título animada
+> > - [x] Novo jogo, Continuar (só com save) e Sair funcionam; cliques repetidos bloqueados durante o fade (`TitleFlowCheck.gd` do Higor).
+> > - [x] Visual aprovado por Gustavo (11/10).
+> > - [ ] Ajuste de contraste da dica "Navegar · Enter Selecionar" entregue e conferido em 1280×720 e 960×540 ([[ROADMAP_ARTE]] A06-T5).
+> > - [ ] Playtest manual de Higor navegando o menu só pelo teclado. **(pendente de validação do Higor)**
+> > - **Origem (11/10):** gêmea da [[ROADMAP_ARTE]] A06-T5, que não tinha par de QA.
+> >
+> > Status: 🟡 parcial (11/10) — visual aprovado; faltam o ajuste de contraste e o playtest do Higor.
+
+> > [!failure]- Task A06-T6 — Tela de fim da demo
+> > - [ ] Aparece depois do Korrag com o número certo de áreas restauradas; legível em 1280×720 e 960×540.
+> >
+> > Status: 🔴 bloqueado (11/10) — o código passou ([[ROADMAP_DEV]] C14-T3); depende do acabamento visual ([[ROADMAP_ARTE]] A06-T6).
 
 > [!failure]- EPIC-A07 — Validação Final (Playtest Completo) — 🔴 Bloqueado · 🔴 Bloqueante
 > *Pronto quando*: a demo roda de ponta a ponta com áudio, arte e código integrados, sem crash, softlock ou animação quebrada, validada por alguém de fora do grupo.
 >
 > Só roda depois que todos os Épicos 🔴 acima (deste arquivo e do [[ROADMAP_QA_CODIGO]]) estiverem ✅.
 >
-> > [!failure]- Task A07-T1 — Áudio integrado
-> > - [ ] Com os primeiros arquivos de SFX/música em `res://assets/audio/`, jogar a demo do início ao fim e confirmar que nenhum som falta silenciosamente (checar o console).
+> > [!warning]- Task A07-T1 — Áudio integrado
+> > - [x] Com os primeiros arquivos de SFX/música em `res://assets/audio/`, jogar a demo do início ao fim e confirmar que nenhum som falta silenciosamente (checar o console). *(SFX: 11/10, `DemoRunCheck` + `AudioCheck` sem nenhum faltando; música ainda não existe.)*
 > > - [ ] Volume relativo entre música de fundo e efeitos.
-> > - [ ] Som de ataque/hit sincronizado com o frame de impacto da animação.
+> > - [x] Som de ataque/hit sincronizado com o frame de impacto da animação. *(O `enemy_hit` toca no mesmo quadro do dano; o `player_attack` toca no início da estocada, como o sopro do golpe.)*
+> > - [ ] Gustavo ouvir os placeholders jogando e anotar os que incomodam (entram primeiro na troca da [[ROADMAP_DEV]] C11-T5).
 > >
-> > Status: 🔴 bloqueado — depende de [[ROADMAP_DEV]] `EPIC-C11`.
+> > Status: 🟡 parcial (11/10) — SFX placeholder integrados e tocando; volume música × efeitos depende da [[ROADMAP_DEV]] C11-T4.
 >
 > > [!failure]- Task A07-T2 — Ponta a ponta
 > > - [ ] Demo completa sem parar: Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag → matar 1 de cada arquétipo pelo caminho → derrotar o Korrag → dash desbloqueado (ver [[🎯 Escopo da Demo]]) — sem crash, sem softlock, sem animação quebrada.

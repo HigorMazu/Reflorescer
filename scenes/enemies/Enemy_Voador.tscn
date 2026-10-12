@@ -12,6 +12,10 @@ HoverFrequency = 2.0
 HoverStiffness = 6.0
 StatsResource = ExtResource("2")
 EnemyId = "enemy_voador"
+HurtboxSize = Vector2(34, 30)
+HurtboxOffset = Vector2(0, -20)
+AttackHitboxSize = Vector2(24, 24)
+AttackHitboxOffset = Vector2(22, -14)
 
 [node name="Body" parent="." index="1" unique_id=1776391430]
 visible = false

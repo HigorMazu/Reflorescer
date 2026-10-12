@@ -1,6 +1,7 @@
 using Godot;
 using Joguim.Core;
 using Joguim.Interaction;
+using Joguim.Save;
 
 namespace Joguim.World
 {
@@ -10,6 +11,9 @@ namespace Joguim.World
         [Export] public bool Activated = false;
         [Export] public NodePath SpritePath;
         [Export] public NodePath ActivationEffectPath;
+        // Ativa sozinha quando o Kairo passa por ela (sem precisar do E). Usado na bandeira única do Dossel Vivo
+        // (decisão de 11/10/2026): garante que ninguém pule a bandeira e volte pro começo da demo ao morrer.
+        [Export] public bool AutoActivateOnTouch = false;
 
         private AnimatedSprite2D _sprite;
         private GpuParticles2D _activationEffect;
@@ -25,6 +29,23 @@ namespace Joguim.World
             }
 
             AddToGroup("Checkpoints");
+
+            // Voltar pra cena (ou renascer nela) não "desativa" a bandeira: o estado vem do save da sessão
+            if (SaveManager.Instance != null && SaveManager.Instance.IsCheckpointActivated(CheckpointId))
+            {
+                Activated = true;
+            }
+
+            BodyEntered += OnBodyEntered;
+        }
+
+        private void OnBodyEntered(Node2D body)
+        {
+            if (!body.IsInGroup("Player")) return;
+            if (AutoActivateOnTouch && !Activated) Interact(body);
+            // A bandeira cura ao passar, toda vez (decisão de 11/10/2026)
+            if (body is Player.PlayerController player && player.HealToFull())
+                (GetTree().GetFirstNodeInGroup(UI.HUDController.GroupName) as UI.HUDController)?.ShowNotice("Vida restaurada");
         }
 
         public void Interact(Node2D interactor)
