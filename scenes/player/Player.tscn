@@ -23,10 +23,10 @@ animations = [{"frames": [{"duration": 1.0, "texture": SubResource("AtlasTexture
 size = Vector2(24, 40)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hitbox"]
-size = Vector2(50, 28)
+size = Vector2(50, 52)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
-size = Vector2(20, 36)
+size = Vector2(22, 66)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_interaction"]
 size = Vector2(50, 50)
@@ -150,7 +150,7 @@ Damage = 25
 Active = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitbox" unique_id=1683449360]
-position = Vector2(25, -10)
+position = Vector2(25, -2)
 shape = SubResource("RectangleShape2D_hitbox")
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=2028008821]
@@ -159,7 +159,7 @@ collision_mask = 20
 script = ExtResource("6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=2010346493]
-position = Vector2(0, -18)
+position = Vector2(0, -13)
 shape = SubResource("RectangleShape2D_hurtbox")
 
 [node name="InteractionDetector" type="Area2D" parent="." unique_id=1326391407]

@@ -11,7 +11,8 @@ namespace Joguim.Bosses
         [Export] public float ChargeWindup = 1.0f;
         [Export] public float ChargeDuration = 0.9f;
         [Export] public float ChargeMinDistance = 180.0f;
-        [Export] public float StompRadius = 100.0f;
+        // Do centro: o corpo tem ~120 px de cada lado, então 170 pega quem está encostado (11/10/2026; era 100)
+        [Export] public float StompRadius = 170.0f;
         [Export] public float StompWindup = 0.4f;
         [Export] public int StompDamage = 30;
         [Export] public float StompKnockback = 400.0f;
@@ -123,9 +124,9 @@ namespace Joguim.Bosses
             PlayAnimation("charge_windup");
             StopMovement();
 
+            FaceDirection(_chargeDirection.X);
             if (Sprite != null)
             {
-                Sprite.FlipH = _chargeDirection.X < 0;
                 // Telegrafia do windup: a arte é 1 quadro parado, então o aviso vem de um pulso vermelho
                 // (SelfModulate, pra não brigar com o flash de dano que usa Modulate)
                 _windupTelegraph?.Kill();
@@ -147,7 +148,12 @@ namespace Joguim.Bosses
             Velocity = new Vector2(_chargeDirection.X * ChargeSpeed, Velocity.Y);
             _chargeElapsed += (float)delta;
 
-            if (_player != null && GlobalPosition.DistanceTo(_player.GlobalPosition) < 60f)
+            // Dano da investida = cabeça/presas na frente (mesma área do golpe, virada pro lado da investida).
+            // Antes era um raio de 60 px do centro: as presas não acertavam e o Kairo tinha que estar "dentro" dele.
+            var tusks = CombatController?.Hitbox;
+            if (tusks != null) tusks.Scale = new Vector2(FacingX, 1);
+            var tuskShape = tusks?.GetNodeOrNull<CollisionShape2D>("CollisionShape2D");
+            if (_player != null && tuskShape != null && Joguim.Combat.CombatGeometry.GlobalRect(tuskShape).Intersects(Joguim.Combat.CombatGeometry.HurtRect(_player)))
             {
                 var health = _player.GetNodeOrNull<Joguim.Combat.Health>("Health");
                 if (health != null && !health.IsInvulnerable)

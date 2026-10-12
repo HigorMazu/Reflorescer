@@ -28,7 +28,6 @@ namespace Joguim.Bosses
         private bool _isBossDead = false;
         private float _bossContactTimer = 0f;
         private float _bossContactCooldown = 0.9f;
-        private int _bossContactDamage = 22;
         private const float DeathFadeDelay = 0.6f;
         private const float DeathFadeDuration = 0.6f;
         private ProgressBar _bossFloatingBar;
@@ -157,10 +156,20 @@ namespace Joguim.Bosses
             float speed = GetCurrentPhaseSpeed();
             Velocity = new Vector2(direction.X * speed, Velocity.Y);
 
-            if (Sprite != null)
-            {
-                Sprite.FlipH = direction.X < 0;
-            }
+            FaceDirection(direction.X);
+        }
+
+        // Para que lado a arte foi desenhada. Os 13 estados do Korrag v3 olham pra esquerda (11/10/2026);
+        // antes o código assumia direita e ele andava/investia de costas.
+        [Export] public bool SpriteFacesLeft = true;
+        // +1 = olhando pra direita, -1 = pra esquerda
+        public float FacingX { get; private set; } = -1f;
+
+        public void FaceDirection(float dirX)
+        {
+            if (Mathf.Abs(dirX) < 0.01f) return;
+            FacingX = dirX > 0 ? 1f : -1f;
+            if (Sprite != null) Sprite.FlipH = SpriteFacesLeft ? FacingX > 0 : FacingX < 0;
         }
 
         // Chamado pelos estados de fase quando o timer de ataque zera. Subclasses escolhem entre os ataques.
@@ -171,9 +180,9 @@ namespace Joguim.Bosses
             if (CombatController?.Hitbox != null)
             {
                 var hitbox = CombatController.Hitbox;
-                // vira a hitbox pro lado do jogador (o shape fica à direita por padrão)
-                bool playerOnLeft = _player != null && _player.GlobalPosition.X < GlobalPosition.X;
-                hitbox.Scale = new Vector2(playerOnLeft ? -1 : 1, 1);
+                // vira o Korrag e a hitbox (presas, à direita por padrão) pro lado do jogador
+                if (_player != null) FaceDirection(_player.GlobalPosition.X - GlobalPosition.X);
+                hitbox.Scale = new Vector2(FacingX, 1);
                 hitbox.SetDamage(GetCurrentPhaseDamage());
                 CombatController.EnableHitbox();
                 PlayAnimation("attack");
@@ -202,18 +211,20 @@ namespace Joguim.Bosses
 
             if (_player != null && Health != null && !Health.IsDead && _bossContactTimer <= 0)
             {
-                float dist = GlobalPosition.DistanceTo(_player.GlobalPosition);
-                // boss maior = raio 55
-                if (dist < 55f)
+                // Contato = corpo visível do Korrag encostando no Kairo (11/10/2026); antes era um raio de 55 px
+                // em volta do centro de um desenho de ~280 px, e cabeça/presas/traseiro eram "fantasmas".
+                if (CombatGeometry.HurtRect(this).Intersects(CombatGeometry.HurtRect(_player)))
                 {
                     var pHealth = _player.GetNodeOrNull<Joguim.Combat.Health>("Health");
                     if (pHealth != null && !pHealth.IsInvulnerable)
                     {
                         Vector2 dir = (_player.GlobalPosition - GlobalPosition).Normalized();
-                        var dmg = new Joguim.Combat.DamageInfo(_bossContactDamage, dir, 260f, this);
+                        // ataque = dano cheio da fase; encostar no corpo = metade (mesma regra dos inimigos comuns)
+                        int contactDamage = Mathf.Max(5, GetCurrentPhaseDamage() / 2);
+                        var dmg = new Joguim.Combat.DamageInfo(contactDamage, dir, 260f, this);
                         pHealth.TakeDamage(dmg);
                         _bossContactTimer = _bossContactCooldown;
-                        GD.Print($"Player tomou {_bossContactDamage} de contato com Boss {BossId}");
+                        GD.Print($"Player tomou {contactDamage} de contato com Boss {BossId}");
                     }
                 }
             }

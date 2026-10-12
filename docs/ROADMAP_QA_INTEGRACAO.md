@@ -12,10 +12,10 @@ responsavel: Gustavo e Higor
 par: "[[ROADMAP_ARTE]]"
 descricao: Casos de teste da integração código + arte
 epicos_total: 8
-epicos_concluidos: 4
-tasks_total: 24
+epicos_concluidos: 2
+tasks_total: 28
 tasks_prontas: 16
-tasks_bloqueadas: 4
+tasks_bloqueadas: 8
 ---
 # Roadmap de QA — Integração (Código + Arte do Higor)
 
@@ -94,7 +94,7 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: 🔴 bloqueado — pós-demo, sem urgência.
 
-> [!success]- EPIC-A03 — Faísca — ✅ Passa · 🟠 Alta
+> [!warning]- EPIC-A03 — Faísca — 🟡 Parcial (Faísca fortalecida) · 🟠 Alta
 > *Pronto quando*: `fly`/`investigate` acompanham a troca de estado sem travar num frame parado, e a luz não "pisca" ao trocar de direção.
 >
 > > [!success]- Task A03-T1
@@ -104,8 +104,13 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - **Integração (06/10):** 12 frames entregues, quatro por `idle`/`fly`/`investigate`; os três estados e o avanço de frames passaram em teste dirigido no Godot .NET. A luz pulsa em nó irmão do sprite, portanto não é espelhada pela virada.
 > >
 > > Status: ✅ passa (06/10) — animações, estados e luz independentes verificados.
+>
+> > [!failure]- Task A03-T2 — Faísca fortalecida
+> > - [ ] Cada nível da Faísca se distingue no jogo e acompanha a troca de área e o Continuar.
+> >
+> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_ARTE]] A03-T2 e [[ROADMAP_DEV]] C14-T4.
 
-> [!success]- EPIC-A04 — Boss KORRAG — ✅ Passa · 🟠 Alta
+> [!warning]- EPIC-A04 — Boss KORRAG — 🟡 Parcial (ajuste no `attack`) · 🟠 Alta
 > *Pronto quando*: as transições de fase são claras pro jogador mesmo com `idle` compartilhado, o timing de `charge_windup` bate com o código, e o nome exibido é "Korrag, o Javali".
 >
 > > [!success]- Task A04-T1 — Obrigatórios
@@ -127,6 +132,11 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - **Verificação (06/10):** a animação existe no recurso ligado à cena e `BossEnragedState` chama `PlayAnimation("enraged_transition")`.
 > >
 > > Status: ✅ passa (06/10) — recurso e chamada de estado presentes.
+>
+> > [!failure]- Task A04-T3 — `attack` do Korrag sem virar de lado
+> > - [ ] Golpe comum pros dois lados: os 3 quadros com a cabeça virada pro Kairo.
+> >
+> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_ARTE]] A04-T3.
 
 > [!warning]- EPIC-A05 — Cenário — 🟡 Parcial (falta o checkpoint) · 🟠 Alta
 > *Pronto quando*: as 4 áreas têm identidade visual reconhecível sem texto, os pontos de entrada de cena fazem sentido, e a performance se mantém estável no `gl_compatibility`.
@@ -170,6 +180,11 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - **Origem (11/10):** gêmea da [[ROADMAP_ARTE]] A05-T5 (achado da revisão de arte). Código da troca de estado: [[ROADMAP_DEV]] C09-T3.
 > >
 > > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_ARTE]] A05-T5 e [[ROADMAP_DEV]] C09-T3.
+>
+> > [!failure]- Task A05-T6 — Caminhos que crescem ao restaurar
+> > - [ ] O caminho fechado não parece uma plataforma usável; o aberto é legível e alcançável; colisão bate com a arte.
+> >
+> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_ARTE]] A05-T6 e [[ROADMAP_DEV]] C14-T5.
 
 > [!warning]- EPIC-A06 — UI — 🟡 Parcial (validações do Higor pendentes) · 🟡 Média
 > *Pronto quando*: barra de vida, ícone de habilidade e prompt de interação têm arte final integrada e funcional em jogo.
@@ -209,6 +224,11 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - **Origem (11/10):** gêmea da [[ROADMAP_ARTE]] A06-T5, que não tinha par de QA.
 > >
 > > Status: 🟡 parcial (11/10) — visual aprovado; faltam o ajuste de contraste e o playtest do Higor.
+
+> > [!failure]- Task A06-T6 — Tela de fim da demo
+> > - [ ] Aparece depois do Korrag com o número certo de áreas restauradas; legível em 1280×720 e 960×540.
+> >
+> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_DEV]] C14-T3 e [[ROADMAP_ARTE]] A06-T6.
 
 > [!failure]- EPIC-A07 — Validação Final (Playtest Completo) — 🔴 Bloqueado · 🔴 Bloqueante
 > *Pronto quando*: a demo roda de ponta a ponta com áudio, arte e código integrados, sem crash, softlock ou animação quebrada, validada por alguém de fora do grupo.

@@ -11,12 +11,12 @@ papel: execucao
 responsavel: Gustavo
 par: "[[ROADMAP_QA_CODIGO]]"
 descricao: Backlog de implementação da demo (código)
-epicos_total: 13
+epicos_total: 14
 epicos_concluidos: 10
-tasks_total: 54
-tasks_prontas: 47
-tasks_bloqueadas: 2
-tasks_liberadas: 2
+tasks_total: 63
+tasks_prontas: 52
+tasks_bloqueadas: 4
+tasks_liberadas: 3
 ---
 # Roadmap de Desenvolvimento — Código (Gustavo)
 
@@ -131,6 +131,13 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - **Nota (28/09):** o bloqueio já existia (`CanAttack()` exige `HasSword`). Trocar a espada não cancela um golpe em andamento: ele termina a janela de 0.14s normalmente, sem travar animação nem input (verificado no Godot: ataque + Q no mesmo frame, sem erro).
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
+>
+> > [!success]- Task C03-T4 — Hitbox do Kairo (corpo e golpe)
+> > - [x] Hurtbox do Kairo cobrindo o corpo inteiro, do chão à cabeça (22×66; era 20×36 só do quadril ao pescoço — pernas e cabeça não levavam dano).
+> > - [x] Área do golpe alta o bastante pra pegar inimigos baixos (50×52, do chão à cabeça), mesmo alcance de antes (até ~100 px centro a centro).
+> > - **Achado (11/10, playtest do Gustavo):** a área do golpe ficava entre 56 e 28 px acima do chão e a formiga e a tartaruga têm no máximo 30 px de altura: o golpe passava por cima delas (2 px de sobreposição). Os testes não pegaram porque criavam os inimigos flutuando na altura do Kairo — corrigido no `CombatCheck.gd`.
+> >
+> > Status: ✅ concluído (11/10) — golpe acerta inimigos no chão dos dois lados (2/2 cada arquétipo); `tools/qa/CombatCheck.gd` (inimigos no chão) 35/35, `RewardCheck.gd` 11/11, `DemoRunCheck.gd` 89/89.
 
 > [!success]- EPIC-C04 — Dash e Desbloqueio Pós-Korrag — ✅ Concluído · 🔴 Bloqueante
 > *Pronto quando*: derrotar o Korrag desbloqueia o dash uma única vez, e apertar Shift com o dash desbloqueado move o Kairo com um impulso rápido na direção que ele olha.
@@ -232,6 +239,15 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - **Decisão do Gustavo (28/09):** `ChargeWindup` de 1s aprovado com o pulso vermelho de aviso.
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo). Tempo de 1s aprovado.
+>
+> > [!success]- Task C06-T5 — Korrag de frente e hitboxes do tamanho do desenho
+> > - [x] Investida e caminhada de frente: a arte olha pra esquerda e o código espelhava como se olhasse pra direita (ele investia "com a bunda", nos dois sentidos). Novo `BossBase.FaceDirection()` + `SpriteFacesLeft` (exportado, pra arte futura virada pro outro lado).
+> > - [x] Hurtbox do tamanho do corpo (240×150; era 70×55 no centro de um desenho de ~280 px — cabeça e traseiro não levavam dano).
+> > - [x] Golpe e investida pelas presas: área 130×110 na frente, virada pro lado do Kairo (a investida acertava num raio de 60 px do centro, com o Kairo "dentro" do javali).
+> > - [x] Contato = sobreposição dos corpos com metade do dano da fase (era raio de 55 px e 22 fixo). Pisada com raio de 170 px (era 100, menor que o próprio corpo).
+> > - **Pendência de arte:** os quadros 1 e 2 do `attack` olham pra direita e o 3º pra esquerda — o golpe vira de lado no meio ([[ROADMAP_ARTE]] A04-T3).
+> >
+> > Status: ✅ concluído (11/10) — investida de frente nos dois sentidos com 40 de dano pelas presas; golpe do Kairo acerta cabeça e traseiro (25 cada); capturas em `docs/art-review/` pendentes de revisão no jogo.
 
 > [!success]- EPIC-C07 — Inimigos Comuns (Arquétipos) — ✅ Concluído · 🟠 Alta
 > *Pronto quando*: existem 3 arquétipos (Voador/Rápido/Robusto) com comportamento distinto de fato, cada um com `.tres` de stats pra cada uma das 4 áreas da demo (Sopé da Mata → Dossel Vivo → Igarapé Sufocado, com escalada leve de dificuldade; o Covil de Korrag não tem inimigo comum).
@@ -273,6 +289,15 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - **Nota (28/09):** `AtPatrolEdge()` faz um raycast pra baixo 20px à frente (máscara World). No `EnemyPatrolState`, na beira o inimigo vira (`Flip`) e entra em `Idle`, retomando a patrulha no sentido oposto.
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
+>
+> > [!success]- Task C07-T6 — Hitboxes e dano dos inimigos comuns
+> > - [x] **Decisão do Gustavo (11/10):** estilo Hollow Knight — o ataque (mordida/ferrão) dá o dano cheio; encostar no corpo dá metade.
+> > - [x] Hurtbox e área de ataque medidas no desenho de cada arquétipo (exports novos no `EnemyBase`, valores em cada `Enemy_X.tscn`): formiga 38×24 / mandíbulas 26×22; tartaruga 40×22 / cabeça 26×18; vespa 34×30 / ferrão 24×24.
+> > - [x] Contato por sobreposição de hurtboxes (`CombatGeometry`), no lugar da aura invisível de 32 px em volta do centro.
+> > - **Achado (11/10, playtest do Gustavo):** os ataques da formiga e da tartaruga **nunca acertavam** (área na altura dos pés, hurtbox do Kairo do quadril pra cima): todo o dano vinha da aura de contato, que machucava 1×/s mesmo sem atacar. Medido em 10 s: formiga 0 acertos de ataque e 9 de contato; tartaruga 0 e 8.
+> > - **Nota de balanceamento:** como o ataque passou a acertar, ficar parado perto do inimigo dá um pouco mais de dano no total que antes. Ajustar no playtest se pesar demais.
+> >
+> > Status: ✅ concluído (11/10) — acertos do ataque no Kairo em 10 s: formiga 0 → 7, tartaruga 0 → 4, vespa 4 → 7; contato agora 5/12/6; `tools/qa/CombatCheck.gd` (inimigos no chão) 35/35, `RewardCheck.gd` 11/11, `DemoRunCheck.gd` 89/89.
 
 > [!success]- EPIC-C08 — Transição de Área — ✅ Concluído · 🟠 Alta
 > *Pronto quando*: o jogador chega na cena nova numa posição consistente com de onde veio, não sempre no spawn padrão.
@@ -351,6 +376,42 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído (11/10) — cadeia completa validada por script com os portais reais, ida e volta (`tools/qa/DemoRunCheck.gd` (89 verificações, 0 falhas)). A partida jogada à mão, com combate de verdade, fica no C12-T2.
 
+> [!info]- EPIC-C14 — Cura e Recompensas de Restauração — 🔄 Em andamento · 🔴 Bloqueante
+> *Pronto quando*: o Kairo tem como recuperar vida na demo e restaurar uma área dá recompensas que fazem o jogador querer restaurar.
+>
+> Criado em 11/10/2026 a partir do playtest do Gustavo: com a dificuldade nova (trocar de área não cura, uma bandeira só), o jogador só perdia vida. Decisões em [[Projetos/Reflorescer/🕹️ Sistemas de Jogo|🕹️ Sistemas de Jogo]].
+>
+> > [!success]- Task C14-T1 — Restaurar cura e dá +10 de vida máxima
+> > - [x] Ao restaurar: vida cheia e vida máxima +10 (100 → 130 com as 3 áreas). `PlayerController.MaxHealthPerRestoration`.
+> > - [x] A vida máxima sai dos pontos restaurados do save (`SaveManager.RestoredCount`), então vale depois de trocar de área, morrer e Continuar.
+> > - [x] Aviso no HUD: "Área restaurada · Vida máxima +10" (`HUDController.ShowNotice`, reaproveitando o aviso de habilidade).
+> >
+> > Status: ✅ concluído (11/10) — `tools/qa/RewardCheck.gd` 11/11.
+>
+> > [!success]- Task C14-T2 — Bandeira cura ao passar
+> > - [x] Passar pela bandeira enche a vida, toda vez (não só na ativação); aviso "Vida restaurada" só quando estava ferido.
+> >
+> > Status: ✅ concluído (11/10) — `tools/qa/RewardCheck.gd`.
+>
+> > [!todo]- Task C14-T3 — Registro de áreas restauradas no fim da demo
+> > - [ ] Depois de derrotar o Korrag (e do aviso do Dash), uma tela de encerramento da demo mostra **"Áreas restauradas: X/3"**, com mensagem diferente pra 3/3.
+> > - [ ] Botões: voltar ao menu / sair. Hoje a demo não tem tela final: o jogo só segue no Covil depois do Korrag.
+> > - **Arte:** tela simples com texto funciona; acabamento visual com o Higor ([[ROADMAP_ARTE]] A06-T6).
+> >
+> > Status: 🟢 liberado (11/10).
+>
+> > [!failure]- Task C14-T4 — Faísca fica mais forte ao restaurar
+> > - [ ] Definir o que a Faísca ganha a cada área restaurada (proposta em [[Projetos/Reflorescer/🕹️ Sistemas de Jogo|🕹️ Sistemas de Jogo]]).
+> > - [ ] Implementar e testar.
+> >
+> > Status: ⛔ bloqueado (11/10) — aguarda a definição do grupo.
+>
+> > [!failure]- Task C14-T5 — Caminho novo ao restaurar (atalho ou segredo)
+> > - [ ] Definir, em cada área com ponto de restauração (Sopé, Dossel, Igarapé), o que cresce e o que abre (proposta em [[Projetos/Reflorescer/🕹️ Sistemas de Jogo|🕹️ Sistemas de Jogo]]).
+> > - [ ] Montar na cena (plataformas/vinhas que aparecem com a restauração, usando as listas de visuais do `RestorationPoint`) e testar o alcance.
+> >
+> > Status: ⛔ bloqueado (11/10) — aguarda a definição do grupo e a arte ([[ROADMAP_ARTE]] A05-T6).
+
 > [!warning]- EPIC-C09 — Save, Checkpoint e Respawn — 🔄 Em andamento (visual do checkpoint) · 🟡 Média
 > *Pronto quando*: uma habilidade desbloqueada persiste em disco mesmo sem passar por um checkpoint depois, e existe uma decisão explícita (implementada ou documentada como "fora de escopo") sobre o fluxo de Continuar.
 >
@@ -399,6 +460,12 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - **Atenção:** feito fora do Godot (sem compilar). Se o editor estiver aberto com alguma das 4 cenas, recarregar antes de salvar, senão ele regrava a versão antiga com as bandeiras.
 > >
 > > Status: implementado (11/10) — aguarda compilar no editor e jogar.
+>
+> > [!success]- Task C09-T5 — Continuar volta com a vida salva
+> > - [x] `ApplySaveData` restaura a vida salva (`SetCurrentHealth`), não a vida cheia.
+> > - **Bugfix (11/10):** o `SetMaxHealth(..., true)` enchia a vida e o `Heal` somava por cima, então salvar/sair/Continuar curava de graça — um atalho com a regra de 11/10 de que trocar de área não cura. A vida máxima agora é a maior entre a salva e a calculada pelas restaurações (C14-T1).
+> >
+> > Status: ✅ concluído (11/10) — `tools/qa/RewardCheck.gd`: Continuar volta com 100/120 como foi salvo.
 
 > [!success]- EPIC-C10 — HUD e UX — ✅ Concluído · 🟡 Média
 > *Pronto quando*: um prompt visual aparece ao chegar perto de um `IInteractable` (sem precisar apertar nada), e a decisão sobre Game Over foi tomada e implementada.

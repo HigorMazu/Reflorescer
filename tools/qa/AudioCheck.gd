@@ -1,10 +1,11 @@
 extends SceneTree
 ## C11-T2: dispara cada um dos 12 SFX pelo caminho real do jogo e confere que o AudioManager tocou.
 ## Kairo: atacar, pular, dash, Q (guardar/sacar), tomar dano. Inimigo: acertar e matar.
-## Mundo: tocar checkpoint, restaurar. Korrag: pisada e derrota.
+## Mundo: restaurar (Sopé) e passar pela bandeira (Dossel). Korrag: pisada e derrota.
 ## Também falha se o AudioManager logar algum SFX faltando. O save_0.json é guardado e devolvido.
 ## Rodar: <godot_console.exe> --headless --fixed-fps 60 --path . --script res://tools/qa/AudioCheck.gd
 const SOPE := "res://scenes/areas/SopeDaMata.tscn"
+const DOSSEL := "res://scenes/areas/DosselVivo.tscn"
 const COVIL := "res://scenes/areas/CovilDeKorrag.tscn"
 const EXPECTED := ["player_attack.wav", "player_jump.wav", "player_dash.wav", "player_hurt.wav", "sword_on.wav", "sword_off.wav",
 	"enemy_hit.wav", "enemy_death.wav", "checkpoint_activate.wav", "restoration.wav", "boss_stomp.wav", "boss_defeat.wav"]
@@ -80,16 +81,21 @@ func _run() -> void:
 		await _frames(30)
 	await _frames(60)
 	# mundo
-	var cp := current_scene.get_node("Interactables/Checkpoint1") as Node2D
-	p.global_position = cp.global_position + Vector2(0, -4)
-	await _frames(20)
-	await _tap("interact")  # checkpoint ativa com E, não ao encostar
-	await _frames(30)
 	var rp := current_scene.get_node("Interactables/RestorationPoint1") as Node2D
 	p.global_position = rp.global_position + Vector2(0, -4)
 	await _frames(20)
 	await _tap("interact")
 	await _frames(40)
+	# a demo tem uma bandeira só, no Dossel Vivo, e ela ativa sozinha ao passar (decisão de 11/10/2026)
+	change_scene_to_file(DOSSEL)
+	await scene_changed
+	await _frames(10)
+	current_scene.get_node("Enemies").queue_free()
+	p = get_first_node_in_group("Player") as CharacterBody2D
+	p.get("Health").call("SetInvulnerable", true)
+	var cp := current_scene.get_node("Interactables/Checkpoint1") as Node2D
+	p.global_position = cp.global_position + Vector2(0, -4)
+	await _frames(30)
 	# Korrag
 	change_scene_to_file(COVIL)
 	await scene_changed

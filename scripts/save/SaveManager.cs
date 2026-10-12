@@ -34,6 +34,9 @@ namespace Joguim.Save
         }
 
         // Consultado pelos RestorationPoint ao entrarem numa cena, pra nascer já restaurados
+        // Pontos restaurados na sessão: cada um vale +10 de vida máxima pro Kairo (PlayerController)
+        public int RestoredCount => _currentSave?.RestoredPoints.Count ?? 0;
+
         public bool IsPointRestored(string pointId)
         {
             return _currentSave != null && _currentSave.RestoredPoints.Contains(pointId);
@@ -231,8 +234,15 @@ namespace Joguim.Save
             {
                 // Saves antigos gravaram a posição como {} (0,0): nesse caso fica no spawn da cena
                 if (save.PlayerPosition != Vector2.Zero) player.GlobalPosition = save.PlayerPosition;
-                player.Health?.SetMaxHealth(save.PlayerMaxHealth, true);
-                player.Health?.Heal(save.PlayerHealth);
+                // A vida máxima vem dos pontos restaurados (o Player já calculou ao nascer); saves antigos
+                // com valor maior continuam valendo
+                if (player.Health != null)
+                {
+                    player.Health.SetMaxHealth(Mathf.Max(save.PlayerMaxHealth, player.Health.MaxHealth));
+                    // Volta com a vida salva, não cheia: antes o SetMaxHealth(..., true) enchia e salvar/sair/Continuar
+                    // virava cura grátis (11/10/2026). Save sem vida registrada (0) nasce cheio.
+                    player.Health.SetCurrentHealth(save.PlayerHealth > 0 ? save.PlayerHealth : player.Health.MaxHealth);
+                }
             }
 
             // Restaura sem emitir AbilityUnlocked: carregar um save não é desbloquear de novo

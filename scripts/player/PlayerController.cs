@@ -100,7 +100,9 @@ namespace Joguim.Player
             if (Health == null) GD.PrintErr("PlayerController: Health não encontrado.");
             else
             {
-                Health.MaxHealth = StatsResource.MaxHealth;
+                // Cada área restaurada dá +10 de vida máxima (decisão de 11/10/2026): o bônus sai dos pontos
+                // restaurados do save, então vale depois de trocar de área, morrer ou Continuar
+                Health.MaxHealth = StatsResource.MaxHealth + MaxHealthPerRestoration * (SaveManager.Instance?.RestoredCount ?? 0);
                 Health.Reset();
                 Health.HealthChanged += OnHealthChanged;
                 Health.DamageReceived += OnDamageReceived;
@@ -112,7 +114,11 @@ namespace Joguim.Player
                 CallDeferred(nameof(EmitInitialHealth));
             }
 
-            if (EventBus.Instance != null) EventBus.Instance.CheckpointActivated += OnCheckpointActivated;
+            if (EventBus.Instance != null)
+            {
+                EventBus.Instance.CheckpointActivated += OnCheckpointActivated;
+                EventBus.Instance.AreaRestored += OnAreaRestored;
+            }
             else GD.PrintErr("PlayerController: EventBus not ready yet.");
 
             // Spawn direcional: se viemos de um TransitionTrigger, reposiciona no ponto de entrada
@@ -121,7 +127,25 @@ namespace Joguim.Player
 
         public override void _ExitTree()
         {
-            if (EventBus.Instance != null) EventBus.Instance.CheckpointActivated -= OnCheckpointActivated;
+            if (EventBus.Instance == null) return;
+            EventBus.Instance.CheckpointActivated -= OnCheckpointActivated;
+            EventBus.Instance.AreaRestored -= OnAreaRestored;
+        }
+
+        public const int MaxHealthPerRestoration = 10;
+
+        // Restaurar uma área: +10 de vida máxima e vida cheia (recompensa + cura, decisão de 11/10/2026)
+        private void OnAreaRestored(string pointId)
+        {
+            Health?.SetMaxHealth(Health.MaxHealth + MaxHealthPerRestoration, true);
+        }
+
+        // Bandeira: enche a vida ao passar por ela (decisão de 11/10/2026). Retorna se curou alguma coisa.
+        public bool HealToFull()
+        {
+            if (Health == null || Health.IsDead || Health.CurrentHealth >= Health.MaxHealth) return false;
+            Health.Heal(Health.MaxHealth);
+            return true;
         }
 
         public void SetTerrainSpeedModifier(GodotObject source, float multiplier)

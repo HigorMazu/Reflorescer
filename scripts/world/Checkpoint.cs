@@ -36,12 +36,16 @@ namespace Joguim.World
                 Activated = true;
             }
 
-            if (AutoActivateOnTouch) BodyEntered += OnBodyEntered;
+            BodyEntered += OnBodyEntered;
         }
 
         private void OnBodyEntered(Node2D body)
         {
-            if (!Activated && body.IsInGroup("Player")) Interact(body);
+            if (!body.IsInGroup("Player")) return;
+            if (AutoActivateOnTouch && !Activated) Interact(body);
+            // A bandeira cura ao passar, toda vez (decisão de 11/10/2026)
+            if (body is Player.PlayerController player && player.HealToFull())
+                (GetTree().GetFirstNodeInGroup(UI.HUDController.GroupName) as UI.HUDController)?.ShowNotice("Vida restaurada");
         }
 
         public void Interact(Node2D interactor)

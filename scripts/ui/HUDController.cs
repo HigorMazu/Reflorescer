@@ -59,6 +59,7 @@ namespace Joguim.UI
             EventBus.Instance.AbilityUnlocked += OnAbilityUnlocked;
             EventBus.Instance.SwordToggled += OnSwordToggled;
             EventBus.Instance.InteractionPromptChanged += OnInteractionPromptChanged;
+            EventBus.Instance.AreaRestored += OnAreaRestored;
 
             CallDeferred(MethodName.InitializeHUD);
         }
@@ -74,6 +75,7 @@ namespace Joguim.UI
             EventBus.Instance.AbilityUnlocked -= OnAbilityUnlocked;
             EventBus.Instance.SwordToggled -= OnSwordToggled;
             EventBus.Instance.InteractionPromptChanged -= OnInteractionPromptChanged;
+            EventBus.Instance.AreaRestored -= OnAreaRestored;
         }
 
         private void InitializeHUD()
@@ -158,7 +160,11 @@ namespace Joguim.UI
         private void ShowAbilityUnlockNotification(string abilityId)
         {
             GD.Print($"Ability unlocked notification: {abilityId}");
+            ShowNotice($"Nova habilidade: {GetAbilityDisplayName(abilityId)}");
+        }
 
+        private void EnsureNoticeLabel()
+        {
             if (_unlockNotification == null)
             {
                 _unlockNotification = new Label
@@ -176,8 +182,15 @@ namespace Joguim.UI
                 _unlockNotification.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.CenterTop);
                 _unlockNotification.OffsetTop = 120;
             }
+        }
 
-            _unlockNotification.Text = $"Nova habilidade: {GetAbilityDisplayName(abilityId)}";
+        private void OnAreaRestored(string pointId) => ShowNotice($"Área restaurada · Vida máxima +{Player.PlayerController.MaxHealthPerRestoration}");
+
+        // Aviso central temporário (habilidade nova, área restaurada, vida restaurada na bandeira)
+        public void ShowNotice(string text)
+        {
+            EnsureNoticeLabel();
+            _unlockNotification.Text = text;
             _unlockNotification.Visible = true;
             _unlockNotification.Modulate = Colors.White;
 

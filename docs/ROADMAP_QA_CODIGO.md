@@ -11,11 +11,11 @@ papel: qa
 responsavel: Gustavo
 par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
-epicos_total: 13
+epicos_total: 14
 epicos_concluidos: 10
-tasks_total: 54
-tasks_prontas: 47
-tasks_bloqueadas: 3
+tasks_total: 63
+tasks_prontas: 53
+tasks_bloqueadas: 6
 ---
 # Roadmap de QA — Código (Reflorescer)
 
@@ -122,6 +122,12 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [x] Repetir a Task C03-T0 → nada regrediu.
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo). Troca repetida em combate sem travar; C03-T0 repetida sem regressão. Revalidado em 11/10 por script (`tools/qa/CombatCheck.gd`, 35 verificações, 0 falhas em 3 execuções), incluindo o caso novo da preparação.
+>
+> > [!success]- Task C03-T4 — Hitbox do Kairo
+> > - [x] Inimigo baixo (formiga, tartaruga) **no chão** é atingido pelo golpe, dos dois lados.
+> > - [x] Inimigo encostando nas pernas ou na cabeça do Kairo causa dano (hurtbox do corpo inteiro).
+> >
+> > Status: ✅ passa (11/10, Claude) — `tools/qa/CombatCheck.gd` (inimigos no chão) 35/35, `RewardCheck.gd` 11/11, `DemoRunCheck.gd` 89/89.
 
 > [!success]- EPIC-C04 — Dash e Desbloqueio Pós-Korrag — ✅ Passa · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — `BossDefeated` dispara uma única vez, dash tem movimento real, é desbloqueado só ao derrotar o Korrag, e a UI avisa o jogador.
@@ -221,6 +227,14 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - **Nota:** este caso só roda depois que `EPIC-C06-T1` conectar o Charge **e** a arte de `charge_windup` chegar — cruza com [[ROADMAP_QA_INTEGRACAO]] `EPIC-A04-T1`.
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): windup de 1s com pulso vermelho, tempo aprovado.
+>
+> > [!success]- Task C06-T5 — Korrag de frente e hitboxes
+> > - [x] Investindo/andando pra direita e pra esquerda, o Korrag está **de frente** (cabeça na direção do movimento).
+> > - [x] A investida machuca pelas presas, sem o Kairo precisar estar "dentro" do javali.
+> > - [x] Golpe do Kairo na cabeça e no traseiro tira vida (antes só o centro).
+> > - [ ] Conferir jogando: a luta ficou justa com as hitboxes novas (o Korrag ficou maior pra acertar e pra encostar).
+> >
+> > Status: ✅ passa (11/10, Claude, por script) — investida de frente nos dois sentidos (40 de dano), cabeça e traseiro 25 cada. Falta a luta jogada pelo Gustavo.
 
 > [!success]- EPIC-C07 — Inimigos Comuns (Arquétipos) — ✅ Passa · 🟠 Alta
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — 3 arquétipos com comportamento distinto de fato, cada um com dados pras 4 áreas da demo.
@@ -269,6 +283,13 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - **Achado da auditoria (15/09):** `AtPatrolEdge()` sempre retorna `false` — stub morto. Aceitável pra demo como está, corrigir só se sobrar tempo.
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
+>
+> > [!success]- Task C07-T6 — Dano dos inimigos (ataque + toque)
+> > - [x] O ataque animado de cada arquétipo acerta o Kairo (antes a formiga e a tartaruga nunca acertavam).
+> > - [x] Encostar no corpo visível dá metade do dano; perto mas sem encostar, nada (sem aura invisível).
+> > - [ ] Conferir jogando: a dificuldade continua boa com o ataque acertando de verdade.
+> >
+> > Status: ✅ passa (11/10, Claude, por script) — acertos de ataque em 10 s: 7 / 4 / 7; contato 5 / 12 / 6. Falta a sensação jogando.
 
 > [!success]- EPIC-C08 — Transição de Área — ✅ Passa · 🟠 Alta
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — o jogador chega na cena nova numa posição consistente com de onde veio.
@@ -316,6 +337,35 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - **Achado (11/10) — erro do motor a cada transição:** `Removing a CollisionObject node during a physics callback` (o `TransitionTrigger` trocava de cena dentro do `AreaEntered`). Corrigido com `CallDeferred` (ver [[ROADMAP_DEV]] C13-T5); o percurso roda sem nenhum erro do motor.
 > >
 > > Status: ✅ passa — por script no Godot em 11/10 (Claude, `tools/qa/DemoRunCheck.gd`, 89 verificações, 0 falhas): Novo jogo → Sopé → Dossel → Igarapé → Covil pelos portais reais, com as voltas Dossel→Sopé e Igarapé→Dossel; em todas as 7 transições o Kairo nasce no x do marker, em pé no chão e dentro do mundo. Korrag: fase 2 com ≤50%, enraged com ≤20%, `BossDefeated` uma vez, Dash desbloqueado uma vez, notificação "Nova habilidade: Dash". Teste dirigido: não mede dificuldade, sensação nem FPS (C12-T2/A07).
+
+> [!warning]- EPIC-C14 — Cura e Recompensas de Restauração — 🟡 Parcial · 🔴 Bloqueante
+> *Pronto quando*: todos os casos de teste abaixo passam ✅ — o Kairo recupera vida restaurando e passando na bandeira, e cada restauração dá recompensas visíveis.
+>
+> > [!success]- Task C14-T1 — Restaurar cura e dá +10 de vida máxima
+> > - [x] Restaurar: vida cheia e máxima +10, com aviso no HUD.
+> > - [x] A vida máxima continua depois de trocar de área, morrer e Continuar.
+> >
+> > Status: ✅ passa (11/10, Claude) — `tools/qa/RewardCheck.gd` 11/11.
+>
+> > [!success]- Task C14-T2 — Bandeira cura ao passar
+> > - [x] Passar ferido pela bandeira enche a vida e avisa "Vida restaurada"; passar com a vida cheia não faz nada.
+> >
+> > Status: ✅ passa (11/10, Claude) — `RewardCheck.gd`.
+>
+> > [!failure]- Task C14-T3 — Registro de áreas restauradas no fim da demo
+> > - [ ] Derrotar o Korrag com 0, 1, 2 e 3 áreas restauradas mostra o número certo, e a mensagem muda com 3/3.
+> >
+> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_DEV]] C14-T3.
+>
+> > [!failure]- Task C14-T4 — Faísca fica mais forte ao restaurar
+> > - [ ] Cada restauração muda a Faísca de um jeito perceptível, e o efeito continua depois de trocar de área e Continuar.
+> >
+> > Status: 🔴 bloqueado (11/10) — depende da definição ([[ROADMAP_DEV]] C14-T4).
+>
+> > [!failure]- Task C14-T5 — Caminho novo ao restaurar
+> > - [ ] Antes de restaurar, o caminho não existe; depois, aparece e é alcançável; ao voltar pra área (ou Continuar), continua aberto.
+> >
+> > Status: 🔴 bloqueado (11/10) — depende da definição e da arte ([[ROADMAP_DEV]] C14-T5).
 
 > [!warning]- EPIC-C09 — Save, Checkpoint e Respawn — 🟡 Parcial (visual do checkpoint) · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — habilidade desbloqueada persiste em disco imediatamente, e existe uma decisão explícita sobre o fluxo de Continuar.
@@ -374,6 +424,11 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - **Origem (11/10):** decisão do grupo de deixar a demo mais difícil até o Korrag ([[ROADMAP_DEV]] C09-T4).
 > >
 > > Status: 🟡 aguarda teste (11/10) — implementado fora do Godot, ainda não compilado nem jogado.
+>
+> > [!success]- Task C09-T5 — Continuar volta com a vida salva
+> > - [x] Salvar ferido, sair pro menu e Continuar: volta com a mesma vida, não cheia.
+> >
+> > Status: ✅ passa (11/10, Claude) — `RewardCheck.gd`.
 
 > [!success]- EPIC-C10 — HUD e UX — ✅ Passa · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — prompt de interação contínuo funcionando, e decisão sobre Game Over tomada e implementada.

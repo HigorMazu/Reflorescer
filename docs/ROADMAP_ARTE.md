@@ -12,10 +12,10 @@ responsavel: Higor
 par: "[[ROADMAP_QA_INTEGRACAO]]"
 descricao: Backlog de sprites, animação e estilização da demo
 epicos_total: 7
-epicos_concluidos: 5
-tasks_total: 24
+epicos_concluidos: 3
+tasks_total: 28
 tasks_prontas: 20
-tasks_bloqueadas: 0
+tasks_bloqueadas: 2
 tasks_liberadas: 0
 ---
 # Roadmap de Arte — Sprites, Animação e Estilização (Higor)
@@ -140,7 +140,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: não iniciado — pós-demo, sem urgência.
 
-> [!success]- EPIC-A03 — Faísca (vaga-lume companheiro) — ✅ Concluído · 🟠 Alta
+> [!warning]- EPIC-A03 — Faísca (vaga-lume companheiro) — 🔄 Em andamento (Faísca fortalecida) · 🟠 Alta
 > *Pronto quando*: `fly` e `investigate` estão entregues e a troca de animação acompanha a troca de estado sem travar num frame parado.
 >
 > > [!success]- Task A03-T1 — Animações
@@ -151,8 +151,13 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > > - **Integração (06/10):** 12 frames entregues, quatro por `idle`/`fly`/`investigate`; luz independente. Os três estados e o avanço de frames foram verificados no Godot .NET.
 > >
 > > Status: ✅ concluída (06/10) — animações entregues e integradas à máquina de estados.
+>
+> > [!todo]- Task A03-T2 — Faísca fortalecida pela restauração
+> > - [ ] Visual da Faísca em cada nível de força (1, 2 e 3 áreas restauradas), conforme o que for definido ([[ROADMAP_DEV]] C14-T4).
+> >
+> > Status: não iniciado (11/10) — ⛔ bloqueado: aguarda a definição do grupo.
 
-> [!success]- EPIC-A04 — Boss KORRAG — ✅ Concluído · 🟠 Alta
+> [!warning]- EPIC-A04 — Boss KORRAG — 🔄 Em andamento (ajuste no `attack`) · 🟠 Alta
 > *Pronto quando*: `intro`, `charge_windup`, `phase2_transition` e `defeated` estão entregues — escopo já simplificado, fases 1 e 2 compartilham `idle`.
 >
 > Por último — pacote mais isolado e com o escopo já reduzido de propósito (decisão do Gustavo: manter as 2 fases já modeladas por dados, mas simplificar a arte pra caber no tempo).
@@ -179,6 +184,12 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > > - **Integração (06/10):** o recurso contém `enraged_transition` e `BossEnragedState` a toca ao entrar no estado.
 > >
 > > Status: ✅ concluída (11/10) — Aprovado por Gustavo em 11/10, depois da partida completa da demo. Transição com dois quadros e brilho vermelho controlado.
+>
+> > [!todo]- Task A04-T3 — `attack` do Korrag virando de lado no meio
+> > - [ ] Na folha `korrag_animation_sheet_v2.png`, os quadros 1 e 2 do `attack` (regiões `Atlas_20` e `Atlas_21`) olham pra **direita**; o 3º e todas as outras 12 animações olham pra **esquerda**. Espelhar os dois quadros pra esquerda.
+> > - **Achado (11/10):** ao corrigir o Korrag que investia de costas ([[ROADMAP_DEV]] C06-T5), o código passou a assumir arte virada pra esquerda (`SpriteFacesLeft`). Com isso, o golpe comum mostra a cabeça pro lado errado nos dois primeiros quadros.
+> >
+> > Status: 🔧 ajuste pedido (11/10).
 
 > [!warning]- EPIC-A05 — Cenário das 4 Áreas da Demo (Floresta Tropical) — 🔄 Em andamento (falta o checkpoint) · 🔴 Bloqueante
 > *Pronto quando*: as 4 áreas têm tileset, background e props temáticos entregues, com identidade visual reconhecível sem precisar de texto, e coerentes entre si (mesmo bioma, mesma paleta-base) — ver [[🌍 Mundo e Biomas#As 4 áreas da demo (dentro da Floresta Tropical)|Mundo e Biomas]].
@@ -225,6 +236,11 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > > - **Mudança de escopo (11/10) — agora é uma bandeira só:** o grupo decidiu deixar só a do começo do Dossel Vivo (`Interactables/Checkpoint1`, `cp_dossel_01`); as do Sopé, Igarapé e Covil saíram do jogo ([[ROADMAP_DEV]] C09-T4). Ela agora ativa sozinha quando o Kairo passa, então o estado **ativado** precisa ficar bem visível na hora.
 > >
 > > Status: não iniciado (11/10).
+>
+> > [!todo]- Task A05-T6 — Vinhas/plataformas que crescem ao restaurar
+> > - [ ] Arte do caminho novo que aparece em cada área restaurada (Sopé, Dossel, Igarapé), conforme o que for definido ([[ROADMAP_DEV]] C14-T5): estado "fechado" (seco/ausente) e "aberto" (crescido), na escala das plataformas atuais.
+> >
+> > Status: não iniciado (11/10) — ⛔ bloqueado: aguarda a definição do grupo.
 
 > [!success]- EPIC-A06 — UI — ✅ Entrega visual concluída
 > *Pronto quando*: barra de vida, ícone de habilidade e prompt de interação têm arte final substituindo os placeholders do Godot.
@@ -271,6 +287,12 @@ Status: ✅ concluída (07/10) — indicador aprovado por Higor e integrado. Ver
 
 Status: ✅ aprovada (11/10), com um ajuste pequeno pendente. Ver `docs/art-review/title-screen-v1.md`. A falha de salvar/recarregar citada na entrega foi resolvida no código (autoload `ResourceKeeper`, [[ROADMAP_DEV]] C12-T4) — não tinha relação com a tela de título.
 
+### A06-T6 — Tela de fim da demo (11/10)
+
+- [ ] Tela de encerramento depois do Korrag com "Áreas restauradas: X/3" e mensagem diferente pra 3/3 ([[ROADMAP_DEV]] C14-T3). Pode começar só com texto; o acabamento visual é do Higor.
+
+Status: não iniciado (11/10).
+
 ## O que falta (11/10/2026)
 
 As 9 etapas da ordem de entrega original (Kairo, inimigos, Faísca, espada, cenário, Korrag, wall jump/dash, UI e `enraged_transition`) foram entregues e aprovadas, com três pendências abertas na revisão de 11/10:
@@ -279,6 +301,8 @@ As 9 etapas da ordem de entrega original (Kairo, inimigos, Faísca, espada, cen�
 1. Wall slide legível (A01-T3)            ← ajuste pedido: hoje parece uma queda
 2. Bandeira de checkpoint (A05-T5)        ← task nova; destrava o código C09-T3
 3. Contraste da dica da tela de título (A06-T5)
+4. Korrag: espelhar os quadros 1 e 2 do `attack` (A04-T3)
+5. Depois das definições do grupo: Faísca fortalecida (A03-T2), caminhos que crescem (A05-T6) e tela de fim da demo (A06-T6)
 + Validações do Higor no ROADMAP_QA_INTEGRACAO: playtest do indicador da espada (A06-T4) e do menu pelo teclado (A06-T5)
 
 Pós-demo (jogo completo, fora desta entrega): reskins Deserto/Tundra dos 3 arquétipos (A02-T4/T5).

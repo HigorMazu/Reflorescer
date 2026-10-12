@@ -44,10 +44,16 @@ func _face(dir: String) -> void:
 	Input.action_release(dir)
 	await _frames(20)
 
+## Inimigos ficam no chão, como no jogo: a origem deles é nos pés, a do Kairo no centro do corpo (20 px acima).
+## (Até 11/10 o teste criava os inimigos na altura do centro do Kairo, flutuando, e não pegou o golpe que
+## passava por cima da formiga e da tartaruga.)
+func _feet_y() -> float:
+	return _p.global_position.y + 20
+
 func _spawn_enemy(offset_x: float) -> Node2D:
 	var e: Node2D = load(RAPIDO).instantiate()
 	current_scene.add_child(e)
-	e.global_position = Vector2(_p.global_position.x + offset_x, _p.global_position.y)
+	e.global_position = Vector2(_p.global_position.x + offset_x, _feet_y())
 	e.set_physics_process(false)
 	e.get_node("EnemyStateMachine").process_mode = Node.PROCESS_MODE_DISABLED
 	e.set_meta("offset", offset_x)
@@ -56,7 +62,7 @@ func _spawn_enemy(offset_x: float) -> Node2D:
 	return e
 
 func _put_back(e: Node2D) -> void:
-	e.global_position = Vector2(_p.global_position.x + e.get_meta("offset"), _p.global_position.y)
+	e.global_position = Vector2(_p.global_position.x + e.get_meta("offset"), _feet_y())
 	e.set("velocity", Vector2.ZERO)
 	await _frames(2)
 
