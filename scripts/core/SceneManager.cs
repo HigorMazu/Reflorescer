@@ -12,6 +12,7 @@ namespace Joguim.Core
         private string _currentScenePath = "";
         private string _pendingSpawnPoint = "";
         private Vector2 _pendingSpawnOffset = Vector2.Zero;
+        private string _pendingCheckpointId = "";
 
         public string CurrentScenePath => _currentScenePath;
 
@@ -39,6 +40,38 @@ namespace Joguim.Core
             _pendingSpawnPoint = spawnPoint ?? "";
             _pendingSpawnOffset = spawnOffset;
             LoadScene(scenePath);
+        }
+
+        // Morte em outra área: carrega a cena da bandeira e, quando o jogador nascer, posiciona nela
+        public void LoadSceneAtCheckpoint(string scenePath, string checkpointId)
+        {
+            _pendingSpawnPoint = "";
+            _pendingSpawnOffset = Vector2.Zero;
+            _pendingCheckpointId = checkpointId ?? "";
+            LoadScene(scenePath);
+        }
+
+        // Chamado pelo jogador ao entrar na cena nova. Procura a bandeira (grupo "Checkpoints") pendente.
+        public bool TryConsumePendingCheckpoint(out Vector2 position)
+        {
+            position = Vector2.Zero;
+            if (string.IsNullOrEmpty(_pendingCheckpointId)) return false;
+
+            string checkpointId = _pendingCheckpointId;
+            _pendingCheckpointId = "";
+
+            foreach (var node in GetTree().GetNodesInGroup("Checkpoints"))
+            {
+                if (node is World.Checkpoint cp && cp.CheckpointId == checkpointId)
+                {
+                    cp.Activated = true;
+                    position = cp.GlobalPosition;
+                    return true;
+                }
+            }
+
+            GD.PrintErr($"SceneManager: bandeira '{checkpointId}' não encontrada na cena {_currentScenePath}. Usando o spawn padrão.");
+            return false;
         }
 
         // Chamado pelo jogador ao entrar na cena nova. Procura um nó do grupo "SpawnPoints" com o nome pendente.

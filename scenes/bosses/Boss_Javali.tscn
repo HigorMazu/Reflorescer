@@ -13,10 +13,10 @@
 size = Vector2(80, 60)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hitbox"]
-size = Vector2(50, 40)
+size = Vector2(130, 110)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
-size = Vector2(70, 55)
+size = Vector2(240, 150)
 
 [node name="Boss_Javali" type="CharacterBody2D" unique_id=1642101020]
 collision_layer = 4
@@ -113,7 +113,7 @@ KnockbackForce = 400.0
 Active = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitbox" unique_id=1024689517]
-position = Vector2(50, 0)
+position = Vector2(105, -65)
 shape = SubResource("RectangleShape2D_hitbox")
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=862172247]
@@ -122,7 +122,7 @@ collision_mask = 8
 script = ExtResource("6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=327606192]
-position = Vector2(0, -30)
+position = Vector2(0, -75)
 shape = SubResource("RectangleShape2D_hurtbox")
 
 [node name="BossStateMachine" type="Node" parent="." unique_id=915359796]

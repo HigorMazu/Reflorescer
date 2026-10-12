@@ -66,6 +66,13 @@ namespace Joguim.Combat
             EmitSignal("HealthChanged", _currentHealth, MaxHealth);
         }
 
+        // Vida que o Kairo carrega de uma área pra outra (decisão de 11/10/2026: trocar de área não cura)
+        public void SetCurrentHealth(int value)
+        {
+            _currentHealth = Mathf.Clamp(value, 0, MaxHealth);
+            EmitSignal("HealthChanged", _currentHealth, MaxHealth);
+        }
+
         public void SetMaxHealth(int newMax, bool healToFull = false)
         {
             MaxHealth = Mathf.Max(1, newMax);

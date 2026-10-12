@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-05
+atualizado: 2026-10-11
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
@@ -11,11 +11,11 @@ papel: qa
 responsavel: Gustavo
 par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
-epicos_total: 13
+epicos_total: 14
 epicos_concluidos: 10
-tasks_total: 49
-tasks_prontas: 39
-tasks_bloqueadas: 3
+tasks_total: 63
+tasks_prontas: 54
+tasks_bloqueadas: 5
 ---
 # Roadmap de QA — Código (Reflorescer)
 
@@ -91,33 +91,43 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — Q alterna a espada em tempo real, stats diferentes com espada ativada/desativada, e não dá pra atacar com ela desativada.
 >
 > > [!success]- Task C03-T0 — Regressão de combate básico (baseline antes de mexer)
-> > - [x] Atacar sem inimigo por perto → hitbox ativa 0.14s, sem dano, sem erro no console.
+> > - [x] Atacar sem inimigo por perto → a janela de dano abre depois da preparação (~0,10 s) e dura ~0,10 s, sem dano, sem erro no console. *(Era 0,14 s antes da estocada do Higor, 07/10.)*
 > > - [x] Atacar um inimigo no alcance → recebe 25 de dano, flash vermelho, knockback, hitstop (`TimeScale=0.15` por 0.06s).
+> > - [x] Alcance igual virado pra direita e pra esquerda (95 px centro a centro), e inimigo colado nas costas não é atingido. *(Novo em 11/10, depois do bugfix da hitbox — ver [[ROADMAP_DEV]] C03-T3.)*
 > > - [x] Atacar repetidamente sem soltar o botão → cada inimigo só recebe dano **uma vez** por ativação de hitbox.
 > > - [x] Atacar durante o cooldown (0.30s) → `CanAttack()` falso, ataque não sai.
 > > - [x] Tomar dano de um inimigo → HP cai, knockback, 1s de invulnerabilidade, shake visual.
 > > - [x] Tomar dano durante a invulnerabilidade pós-hit → segundo hit ignorado.
 > >
-> > Status: ✅ passa — baseline revalidada em 28/09 depois da EPIC-C03 (Gustavo).
+> > Status: ✅ passa — baseline revalidada em 28/09 depois da EPIC-C03 (Gustavo). Revalidada em 11/10 com a estocada nova, por script (`tools/qa/CombatCheck.gd`, 35 verificações, 0 falhas em 3 execuções); a hitbox espelhada pela metade foi corrigida nesta rodada.
 >
 > > [!success]- Task C03-T1 — Toggle da espada (Q)
 > > - [x] Apertar Q alterna `HasSword` e a visibilidade do sprite da espada/bandagem.
 > > - **Achado da auditoria (15/09):** `SetSwordVisible()` existe mas nunca é chamado depois do `_Ready()` — não há input ligado a ele ainda.
 > >
-> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo). HUD e tom verde mostram o estado; o estado se mantém ao trocar de cena.
+> > - **Critério atualizado (11/10):** o tom verde no sprite saiu (Higor, 07/10). O estado agora aparece na lâmina (estende/recolhe), na bandagem no pulso (só com a espada guardada) e no indicador do HUD.
+> >
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo). Revalidado em 11/10 por script (`tools/qa/CombatCheck.gd`, 35 verificações, 0 falhas em 3 execuções): Q recolhe a lâmina, mostra a bandagem, atualiza o HUD, sem tom verde, estado guardado no `GameManager`.
 >
 > > [!success]- Task C03-T2 — Stats duplos
 > > - [x] Com a espada desativada: +velocidade, +pulo, sem ataque.
 > > - **Achado da auditoria (15/09):** só existe um conjunto de stats em `PlayerStatsResource`, sem variante "sem espada".
 > >
-> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo). Espada guardada: visivelmente mais rápido e mais alto, sem ataque.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo). Espada guardada: visivelmente mais rápido e mais alto, sem ataque. Revalidado em 11/10 por script: corrida 240 contra 200, pulo -520 contra -460.
 >
 > > [!success]- Task C03-T3 — Bloqueio e regressão final
 > > - [x] Tentar atacar com a espada desativada → bloqueado.
 > > - [x] Alternar a espada em pleno combate/movimento → sem travar animação/input.
+> > - [x] Apertar ataque e guardar a espada durante a preparação → o golpe é cancelado, sem dano. *(Novo em 11/10: antes o golpe saía mesmo com a espada guardada; corrigido, ver [[ROADMAP_DEV]] C03-T3.)*
 > > - [x] Repetir a Task C03-T0 → nada regrediu.
 > >
-> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo). Troca repetida em combate sem travar; C03-T0 repetida sem regressão.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo). Troca repetida em combate sem travar; C03-T0 repetida sem regressão. Revalidado em 11/10 por script (`tools/qa/CombatCheck.gd`, 35 verificações, 0 falhas em 3 execuções), incluindo o caso novo da preparação.
+>
+> > [!success]- Task C03-T4 — Hitbox do Kairo
+> > - [x] Inimigo baixo (formiga, tartaruga) **no chão** é atingido pelo golpe, dos dois lados.
+> > - [x] Inimigo encostando nas pernas ou na cabeça do Kairo causa dano (hurtbox do corpo inteiro).
+> >
+> > Status: ✅ passa (11/10, Claude) — `tools/qa/CombatCheck.gd` (inimigos no chão) 35/35, `RewardCheck.gd` 11/11, `DemoRunCheck.gd` 89/89.
 
 > [!success]- EPIC-C04 — Dash e Desbloqueio Pós-Korrag — ✅ Passa · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — `BossDefeated` dispara uma única vez, dash tem movimento real, é desbloqueado só ao derrotar o Korrag, e a UI avisa o jogador.
@@ -197,6 +207,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [x] O boss ainda usa o ataque melee genérico em alguma situação (variedade, não só os ataques especiais).
 > > - **Achado da auditoria (15/09):** `StartCharge()`/`ExecuteCharge()`/`PerformStomp()` já existem em `JavaliBoss.cs`, mas nenhum estado os chama — só `BossBase.PerformAttack()` (hitbox melee genérica) está em uso.
 > > - **Nota (05/10) — revalidar o enraged:** o enraged caía em valores padrão (mais fraco que a fase 2). Corrigido com `JavaliPhase3.tres` (ver [[ROADMAP_DEV]] C06-T1). Ao rodar a C06-T0 de novo, conferir que abaixo de 20% de HP o Korrag fica visivelmente mais rápido e ataca com mais frequência que na fase 2.
+> > - **Revalidado (11/10, script):** no Covil, o enraged entra com ≤20% e usa cooldown 1,0 s / velocidade 140, contra 1,2 s / 120 da fase 2 (fase 1: 2,0 s). Falta só ver na luta jogada se a diferença é perceptível.
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
@@ -216,6 +227,14 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - **Nota:** este caso só roda depois que `EPIC-C06-T1` conectar o Charge **e** a arte de `charge_windup` chegar — cruza com [[ROADMAP_QA_INTEGRACAO]] `EPIC-A04-T1`.
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): windup de 1s com pulso vermelho, tempo aprovado.
+>
+> > [!success]- Task C06-T5 — Korrag de frente e hitboxes
+> > - [x] Investindo/andando pra direita e pra esquerda, o Korrag está **de frente** (cabeça na direção do movimento).
+> > - [x] A investida machuca pelas presas, sem o Kairo precisar estar "dentro" do javali.
+> > - [x] Golpe do Kairo na cabeça e no traseiro tira vida (antes só o centro).
+> > - [x] Conferir jogando: a luta ficou justa com as hitboxes novas (o Korrag ficou maior pra acertar e pra encostar).
+> >
+> > Status: ✅ passa (11/10) — por script (investida de frente nos dois sentidos, 40 de dano; cabeça e traseiro 25 cada) e luta jogada e validada pelo Gustavo.
 
 > [!success]- EPIC-C07 — Inimigos Comuns (Arquétipos) — ✅ Passa · 🟠 Alta
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — 3 arquétipos com comportamento distinto de fato, cada um com dados pras 4 áreas da demo.
@@ -255,6 +274,8 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > - **Nota (05/10):** 9 `.tres` em `resources/enemies/areas/` (`<Arquétipo>_<Área>.tres`; o Covil de Korrag não tem inimigo comum). Os valores batem com a tabela do [[👾 Bestiário]] e são provisórios.
 > >
+> > - **Nota (11/10):** valores oficializados e escalados (os 3 arquétipos sobem a cada área), ver [[ROADMAP_DEV]] C07-T4. O que muda pra este teste: os valores agora batem com a tabela oficial do [[👾 Bestiário]] de 11/10. A sensação de dificuldade é testada na C09-T4.
+> >
 > > Status: ✅ passa — verificado headless em 05/10 (Claude): os 9 arquivos existem e cada inimigo das cenas do `EPIC-C13` usa o `.tres` da própria área.
 >
 > > [!success]- Task C07-T5 — AtPatrolEdge() (baixa prioridade)
@@ -262,6 +283,13 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - **Achado da auditoria (15/09):** `AtPatrolEdge()` sempre retorna `false` — stub morto. Aceitável pra demo como está, corrigir só se sobrar tempo.
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
+>
+> > [!success]- Task C07-T6 — Dano dos inimigos (ataque + toque)
+> > - [x] O ataque animado de cada arquétipo acerta o Kairo (antes a formiga e a tartaruga nunca acertavam).
+> > - [x] Encostar no corpo visível dá metade do dano; perto mas sem encostar, nada (sem aura invisível).
+> > - [x] Conferir jogando: a dificuldade continua boa com o ataque acertando de verdade.
+> >
+> > Status: ✅ passa (11/10) — por script (acertos de ataque em 10 s: 7 / 4 / 7; contato 5 / 12 / 6) e validado jogando pelo Gustavo.
 
 > [!success]- EPIC-C08 — Transição de Área — ✅ Passa · 🟠 Alta
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — o jogador chega na cena nova numa posição consistente com de onde veio.
@@ -278,38 +306,69 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 
-> [!warning]- EPIC-C13 — Construção das 4 Áreas da Demo (Floresta Tropical) — 🟡 Parcial · 🔴 Bloqueante
+> [!success]- EPIC-C13 — Construção das 4 Áreas da Demo (Floresta Tropical) — ✅ Passa · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — as 4 cenas existem, encadeadas na ordem certa, e o novo jogo começa no Sopé da Mata.
 >
-> > [!warning]- Task C13-T1 — Sopé da Mata (entrada)
-> > - [ ] A cena existe, o Kairo spawna no `Marker2D` de entrada, câmera com limites corretos, inimigos e ponto de restauração presentes.
+> > [!success]- Task C13-T1 — Sopé da Mata (entrada)
+> > - [x] A cena existe, o Kairo spawna no `Marker2D` de entrada, câmera com limites corretos, inimigos e ponto de restauração presentes.
 > >
-> > Status: 🟡 parcial — limites de câmera aplicados (0..2400, -200..520) e ponto de restauração funcionando (teste em execução por script no Godot (05/10, Claude)). Falta jogar a área à mão: spawn do Novo jogo e inimigos.
+> > Status: ✅ passa — por script no Godot em 11/10 (Claude, `tools/qa/DemoRunCheck.gd`, 89 verificações, 0 falhas): Novo jogo pelo botão do menu nasce no `SpawnInicial` em pé no chão; câmera (0, -200, 2400, 720); 2 Voadores, 2 Rápidos, 1 Robusto; prompt `[E] Restaurar` aparece, E restaura e o prompt some.
 >
-> > [!warning]- Task C13-T2 — Dossel Vivo (verticalidade)
-> > - [ ] A cena existe, plataforming vertical navegável, mais Voadores que o Sopé da Mata, ponto de restauração presente.
-> > - [ ] Chegando do Sopé da Mata, o Kairo entra no `Marker2D` certo.
+> > [!success]- Task C13-T2 — Dossel Vivo (verticalidade)
+> > - [x] A cena existe, plataforming vertical navegável, mais Voadores que o Sopé da Mata, ponto de restauração presente.
+> > - [x] Chegando do Sopé da Mata, o Kairo entra no `Marker2D` certo.
 > >
-> > Status: 🟡 parcial — a cena existe, 4 Voadores contra 2 no Sopé, e a transição do Sopé aponta pro marker certo (headless, 05/10). Teste em jogo pendente, principalmente o alcance de todos os galhos.
+> > Status: ✅ passa — por script no Godot em 11/10 (Claude). Alcance: um bot com a física real (`tools/qa/DosselReachCheck.gd`) subiu os 12 saltos do chão ao `TopBranch` **só com pulo simples**; a saída pro Igarapé fica em cima do galho do topo. Percurso (`tools/qa/DemoRunCheck.gd`, 89 verificações, 0 falhas): entra no `SpawnFromSopeDaMata`, 4 Voadores contra 2, restauração ok, ida e volta pro Sopé caem nos markers certos e o ponto continua restaurado.
 >
-> > [!warning]- Task C13-T3 — Igarapé Sufocado (hazard de lama)
+> > [!success]- Task C13-T3 — Igarapé Sufocado (hazard de lama)
 > > - [x] A cena existe, o `MudHazard` reduz a velocidade do Kairo dentro da área e para de reduzir ao sair.
-> > - [ ] Mais Robustos/Rápidos que as áreas anteriores, ponto de restauração com contraste "antes/depois" visível.
-> > - [ ] Chegando do Dossel Vivo, o Kairo entra no `Marker2D` certo.
+> > - [x] Mais Robustos/Rápidos que as áreas anteriores, ponto de restauração com contraste "antes/depois" visível.
+> > - [x] Chegando do Dossel Vivo, o Kairo entra no `Marker2D` certo.
 > >
-> > Status: 🟡 parcial — a lama aplica o multiplicador 0.55 dentro e volta a 1.0 fora, e a restauração funciona (teste em execução por script no Godot (05/10, Claude)). Falta jogar a área à mão e a transição vinda do Dossel.
+> > Status: ✅ passa — por script no Godot em 11/10 (Claude, `tools/qa/DemoRunCheck.gd`, 89 verificações, 0 falhas): as 3 poças dão x0,55 dentro e x1,0 fora; 3 Robustos + 2 Rápidos (contra 3 no Sopé e 1 no Dossel); restauração ok (contraste visual aprovado pelo Higor em 08/10); ida e volta pelo Dossel nos markers certos.
 >
-> > [!warning]- Task C13-T4 — Covil de Korrag (arena do boss)
-> > - [ ] A cena existe, sem inimigos comuns, o Korrag ativa normalmente (`EPIC-C06-T0`), chegando do Igarapé Sufocado o Kairo entra no `Marker2D` certo.
+> > [!success]- Task C13-T4 — Covil de Korrag (arena do boss)
+> > - [x] A cena existe, sem inimigos comuns, o Korrag ativa normalmente (`EPIC-C06-T0`), chegando do Igarapé Sufocado o Kairo entra no `Marker2D` certo.
 > >
-> > Status: 🟡 parcial — cena nova `CovilDeKorrag.tscn` (a `BossArena` ficou como teste), sem inimigo comum, e a transição do Igarapé aponta pro marker certo (headless, 05/10). Falta lutar com o Korrag nela.
+> > Status: ✅ passa — por script no Godot em 11/10 (Claude, `tools/qa/DemoRunCheck.gd`, 89 verificações, 0 falhas): entra no `SpawnFromIgarapeSufocado` em pé no chão; sem inimigos comuns nem restauração; o Korrag ativa com o Kairo por perto. A luta foi feita com dano aplicado pelo script, não com a espada; a luta jogada fica no C12-T2.
 >
-> > [!warning]- Task C13-T5 — Encadear e validar a demo inteira
-> > - [ ] Novo jogo → Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag → derrotar o Korrag → dash desbloqueado, sem cair fora do mundo nem spawn errado em nenhuma transição.
+> > [!success]- Task C13-T5 — Encadear e validar a demo inteira
+> > - [x] Novo jogo → Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag → derrotar o Korrag → dash desbloqueado, sem cair fora do mundo nem spawn errado em nenhuma transição.
+> > - **Achado (11/10) — erro do motor a cada transição:** `Removing a CollisionObject node during a physics callback` (o `TransitionTrigger` trocava de cena dentro do `AreaEntered`). Corrigido com `CallDeferred` (ver [[ROADMAP_DEV]] C13-T5); o percurso roda sem nenhum erro do motor.
 > >
-> > Status: 🟡 parcial — as 5 transições da cadeia apontam pra markers existentes e o Novo jogo aponta pro Sopé da Mata (headless, 05/10). O percurso jogado de ponta a ponta continua pendente.
+> > Status: ✅ passa — por script no Godot em 11/10 (Claude, `tools/qa/DemoRunCheck.gd`, 89 verificações, 0 falhas): Novo jogo → Sopé → Dossel → Igarapé → Covil pelos portais reais, com as voltas Dossel→Sopé e Igarapé→Dossel; em todas as 7 transições o Kairo nasce no x do marker, em pé no chão e dentro do mundo. Korrag: fase 2 com ≤50%, enraged com ≤20%, `BossDefeated` uma vez, Dash desbloqueado uma vez, notificação "Nova habilidade: Dash". Teste dirigido: não mede dificuldade, sensação nem FPS (C12-T2/A07).
 
-> [!success]- EPIC-C09 — Save, Checkpoint e Respawn — ✅ Passa · 🟡 Média
+> [!warning]- EPIC-C14 — Cura e Recompensas de Restauração — 🟡 Parcial · 🔴 Bloqueante
+> *Pronto quando*: todos os casos de teste abaixo passam ✅ — o Kairo recupera vida restaurando e passando na bandeira, e cada restauração dá recompensas visíveis.
+>
+> > [!success]- Task C14-T1 — Restaurar cura e dá +10 de vida máxima
+> > - [x] Restaurar: vida cheia e máxima +10, com aviso no HUD.
+> > - [x] A vida máxima continua depois de trocar de área, morrer e Continuar.
+> >
+> > Status: ✅ passa (11/10, Claude) — `tools/qa/RewardCheck.gd` 11/11.
+>
+> > [!success]- Task C14-T2 — Bandeira cura ao passar
+> > - [x] Passar ferido pela bandeira enche a vida e avisa "Vida restaurada"; passar com a vida cheia não faz nada.
+> >
+> > Status: ✅ passa (11/10, Claude) — `RewardCheck.gd`.
+>
+> > [!success]- Task C14-T3 — Registro de áreas restauradas no fim da demo
+> > - [x] Derrotar o Korrag com 0, 1, 2 e 3 áreas restauradas mostra o número certo, e a mensagem muda com 3/3.
+> > - [x] Jogo pausado com a tela aberta; "Continuar explorando" despausa com o Dash liberado; "Menu inicial" volta ao menu despausado.
+> >
+> > Status: ✅ passa (11/10, Claude) — `tools/qa/DemoEndCheck.gd` 15/15 (0, 1 e 3 áreas restauradas de verdade, Korrag derrotado).
+>
+> > [!failure]- Task C14-T4 — Faísca fica mais forte ao restaurar
+> > - [ ] Cada restauração muda a Faísca de um jeito perceptível, e o efeito continua depois de trocar de área e Continuar.
+> >
+> > Status: 🔴 bloqueado (11/10) — depende da definição ([[ROADMAP_DEV]] C14-T4).
+>
+> > [!failure]- Task C14-T5 — Caminho novo ao restaurar
+> > - [ ] Antes de restaurar, o caminho não existe; depois, aparece e é alcançável; ao voltar pra área (ou Continuar), continua aberto.
+> >
+> > Status: 🔴 bloqueado (11/10) — depende da definição e da arte ([[ROADMAP_DEV]] C14-T5).
+
+> [!warning]- EPIC-C09 — Save, Checkpoint e Respawn — 🟡 Parcial (visual do checkpoint) · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — habilidade desbloqueada persiste em disco imediatamente, e existe uma decisão explícita sobre o fluxo de Continuar.
 >
 > > [!success]- Task C09-T0 — Regressão básica (baseline antes de mexer)
@@ -337,8 +396,40 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [x] Carregar um save feito em outra área troca de cena automaticamente.
 > > - **Achado da auditoria (15/09):** `LoadGame()` existe isolado, nada o chama. `ApplySaveData()` não chama `SceneManager.LoadScene()`.
 > > - **Nota (28/09):** decidido "menu inicial com Continuar". Testar: com save, o menu mostra Continuar; Continuar volta à cena e posição salvas; salvar na arena e continuar abre a arena (troca de cena automática).
+> > - [x] Salvar → Menu inicial → Continuar **no mesmo processo** (sem fechar o jogo) não trava.
+> > - **Correção (11/10, mais tarde):** a hipótese abaixo estava errada. O mesmo crash apareceu no teste de combate e foi isolado: é uma corrida do runtime .NET do Godot 4.7.2 ao descarregar e recarregar os `.tres` com script C# (troca de cena, inimigos morrendo). Corrigido com o autoload `ResourceKeeper`. Ver C12-T4.
+> > - **Investigação (11/10) — crash `gchandle.is_released()` relatado pelo Higor (`docs/art-review/title-save-reload-diagnostic.txt`):** não reproduz no projeto real. Testado no Godot .NET 4.7.2 com renderização e `GC.Collect()` forçado a cada troca de cena: (1) Novo jogo → Pausa → Salvar → Menu inicial → Continuar, 5 ciclos; (2) salvar → menu/cena vazia → `ContinueGame`, 10 ciclos; (3) as 4 áreas, 2 voltas. Zero travamentos e zero erros. Hipótese: efeito do projeto-cópia isolado (`ReflorescerTitleQA`) que o Higor usou no teste, não do jogo. Regressão automatizada em `tools/qa/SaveReloadCheck.gd` (faz backup e devolve o `save_0.json`). Se voltar a aparecer jogando, anotar a sequência exata aqui.
+> > - **Nota (11/10):** depois de um `git pull` com arte nova, rodar `--headless --import` (ou abrir o editor) antes dos testes por script; sem isso os PNGs novos não carregam e o `Player.tscn` falha.
 > >
-> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): menu com Continuar; Continuar volta à cena/posição salvas, inclusive na arena (sem o Korrag, com dash) e depois de fechar/reabrir o jogo.
+> > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): menu com Continuar; Continuar volta à cena/posição salvas, inclusive na arena (sem o Korrag, com dash) e depois de fechar/reabrir o jogo. Revalidado em 11/10 (Claude, por script): save/recarga no mesmo processo nas 4 áreas sem crash.
+>
+> > [!failure]- Task C09-T3 — Visual do checkpoint apagado/ativado
+> > - [ ] Antes de tocar: checkpoint apagado. Ao tocar: muda pra ativado na hora e salva.
+> > - [ ] Fechar e Continuar: os checkpoints já ativados nascem ativados; os outros, apagados.
+> > - [ ] `SaveReloadCheck.gd` e `DemoRunCheck.gd` continuam passando.
+> >
+> > - **Nota (11/10):** desde a C09-T4 é uma bandeira só (`cp_dossel_01`).
+> >
+> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_DEV]] C09-T3 e da arte ([[ROADMAP_ARTE]] A05-T5).
+>
+> > [!warning]- Task C09-T4 — Bandeira única e vida que não enche ao trocar de área
+> > - [ ] O projeto compila no editor sem erro.
+> > - [ ] Só existe uma bandeira na demo, no começo do Dossel Vivo; passar por ela ativa sozinha (som de checkpoint + save).
+> > - [ ] Tomar dano no Sopé e passar pro Dossel: a barra chega com a mesma vida (não enche). Idem Dossel → Igarapé → Covil.
+> > - [ ] Morrer no Dossel depois da bandeira → "Tentar de novo" → renasce na bandeira com a vida cheia.
+> > - [ ] Morrer no Igarapé e no Covil → "Tentar de novo" → carrega o Dossel Vivo e renasce na bandeira com a vida cheia; a bandeira aparece ativada (sem prompt de "Ativar").
+> > - [ ] Morrer no Sopé (antes da bandeira) → volta pro começo do Sopé.
+> > - [ ] Novo jogo depois de morrer começa com a vida cheia; Continuar depois de salvar no Igarapé e morrer volta pra bandeira do Dossel.
+> > - [ ] O caminho até o Korrag ficou difícil mas justo (playtest do Gustavo): dá pra chegar no Korrag com vida razoável sem perfeição.
+> > - [ ] `DemoRunCheck.gd`, `SaveReloadCheck.gd` e `CombatCheck.gd` continuam passando.
+> > - **Origem (11/10):** decisão do grupo de deixar a demo mais difícil até o Korrag ([[ROADMAP_DEV]] C09-T4).
+> >
+> > Status: 🟡 aguarda teste (11/10) — implementado fora do Godot, ainda não compilado nem jogado.
+>
+> > [!success]- Task C09-T5 — Continuar volta com a vida salva
+> > - [x] Salvar ferido, sair pro menu e Continuar: volta com a mesma vida, não cheia.
+> >
+> > Status: ✅ passa (11/10, Claude) — `RewardCheck.gd`.
 
 > [!success]- EPIC-C10 — HUD e UX — ✅ Passa · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — prompt de interação contínuo funcionando, e decisão sobre Game Over tomada e implementada.
@@ -361,7 +452,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): tela "Você caiu"; Esc não despausa; Tentar de novo leva ao checkpoint; Menu inicial funciona.
 
-> [!failure]- EPIC-C11 — Áudio — 🔴 Falha · 🟡 Média
+> [!warning]- EPIC-C11 — Áudio — 🟡 Parcial (falta música) · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — pastas/buses existem, os 3 sons já esperados pelo código tocam de verdade, e dá pra sobrepor música + SFX sem cortar um ao outro.
 >
 > > [!success]- Task C11-T1 — Estrutura de pastas e buses
@@ -371,43 +462,73 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo), depois das mudanças da mesma data.
 >
-> > [!failure]- Task C11-T2 — Arquivos já esperados pelo código
-> > - [ ] Nome bate exatamente (case-sensitive) com o esperado pelo código: `checkpoint_activate.wav`, `boss_stomp.wav`, `boss_defeat.wav` — ou o código foi ajustado junto.
+> > [!success]- Task C11-T2 — Arquivos já esperados pelo código
+> > - [x] Nome bate exatamente (case-sensitive) com o esperado pelo código: `checkpoint_activate.wav`, `boss_stomp.wav`, `boss_defeat.wav` — ou o código foi ajustado junto.
 > >
-> > Status: 🔴 falha — depende de C11-T1 e dos arquivos existirem.
+> > - [x] Os 12 sons tocam pelo caminho real do jogo (não só os 3 originais).
+> >
+> > Status: ✅ passa (11/10, Claude) — `tools/qa/AudioCheck.gd` 12/12 com os placeholders da [[ROADMAP_DEV]] C11-T2; nenhum "SFX not found" no `DemoRunCheck`.
 >
-> > [!failure]- Task C11-T3 — Chamadas que faltam
+> > [!warning]- Task C11-T3 — Chamadas que faltam
 > > - [ ] 8 players de SFX simultâneos + bus de música separado → dá pra tocar música de fundo + vários SFX sem cortar um ao outro.
-> > - [ ] Ataque do jogador, hit em inimigo/jogador, morte de inimigo comum têm som.
+> > - [x] Ataque do jogador, hit em inimigo/jogador, morte de inimigo comum têm som.
 > >
-> > Status: 🔴 falha — chamadas ainda não existem no código de gameplay.
+> > Status: 🟡 parcial (11/10) — as chamadas de SFX existem e tocam (`AudioCheck.gd`); a sobreposição com música só dá pra testar quando houver faixas (C11-T4).
 
-> [!failure]- EPIC-C12 — Regressão Final / Release da Demo — 🔴 Bloqueado · 🔴 Bloqueante
+> > [!failure]- Task C11-T4 — Música por área e tela de título
+> > - [ ] Cada área e a tela de título tocam a própria faixa em loop; a troca de área faz fade de uma pra outra, sem corte seco.
+> > - [ ] Música + vários SFX ao mesmo tempo (ex.: luta com o Korrag) sem cortar nenhum.
+> >
+> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_DEV]] C11-T4 (faltam as faixas).
+
+> > [!failure]- Task C11-T5 — Sons finais no lugar dos placeholders
+> > - [ ] `tools/qa/AudioCheck.gd` 12/12 com os sons finais.
+> > - [ ] `assets/audio/CREDITOS.md` lista origem/licença de todo som que não for do grupo.
+> >
+> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_DEV]] C11-T5.
+
+> [!warning]- EPIC-C12 — Regressão Final / Release da Demo — 🟡 Parcial · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — todo o [[ROADMAP_QA_CODIGO]] acima está ✅, e a demo roda de ponta a ponta sem crash/softlock.
 >
 > Só é testável depois que todos os Épicos 🔴/🟠 acima estiverem ✅.
 >
-> > [!failure]- Task C12-T1 — Regressão completa de código
+> > [!warning]- Task C12-T1 — Regressão completa de código
 > > - [ ] Todos os Épicos 🔴/🟠 acima com todas as Tasks ✅.
 > > - [ ] Rodar o [[ROADMAP_QA_CODIGO]] inteiro de ponta a ponta depois de qualquer mudança grande — nenhuma regressão.
 > >
-> > Status: 🔴 bloqueado — a maioria dos épicos ainda falha, não testável ainda.
+> > Status: 🟡 parcial (11/10) — 10 de 13 épicos passam; a bateria `tools/qa/` passa inteira. Faltam C09-T3 (checkpoint) e C11-T4/T5 (música e sons finais) pra rodar a regressão final.
 >
-> > [!failure]- Task C12-T2 — Playtest de ponta a ponta (só código)
-> > - [ ] Floresta Tropical → matar exemplares dos 3 arquétipos → derrotar Korrag → dash desbloqueado → seguir até o ponto de encerramento da demo, sem crash/softlock. Arte placeholder ainda ok aqui.
+> > [!success]- Task C12-T2 — Playtest de ponta a ponta (só código)
+> > - [x] Floresta Tropical → matar exemplares dos 3 arquétipos → derrotar Korrag → dash desbloqueado → seguir até o ponto de encerramento da demo, sem crash/softlock. Arte placeholder ainda ok aqui.
 > >
-> > Status: 🔴 bloqueado — depende de C04, C06 e C07 estarem ✅ primeiro.
+> > - [x] *(11/10)* Sopé → Dossel → Igarapé → Covil → Korrag → Dash jogado pelo Gustavo, sem crash/softlock; `tools/qa/DemoRunCheck.gd` 89/89.
+> >
+> > Status: ✅ passa (11/10) — partida completa do Gustavo + percurso automatizado. O playtest final com arte/áudio completos e alguém de fora fica no [[ROADMAP_QA_INTEGRACAO]] A07.
 >
-> > [!failure]- Task C12-T3 — Integração incremental com o Higor
+> > [!warning]- Task C12-T3 — Integração incremental com o Higor
 > > - [ ] Rodar [[ROADMAP_QA_INTEGRACAO]] junto com o Higor assim que a arte de cada bloco chegar, sem esperar tudo pronto.
 > >
-> > Status: 🔴 bloqueado — depende da arte começar a chegar.
+> > - [x] Rodada de 11/10: entregas do Higor de 05/10 a 09/10 integradas e [[ROADMAP_QA_INTEGRACAO]] rodado (A00–A06 passam, exceto pendências cadastradas).
+> >
+> > Status: 🟡 em andamento (11/10) — em dia com tudo que foi entregue; reabrir a cada nova entrega (pendentes: [[ROADMAP_ARTE]] A01-T3, A05-T5, A06-T5 e o áudio). Ver [[ROADMAP_DEV]] C12-T3.
+
+> > [!success]- Task C12-T4 — Sem travamento do runtime .NET
+> > - [x] `tools/qa/CombatCheck.gd -- --stress` roda 5 vezes seguidas sem `FATAL: gchandle.is_released()`.
+> > - [x] `tools/qa/GcStressCheck.gd` (troca de área + combate, sem GC forçado) completa em várias execuções seguidas.
+> > - [x] `SaveReloadCheck.gd` e `DemoRunCheck.gd` continuam passando.
+> > - [ ] Repetir o `GcStressCheck` no jogo exportado quando houver build.
+> >
+> > Status: ✅ passa (11/10, Claude) — com o autoload `ResourceKeeper`: `CombatCheck --stress` 5/5 (35/35 cada), `GcStressCheck` 8/8 com 24 ciclos (antes 6/6 travavam), `DemoRunCheck` 89/89 sem erro do motor, `SaveReloadCheck` e `DosselReachCheck` sem falhas. Ver [[ROADMAP_DEV]] C12-T4.
 
 ---
 
-## Resumo executivo (o que está bloqueando a demo hoje, em ordem de aparição no fluxo do jogador)
+## Resumo executivo (o que falta pra demo, em 11/10/2026)
 
-🔴 1. Input Map não bate com a documentação (`C01-T1`). 2. Dois sistemas de movimento em paralelo, risco de ataque duplicado (`C01-T2`). 3. Restauração ODS15 inexistente (`EPIC-C02`). 4. Espada sem toggle nem stats duplos (`C03-T1`/`T2`). 5. Korrag nunca usa Charge/Stomp (`C06-T1`). 6. Dash não implementado nem desbloqueado (`C04-T2`/`T3`). 7. Wall grab/wall jump inexistentes (`EPIC-C05`).
-
-> [!success] Atualização de 28/09 — a maioria dos 7 itens acima já está corrigida
-> `C01-T1`/`T2`, `EPIC-C03`, `C06-T1`, `EPIC-C04` e `EPIC-C05` passaram a ✅ na sessão de código de 28/09. O que falta hoje pra fechar a demo: `EPIC-C02` (posicionar restauração — depende do `EPIC-C13`), `C07-T4` (dados por área), `EPIC-C11` (áudio) e, novo desde 29/09, **`EPIC-C13` — construir as 4 cenas da demo** (Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag), sem o qual nada acima vira uma demo jogável de ponta a ponta.
+> [!info] Retrato de 11/10/2026 — 10 de 13 épicos passam
+> O resumo de 15/09 (Input Map, movimento duplicado, restauração inexistente, espada, Korrag, dash, parede) está todo resolvido. O que ainda falta do lado do código:
+> 1. **C09-T3** — visual do checkpoint apagado/ativado (espera a arte do Higor, [[ROADMAP_ARTE]] A05-T5).
+> 2. **C11-T4** — música por área e na tela de título (faltam as faixas).
+> 3. **C11-T5** — trocar os 12 SFX placeholder pelos sons finais.
+> 4. **C12-T1** — regressão final, depois dos três itens acima.
+>
+> Bateria automática que cobre o resto: `tools/qa/` — rodar com o console do Godot (`--headless --fixed-fps 60 --path . --script res://tools/qa/<Teste>.gd`; o `SaveReloadCheck` e o `FpsCheck` rodam sem `--headless`). Depois de `git pull` com arte nova, rodar `--headless --import` antes.
