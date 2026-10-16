@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/enemies/Enemy_Voador.tscn" id="1"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/enemies/EnemyAbelhaAfricanizadaSpriteFrames.tres" id="2"]
+
+[node name="Enemy_AbelhaAfricanizada" instance=ExtResource("1")]
+EnemyId = "enemy_deserto_abelhaafricanizada"
+
+[node name="AnimatedSprite2D" parent="." index="4"]
+sprite_frames = ExtResource("2")

@@ -3,18 +3,18 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-12
+atualizado: 2026-10-15
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: arte
 papel: execucao
 responsavel: Higor
 par: "[[ROADMAP_QA_INTEGRACAO]]"
-descricao: Backlog de sprites, animação e estilização da demo
-epicos_total: 7
+descricao: Backlog de sprites, animação e estilização da demo e dos biomas pós-demo
+epicos_total: 9
 epicos_concluidos: 2
-tasks_total: 28
-tasks_prontas: 19
+tasks_total: 32
+tasks_prontas: 23
 tasks_bloqueadas: 2
 tasks_liberadas: 0
 ---
@@ -107,7 +107,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ concluída (11/10) — Aprovado por Gustavo em 11/10, depois da partida completa da demo (captura no jogo: `docs/art-review/qa-ingame-dash-2026-10-11.png`). Histórico: (08/10) `dash` preserva o Kairo normal, remove a coloração verde e acrescenta linhas de impulso e poeira. Entrada, desbloqueio, estado e animação passaram no teste de execução. Ver `docs/art-review/kairo-korrag-correction-v3.md`.
 
-> [!success]- EPIC-A02 — Inimigos Comuns (3 Arquétipos) — ✅ Concluído no escopo da demo
+> [!success]- EPIC-A02 — Inimigos Comuns (3 Arquétipos) — ✅ Concluído, incluindo reskins pós-demo
 > **Ajuste solicitado (07/10):** sprites dos três arquétipos ampliados mais 12% em relação à revisão anterior (escala 0,56, total +34,4% ante 0,4166667). Pés alinhados; colisões e stats preservados. Regressão dirigida de combate: 160 verificações passaram. Aprovação visual do novo tamanho pendente.
 > *Pronto quando*: os 3 arquétipos têm o conjunto completo de animação, reaproveitados **sem reskin** nas 4 áreas da demo (mesmo bioma, Floresta Tropical). Reskins de Deserto/Tundra (A02-T4/T5) ficam pro jogo completo, fora do escopo desta demo (decidido em 29/09/2026).
 >
@@ -128,21 +128,25 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ concluída (06/10) — ciclos lentos integrados; ataque respeita o cooldown por área. A regra InterruptOnHit=false foi preservada: hurt existe no recurso, mas o dano não interrompe o ataque.
 >
-> > [!todo]- Task A02-T4 — Reskins Deserto
-> > - [ ] Abelha-Africanizada (Voador).
-> > - [ ] Rato-Preto (Rápido).
-> > - [ ] Burro Selvagem (Robusto).
+> > [!success]- Task A02-T4 — Reskins Deserto
+> > - [x] Abelha-Africanizada (Voador).
+> > - [x] Rato-Preto (Rápido).
+> > - [x] Burro Selvagem (Robusto).
 > > - **Nota (29/09):** fora do escopo da demo — o Deserto não entra mais no percurso (ver [[🎯 Escopo da Demo]]). Fica pro jogo completo.
+> > - **Entrega (15/10):** três espécies próprias em `assets/sprites/enemies/post_demo/`, com ciclos de quatro quadros (`idle`/`walk`/`attack`), estados `detect`/`hurt` e pose de morte. Cenas herdadas dos arquétipos, sem mudar lógica ou stats. Ver `docs/art-review/post-demo-reskins.md`.
+> > - **Aprovação (15/10):** Higor aprovou os seis designs e animações pós-demo apresentados no chat.
 > >
-> > Status: não iniciado — pós-demo, sem urgência.
+> > Status: ✅ concluída (15/10) — arte aprovada e integrada; teste contextual na futura área do Deserto segue no QA de integração.
 >
-> > [!todo]- Task A02-T5 — Reskins Tundra
-> > - [ ] Mosquito-Ártico (Voador).
-> > - [ ] Lebre-Europeia (Rápido).
-> > - [ ] Ganso-das-Neves (Robusto).
+> > [!success]- Task A02-T5 — Reskins Tundra
+> > - [x] Mosquito-Ártico (Voador).
+> > - [x] Lebre-Europeia (Rápido).
+> > - [x] Ganso-das-Neves (Robusto).
 > > - **Nota (29/09):** fora do escopo da demo — a Tundra não entra mais no percurso (ver [[🎯 Escopo da Demo]]). Fica pro jogo completo.
+> > - **Entrega (15/10):** três espécies próprias com os seis estados esperados, alinhadas ao canvas 128×96 e integradas por cenas herdadas. Ver `docs/art-review/post-demo-reskins.md`.
+> > - **Aprovação (15/10):** Higor aprovou os seis designs e animações pós-demo apresentados no chat.
 > >
-> > Status: não iniciado — pós-demo, sem urgência.
+> > Status: ✅ concluída (15/10) — arte aprovada e integrada; teste contextual na futura área da Tundra segue no QA de integração.
 
 > [!warning]- EPIC-A03 — Faísca (vaga-lume companheiro) — 🔄 Em andamento (Faísca fortalecida) · 🟠 Alta
 > *Pronto quando*: `fly` e `investigate` estão entregues e a troca de animação acompanha a troca de estado sem travar num frame parado.
@@ -301,6 +305,47 @@ Status: 🟡 parcial (12/10) — título base aprovado em 11/10; ajuste W/S entr
 
 Status: 🟡 entregue (12/10) — acabamento integrado e revisado nas duas resoluções; aguarda avaliação visual do Higor e percurso jogado após Korrag.
 
+> [!warning]- EPIC-A08 — Deserto pós-demo — 🔄 Direção visual aprovada; animações de ataque pendentes · 🟡 Pós-demo
+> *Pronto quando*: o caminho começa com sol, passa gradualmente pela tarde e termina numa arena noturna com uma cobra grande, com a arte aprovada no jogo.
+>
+> **Direção aprovada pelo Higor (15/10):** fazer o Deserto antes da Tundra; mostrar o sol inicialmente, avançar para tarde e terminar à noite; o chefe final deve ser uma cobra grande do deserto. Também foram aprovados bote/mordida frontal, varrida de cauda e mergulho/emergência na areia. Ver `docs/art-review/desert-direction-v1.md`.
+>
+> > [!success]- Task A08-T1 — Céu e passagem do tempo
+> > - [x] Fundos diurno, vespertino e noturno com marcos visuais coerentes.
+> > - [x] Transição gradual conforme Kairo avança, com iluminação correspondente no primeiro plano.
+> > - **Entrega (15/10):** `DesertSkyCycle` e `DesertLighting` na cena isolada `DesertReview.tscn`; três capturas reais em `docs/art-review/desert-ingame-*-v1.png`.
+> >
+> > Status: ✅ aprovado (15/10) — funcionamento verificado e direção visual aprovada pelo Higor; a integração ao mapa jogável cabe à C15-T1.
+>
+> > [!success]- Task A08-T2 — Terreno e habitantes do Deserto
+> > - [x] Faixa de areia e arenito com borda caminhável alinhada à colisão.
+> > - [x] Abelha-Africanizada, Rato-Preto e Burro Selvagem apresentados no percurso de revisão.
+> > - [x] Vento ambiente autoral integrado à prévia.
+> > - **Entrega (15/10):** arte e colisão em cena isolada, sem tocar no percurso da demo. O desenho completo de fases, saídas e pontos de restauração ainda não foi definido.
+> >
+> > Status: ✅ arte aprovada (15/10) — terreno, habitantes e vento aprovados; desenho e integração do mapa jogável completo ficam na C15-T1.
+>
+> > [!warning]- Task A08-T3 — Cobra chefe do Deserto
+> > - [x] Silhueta grande e seis estados visuais (`idle`, `slither`, `windup`, `attack`, `hurt`, `dead`).
+> > - [x] Cena visual na arena noturna, com sibilo no início do bote.
+> > - [ ] Criar poses e efeitos distintos para a varrida de cauda e para entrar/sair da areia (`tail_sweep`, `burrow_enter`, `burrow_exit`), com preparação legível e ponto de contato estável; o `windup`/`attack` atual serve como base do bote frontal.
+> > - [ ] Revisar no Godot o timing dos novos estados com o protótipo de combate do Gustavo, sem deslocamento de canvas, cabeça, corpo ou cauda.
+> > - **Entrega (15/10):** `Boss_CobraDesertoVisual.tscn` é uma apresentação animada sem IA de combate; não reutiliza indevidamente os golpes do Korrag.
+> >
+> > Status: 🟡 parcial (15/10) — visual e trio de ataques aprovados pelo Higor; faltam os quadros específicos de cauda/areia. IA, hitboxes, dano e fases pertencem à C15-T2.
+
+> [!warning]- EPIC-A09 — Cartografia da Floresta Tropical — 🔄 Entregue para revisão visual · 🟡 Alta
+> *Pronto quando*: o mapa aberto no jogo comunica as passagens entre as quatro áreas e oculta cada trecho não explorado, com leitura clara em 1280×720.
+>
+> > [!warning]- Task A09-T1 — Visual do mapa e névoa de exploração
+> > - [x] Tela escura com moldura orgânica, cores próprias por área, nomes apenas das regiões visitadas e marcador de Kairo.
+> > - [x] Contornos de salas e passagens revelados célula a célula; nenhuma silhueta de área futura aparece antes da visita.
+> > - [x] Capturas reais do Godot em `docs/art-review/world-map-fog-v1.png` e `world-map-complete-v1.png` (esta última força a revelação somente para revisão).
+> > - [ ] Higor avaliar legibilidade, escala, ornamentos e identidade visual no jogo.
+> > - **Ajuste (15/10):** cantos circulares da primeira versão substituídos por ramos e folhas espelhados, orientados para dentro e sem invadir os textos inferiores.
+> >
+> > Status: 🟡 entregue (15/10) — design e animação sutil do marcador implementados; aguarda avaliação visual do Higor. Revelação/save e conexão dos mapas estão na [[ROADMAP_DEV]] C16.
+
 ## O que falta (12/10/2026)
 
 As 9 etapas da ordem de entrega original (Kairo, inimigos, Faísca, espada, cenário, Korrag, wall jump/dash, UI e `enraged_transition`) foram entregues e aprovadas, com os seguintes ajustes e entregas ainda em acompanhamento:
@@ -314,5 +359,5 @@ As 9 etapas da ordem de entrega original (Kairo, inimigos, Faísca, espada, cen�
 6. Dependem de decisões do grupo: Faísca fortalecida (A03-T2) e caminhos que crescem (A05-T6)
 + Validações do Higor no ROADMAP_QA_INTEGRACAO: playtest do indicador da espada (A06-T4) e do menu pelo teclado (A06-T5)
 
-Pós-demo (jogo completo, fora desta entrega): reskins Deserto/Tundra dos 3 arquétipos (A02-T4/T5).
+Pós-demo (jogo completo): reskins Deserto/Tundra dos 3 arquétipos (A02-T4/T5) entregues e aprovados em 15/10; teste nas futuras áreas pendente no QA de integração.
 ```

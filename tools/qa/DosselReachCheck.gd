@@ -8,12 +8,28 @@ const DOSSEL := "res://scenes/areas/DosselVivo.tscn"
 const ROUTE := ["ForestFloor", "Branch1", "Branch2", "Branch3", "Branch4", "Branch5", "Branch6",
 	"Branch7", "Branch8", "Branch9", "Branch10", "Branch11", "TopBranch"]
 const HALF_H := 20.0
+const SAVE_FILE := "user://save_0.json"
 
 var _player: CharacterBody2D
 var _failures := 0
+var _save_backup := ""
+var _had_save_backup := false
 
 func _initialize() -> void:
 	_run.call_deferred()
+
+func _backup_user_save() -> void:
+	_had_save_backup = FileAccess.file_exists(SAVE_FILE)
+	if _had_save_backup:
+		_save_backup = FileAccess.get_file_as_string(SAVE_FILE)
+
+func _restore_user_save() -> void:
+	if _had_save_backup:
+		var file := FileAccess.open(SAVE_FILE, FileAccess.WRITE)
+		file.store_string(_save_backup)
+		file.close()
+	elif FileAccess.file_exists(SAVE_FILE):
+		DirAccess.remove_absolute(SAVE_FILE)
 
 func _rect(name: String) -> Rect2:
 	var body := current_scene.get_node("Geometry/" + name) as Node2D
@@ -89,6 +105,8 @@ func _try_link(a: String, b: String) -> String:
 	return ""
 
 func _run() -> void:
+	# O checkpoint do Dossel é automático; preserve o progresso real antes de atravessar a cena.
+	_backup_user_save()
 	change_scene_to_file(DOSSEL)
 	await scene_changed
 	await _frames(10)
@@ -113,4 +131,5 @@ func _run() -> void:
 	var top := _rect("TopBranch")
 	print("DOSSEL_REACH saída ToIgarapeSufocado em ", exit.global_position, "; TopBranch topo y=", top.position.y, " x=", top.position.x, "..", top.end.x)
 	print("DOSSEL_REACH_RESULT: %d falha(s)" % _failures)
+	_restore_user_save()
 	quit(1 if _failures > 0 else 0)

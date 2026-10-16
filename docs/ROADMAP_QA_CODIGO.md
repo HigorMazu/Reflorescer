@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-11
+atualizado: 2026-10-15
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
@@ -11,11 +11,11 @@ papel: qa
 responsavel: Gustavo
 par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
-epicos_total: 14
-epicos_concluidos: 10
-tasks_total: 63
-tasks_prontas: 54
-tasks_bloqueadas: 5
+epicos_total: 16
+epicos_concluidos: 11
+tasks_total: 68
+tasks_prontas: 58
+tasks_bloqueadas: 6
 ---
 # Roadmap de QA — Código (Reflorescer)
 
@@ -452,7 +452,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): tela "Você caiu"; Esc não despausa; Tentar de novo leva ao checkpoint; Menu inicial funciona.
 
-> [!warning]- EPIC-C11 — Áudio — 🟡 Parcial (falta música) · 🟡 Média
+> [!warning]- EPIC-C11 — Áudio — 🟡 Parcial (SFX finais pendentes) · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — pastas/buses existem, os 3 sons já esperados pelo código tocam de verdade, e dá pra sobrepor música + SFX sem cortar um ao outro.
 >
 > > [!success]- Task C11-T1 — Estrutura de pastas e buses
@@ -470,16 +470,16 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > Status: ✅ passa (11/10, Claude) — `tools/qa/AudioCheck.gd` 12/12 com os placeholders da [[ROADMAP_DEV]] C11-T2; nenhum "SFX not found" no `DemoRunCheck`.
 >
 > > [!warning]- Task C11-T3 — Chamadas que faltam
-> > - [ ] 8 players de SFX simultâneos + bus de música separado → dá pra tocar música de fundo + vários SFX sem cortar um ao outro.
+> > - [x] 8 players de SFX simultâneos + bus de música separado → dá pra tocar música de fundo + vários SFX sem cortar um ao outro.
 > > - [x] Ataque do jogador, hit em inimigo/jogador, morte de inimigo comum têm som.
 > >
-> > Status: 🟡 parcial (11/10) — as chamadas de SFX existem e tocam (`AudioCheck.gd`); a sobreposição com música só dá pra testar quando houver faixas (C11-T4).
+> > Status: ✅ passa (14/10) — `MusicCheck.gd` manteve a música enquanto três players reais de SFX tocavam; `AudioCheck.gd` segue 12/12 pelo caminho real.
 
-> > [!failure]- Task C11-T4 — Música por área e tela de título
-> > - [ ] Cada área e a tela de título tocam a própria faixa em loop; a troca de área faz fade de uma pra outra, sem corte seco.
-> > - [ ] Música + vários SFX ao mesmo tempo (ex.: luta com o Korrag) sem cortar nenhum.
+> > [!success]- Task C11-T4 — Música por área e tela de título
+> > - [x] Cada área e a tela de título tocam a própria faixa em loop; a troca de área faz fade de uma pra outra, sem corte seco.
+> > - [x] Música + vários SFX ao mesmo tempo (ex.: luta com o Korrag) sem cortar nenhum.
 > >
-> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_DEV]] C11-T4 (faltam as faixas).
+> > Status: ✅ passa (14/10) — cinco loops autorais carregam nas cenas de produção, tocam em sequência e passam em `MusicCheck.gd` com save preservado.
 
 > > [!failure]- Task C11-T5 — Sons finais no lugar dos placeholders
 > > - [ ] `tools/qa/AudioCheck.gd` 12/12 com os sons finais.
@@ -495,8 +495,9 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > [!warning]- Task C12-T1 — Regressão completa de código
 > > - [ ] Todos os Épicos 🔴/🟠 acima com todas as Tasks ✅.
 > > - [ ] Rodar o [[ROADMAP_QA_CODIGO]] inteiro de ponta a ponta depois de qualquer mudança grande — nenhuma regressão.
+> > - [x] Bateria automática atual: `CombatCheck --stress`, `DosselReachCheck`, `GcStressCheck`, `AudioCheck`, `MusicCheck`, `DemoRunCheck` e `FpsCheck` passaram; os testes que atravessam a bandeira automática preservam o `save_0.json`.
 > >
-> > Status: 🟡 parcial (11/10) — 10 de 13 épicos passam; a bateria `tools/qa/` passa inteira. Faltam C09-T3 (checkpoint) e C11-T4/T5 (música e sons finais) pra rodar a regressão final.
+> > Status: 🟡 parcial (14/10) — a regressão automatizada está verde, incluindo música e desempenho. Falta fechar os SFX finais (C11-T5) e as validações jogadas da integração antes do selo final de demo.
 >
 > > [!success]- Task C12-T2 — Playtest de ponta a ponta (só código)
 > > - [x] Floresta Tropical → matar exemplares dos 3 arquétipos → derrotar Korrag → dash desbloqueado → seguir até o ponto de encerramento da demo, sem crash/softlock. Arte placeholder ainda ok aqui.
@@ -519,6 +520,51 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [ ] Repetir o `GcStressCheck` no jogo exportado quando houver build.
 > >
 > > Status: ✅ passa (11/10, Claude) — com o autoload `ResourceKeeper`: `CombatCheck --stress` 5/5 (35/35 cada), `GcStressCheck` 8/8 com 24 ciclos (antes 6/6 travavam), `DemoRunCheck` 89/89 sem erro do motor, `SaveReloadCheck` e `DosselReachCheck` sem falhas. Ver [[ROADMAP_DEV]] C12-T4.
+
+> [!failure]- EPIC-C15 — Deserto pós-demo e chefe cobra — 🔴 Ainda não testável · 🟢 Pós-demo
+> *Pronto quando*: a área completa e a luta passam nos casos abaixo, além da verificação de integração visual A08. A prévia visual isolada de 15/10 não satisfaz estes testes de mecânica.
+>
+> > [!failure]- Task C15-T1 — Área jogável do Deserto
+> > - [ ] Percorrer entrada → trecho ensolarado → tarde → arena noturna → saída sem buracos, softlock ou colisão desalinhada; os três habitantes aparecem em posições finais e interagem com Kairo.
+> > - [ ] A iluminação acompanha o progresso com transições contínuas; morte, retorno e reload restauram o estado visual adequado ao ponto do percurso.
+> > - [ ] Entrada, câmera, checkpoints e saída respeitam as decisões aprovadas; as quatro áreas da demo e seus saves continuam funcionando.
+> >
+> > Status: 🔴 pendente (15/10) — só existe a prévia `DesertReview.tscn`; depende da [[ROADMAP_DEV]] C15-T1.
+>
+> > [!failure]- Task C15-T2 — Bote, cauda e areia da cobra
+> > - [ ] Cada golpe tem aviso, execução e recuperação distinguíveis; a hitbox só causa dano na janela ativa e não alcança além do desenho, em ambos os lados da arena.
+> > - [ ] Bote/mordida frontal, varrida de cauda e mergulho/emergência na areia podem ser provocados em teste; dano, invulnerabilidade e colisão do jogador obedecem às regras existentes.
+> > - [ ] Durante o mergulho, o corpo e a colisão seguem o estado subterrâneo sem golpe invisível; retorno à superfície não prende nem teleporta Kairo.
+> > - [ ] Hurt/death encerram os golpes com segurança; a luta termina uma vez, sem novos ataques após a morte. O sibilo não se repete por quadro.
+> >
+> > Status: 🔴 pendente (15/10) — `Boss_CobraDesertoVisual.tscn` só apresenta animações; depende da [[ROADMAP_DEV]] C15-T2. Revisar animações finais também na A08-T3.
+>
+> > [!failure]- Task C15-T3 — Persistência e saída pós-chefe
+> > - [ ] Após a derrota, a recompensa/desbloqueio aprovado ocorre uma vez; reload e retorno à arena mantêm o estado correto.
+> > - [ ] A transição aprovada para o próximo trecho não quebra saves anteriores nem o encerramento da demo; checkpoints retornam ao lugar correto.
+> > - [ ] Percurso completo da entrada do Deserto até a saída, com derrota do boss, termina sem crash, softlock ou regressão na demo.
+> >
+> > Status: 🔴 pendente (15/10) — depende da decisão de recompensa/destino e da [[ROADMAP_DEV]] C15-T3.
+
+> [!success]- EPIC-C16 — Mapa explorável da Floresta Tropical — ✅ Passa · 🟡 Alta
+> *Pronto quando*: a cartografia revela somente posições atravessadas, persiste no save e todas as transições atuais funcionam nos dois sentidos.
+>
+> > [!success]- Task C16-T1 — Revelação, entrada e save
+> > - [x] Save novo mostra só a célula inicial; as células futuras não aparecem até Kairo chegar nelas.
+> > - [x] `M` abre e fecha o mapa com a partida pausada; `Esc` fecha sem abrir o menu de pausa.
+> > - [x] A descoberta entra em `ExploredMapCells` no arquivo de save e saves antigos sem o campo carregam com lista vazia.
+> > - [x] `SaveReloadCheck.gd` continua sem falhas após adicionar o campo.
+> > - **Verificação (15/10):** `WorldMapCheck.gd` passou; captura real em `docs/art-review/world-map-fog-v1.png`.
+> >
+> > Status: ✅ passa (15/10) — comportamento e persistência verificados; revisão estética pertence à A09-T1.
+>
+> > [!success]- Task C16-T2 — Passagens bidirecionais
+> > - [x] `DemoRunCheck.gd` continua 89/89 na rota Sopé ↔ Dossel ↔ Igarapé → Covil.
+> > - [x] Portal do Covil aponta ao Igarapé; a chegada usa marcador próprio, longe do gatilho de retorno.
+> > - [x] Retorno Covil → Igarapé carrega a cena, posiciona Kairo e revela o trecho certo.
+> > - **Verificação (15/10):** `WorldMapCheck.gd` passou 12 verificações sem falha.
+> >
+> > Status: ✅ passa (15/10) — rede atual é bidirecional e o movimento vertical já ocorre no Dossel; expansão para novas ramificações requer salas adicionais.
 
 ---
 

@@ -11,6 +11,8 @@ namespace Joguim.Core
         private AudioStreamPlayer _musicPlayer;
         private List<AudioStreamPlayer> _sfxPlayers = new();
         private int _maxSfxPlayers = 8;
+        private const float MusicVolumeDb = -12.0f;
+        private const float SfxVolumeDb = -4.0f;
 
         private const string MusicPath = "res://assets/audio/music/";
         private const string SfxPath = "res://assets/audio/sfx/";
@@ -23,13 +25,21 @@ namespace Joguim.Core
             Instance = this;
 
             _musicPlayer = new AudioStreamPlayer();
+            _musicPlayer.Name = "MusicPlayer";
             _musicPlayer.Bus = "Music";
+            _musicPlayer.Finished += () =>
+            {
+                // Todas as faixas de área voltam ao início de forma previsível, mesmo se o
+                // arquivo WAV não carregar metadados de loop no importador do Godot.
+                if (_musicPlayer.Stream != null) _musicPlayer.Play();
+            };
             AddChild(_musicPlayer);
 
             for (int i = 0; i < _maxSfxPlayers; i++)
             {
                 var sfxPlayer = new AudioStreamPlayer();
                 sfxPlayer.Bus = "SFX";
+                sfxPlayer.VolumeDb = SfxVolumeDb;
                 AddChild(sfxPlayer);
                 _sfxPlayers.Add(sfxPlayer);
             }
@@ -56,13 +66,13 @@ namespace Joguim.Core
                     _musicPlayer.Stream = stream;
                     _musicPlayer.Play();
                     var fadeIn = CreateTween();
-                    fadeIn.TweenProperty(_musicPlayer, "volume_db", 0.0f, fadeDuration / 2f);
+                    fadeIn.TweenProperty(_musicPlayer, "volume_db", MusicVolumeDb, fadeDuration / 2f);
                 }));
             }
             else
             {
                 _musicPlayer.Stream = stream;
-                _musicPlayer.VolumeDb = 0f;
+                _musicPlayer.VolumeDb = MusicVolumeDb;
                 _musicPlayer.Play();
             }
         }
@@ -92,7 +102,7 @@ namespace Joguim.Core
             if (player == null) return;
 
             player.Stream = stream;
-            player.VolumeDb = volumeDb;
+            player.VolumeDb = SfxVolumeDb + volumeDb;
             player.PitchScale = pitchScale;
             player.Play();
         }
@@ -109,7 +119,7 @@ namespace Joguim.Core
             if (player == null) return;
 
             player.Stream = stream;
-            player.VolumeDb = volumeDb;
+            player.VolumeDb = SfxVolumeDb + volumeDb;
             player.Bus = "SFX";
             player.Play();
         }

@@ -72,6 +72,7 @@ size = Vector2(60, 100)
 [node name="IgarapeSufocado" type="Node2D" unique_id=1622802662 node_paths=PackedStringArray("SpawnPoints", "EnemySpawns", "Checkpoints")]
 script = ExtResource("area_script")
 AreaName = "IgarapeSufocado"
+MusicTrack = "igarape_autoral.wav"
 UseCameraLimits = true
 CameraLimits = Rect2i(0, -200, 2800, 720)
 SpawnPoints = []
@@ -605,6 +606,9 @@ StatsResource = ExtResource("stats_robusto_IgarapeSufocado")
 
 [node name="SpawnFromDosselVivo" type="Marker2D" parent="." unique_id=726377294 groups=["SpawnPoints"]]
 position = Vector2(110, 460)
+
+[node name="SpawnFromCovilDeKorrag" type="Marker2D" parent="." groups=["SpawnPoints"]]
+position = Vector2(2660, 460)
 
 [node name="Player" parent="." unique_id=1458066698 instance=ExtResource("player")]
 position = Vector2(110, 460)

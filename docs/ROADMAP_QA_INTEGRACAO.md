@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-12
+atualizado: 2026-10-15
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: arte
@@ -11,11 +11,11 @@ papel: qa
 responsavel: Gustavo e Higor
 par: "[[ROADMAP_ARTE]]"
 descricao: Casos de teste da integração código + arte
-epicos_total: 8
+epicos_total: 10
 epicos_concluidos: 2
-tasks_total: 28
-tasks_prontas: 16
-tasks_bloqueadas: 5
+tasks_total: 32
+tasks_prontas: 17
+tasks_bloqueadas: 4
 ---
 # Roadmap de QA — Integração (Código + Arte do Higor)
 
@@ -90,11 +90,13 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: ✅ passa (06/10) — integração dirigida concluída. Percurso completo, dificuldade e áudio seguem no A07; não foram cobertos por este teste.
 >
-> > [!failure]- Task A02-T4/T5 — Reskins Deserto e Tundra
-> > - [ ] Repetir os testes da Task A02-T1/T2/T3 pra cada reskin.
+> > [!warning]- Task A02-T4/T5 — Reskins Deserto e Tundra
+> > - [x] Repetir os testes da Task A02-T1/T2/T3 pra cada reskin.
 > > - **Nota (29/09):** fora do escopo da demo (Deserto/Tundra não entram mais no percurso — ver [[🎯 Escopo da Demo]]). Fica pro jogo completo.
+> > - **Verificação (15/10):** seis novas cenas herdadas passaram, junto aos três arquétipos originais, em 478 verificações dirigidas: canvas/pivô, progressão de quadros, patrulha, detecção, perseguição, ataque dos dois lados, dano/interrupção, morte e fade. Log em `docs/art-review/post-demo-enemy-validation.txt`. As futuras áreas ainda não existem para teste de percurso contextual.
+> > - **Aprovação visual (15/10):** Higor aprovou os seis designs e animações no chat.
 > >
-> > Status: 🔴 bloqueado — pós-demo, sem urgência.
+> > Status: 🟡 parcial (15/10) — integração isolada e visual aprovados; falta teste nas áreas quando existirem.
 
 > [!warning]- EPIC-A03 — Faísca — 🟡 Parcial (Faísca fortalecida) · 🟠 Alta
 > *Pronto quando*: `fly`/`investigate` acompanham a troca de estado sem travar num frame parado, e a luz não "pisca" ao trocar de direção.
@@ -240,12 +242,12 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > Só roda depois que todos os Épicos 🔴 acima (deste arquivo e do [[ROADMAP_QA_CODIGO]]) estiverem ✅.
 >
 > > [!warning]- Task A07-T1 — Áudio integrado
-> > - [x] Com os primeiros arquivos de SFX/música em `res://assets/audio/`, jogar a demo do início ao fim e confirmar que nenhum som falta silenciosamente (checar o console). *(SFX: 11/10, `DemoRunCheck` + `AudioCheck` sem nenhum faltando; música ainda não existe.)*
-> > - [ ] Volume relativo entre música de fundo e efeitos.
+> > - [x] Com os primeiros arquivos de SFX/música em `res://assets/audio/`, jogar a demo do início ao fim e confirmar que nenhum som falta silenciosamente (checar o console). *(14/10: `DemoRunCheck` 89/89, `AudioCheck` 12/12 e `MusicCheck` 5/5; nenhuma faixa ou SFX faltando.)*
+> > - [x] Volume relativo entre música de fundo e efeitos. *(14/10: Music -12 dB; SFX -4 dB.)*
 > > - [x] Som de ataque/hit sincronizado com o frame de impacto da animação. *(O `enemy_hit` toca no mesmo quadro do dano; o `player_attack` toca no início da estocada, como o sopro do golpe.)*
 > > - [ ] Gustavo ouvir os placeholders jogando e anotar os que incomodam (entram primeiro na troca da [[ROADMAP_DEV]] C11-T5).
 > >
-> > Status: 🟡 parcial (11/10) — SFX placeholder integrados e tocando; volume música × efeitos depende da [[ROADMAP_DEV]] C11-T4.
+> > Status: 🟡 parcial (14/10) — música, SFX, volume e mistura verificados; falta ouvir os efeitos durante um playtest real e decidir a substituição dos placeholders.
 >
 > > [!failure]- Task A07-T2 — Ponta a ponta
 > > - [ ] Demo completa sem parar: Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag → matar 1 de cada arquétipo pelo caminho → derrotar o Korrag → dash desbloqueado (ver [[🎯 Escopo da Demo]]) — sem crash, sem softlock, sem animação quebrada.
@@ -257,3 +259,43 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - [ ] Alguém de fora do grupo joga sem explicação prévia — se entender controles e objetivo, a demo está pronta pra apresentação.
 > >
 > > Status: 🔴 bloqueado — última etapa, depende de tudo acima.
+
+> [!warning]- EPIC-A08 — Deserto pós-demo — 🟡 Direção visual aprovada; integração pendente · 🟡 Pós-demo
+> *Pronto quando*: a passagem dia→tarde→noite, o terreno, os inimigos e a cobra são legíveis na partida e a luta final passa no percurso completo.
+>
+> > [!success]- Task A08-T1 — Passagem do tempo
+> > - [x] Entrada mostra sol; seção intermediária mostra entardecer; trecho da cobra é noturno.
+> > - [x] Chão e personagens mudam de luz junto ao fundo; os três estados foram capturados no renderer.
+> > - [x] Higor aprovou a direção dia → tarde → noite apresentada na cena isolada.
+> > - **Verificação (15/10):** `DesertReviewCheck.gd` passou; capturas em `docs/art-review/desert-ingame-*-v1.png`.
+> >
+> > Status: ✅ passa para a prévia (15/10) — execução confirmada e direção aprovada; o percurso final será testado na C15-T1.
+>
+> > [!warning]- Task A08-T2 — Terreno, habitantes e áudio
+> > - [x] Chão colide na mesma altura da arte; os três reskins aparecem no percurso.
+> > - [x] Vento começa na cena e o arquivo de sibilo carrega.
+> > - [ ] Confirmar num mapa completo as transições, dificuldades e posições finais.
+> > - **Verificação (15/10):** cena isolada abriu sem erro; a demo existente não foi redirecionada.
+> >
+> > Status: 🟡 parcial (15/10) — arte da prévia aprovada; mapa completo e posicionamento final ainda não existem (C15-T1).
+>
+> > [!warning]- Task A08-T3 — Cobra chefe
+> > - [x] Seis animações têm canvas 512×320 e a cobra aparece em escala grande à noite.
+> > - [x] Sibilo dispara com o bote na prévia.
+> > - [ ] Varrida de cauda e entrada/saída da areia têm animações próprias e antecipação legível, sem saltos entre quadros.
+> > - [ ] Validar hitboxes, dano, fases, morte e saída no confronto real quando a mecânica existir.
+> > - **Verificação (15/10):** `Boss_CobraDesertoVisual.tscn` apresenta a arte, sem script de combate.
+> >
+> > Status: 🟡 parcial (15/10) — direção visual e três ataques aprovados; faltam quadros específicos de cauda/areia (A08-T3) e luta funcional (C15-T2/C15-T3).
+
+> [!warning]- EPIC-A09 — Cartografia da Floresta Tropical — 🟡 Revisão visual pendente · 🟡 Alta
+> *Pronto quando*: o mapa mantém leitura e contraste em partida real, sem mostrar trechos não visitados, e a arte acompanha a revelação do sistema C16.
+>
+> > [!warning]- Task A09-T1 — Mapa e névoa em jogo
+> > - [x] Captura com save novo mostra somente a primeira sala do Sopé; captura de revisão completa mostra a conexão Sopé → Dossel → Igarapé → Covil.
+> > - [x] Nomes e passagens só aparecem após visitar as células correspondentes; marcador de Kairo permanece visível no trecho atual.
+> > - [ ] Higor testar visualmente o mapa com `M` durante o percurso e aprovar ou apontar ajustes.
+> > - **Verificação (15/10):** `WorldMapCheck.gd` passou sem falhas e gerou capturas no Godot.
+> > - **Ajuste visual (15/10):** quatro cantos refeitos com ornamentos vegetais simétricos; capturas de névoa e mapa completo atualizadas.
+> >
+> > Status: 🟡 parcial (15/10) — comportamento e capturas verificados; falta revisão visual jogada do Higor.

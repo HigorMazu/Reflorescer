@@ -1,4 +1,5 @@
 using Godot;
+using Joguim.Core;
 using Joguim.Save;
 using System;
 
@@ -18,6 +19,7 @@ namespace Joguim.UI
         public override void _Ready()
         {
             GetTree().Paused = false;
+            AudioManager.Instance?.PlayMusic("title_autoral.wav", 1.5f);
 
             var newGame = GetNodeOrNull<Button>(NewGameButtonPath);
             var continueButton = GetNodeOrNull<Button>(ContinueButtonPath);

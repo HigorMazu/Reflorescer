@@ -61,6 +61,7 @@ size = Vector2(60, 100)
 [node name="SopeDaMata" type="Node2D" unique_id=832451940 node_paths=PackedStringArray("SpawnPoints", "EnemySpawns", "Checkpoints")]
 script = ExtResource("area_script")
 AreaName = "SopeDaMata"
+MusicTrack = "sope_autoral.wav"
 UseCameraLimits = true
 CameraLimits = Rect2i(0, -200, 2400, 720)
 SpawnPoints = []
