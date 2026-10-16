@@ -29,6 +29,8 @@ namespace Joguim.Save
         public List<string> ActivatedCheckpoints { get; set; } = new();
         public List<string> RestoredPoints { get; set; } = new();
         public List<string> UnlockedShortcuts { get; set; } = new();
+        // Células do mapa vistas por Kairo; a lista vazia mantém saves antigos compatíveis.
+        public List<string> ExploredMapCells { get; set; } = new();
 
         // Stats
         public int TotalDeaths { get; set; }

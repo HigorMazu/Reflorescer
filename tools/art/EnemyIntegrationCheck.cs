@@ -44,7 +44,15 @@ public partial class EnemyIntegrationCheck : Node2D
             await Wait(.05);
 
             foreach (string archetype in new[] { "Rapido", "Robusto", "Voador" })
-                await CheckEnemy(archetype);
+                await CheckEnemy(archetype, archetype);
+            // Post-demo species inherit the exact archetype logic and stats.
+            foreach (var (species, archetype) in new[]
+            {
+                ("AbelhaAfricanizada", "Voador"), ("RatoPreto", "Rapido"),
+                ("BurroSelvagem", "Robusto"), ("MosquitoArtico", "Voador"),
+                ("LebreEuropeia", "Rapido"), ("GansoDasNeves", "Robusto")
+            })
+                await CheckEnemy(species, archetype);
         }
         catch (Exception error)
         {
@@ -56,10 +64,11 @@ public partial class EnemyIntegrationCheck : Node2D
         GetTree().Quit(_failures == 0 ? 0 : 1);
     }
 
-    private async Task CheckEnemy(string archetype)
+    private async Task CheckEnemy(string species, string archetype)
     {
+        GD.Print($"ENEMY_QA_SPECIES: {species} ({archetype})");
         _target.Position = new Vector2(4000, 450);
-        var enemy = GD.Load<PackedScene>($"res://scenes/enemies/Enemy_{archetype}.tscn").Instantiate<EnemyBase>();
+        var enemy = GD.Load<PackedScene>($"res://scenes/enemies/Enemy_{species}.tscn").Instantiate<EnemyBase>();
         enemy.Position = new Vector2(250, archetype == "Voador" ? 330 : 450);
         AddChild(enemy);
         await Wait(.12);

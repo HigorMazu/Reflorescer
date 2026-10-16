@@ -57,6 +57,22 @@ namespace Joguim.Save
             return _currentSave != null && _currentSave.DefeatedBosses.Contains(bossId);
         }
 
+        public bool IsMapCellRevealed(string cellId)
+        {
+            return _currentSave?.ExploredMapCells?.Contains(cellId) ?? false;
+        }
+
+        public void RevealMapCell(string cellId)
+        {
+            if (string.IsNullOrEmpty(cellId)) return;
+            _currentSave ??= CreateNewSave(0);
+            _currentSave.ExploredMapCells ??= new List<string>();
+            if (_currentSave.ExploredMapCells.Contains(cellId)) return;
+            _currentSave.ExploredMapCells.Add(cellId);
+            // Persistir a descoberta junto com a posição evita perder o mapa ao sair sem checkpoint.
+            SaveGame(_currentSave.Slot);
+        }
+
         // Menu inicial → "Novo jogo": apaga o save e zera o estado da sessão que vive em autoloads
         public void StartNewGame(int slot = 0)
         {

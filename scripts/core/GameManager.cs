@@ -9,6 +9,7 @@ namespace Joguim.Core
         public static GameManager Instance { get; private set; }
 
         public bool IsGamePaused { get; private set; }
+        public bool IsMapOpen { get; private set; }
         public string CurrentArea { get; set; } = "";
         // Estado da Espada de Grama na sessão: o Player é recriado a cada troca de cena
         public bool HasSword { get; set; } = true;
@@ -27,11 +28,33 @@ namespace Joguim.Core
 
         public override void _Input(InputEvent @event)
         {
+            if (@event.IsActionPressed("map") && !@event.IsEcho())
+            {
+                ToggleMap();
+                GetViewport().SetInputAsHandled();
+                return;
+            }
             if (@event.IsActionPressed("pause"))
             {
+                if (IsMapOpen)
+                {
+                    ToggleMap();
+                    GetViewport().SetInputAsHandled();
+                    return;
+                }
                 TogglePause();
             }
         }
+
+        public void ToggleMap()
+        {
+            if (IsGameOver || IsGamePaused) return;
+            if (GetTree().CurrentScene?.SceneFilePath == SaveManager.MainMenuScene) return;
+            IsMapOpen = !IsMapOpen;
+            GetTree().Paused = IsMapOpen;
+        }
+
+        public bool IsWorldMapOpen() => IsMapOpen;
 
         public void TogglePause()
         {
@@ -49,11 +72,11 @@ namespace Joguim.Core
 
         public void RestartGame()
         {
+            IsMapOpen = false;
             IsGamePaused = false;
             GetTree().Paused = false;
             CarriedPlayerHealth = -1;
-            SaveManager.Instance.DeleteSave(0);
-            SceneManager.Instance.LoadScene(SaveManager.NewGameScene);
+            SaveManager.Instance?.StartNewGame(0);
         }
     }
 }

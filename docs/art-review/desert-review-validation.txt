@@ -1,0 +1,36 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+ResourceKeeper: 16 recursos mantidos carregados.
+DESERT_QA_PASS: entry shows sunlit day
+DESERT_QA_PASS: middle reaches late afternoon
+DESERT_QA_PASS: boss end reaches night
+DESERT_QA_PASS: night cools the ground and characters
+DESERT_QA_PASS: snake idle exists
+DESERT_QA_PASS: snake idle/0 canvas
+DESERT_QA_PASS: snake idle/1 canvas
+DESERT_QA_PASS: snake idle/2 canvas
+DESERT_QA_PASS: snake idle/3 canvas
+DESERT_QA_PASS: snake slither exists
+DESERT_QA_PASS: snake slither/0 canvas
+DESERT_QA_PASS: snake slither/1 canvas
+DESERT_QA_PASS: snake slither/2 canvas
+DESERT_QA_PASS: snake slither/3 canvas
+DESERT_QA_PASS: snake windup exists
+DESERT_QA_PASS: snake windup/0 canvas
+DESERT_QA_PASS: snake windup/1 canvas
+DESERT_QA_PASS: snake attack exists
+DESERT_QA_PASS: snake attack/0 canvas
+DESERT_QA_PASS: snake attack/1 canvas
+DESERT_QA_PASS: snake attack/2 canvas
+DESERT_QA_PASS: snake attack/3 canvas
+DESERT_QA_PASS: snake hurt exists
+DESERT_QA_PASS: snake hurt/0 canvas
+DESERT_QA_PASS: snake hurt/1 canvas
+DESERT_QA_PASS: snake dead exists
+DESERT_QA_PASS: snake dead/0 canvas
+DESERT_QA_PASS: night boss preview enters animated strike
+DESERT_QA_PASS: desert visual aligns to solid ground
+DESERT_QA_PASS: wind ambience starts
+DESERT_QA_PASS: snake hiss resource exists
+DESERT_QA_PASS: three desert reskins are present
+DESERT_QA_DONE failures=0

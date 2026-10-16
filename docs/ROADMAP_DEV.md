@@ -3,20 +3,20 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-11
+atualizado: 2026-10-15
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
 papel: execucao
 responsavel: Gustavo
 par: "[[ROADMAP_QA_CODIGO]]"
-descricao: Backlog de implementação da demo (código)
-epicos_total: 14
-epicos_concluidos: 10
-tasks_total: 63
-tasks_prontas: 53
+descricao: Backlog de implementação da demo e do Deserto pós-demo (código)
+epicos_total: 16
+epicos_concluidos: 11
+tasks_total: 68
+tasks_prontas: 56
 tasks_bloqueadas: 4
-tasks_liberadas: 2
+tasks_liberadas: 4
 ---
 # Roadmap de Desenvolvimento — Código (Gustavo)
 
@@ -513,18 +513,18 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 >
 > > [!warning]- Task C11-T3 — Chamadas que faltam
 > > - [x] Adicionar `AudioManager.PlaySfx(...)` pro ataque do jogador, hit em inimigo/jogador, morte de inimigo comum, pulo (opcional).
-> > - [ ] Música de fundo por bioma via `AudioManager.PlayMusic(...)` (fade in/out já pronto no código).
+> > - [x] Música de fundo por bioma via `AudioManager.PlayMusic(...)` (fade in/out já pronto no código).
 > > - **Nota (28/09):** `PlaySfx` no ataque, pulo e dano do Kairo e no hit/morte de inimigo comum. `AreaController` ganhou `MusicTrack` (exportado, vazio por padrão), tocado no `_Ready` via `PlayMusic`. O `AudioManager` passou a logar arquivo faltando uma vez só por caminho.
 > >
-> > Status: parcial (11/10) — SFX tocando de verdade desde a C11-T2; falta só a música, que agora está na C11-T4.
+> > Status: ✅ concluído (14/10) — as chamadas de SFX e música estão integradas; `MusicCheck.gd` confirmou música e três SFX simultâneos sem corte.
 
-> > [!failure]- Task C11-T4 — Música por área e tela de título
-> > - [ ] Faixas em `res://assets/audio/music/` (loop): tela de título, Sopé da Mata, Dossel Vivo, Igarapé Sufocado e Covil de Korrag (luta). Opcional: variação pra fase enfurecida do Korrag.
-> > - [ ] Preencher o `MusicTrack` do `AreaController` de cada área (o `PlayMusic` com fade já existe) e tocar a do título no `MainMenu`.
-> > - [ ] Ajustar volume do bus Music × SFX (ver [[ROADMAP_QA_INTEGRACAO]] A07-T1).
-> > - **Decisão (11/10):** música sintetizada por código ficaria fraca; fica pra quando houver faixas de verdade (compostas pelo grupo ou de uso livre com a licença registrada).
+> > [!success]- Task C11-T4 — Música por área e tela de título
+> > - [x] Faixas em `res://assets/audio/music/` (loop): tela de título, Sopé da Mata, Dossel Vivo, Igarapé Sufocado e Covil de Korrag (luta). Opcional: variação pra fase enfurecida do Korrag.
+> > - [x] Preencher o `MusicTrack` do `AreaController` de cada área (o `PlayMusic` com fade já existe) e tocar a do título no `MainMenu`.
+> > - [x] Ajustar volume do bus Music × SFX (ver [[ROADMAP_QA_INTEGRACAO]] A07-T1).
+> > - **Entrega (14/10):** cinco loops instrumentais autorais e reproduzíveis foram gerados por `tools/audio/generate_demo_music.py`; os créditos e a procedência ficam em `assets/audio/CREDITOS.md`. A música fica em -12 dB e os SFX em -4 dB; o player reinicia a faixa ao terminar e preserva o fade entre áreas.
 > >
-> > Status: não iniciado (11/10) — ⛔ bloqueado: faltam as faixas.
+> > Status: ✅ concluído (14/10) — `MusicCheck.gd` confirmou as cinco faixas, transições e sobreposição com três SFX; `DemoRunCheck.gd` passou 89/89.
 
 > > [!todo]- Task C11-T5 — Trocar os SFX placeholder pelos sons finais
 > > - [ ] Substituir os 12 `.wav` de `assets/audio/sfx/` pelos sons finais, **mantendo os nomes**: `player_attack`, `player_jump`, `player_dash`, `player_hurt`, `sword_on`, `sword_off`, `enemy_hit`, `enemy_death`, `checkpoint_activate`, `restoration`, `boss_stomp`, `boss_defeat`.
@@ -578,3 +578,51 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - **Correção (11/10):** autoload `ResourceKeeper` (`scripts/core/ResourceKeeper.cs`), o **primeiro** da lista, carrega todos os `.tres` de `res://resources` uma vez e os mantém vivos (trata o sufixo `.remap` do jogo exportado). Teste novo de estresse `tools/qa/GcStressCheck.gd` (troca de área + inimigos criados/mortos com combate): antes 6/6 travavam; depois 8/8 completas com 24 ciclos (3.840 golpes). Regra pra frente: **todo `.tres` com script C# novo vai em `res://resources/`**, senão fica fora da proteção.
 > >
 > > Status: ✅ concluído (11/10) — travamento eliminado nos testes de estresse; falta só confirmar no jogo exportado quando houver build (o `.remap` foi tratado, mas não testado).
+
+---
+
+> [!info]- EPIC-C15 — Deserto pós-demo e chefe cobra — 🔄 Planejado · 🟢 Pós-demo
+> *Pronto quando*: após a demo, uma área jogável do Deserto progride do sol à tarde e à noite, culmina numa luta funcional contra a cobra grande e passa nos testes espelhados do [[ROADMAP_QA_CODIGO]] e do [[ROADMAP_QA_INTEGRACAO]] A08.
+>
+> **Contrato aprovado pelo Higor (15/10):** manter a direção de `docs/art-review/desert-direction-v1.md`. Os três golpes da cobra são bote/mordida frontal, varrida de cauda e mergulho/emergência na areia. Ataques, IA, colisões, dano, fases e progressão são trabalho de código; animações adicionais de cauda/areia estão em [[ROADMAP_ARTE]] A08-T3. A cena `DesertReview.tscn` é somente uma prévia visual e `Boss_CobraDesertoVisual.tscn` não tem combate. Nenhuma dessas tarefas altera a demo já entregue por si só.
+>
+> > [!todo]- Task C15-T1 — Transformar a prévia do Deserto em área jogável
+> > - [ ] Construir o mapa de produção com plataformas, colisões, câmera, entrada/saída e posições definitivas dos três habitantes já apresentados; usar a faixa de terreno e a progressão dia → tarde → noite aprovadas na A08-T1/T2.
+> > - [ ] Vincular o avanço de luz ao percurso real, sem mudança brusca ao morrer, recarregar ou retornar a uma seção; preservar o comportamento das quatro áreas da demo.
+> > - [ ] Definir com o grupo a posição da entrada pós-demo, checkpoints, pontos de restauração e rota até a arena antes de fechar o layout; registrar essas decisões no GDD.
+> >
+> > Status: 🟢 liberado (15/10) — base visual aprovada e cena de revisão pronta; topologia e pontos de progressão finais ainda serão definidos pelo grupo.
+>
+> > [!todo]- Task C15-T2 — Combate próprio da cobra do Deserto
+> > - [ ] Criar boss funcional, sem reaproveitar a IA/golpes do Korrag, com estados de preparação, execução, recuperação, dano e morte. Usar `windup`/`attack` da prévia como base visual do bote frontal.
+> > - [ ] Implementar os três ataques aprovados: bote/mordida frontal, varrida de cauda e mergulho/emergência na areia. Cada um deve ter aviso legível, janela de dano delimitada e alcance coerente com a animação; o deslocamento subterrâneo não pode deixar hitbox fantasma.
+> > - [ ] Integrar as futuras animações e efeitos `tail_sweep`, `burrow_enter` e `burrow_exit` da A08-T3, com fallback temporário enquanto forem produzidos; ajustar vida, dano e cadência por playtest, sem fixar números neste roadmap.
+> > - [ ] Reproduzir o sibilo e demais sons de combate em momentos ligados aos golpes, mantendo os volumes compatíveis com música e vento.
+> >
+> > Status: 🟢 liberado (15/10) — trio de ataques aprovado; protótipo de mecânica pode começar com arte provisória e concluir após a A08-T3.
+>
+> > [!todo]- Task C15-T3 — Conclusão da luta e progressão pós-chefe
+> > - [ ] Definir com o grupo o resultado narrativo, recompensa/desbloqueio e próximo destino após a cobra; registrar a decisão no GDD antes de implementar a transição final.
+> > - [ ] Integrar morte do chefe, persistência, checkpoint/retorno e saída da arena sem duplicar recompensa nem reabrir o combate indevidamente.
+> > - [ ] Fazer a passagem da demo para o Deserto e do Deserto para o próximo trecho somente quando as rotas forem aprovadas; preservar saves existentes.
+> >
+> > Status: ⛔ bloqueado (15/10) — falta decidir recompensa e destino depois da cobra; a luta C15-T2 e o mapa C15-T1 podem avançar independentemente.
+
+> [!success]- EPIC-C16 — Mapa explorável da Floresta Tropical — ✅ Implementado · 🟡 Alta
+> *Pronto quando*: as quatro áreas atuais aparecem numa cartografia conectada, Kairo vê apenas células percorridas, e o progresso permanece após salvar/continuar sem quebrar as transições da demo.
+>
+> > [!success]- Task C16-T1 — Revelação e persistência do mapa
+> > - [x] Adicionar `M` para abrir/fechar mapa, pausando a partida; `Esc` também fecha o mapa.
+> > - [x] Associar posição de Kairo a células de cada área e registrar somente as visitadas em `ExploredMapCells` no save, compatível com saves antigos sem esse campo.
+> > - [x] Mostrar marcador atual, nomes e ligações apenas quando explorados; salvar descobertas novas automaticamente.
+> > - **Verificação (15/10):** `WorldMapCheck.gd` passa abertura/fechamento, névoa e persistência; `SaveReloadCheck.gd` mantém o fluxo anterior.
+> >
+> > Status: ✅ concluído (15/10) — mapa funcional nas quatro áreas da demo; arte em revisão na A09-T1.
+>
+> > [!success]- Task C16-T2 — Rede de ida e volta entre áreas existentes
+> > - [x] Preservar Sopé ↔ Dossel ↔ Igarapé e a subida/descida do Dossel.
+> > - [x] Adicionar retorno Covil → Igarapé, com ponto de chegada afastado do portal para não criar loop de troca de cena.
+> > - [x] Verificar o percurso original e o retorno sem regressão de spawn/save.
+> > - **Verificação (15/10):** `DemoRunCheck.gd` 89/89 e `WorldMapCheck.gd` confirma destino e chegada do retorno.
+> >
+> > Status: ✅ concluído (15/10) — as quatro cenas atuais formam uma rota bidirecional, com deslocamento horizontal e vertical pelo Dossel. Ramificações inéditas dependem de novas salas/áreas, ainda não desenhadas.
