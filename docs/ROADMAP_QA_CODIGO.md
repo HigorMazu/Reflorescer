@@ -12,9 +12,9 @@ responsavel: Gustavo
 par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 17
-epicos_concluidos: 12
+epicos_concluidos: 13
 tasks_total: 73
-tasks_prontas: 60
+tasks_prontas: 61
 tasks_bloqueadas: 5
 ---
 # Roadmap de QA — Código (Reflorescer)
@@ -368,7 +368,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ⏭️ adiado (19/10) — fora da demo ([[ROADMAP_DEV]] C14-T5).
 
-> [!warning]- EPIC-C09 — Save, Checkpoint e Respawn — 🟡 Parcial (visual do checkpoint) · 🟡 Média
+> [!success]- EPIC-C09 — Save, Checkpoint e Respawn — ✅ Passa (19/10) · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — habilidade desbloqueada persiste em disco imediatamente, e existe uma decisão explícita sobre o fluxo de Continuar.
 >
 > > [!success]- Task C09-T0 — Regressão básica (baseline antes de mexer)
@@ -403,14 +403,14 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): menu com Continuar; Continuar volta à cena/posição salvas, inclusive na arena (sem o Korrag, com dash) e depois de fechar/reabrir o jogo. Revalidado em 11/10 (Claude, por script): save/recarga no mesmo processo nas 4 áreas sem crash.
 >
-> > [!warning]- Task C09-T3 — Visual do checkpoint apagado/ativado
+> > [!success]- Task C09-T3 — Visual do checkpoint apagado/ativado
 > > - [x] Antes de tocar: checkpoint apagado. Ao tocar: muda pra ativado na hora e salva.
 > > - [x] Fechar e Continuar: os checkpoints já ativados nascem ativados; os outros, apagados.
 > > - [x] `SaveReloadCheck.gd` e `DemoRunCheck.gd` continuam passando.
 > >
 > > - **Nota (11/10):** desde a C09-T4 é uma bandeira só (`cp_dossel_01`).
 > >
-> > Status: 🟡 parcial (12/10) — `CheckpointVisualCheck.gd` passou no ciclo completo; `SaveReloadCheck.gd` (0 falhas) e `DemoRunCheck.gd` (89/89) continuam passando. Falta só avaliação visual do Higor.
+> > Status: ✅ passa (19/10) — validado jogando pelo Gustavo em 19/10.
 >
 > > [!success]- Task C09-T4 — Bandeira única e vida que não enche ao trocar de área
 > > - [x] O projeto compila no editor sem erro.
@@ -511,7 +511,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > - [x] Rodada de 11/10: entregas do Higor de 05/10 a 09/10 integradas e [[ROADMAP_QA_INTEGRACAO]] rodado (A00–A06 passam, exceto pendências cadastradas).
 > >
-> > Status: 🟡 em andamento (19/10) — entregas de 12/10 e 15/10 integradas; pendentes: avaliações visuais jogadas e SFX autorais. Ver [[ROADMAP_DEV]] C12-T3.
+> > Status: 🟡 em andamento (19/10) — entregas de 12 e 15/10 integradas e validadas jogando pelo Gustavo; falta só integrar os SFX autorais (C11-T5).
 
 > > [!success]- Task C12-T4 — Sem travamento do runtime .NET
 > > - [x] `tools/qa/CombatCheck.gd -- --stress` roda 5 vezes seguidas sem `FATAL: gchandle.is_released()`.
@@ -521,12 +521,12 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa (11/10, Claude) — com o autoload `ResourceKeeper`: `CombatCheck --stress` 5/5 (35/35 cada), `GcStressCheck` 8/8 com 24 ciclos (antes 6/6 travavam), `DemoRunCheck` 89/89 sem erro do motor, `SaveReloadCheck` e `DosselReachCheck` sem falhas. Ver [[ROADMAP_DEV]] C12-T4.
 >
-> > [!failure]- Task C12-T5 — Build exportada da demo
+> > [!todo]- Task C12-T5 — Build exportada da demo
 > > - [ ] O `.exe` abre num computador sem Godot e roda menu → 4 áreas → Korrag → tela de fim sem crash.
 > > - [ ] Novo jogo, Continuar e o save em `%APPDATA%` funcionam no exportado.
 > > - [ ] `GcStressCheck` (ou uma partida longa trocando de área) sem `FATAL: gchandle.is_released()` no exportado.
 > >
-> > Status: 🔴 pendente (19/10) — depende da [[ROADMAP_DEV]] C12-T5.
+> > Status: ⏭️ adiado (19/10) — fora da demo ([[ROADMAP_DEV]] C12-T5).
 
 > [!failure]- EPIC-C15 — Deserto pós-demo e chefe cobra — 🔴 Ainda não testável · 🟢 Pós-demo
 > *Pronto quando*: a área completa e a luta passam nos casos abaixo, além da verificação de integração visual A08. A prévia visual isolada de 15/10 não satisfaz estes testes de mecânica.

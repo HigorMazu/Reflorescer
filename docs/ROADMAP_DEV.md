@@ -12,11 +12,11 @@ responsavel: Gustavo
 par: "[[ROADMAP_QA_CODIGO]]"
 descricao: Backlog de implementação da demo e do Deserto pós-demo (código)
 epicos_total: 17
-epicos_concluidos: 12
+epicos_concluidos: 13
 tasks_total: 73
-tasks_prontas: 60
+tasks_prontas: 61
 tasks_bloqueadas: 3
-tasks_liberadas: 6
+tasks_liberadas: 5
 ---
 # Roadmap de Desenvolvimento — Código (Gustavo)
 
@@ -417,7 +417,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ⏭️ adiado (19/10) — fora da demo, vai pro jogo completo junto com a [[ROADMAP_ARTE]] A05-T6.
 
-> [!warning]- EPIC-C09 — Save, Checkpoint e Respawn — 🔄 Em andamento (visual do checkpoint) · 🟡 Média
+> [!success]- EPIC-C09 — Save, Checkpoint e Respawn — ✅ Concluído (19/10) · 🟡 Média
 > *Pronto quando*: uma habilidade desbloqueada persiste em disco mesmo sem passar por um checkpoint depois, e existe uma decisão explícita (implementada ou documentada como "fora de escopo") sobre o fluxo de Continuar.
 >
 > > [!success]- Task C09-T0 — Regressão básica (antes de mexer)
@@ -444,14 +444,14 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 >
-> > [!warning]- Task C09-T3 — Visual do checkpoint apagado/ativado
+> > [!success]- Task C09-T3 — Visual do checkpoint apagado/ativado
 > > - [x] Trocar os `ColorRect` placeholder (`FlagPole`/`Flag`) da bandeira única do Dossel Vivo (`cp_dossel_01`) pela arte do Higor ([[ROADMAP_ARTE]] A05-T5). *(Eram 5 checkpoints até 11/10; ver C09-T4.)*
 > > - [x] `Checkpoint.cs`: mostrar o estado **apagado** antes de tocar e **ativado** depois; ao continuar um save, os checkpoints em `ActivatedCheckpoints` já nascem ativados.
 > > - **Origem (11/10):** achado na revisão de arte (item 4). Hoje o checkpoint funciona, mas o visual não muda ao ser tocado.
 > >
 > > - **Nota (11/10, C09-T4):** agora é uma bandeira só. O `Checkpoint.cs` já nasce `Activated` quando o save da sessão diz que ela foi ativada (ao voltar pra cena ou renascer nela); falta só o visual reagir.
 > >
-> > Status: 🟡 entregue (12/10) — `CheckpointTotemVisual` integrado ao estado salvo. `CheckpointVisualCheck.gd` confirma o ciclo novo jogo → toque → salvar → Continuar, sem alterar o save pessoal; revisão visual do Higor pendente.
+> > Status: ✅ concluído (19/10) — totem validado jogando pelo Gustavo em 19/10.
 >
 > > [!success]- Task C09-T4 — Bandeira única e vida que não enche ao trocar de área
 > > - [x] Tirar os checkpoints do Sopé da Mata, do Igarapé Sufocado (2) e do Covil de Korrag. Fica só `cp_dossel_01`, no começo do Dossel Vivo (x = 200, logo depois do spawn vindo do Sopé).
@@ -569,7 +569,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >   - Áudio: nenhum dos 12 `.wav` existe ainda (C11-T2) — bloqueia o [[ROADMAP_QA_INTEGRACAO]] A07.
 > > - **Nota (19/10) — entregas do Higor de 12/10 e 15/10:** integradas e revisadas (totem do checkpoint, `attack` do Korrag, wall slide, tela de fim, W/S no menu, músicas, mapa, prévia do Deserto e reskins). Corrigidos na revisão: caminho do `DemoEndCheck.gd` e os achados do mapa (C16-T3). Pendências: avaliação visual jogada do Gustavo (A01-T3, A04-T3, A05-T5, A06-T4/T5/T6, A09-T1) e os SFX autorais (C11-T5).
 > >
-> > Status: em andamento (19/10) — entregas de 12/10 e 15/10 integradas; faltam as avaliações visuais jogadas e os SFX autorais.
+> > Status: em andamento (19/10) — entregas de 12 e 15/10 integradas e validadas jogando pelo Gustavo; falta só integrar os SFX autorais (C11-T5).
 
 > > [!success]- Task C12-T4 — Travamento aleatório do runtime .NET (`gchandle.is_released`)
 > > - [x] Reduzir a chance do travamento no jogo (ver hipóteses abaixo) e medir de novo com `CombatCheck.gd -- --stress`.
@@ -589,8 +589,9 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - [ ] Confirmar no jogo exportado o `ResourceKeeper` com `.remap` (pendência da C12-T4) e o save em `%APPDATA%`.
 > > - [ ] Gerar o pacote do entregável (pasta zipada) e testar num computador que não tem o Godot.
 > > - **Origem (19/10):** achado na revisão de 19/10. Não havia preset nem tarefa de exportação, e o entregável da faculdade depende dela.
+> > - **Decisão do grupo (19/10):** a demo é apresentada pelo editor do Godot, sem `.exe`.
 > >
-> > Status: 🟢 liberado (19/10) — dá pra fazer já e repetir depois dos SFX finais.
+> > Status: ⏭️ adiado (19/10) — fora da demo: a apresentação roda direto no editor do Godot. Volta no pós-demo.
 
 ---
 
