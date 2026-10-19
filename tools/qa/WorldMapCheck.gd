@@ -54,12 +54,29 @@ func _run() -> void:
 	await process_frame
 	_check(not map.visible and not paused, "Esc fecha o mapa sem abrir pausa")
 
+	# Decisão de 19/10: revelar trecho grava só o mapa, sem mudar o ponto do Continuar.
+	if FileAccess.file_exists(SAVE_PATH):
+		var before := _read_save()
+		var walker := current_scene.get_node("Player") as Node2D
+		walker.global_position = Vector2(1500, walker.global_position.y)
+		for index in 4:
+			await process_frame
+		var after := _read_save()
+		_check(save_manager.IsMapCellRevealed("SopeDaMata:3:1") and "SopeDaMata:3:1" in after.get("ExploredMapCells", []), "trecho novo entra no save")
+		_check(str(after.get("PlayerPosition")) == str(before.get("PlayerPosition")), "revelar trecho não muda a posição do Continuar")
+
 	change_scene_to_file("res://scenes/areas/CovilDeKorrag.tscn")
 	for index in 8:
 		await process_frame
 	map = current_scene.get_node("HUD/WorldMapOverlay")
 	_check(save_manager.IsMapCellRevealed("CovilDeKorrag:0:1"), "Covil revelado ao entrar")
 	var portal := current_scene.get_node("Transitions/ToIgarapeSufocado")
+	_check(portal.IsLocked, "portal do Covil fechado com o Korrag vivo")
+	var guest := current_scene.get_node("Player") as Node2D
+	guest.global_position = portal.global_position
+	for index in 10:
+		await physics_frame
+	_check(current_scene.name == "CovilDeKorrag", "portal fechado não troca de cena")
 	_check(portal.TargetScene == "res://scenes/areas/IgarapeSufocado.tscn", "Covil retorna ao Igarapé")
 	_check(portal.TargetArea == "SpawnFromCovilDeKorrag", "retorno usa entrada própria")
 	root.get_node("SceneManager").LoadSceneAtSpawn(portal.TargetScene, portal.TargetArea, Vector2.ZERO)
@@ -89,6 +106,13 @@ func _finish() -> void:
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(SAVE_PATH))
 	print("WorldMapCheck: ", _failures, " falhas")
 	quit(0 if _failures == 0 else 1)
+
+
+func _read_save() -> Dictionary:
+	var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
+	var data := JSON.parse_string(file.get_as_text()) as Dictionary
+	file.close()
+	return data
 
 
 func _press_key(key: Key) -> void:

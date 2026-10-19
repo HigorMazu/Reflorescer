@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-15
+atualizado: 2026-10-19
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: arte
@@ -12,10 +12,10 @@ responsavel: Gustavo e Higor
 par: "[[ROADMAP_ARTE]]"
 descricao: Casos de teste da integração código + arte
 epicos_total: 10
-epicos_concluidos: 2
+epicos_concluidos: 3
 tasks_total: 32
 tasks_prontas: 17
-tasks_bloqueadas: 4
+tasks_bloqueadas: 2
 ---
 # Roadmap de QA — Integração (Código + Arte do Higor)
 
@@ -98,7 +98,7 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: 🟡 parcial (15/10) — integração isolada e visual aprovados; falta teste nas áreas quando existirem.
 
-> [!warning]- EPIC-A03 — Faísca — 🟡 Parcial (Faísca fortalecida) · 🟠 Alta
+> [!success]- EPIC-A03 — Faísca — ✅ Passa na demo (A03-T2 adiada) · 🟠 Alta
 > *Pronto quando*: `fly`/`investigate` acompanham a troca de estado sem travar num frame parado, e a luz não "pisca" ao trocar de direção.
 >
 > > [!success]- Task A03-T1
@@ -109,10 +109,10 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: ✅ passa (06/10) — animações, estados e luz independentes verificados.
 >
-> > [!failure]- Task A03-T2 — Faísca fortalecida
+> > [!todo]- Task A03-T2 — Faísca fortalecida
 > > - [ ] Cada nível da Faísca se distingue no jogo e acompanha a troca de área e o Continuar.
 > >
-> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_ARTE]] A03-T2 e [[ROADMAP_DEV]] C14-T4.
+> > Status: ⏭️ adiado (19/10) — fora da demo ([[ROADMAP_ARTE]] A03-T2).
 
 > [!warning]- EPIC-A04 — Boss KORRAG — 🟡 Parcial (revisão jogada do `attack`) · 🟠 Alta
 > *Pronto quando*: as transições de fase são claras pro jogador mesmo com `idle` compartilhado, o timing de `charge_windup` bate com o código, e o nome exibido é "Korrag, o Javali".
@@ -143,7 +143,7 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: 🟡 parcial (12/10) — seis combinações de quadro/direção passaram em `RoadmapArtReview.gd`; falta a avaliação jogada do Higor. Ver `docs/art-review/roadmap-visual-2026-10-12.md`.
 
-> [!warning]- EPIC-A05 — Cenário — 🟡 Parcial (revisão do marco e caminhos pendentes) · 🟠 Alta
+> [!warning]- EPIC-A05 — Cenário — 🟡 Parcial (avaliação do marco; A05-T6 adiada) · 🟠 Alta
 > *Pronto quando*: as 4 áreas têm identidade visual reconhecível sem texto, os pontos de entrada de cena fazem sentido, e a performance se mantém estável no `gl_compatibility`.
 >
 > Atualizado em 29/09/2026 — a demo passou a ser 4 áreas dentro da Floresta Tropical (era Floresta Tropical/Deserto/Tundra); `TargetArea`/`SpawnOffset` já funcionam desde [[ROADMAP_QA_CODIGO]] `C08-T1` (concluída em 28/09), então a ressalva de posicionamento manual não se aplica mais.
@@ -186,10 +186,10 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: 🟡 parcial (12/10) — dois estados, base, ativação e Continue passam em `RoadmapArtReview.gd` + `CheckpointVisualCheck.gd`; falta avaliação visual do Higor. Ver `docs/art-review/roadmap-visual-2026-10-12.md`.
 >
-> > [!failure]- Task A05-T6 — Caminhos que crescem ao restaurar
+> > [!todo]- Task A05-T6 — Caminhos que crescem ao restaurar
 > > - [ ] O caminho fechado não parece uma plataforma usável; o aberto é legível e alcançável; colisão bate com a arte.
 > >
-> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_ARTE]] A05-T6 e [[ROADMAP_DEV]] C14-T5.
+> > Status: ⏭️ adiado (19/10) — fora da demo ([[ROADMAP_ARTE]] A05-T6).
 
 > [!warning]- EPIC-A06 — UI — 🟡 Parcial (validações do Higor pendentes) · 🟡 Média
 > *Pronto quando*: barra de vida, ícone de habilidade e prompt de interação têm arte final integrada e funcional em jogo.
@@ -247,7 +247,7 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - [x] Som de ataque/hit sincronizado com o frame de impacto da animação. *(O `enemy_hit` toca no mesmo quadro do dano; o `player_attack` toca no início da estocada, como o sopro do golpe.)*
 > > - [ ] Gustavo ouvir os placeholders jogando e anotar os que incomodam (entram primeiro na troca da [[ROADMAP_DEV]] C11-T5).
 > >
-> > Status: 🟡 parcial (14/10) — música, SFX, volume e mistura verificados; falta ouvir os efeitos durante um playtest real e decidir a substituição dos placeholders.
+> > Status: 🟡 parcial (19/10) — música, SFX, volume e mistura verificados; os SFX finais serão autorais do Higor ([[ROADMAP_DEV]] C11-T5). Ouvir tudo num playtest real depois da troca.
 >
 > > [!failure]- Task A07-T2 — Ponta a ponta
 > > - [ ] Demo completa sem parar: Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag → matar 1 de cada arquétipo pelo caminho → derrotar o Korrag → dash desbloqueado (ver [[🎯 Escopo da Demo]]) — sem crash, sem softlock, sem animação quebrada.

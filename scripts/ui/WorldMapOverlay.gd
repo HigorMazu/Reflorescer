@@ -69,6 +69,12 @@ func _process(_delta: float) -> void:
 		queue_redraw()
 
 
+# GameManager pergunta antes de abrir: cenas sem cartografia não podem pausar com o mapa invisível.
+func has_map() -> bool:
+	var scene := get_tree().current_scene
+	return scene != null and AREAS.has(scene.scene_file_path.get_file().get_basename())
+
+
 func _record_player_cell(area: String) -> void:
 	var player := get_tree().get_first_node_in_group("Player") as Node2D
 	if player == null:
@@ -113,7 +119,7 @@ func _draw() -> void:
 	_draw_corner_flourish(Vector2(54, 666), 1.0, -1.0)
 	_draw_corner_flourish(Vector2(1226, 666), -1.0, -1.0)
 	var font := ThemeDB.fallback_font
-	draw_string(font, Vector2(508, 83), "MAPA DE REFLORESCER", HORIZONTAL_ALIGNMENT_CENTER, 270, 25, Color("e5ddbc"))
+	draw_string(font, Vector2(340, 83), "MAPA DE REFLORESCER", HORIZONTAL_ALIGNMENT_CENTER, 600, 25, Color("e5ddbc"))
 	draw_line(Vector2(500, 97), Vector2(780, 97), Color("738e71"), 1.0)
 	draw_string(font, Vector2(80, 616), "Apenas caminhos percorridos aparecem no mapa", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("bdc7ac"))
 	draw_string(font, Vector2(958, 616), "M / ESC  ·  FECHAR", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("bdc7ac"))

@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-15
+atualizado: 2026-10-19
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: arte
@@ -12,10 +12,10 @@ responsavel: Higor
 par: "[[ROADMAP_QA_INTEGRACAO]]"
 descricao: Backlog de sprites, animação e estilização da demo e dos biomas pós-demo
 epicos_total: 9
-epicos_concluidos: 2
-tasks_total: 32
-tasks_prontas: 23
-tasks_bloqueadas: 2
+epicos_concluidos: 3
+tasks_total: 30
+tasks_prontas: 21
+tasks_bloqueadas: 0
 tasks_liberadas: 0
 ---
 # Roadmap de Arte — Sprites, Animação e Estilização (Higor)
@@ -148,7 +148,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ concluída (15/10) — arte aprovada e integrada; teste contextual na futura área da Tundra segue no QA de integração.
 
-> [!warning]- EPIC-A03 — Faísca (vaga-lume companheiro) — 🔄 Em andamento (Faísca fortalecida) · 🟠 Alta
+> [!success]- EPIC-A03 — Faísca (vaga-lume companheiro) — ✅ Concluído na demo (A03-T2 adiada) · 🟠 Alta
 > *Pronto quando*: `fly` e `investigate` estão entregues e a troca de animação acompanha a troca de estado sem travar num frame parado.
 >
 > > [!success]- Task A03-T1 — Animações
@@ -162,8 +162,9 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 >
 > > [!todo]- Task A03-T2 — Faísca fortalecida pela restauração
 > > - [ ] Visual da Faísca em cada nível de força (1, 2 e 3 áreas restauradas), conforme o que for definido ([[ROADMAP_DEV]] C14-T4).
+> > - **Decisão do grupo (19/10):** fica fora da demo e vai pro jogo completo — a demo fecha com a cura e o +10 de vida máxima por área. Ver [[🗺️ Roadmap]] (pós-demo).
 > >
-> > Status: não iniciado (11/10) — ⛔ bloqueado: aguarda a definição do grupo.
+> > Status: ⏭️ adiado (19/10) — fora da demo, vai pro jogo completo.
 
 > [!warning]- EPIC-A04 — Boss KORRAG — 🟡 Ajuste do `attack` entregue, revisão pendente · 🟠 Alta
 > *Pronto quando*: `intro`, `charge_windup`, `phase2_transition` e `defeated` estão entregues — escopo já simplificado, fases 1 e 2 compartilham `idle`.
@@ -200,7 +201,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: 🟡 entregue (12/10) — correção integrada e verificada em execução; aguarda avaliação visual do Higor.
 
-> [!warning]- EPIC-A05 — Cenário das 4 Áreas da Demo (Floresta Tropical) — 🟡 Marco entregue; caminhos dependem de decisão · 🔴 Bloqueante
+> [!warning]- EPIC-A05 — Cenário das 4 Áreas da Demo (Floresta Tropical) — 🟡 Marco entregue, avaliação visual pendente (A05-T6 adiada) · 🔴 Bloqueante
 > *Pronto quando*: as 4 áreas têm tileset, background e props temáticos entregues, com identidade visual reconhecível sem precisar de texto, e coerentes entre si (mesmo bioma, mesma paleta-base) — ver [[🌍 Mundo e Biomas#As 4 áreas da demo (dentro da Floresta Tropical)|Mundo e Biomas]].
 >
 > Renomeado em 29/09/2026 (era "Cenário das 3 Áreas da Demo": Floresta Tropical/Deserto/Tundra) — a demo agora fica só na Floresta Tropical, em 4 áreas.
@@ -249,8 +250,9 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 >
 > > [!todo]- Task A05-T6 — Vinhas/plataformas que crescem ao restaurar
 > > - [ ] Arte do caminho novo que aparece em cada área restaurada (Sopé, Dossel, Igarapé), conforme o que for definido ([[ROADMAP_DEV]] C14-T5): estado "fechado" (seco/ausente) e "aberto" (crescido), na escala das plataformas atuais.
+> > - **Decisão do grupo (19/10):** fica fora da demo e vai pro jogo completo — a demo fecha com a cura e o +10 de vida máxima por área. Ver [[🗺️ Roadmap]] (pós-demo).
 > >
-> > Status: não iniciado (11/10) — ⛔ bloqueado: aguarda a definição do grupo.
+> > Status: ⏭️ adiado (19/10) — fora da demo, vai pro jogo completo.
 
 > [!warning]- EPIC-A06 — UI — 🟡 Tela final entregue; revisão pendente
 > *Pronto quando*: barra de vida, ícone de habilidade e prompt de interação têm arte final substituindo os placeholders do Godot.
@@ -262,48 +264,31 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ concluída (08/10) — Higor aprovou a revisão da HUD.
 >
-> > [!success]- Task A06-T2 — Ícone de habilidade
-> > - [x] Sem indicador persistente de dash, por decisão de Higor (08/10); a notificação de desbloqueio existente permanece suficiente.
-> > - **Dependência resolvida:** a notificação real existe em [[ROADMAP_QA_CODIGO]] `C04-T4`.
+> > [!success]- Task A06-T4 — Indicador compacto da Espada de Grama (pedido de Higor)
+> > - [x] Indicador de 156×32 abaixo da vida, com espada/ATIVA e bandagem/GUARDADA.
+> > - [x] Tecla Q visível; texto e desenho distinguem os estados, além da cor.
+> > - [x] Realce de borda por 0,28 s na troca, sem animação contínua.
+> > - [x] Integrado ao toggle real; área de avisos de habilidade preservada.
+> > - [x] Aprovação visual de Higor sobre as capturas no Sopé (07/10).
 > >
-> > Status: ✅ concluída (08/10) — escopo visual aprovado sem badge de dash.
+> > Status: ✅ concluída (07/10) — indicador aprovado por Higor e integrado. Ver `docs/art-review/sword-hud-delivery.md`. A bandagem final da A01-T2 foi aprovada em 08/10; segue acabamento modular do Sopé (A05-T1).
 >
-> > [!success]- Task A06-T3 — Prompt de interação
-> > - [x] Painel compacto de leitura para o prompt contínuo `[E]`.
-> > - **Dependência resolvida:** o prompt contínuo existe em [[ROADMAP_QA_CODIGO]] `C10-T1`.
+> > [!warning]- Task A06-T5 — Tela de título animada (pedido de Higor, 09/10)
+> > - [x] Cenário exclusivo, tipografia e menu com a identidade de Reflorescer.
+> > - [x] Névoa, vaga-lumes, água, movimento suave de cenário e fades.
+> > - [x] Integração com Novo jogo, Continuar e Sair; espaço para futuras opções.
+> > - [x] Revisão visual em 1280×720 e 960×540; navegação testada com saves isolados.
+> > - [x] Aprovação visual (Gustavo, 11/10).
+> > - [x] Ajuste de contraste entregue (12/10): dica do canto inferior direito com fonte maior e faixa escura.
+> > - [x] Revisão pedida por Higor (12/10): W / S e Enter destacados em molduras de tecla, com "Navegar" e "Selecionar" em cor distinta. W/S agora movem o foco no menu; revisado em duas resoluções.
 > >
-> > Status: ✅ concluída (08/10) — Higor aprovou a revisão da HUD.
-
----
-
-### A06-T4 — Indicador compacto da Espada de Grama (pedido de Higor)
-
-- [x] Indicador de 156×32 abaixo da vida, com espada/ATIVA e bandagem/GUARDADA.
-- [x] Tecla Q visível; texto e desenho distinguem os estados, além da cor.
-- [x] Realce de borda por 0,28 s na troca, sem animação contínua.
-- [x] Integrado ao toggle real; área de avisos de habilidade preservada.
-- [x] Aprovação visual de Higor sobre as capturas no Sopé (07/10).
-
-Status: ✅ concluída (07/10) — indicador aprovado por Higor e integrado. Ver `docs/art-review/sword-hud-delivery.md`. A bandagem final da A01-T2 foi aprovada em 08/10; segue acabamento modular do Sopé (A05-T1).
-
-### A06-T5 — Tela de título animada (pedido de Higor, 09/10)
-
-- [x] Cenário exclusivo, tipografia e menu com a identidade de Reflorescer.
-- [x] Névoa, vaga-lumes, água, movimento suave de cenário e fades.
-- [x] Integração com Novo jogo, Continuar e Sair; espaço para futuras opções.
-- [x] Revisão visual em 1280×720 e 960×540; navegação testada com saves isolados.
-- [x] Aprovação visual (Gustavo, 11/10).
-- [x] Ajuste de contraste entregue (12/10): dica do canto inferior direito com fonte maior e faixa escura.
-- [x] Revisão pedida por Higor (12/10): W / S e Enter destacados em molduras de tecla, com "Navegar" e "Selecionar" em cor distinta. W/S agora movem o foco no menu; revisado em duas resoluções.
-
-Status: 🟡 parcial (12/10) — título base aprovado em 11/10; ajuste W/S entregue e aguardando avaliação visual de Higor. Ver `docs/art-review/wall-contact-v3.md`. A falha de salvar/recarregar citada na entrega foi resolvida no código (autoload `ResourceKeeper`, [[ROADMAP_DEV]] C12-T4) — não tinha relação com a tela de título.
-
-### A06-T6 — Tela de fim da demo (11/10)
-
-- [x] Acabamento visual da tela de encerramento depois do Korrag ("Áreas restauradas: X/3", mensagem e 3 botões). A tela usa fonte Cormorant, floresta animada e gradação de seco a verde conforme 0–3 áreas restauradas, mantendo as ações existentes.
-- [x] Capturas em 1280×720 e 960×540, com as quatro contagens e foco de teclado conferidos em execução (`docs/art-review/roadmap-visual-2026-10-12.md`).
-
-Status: 🟡 entregue (12/10) — acabamento integrado e revisado nas duas resoluções; aguarda avaliação visual do Higor e percurso jogado após Korrag.
+> > Status: 🟡 parcial (12/10) — título base aprovado em 11/10; ajuste W/S entregue e aguardando avaliação visual de Higor. Ver `docs/art-review/wall-contact-v3.md`. A falha de salvar/recarregar citada na entrega foi resolvida no código (autoload `ResourceKeeper`, [[ROADMAP_DEV]] C12-T4) — não tinha relação com a tela de título.
+>
+> > [!warning]- Task A06-T6 — Tela de fim da demo (11/10)
+> > - [x] Acabamento visual da tela de encerramento depois do Korrag ("Áreas restauradas: X/3", mensagem e 3 botões). A tela usa fonte Cormorant, floresta animada e gradação de seco a verde conforme 0–3 áreas restauradas, mantendo as ações existentes.
+> > - [x] Capturas em 1280×720 e 960×540, com as quatro contagens e foco de teclado conferidos em execução (`docs/art-review/roadmap-visual-2026-10-12.md`).
+> >
+> > Status: 🟡 entregue (12/10) — acabamento integrado e revisado nas duas resoluções; aguarda avaliação visual do Higor e percurso jogado após Korrag.
 
 > [!warning]- EPIC-A08 — Deserto pós-demo — 🔄 Direção visual aprovada; animações de ataque pendentes · 🟡 Pós-demo
 > *Pronto quando*: o caminho começa com sol, passa gradualmente pela tarde e termina numa arena noturna com uma cobra grande, com a arte aprovada no jogo.

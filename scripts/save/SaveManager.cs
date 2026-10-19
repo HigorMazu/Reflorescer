@@ -69,8 +69,10 @@ namespace Joguim.Save
             _currentSave.ExploredMapCells ??= new List<string>();
             if (_currentSave.ExploredMapCells.Contains(cellId)) return;
             _currentSave.ExploredMapCells.Add(cellId);
-            // Persistir a descoberta junto com a posição evita perder o mapa ao sair sem checkpoint.
-            SaveGame(_currentSave.Slot);
+            // Grava só a descoberta: posição, vida e cena continuam as do último ponto salvo, então o
+            // Continuar segue a regra da bandeira (decisão de 19/10/2026). Sem save em disco, a lista
+            // fica na memória e vai junto no próximo SaveGame.
+            if (HasSave(_currentSave.Slot)) SaveToFile(_currentSave.Slot, _currentSave);
         }
 
         // Menu inicial → "Novo jogo": apaga o save e zera o estado da sessão que vive em autoloads

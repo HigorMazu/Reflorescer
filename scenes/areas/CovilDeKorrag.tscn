@@ -177,6 +177,7 @@ collision_mask = 2
 script = ExtResource("transition")
 TargetScene = "res://scenes/areas/IgarapeSufocado.tscn"
 TargetArea = "SpawnFromCovilDeKorrag"
+LockedUntilBossDefeated = "boss_javali"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/ToIgarapeSufocado"]
 shape = SubResource("Shape_ToIgarapeSufocado")

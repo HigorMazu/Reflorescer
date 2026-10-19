@@ -75,8 +75,8 @@ func _run() -> void:
 		var panel := await _defeat_korrag_and_wait()
 		_check(panel != null and panel.visible, "tela de fim aparece depois do Korrag")
 		if panel == null: continue
-		var count := (panel.get_node("Box/Count") as Label).text
-		var msg := (panel.get_node("Box/Message") as Label).text
+		var count := (panel.get_node("Center/Card/Margin/Box/Count") as Label).text
+		var msg := (panel.get_node("Center/Card/Margin/Box/Message") as Label).text
 		_check(count == "Áreas restauradas: %d/3" % n, "contagem '%s'" % count)
 		print("     mensagem: ", msg)
 		_check(paused, "jogo pausado com a tela aberta")
@@ -89,12 +89,12 @@ func _run() -> void:
 		else:
 			_check(not ("toda a mata" in msg), "mensagem comum (não a de 3/3)")
 		if n == 1:
-			panel.get_node("Box/ExploreButton").emit_signal("pressed")
+			panel.get_node("Center/Card/Margin/Box/ExploreButton").emit_signal("pressed")
 			await _frames(5)
 			_check(not paused and not panel.visible, "'Continuar explorando' fecha a tela e despausa")
 			_check(root.get_node("AbilityManager").call("HasAbility", 1), "Dash liberado pra explorar")
 		elif n == 0:
-			panel.get_node("Box/MenuButton").emit_signal("pressed")
+			panel.get_node("Center/Card/Margin/Box/MenuButton").emit_signal("pressed")
 			await scene_changed
 			await _frames(5)
 			_check(current_scene.scene_file_path == MENU and not paused, "'Menu inicial' volta ao menu despausado")
