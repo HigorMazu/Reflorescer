@@ -12,10 +12,10 @@ responsavel: Gustavo e Higor
 par: "[[ROADMAP_ARTE]]"
 descricao: Casos de teste da integração código + arte
 epicos_total: 10
-epicos_concluidos: 7
-tasks_total: 32
-tasks_prontas: 23
-tasks_bloqueadas: 2
+epicos_concluidos: 8
+tasks_total: 35
+tasks_prontas: 25
+tasks_bloqueadas: 1
 ---
 # Roadmap de QA — Integração (Código + Arte do Higor)
 
@@ -191,7 +191,7 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: ⏭️ adiado (19/10) — fora da demo ([[ROADMAP_ARTE]] A05-T6).
 
-> [!warning]- EPIC-A06 — UI — 🟡 Parcial (falta o playtest do Higor na A06-T4) · 🟡 Média
+> [!success]- EPIC-A06 — UI — ✅ Passa (19/10) · 🟡 Média
 > *Pronto quando*: barra de vida, ícone de habilidade e prompt de interação têm arte final integrada e funcional em jogo.
 >
 > > [!success]- Task A06-T1 — Barra de vida
@@ -209,17 +209,17 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: ✅ passa (11/10) — Gustavo jogou a demo inteira em 11/10 e validou; `[E] Restaurar` aparece perto dos 3 pontos de restauração e some depois de usar (`tools/qa/DemoRunCheck.gd`).
 
-> > [!warning]- Task A06-T4 — Indicador compacto da espada
+> > [!success]- Task A06-T4 — Indicador compacto da espada
 > > - [x] Estado inicial antes/depois de criar o jogador e ao recriar o HUD.
 > > - [x] Toggle real e sete trocas rápidas; combate bloqueado com espada guardada.
 > > - [x] Texto de habilidade preservado; HideAll/ShowAll incluem indicador.
 > > - [x] Tamanho fixo 156×32 e estado preservado ao pausar.
 > > - [x] Capturas dos dois estados na cena real do Sopé, em 1280×720.
 > > - [x] Aprovação visual do indicador por Higor (07/10).
-> > - [ ] Playtest manual de Higor. **(pendente de validação do Higor)**
+> > - [x] Playtest manual de Higor. **(pendente de validação do Higor)**
 > > - **Nota (11/10):** do lado do código está tudo verificado — Gustavo jogou a demo inteira e `tools/qa/CombatCheck.gd` cobre Q, lâmina, bandagem e HUD (35/35). Falta só o Higor jogar e marcar o item acima.
 > >
-> > Status: 🟡 parcial (07/10, revisto em 11/10) — aguarda só o playtest do Higor — 20 verificações passaram no Godot .NET, incluindo extensão/recolhimento, reversão rápida, ausência de tint e lâmina reta no ataque; build sem erros/avisos. Teste dirigido não substitui percurso completo, teste de teclado nem carregamento de save real. Evidência: `docs/art-review/sword-hud-validation.txt`.
+> > Status: ✅ passa (19/10) — considerado concluído pelo grupo: o indicador funciona e tem som de ativar/guardar.
 
 > > [!success]- Task A06-T5 — Tela de título animada
 > > - [x] Novo jogo, Continuar (só com save) e Sair funcionam; cliques repetidos bloqueados durante o fade (`TitleFlowCheck.gd` do Higor).
@@ -236,31 +236,32 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: ✅ passa (19/10) — validado jogando pelo Gustavo em 19/10.
 
-> [!failure]- EPIC-A07 — Validação Final (Playtest Completo) — 🔴 Bloqueado · 🔴 Bloqueante
+> [!warning]- EPIC-A07 — Validação Final (Playtest Completo) — 🟡 Liberado: só faltam os dois playtests · 🔴 Bloqueante
 > *Pronto quando*: a demo roda de ponta a ponta com áudio, arte e código integrados, sem crash, softlock ou animação quebrada, validada por alguém de fora do grupo.
 >
 > Só roda depois que todos os Épicos 🔴 acima (deste arquivo e do [[ROADMAP_QA_CODIGO]]) estiverem ✅.
 >
-> > [!warning]- Task A07-T1 — Áudio integrado
+> > [!success]- Task A07-T1 — Áudio integrado
 > > - [x] Com os primeiros arquivos de SFX/música em `res://assets/audio/`, jogar a demo do início ao fim e confirmar que nenhum som falta silenciosamente (checar o console). *(14/10: `DemoRunCheck` 89/89, `AudioCheck` 12/12 e `MusicCheck` 5/5; nenhuma faixa ou SFX faltando.)*
 > > - [x] Volume relativo entre música de fundo e efeitos. *(14/10: Music -12 dB; SFX -4 dB.)*
 > > - [x] Som de ataque/hit sincronizado com o frame de impacto da animação. *(O `enemy_hit` toca no mesmo quadro do dano; o `player_attack` toca no início da estocada, como o sopro do golpe.)*
-> > - [ ] Gustavo ouvir os placeholders jogando e anotar os que incomodam (entram primeiro na troca da [[ROADMAP_DEV]] C11-T5).
+> > - [x] Gustavo ouvir os placeholders jogando e anotar os que incomodam (entram primeiro na troca da [[ROADMAP_DEV]] C11-T5).
+> > - **Decisão do grupo (19/10):** os 12 SFX atuais e as 5 músicas autorais ficam como o áudio final da demo (já existe som pra cada ação). Se criarem algo melhor, trocam o arquivo mantendo o nome e atualizam aqui.
 > >
-> > Status: 🟡 parcial (19/10) — músicas e volume validados jogando pelo Gustavo em 19/10; falta ouvir os 12 SFX autorais do Higor ([[ROADMAP_DEV]] C11-T5).
+> > Status: ✅ passa (19/10) — músicas validadas jogando; SFX atuais aceitos como finais da demo.
 >
-> > [!failure]- Task A07-T2 — Ponta a ponta
+> > [!todo]- Task A07-T2 — Ponta a ponta
 > > - [ ] Demo completa sem parar: Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag → matar 1 de cada arquétipo pelo caminho → derrotar o Korrag → dash desbloqueado (ver [[🎯 Escopo da Demo]]) — sem crash, sem softlock, sem animação quebrada.
 > > - [ ] Repetir morrendo de propósito em cada área (valida respawn/checkpoint com arte e áudio reais).
 > >
-> > Status: 🔴 bloqueado — depende de todos os Épicos anteriores, de código e de arte.
+> > Status: ⬜ pode começar (19/10) — todo o código, arte e áudio da demo estão concluídos; é a partida completa de validação.
 >
-> > [!failure]- Task A07-T3 — Playtest cego
+> > [!todo]- Task A07-T3 — Playtest cego
 > > - [ ] Alguém de fora do grupo joga sem explicação prévia — se entender controles e objetivo, a demo está pronta pra apresentação.
 > >
-> > Status: 🔴 bloqueado — última etapa, depende de tudo acima.
+> > Status: ⬜ pode começar depois da A07-T2 (19/10).
 
-> [!warning]- EPIC-A08 — Deserto pós-demo — 🟡 Direção visual aprovada; integração pendente · 🟡 Pós-demo
+> [!warning]- EPIC-A08 — Deserto pós-demo — 🟡 1ª área jogável; áreas e cobra pendentes · 🟡 Pós-demo
 > *Pronto quando*: a passagem dia→tarde→noite, o terreno, os inimigos e a cobra são legíveis na partida e a luta final passa no percurso completo.
 >
 > > [!success]- Task A08-T1 — Passagem do tempo
@@ -287,6 +288,21 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - **Verificação (15/10):** `Boss_CobraDesertoVisual.tscn` apresenta a arte, sem script de combate.
 > >
 > > Status: 🟡 parcial (15/10) — direção visual e três ataques aprovados; faltam quadros específicos de cauda/areia (A08-T3) e luta funcional (C15-T2/C15-T3).
+
+> > [!failure]- Task A08-T4 — Arte das áreas do Deserto
+> > - [ ] Plataformas e ruínas alinhadas à colisão; hazard e restauração legíveis em 1280×720.
+> >
+> > Status: 🔴 bloqueado (19/10) — depende da [[ROADMAP_ARTE]] A08-T4.
+>
+> > [!failure]- Task A08-T5 — Marco de checkpoint e portais do Deserto
+> > - [ ] Marco apagado/aceso e portais legíveis no Deserto, sem esconder o Kairo.
+> >
+> > Status: 🔴 pendente (19/10) — depende da [[ROADMAP_ARTE]] A08-T5.
+>
+> > [!failure]- Task A08-T6 — Luz noturna no primeiro plano
+> > - [ ] À noite o chão, os inimigos e o Kairo ficam azulados junto com o céu; de dia, sem mudança.
+> >
+> > Status: 🔴 pendente (19/10) — depende da [[ROADMAP_ARTE]] A08-T6.
 
 > [!success]- EPIC-A09 — Cartografia da Floresta Tropical — ✅ Passa (19/10) · 🟡 Alta
 > *Pronto quando*: o mapa mantém leitura e contraste em partida real, sem mostrar trechos não visitados, e a arte acompanha a revelação do sistema C16.

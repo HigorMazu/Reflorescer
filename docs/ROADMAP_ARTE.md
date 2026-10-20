@@ -13,10 +13,10 @@ par: "[[ROADMAP_QA_INTEGRACAO]]"
 descricao: Backlog de sprites, animação e estilização da demo e dos biomas pós-demo
 epicos_total: 9
 epicos_concluidos: 8
-tasks_total: 30
+tasks_total: 33
 tasks_prontas: 27
-tasks_bloqueadas: 0
-tasks_liberadas: 0
+tasks_bloqueadas: 1
+tasks_liberadas: 2
 ---
 # Roadmap de Arte — Sprites, Animação e Estilização (Higor)
 
@@ -290,7 +290,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ concluída (19/10) — validado jogando pelo Gustavo em 19/10.
 
-> [!warning]- EPIC-A08 — Deserto pós-demo — 🔄 Direção visual aprovada; animações de ataque pendentes · 🟡 Pós-demo
+> [!warning]- EPIC-A08 — Deserto pós-demo — 🔄 1ª área jogável no ar (19/10); áreas e cobra em produção · 🟡 Pós-demo
 > *Pronto quando*: o caminho começa com sol, passa gradualmente pela tarde e termina numa arena noturna com uma cobra grande, com a arte aprovada no jogo.
 >
 > **Direção aprovada pelo Higor (15/10):** fazer o Deserto antes da Tundra; mostrar o sol inicialmente, avançar para tarde e terminar à noite; o chefe final deve ser uma cobra grande do deserto. Também foram aprovados bote/mordida frontal, varrida de cauda e mergulho/emergência na areia. Ver `docs/art-review/desert-direction-v1.md`.
@@ -318,6 +318,24 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > > - **Entrega (15/10):** `Boss_CobraDesertoVisual.tscn` é uma apresentação animada sem IA de combate; não reutiliza indevidamente os golpes do Korrag.
 > >
 > > Status: 🟡 parcial (15/10) — visual e trio de ataques aprovados pelo Higor; faltam os quadros específicos de cauda/areia. IA, hitboxes, dano e fases pertencem à C15-T2.
+
+> > [!todo]- Task A08-T4 — Arte das áreas do Deserto
+> > - [ ] Plataformas, rochas e ruínas pra verticalidade (cânions), no padrão da faixa de chão atual.
+> > - [ ] Visual do hazard (proposta: areia movediça) e do ponto de restauração seco → vivo.
+> > - [ ] Fundos ou variações por área conforme a proposta aprovada ([[ROADMAP_DEV]] C15-T4).
+> >
+> > Status: ⛔ bloqueado (19/10) — aguarda a proposta de áreas ([[ROADMAP_DEV]] C15-T4).
+>
+> > [!todo]- Task A08-T5 — Marco de checkpoint e portais do Deserto
+> > - [ ] Marco de checkpoint próprio do Deserto, com estado apagado/aceso (hoje a `Deserto.tscn` usa o totem da Floresta).
+> > - [ ] Visual dos portais (hoje retângulos coloridos provisórios em todas as áreas, inclusive a passagem Covil ↔ Deserto).
+> >
+> > Status: 🟢 liberado (19/10) — a 1ª área já existe pra testar.
+>
+> > [!todo]- Task A08-T6 — Luz noturna não escurece chão e personagens
+> > - [ ] À noite o céu fica azul, mas o chão e o Kairo continuam com a cor de dia (visto na `Deserto.tscn` e na captura `desert-ingame-noite-v1.png`). Conferir o `DesertLighting` (CanvasModulate) no jogo.
+> >
+> > Status: 🟢 liberado (19/10) — achado na revisão de 19/10.
 
 > [!success]- EPIC-A09 — Cartografia da Floresta Tropical — ✅ Concluído (19/10) · 🟡 Alta
 > *Pronto quando*: o mapa aberto no jogo comunica as passagens entre as quatro áreas e oculta cada trecho não explorado, com leitura clara em 1280×720.

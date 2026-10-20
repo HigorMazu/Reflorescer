@@ -22,6 +22,12 @@ const AREAS := {
 		"label": "COVIL DE KORRAG", "origin": Vector2(964, 155),
 		"bounds": Rect2(-640, -280, 1280, 720), "cols": 3, "rows": 2,
 		"fill": Color("514136"), "edge": Color("d0ac78")
+	},
+	# Pós-demo (19/10): primeiro bioma além da Floresta, a leste do Covil.
+	"Deserto": {
+		"label": "DESERTO", "origin": Vector2(1000, 300),
+		"bounds": Rect2(0, 0, 3840, 720), "cols": 4, "rows": 1,
+		"fill": Color("6a5530"), "edge": Color("e3c27e")
 	}
 }
 
@@ -128,6 +134,7 @@ func _draw() -> void:
 	_draw_connection("SopeDaMata", 5, 1, "DosselVivo", 0, 5)
 	_draw_connection("DosselVivo", 3, 1, "IgarapeSufocado", 0, 1)
 	_draw_connection("IgarapeSufocado", 6, 1, "CovilDeKorrag", 0, 1)
+	_draw_connection("CovilDeKorrag", 2, 1, "Deserto", 0, 0)
 	for area in AREAS:
 		_draw_area(area, font)
 	if _current_area != "" and _is_known(_current_area, _current_col, _current_row):

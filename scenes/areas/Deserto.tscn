@@ -1,0 +1,131 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://kuhl1jc0cutg" path="res://scripts/world/AreaController.cs" id="area_script"]
+[ext_resource type="Script" path="res://scripts/art/DesertAreaDressing.gd" id="dressing"]
+[ext_resource type="Script" uid="uid://bqc07gusublgs" path="res://scripts/world/Checkpoint.cs" id="checkpoint"]
+[ext_resource type="Script" path="res://scripts/world/CheckpointTotemVisual.cs" id="checkpoint_art"]
+[ext_resource type="Script" uid="uid://cpll441xskn7r" path="res://scripts/world/TransitionTrigger.cs" id="transition"]
+[ext_resource type="PackedScene" uid="uid://faisca001" path="res://scenes/companion/Faisca.tscn" id="faisca"]
+[ext_resource type="PackedScene" uid="uid://hud001" path="res://scenes/ui/HUD.tscn" id="hud"]
+[ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="player"]
+[ext_resource type="PackedScene" path="res://scenes/bosses/Boss_CobraDesertoVisual.tscn" id="snake"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/Enemy_AbelhaAfricanizada.tscn" id="bee"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/Enemy_RatoPreto.tscn" id="rat"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/Enemy_BurroSelvagem.tscn" id="donkey"]
+[ext_resource type="Resource" path="res://resources/enemies/areas/Voador_Deserto.tres" id="stats_voador"]
+[ext_resource type="Resource" path="res://resources/enemies/areas/Rapido_Deserto.tres" id="stats_rapido"]
+[ext_resource type="Resource" path="res://resources/enemies/areas/Robusto_Deserto.tres" id="stats_robusto"]
+
+[sub_resource type="RectangleShape2D" id="Shape_Floor"]
+size = Vector2(3840, 80)
+
+[sub_resource type="RectangleShape2D" id="Shape_Wall"]
+size = Vector2(40, 720)
+
+[sub_resource type="RectangleShape2D" id="Shape_ToCovilDeKorrag"]
+size = Vector2(60, 100)
+
+[sub_resource type="RectangleShape2D" id="Shape_Checkpoint"]
+size = Vector2(32, 32)
+
+[node name="Deserto" type="Node2D" node_paths=PackedStringArray("SpawnPoints", "EnemySpawns", "Checkpoints")]
+script = ExtResource("area_script")
+AreaName = "Deserto"
+MusicTrack = "res://assets/audio/ambience/desert_wind.wav"
+UseCameraLimits = true
+CameraLimits = Rect2i(0, 0, 3840, 720)
+SpawnPoints = []
+EnemySpawns = []
+Checkpoints = [NodePath("Interactables/CheckpointDeserto")]
+
+[node name="Dressing" type="Node2D" parent="."]
+script = ExtResource("dressing")
+snake_path = NodePath("../Boss_CobraDesertoVisual")
+
+[node name="Geometry" type="Node2D" parent="."]
+
+[node name="Floor" type="StaticBody2D" parent="Geometry"]
+position = Vector2(1920, 515)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/Floor"]
+shape = SubResource("Shape_Floor")
+
+[node name="WallLeft" type="StaticBody2D" parent="Geometry"]
+position = Vector2(-20, 360)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/WallLeft"]
+shape = SubResource("Shape_Wall")
+
+[node name="ArenaGate" type="StaticBody2D" parent="Geometry"]
+position = Vector2(3200, 360)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/ArenaGate"]
+shape = SubResource("Shape_Wall")
+
+[node name="Interactables" type="Node2D" parent="."]
+
+[node name="CheckpointDeserto" type="Area2D" parent="Interactables"]
+position = Vector2(300, 475)
+collision_layer = 32
+collision_mask = 2
+script = ExtResource("checkpoint")
+CheckpointId = "cp_deserto_01"
+AutoActivateOnTouch = true
+TotemVisualPath = NodePath("TotemVisual")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/CheckpointDeserto"]
+position = Vector2(0, -16)
+shape = SubResource("Shape_Checkpoint")
+
+[node name="TotemVisual" type="Node2D" parent="Interactables/CheckpointDeserto"]
+z_index = 2
+script = ExtResource("checkpoint_art")
+
+[node name="Transitions" type="Node2D" parent="."]
+
+[node name="ToCovilDeKorrag" type="Area2D" parent="Transitions"]
+position = Vector2(40, 425)
+collision_layer = 32
+collision_mask = 2
+script = ExtResource("transition")
+TargetScene = "res://scenes/areas/CovilDeKorrag.tscn"
+TargetArea = "SpawnFromDeserto"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/ToCovilDeKorrag"]
+shape = SubResource("Shape_ToCovilDeKorrag")
+
+[node name="PortalVisual" type="ColorRect" parent="Transitions/ToCovilDeKorrag"]
+offset_left = -15.0
+offset_top = -50.0
+offset_right = 15.0
+offset_bottom = 50.0
+mouse_filter = 2
+color = Color(0.4, 0.2, 0.8, 0.6)
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Abelha1" parent="Enemies" instance=ExtResource("bee")]
+position = Vector2(850, 385)
+StatsResource = ExtResource("stats_voador")
+
+[node name="Rato1" parent="Enemies" instance=ExtResource("rat")]
+position = Vector2(1640, 450)
+StatsResource = ExtResource("stats_rapido")
+
+[node name="Burro1" parent="Enemies" instance=ExtResource("donkey")]
+position = Vector2(2450, 450)
+StatsResource = ExtResource("stats_robusto")
+
+[node name="Boss_CobraDesertoVisual" parent="." instance=ExtResource("snake")]
+position = Vector2(3430, 475)
+
+[node name="SpawnFromCovilDeKorrag" type="Marker2D" parent="." groups=["SpawnPoints"]]
+position = Vector2(140, 453)
+
+[node name="Player" parent="." instance=ExtResource("player")]
+position = Vector2(140, 453)
+
+[node name="Faisca" parent="." instance=ExtResource("faisca")]
+position = Vector2(100, 420)
+
+[node name="HUD" parent="." instance=ExtResource("hud")]

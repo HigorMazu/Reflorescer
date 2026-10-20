@@ -12,11 +12,11 @@ responsavel: Gustavo
 par: "[[ROADMAP_QA_CODIGO]]"
 descricao: Backlog de implementação da demo e do Deserto pós-demo (código)
 epicos_total: 17
-epicos_concluidos: 13
-tasks_total: 73
-tasks_prontas: 61
-tasks_bloqueadas: 3
-tasks_liberadas: 5
+epicos_concluidos: 15
+tasks_total: 76
+tasks_prontas: 65
+tasks_bloqueadas: 4
+tasks_liberadas: 3
 ---
 # Roadmap de Desenvolvimento — Código (Gustavo)
 
@@ -493,7 +493,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído — QA validado no Godot em 28/09 (Gustavo).
 
-> [!info]- EPIC-C11 — Áudio — 🔄 Em andamento · 🟡 Média
+> [!success]- EPIC-C11 — Áudio — ✅ Concluído (19/10) · 🟡 Média
 > *Pronto quando*: as pastas/buses de áudio existem, os 3 sons já esperados pelo código tocam de verdade, e a demo inteira tem pelo menos uma música por bioma e feedback sonoro nos hits principais.
 >
 > Responsabilidade do Gustavo.
@@ -528,26 +528,27 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído (14/10) — `MusicCheck.gd` confirmou as cinco faixas, transições e sobreposição com três SFX; `DemoRunCheck.gd` passou 89/89.
 
-> > [!todo]- Task C11-T5 — Trocar os SFX placeholder pelos sons finais
-> > - [ ] Substituir os 12 `.wav` de `assets/audio/sfx/` pelos sons finais, **mantendo os nomes**: `player_attack`, `player_jump`, `player_dash`, `player_hurt`, `sword_on`, `sword_off`, `enemy_hit`, `enemy_death`, `checkpoint_activate`, `restoration`, `boss_stomp`, `boss_defeat`.
-> > - [ ] Registrar a origem e a licença de cada som que não for do grupo (ex.: CC0) num `assets/audio/CREDITOS.md`.
-> > - [ ] Rodar `tools/qa/AudioCheck.gd` de novo (12/12) e ouvir na demo.
+> > [!success]- Task C11-T5 — Trocar os SFX placeholder pelos sons finais
+> > - [x] Substituir os 12 `.wav` de `assets/audio/sfx/` pelos sons finais, **mantendo os nomes**: `player_attack`, `player_jump`, `player_dash`, `player_hurt`, `sword_on`, `sword_off`, `enemy_hit`, `enemy_death`, `checkpoint_activate`, `restoration`, `boss_stomp`, `boss_defeat`.
+> > - [x] Registrar a origem e a licença de cada som que não for do grupo (ex.: CC0) num `assets/audio/CREDITOS.md`.
+> > - [x] Rodar `tools/qa/AudioCheck.gd` de novo (12/12) e ouvir na demo.
 > > - **Origem (11/10):** os atuais são placeholders sintetizados (C11-T2). Pra ouvir todos em sequência, gerar a prévia ou abrir os arquivos da pasta.
 > > - **Decisão do grupo (19/10):** o Higor faz os 12 sons autorais pelo mesmo método das músicas (síntese reproduzível em `tools/audio/`), mantendo os nomes dos arquivos; não precisa de licença de terceiros. Registrar em `assets/audio/CREDITOS.md`.
+> > - **Decisão do grupo (19/10):** os 12 SFX atuais e as 5 músicas autorais ficam como o áudio final da demo (já existe som pra cada ação). Se criarem algo melhor, trocam o arquivo mantendo o nome e atualizam aqui.
 > >
-> > Status: 🟢 liberado (19/10) — com o Higor (SFX autorais).
+> > Status: ✅ concluído (19/10) — SFX atuais aceitos como finais da demo.
 
-> [!info]- EPIC-C12 — Regressão Final / Release da Demo — 🔄 Em andamento · 🔴 Bloqueante
+> [!success]- EPIC-C12 — Regressão Final / Release da Demo — ✅ Concluído (19/10; build `.exe` adiada) · 🔴 Bloqueante
 > *Pronto quando*: o [[ROADMAP_QA_CODIGO]] inteiro passa, o [[ROADMAP_QA_INTEGRACAO]] inteiro passa, e a demo roda de ponta a ponta sem crash na frente de alguém de fora do grupo.
 >
 > Só começa depois que todos os épicos 🔴/🟠 acima estiverem concluídos.
 >
-> > [!todo]- Task C12-T1 — Regressão completa de código
-> > - [ ] Rodar o [[ROADMAP_QA_CODIGO]] inteiro, de ponta a ponta, e corrigir qualquer regressão.
+> > [!success]- Task C12-T1 — Regressão completa de código
+> > - [x] Rodar o [[ROADMAP_QA_CODIGO]] inteiro, de ponta a ponta, e corrigir qualquer regressão.
 > >
 > > - **Nota (11/10):** os épicos 🔴/🟠 de código estão concluídos (falta só o visual do checkpoint, C09-T3, e a música, C11-T4). Já existe uma bateria automática que cobre boa parte do [[ROADMAP_QA_CODIGO]]: `tools/qa/` (`DemoRunCheck`, `CombatCheck`, `DosselReachCheck`, `SaveReloadCheck`, `GcStressCheck`, `AudioCheck`, `FpsCheck`).
 > >
-> > Status: 🟢 liberado (19/10) — bateria `tools/qa/` + checks de arte verdes em 19/10; rodar a última vez depois da C11-T5.
+> > Status: ✅ concluído (19/10) — bateria completa verde em 19/10 depois das mudanças do dia: 12 scripts de `tools/qa/` (incl. `WorldMapCheck` 16/16 e `DesertLinkCheck` 24/24) + checks de arte.
 >
 > > [!success]- Task C12-T2 — Handoff pro Higor
 > > - [x] Entregar os blocos de mecânica que faltavam pra ele terminar a arte condicional (ex: como fica visualmente o wall grab, pra desenhar a animação certa).
@@ -556,8 +557,8 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído (19/10) — dispensado: o Higor resolveu o wall slide por código (`MovementStateEffects`, 12/10) sem precisar do handoff.
 >
-> > [!info]- Task C12-T3 — Integração incremental
-> > - [ ] Rodar o [[ROADMAP_QA_INTEGRACAO]] junto com o Higor assim que a arte de cada bloco chegar — não esperar tudo pronto pra testar.
+> > [!success]- Task C12-T3 — Integração incremental
+> > - [x] Rodar o [[ROADMAP_QA_INTEGRACAO]] junto com o Higor assim que a arte de cada bloco chegar — não esperar tudo pronto pra testar.
 > >
 > > - **Nota (05/10) — entrega do Higor (commit `f282c1b`):** chegaram só arquivos novos: Faísca (`FaiscaSpriteFrames.tres` + 12 PNGs), cenário tropical (fundo, faixas de chão, plataformas, brotos), `TropicalBackdrop.tscn`, shader de folhagem e o painel `ArtReview`. Fundo e restauração já integrados nas 4 áreas (ver `EPIC-C13` e C02-T4). **Não vieram** as edições em arquivos existentes que o README dele descreve: os 11 PNGs do Kairo sem a Faísca embutida (por isso continua aparecendo Faísca duplicada em jogo), o `Faisca.tscn` usando o sprite novo e a textura da luz, e o `TestLevel` com o cenário. Pedir pro Higor subir.
 > >
@@ -569,7 +570,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >   - Áudio: nenhum dos 12 `.wav` existe ainda (C11-T2) — bloqueia o [[ROADMAP_QA_INTEGRACAO]] A07.
 > > - **Nota (19/10) — entregas do Higor de 12/10 e 15/10:** integradas e revisadas (totem do checkpoint, `attack` do Korrag, wall slide, tela de fim, W/S no menu, músicas, mapa, prévia do Deserto e reskins). Corrigidos na revisão: caminho do `DemoEndCheck.gd` e os achados do mapa (C16-T3). Pendências: avaliação visual jogada do Gustavo (A01-T3, A04-T3, A05-T5, A06-T4/T5/T6, A09-T1) e os SFX autorais (C11-T5).
 > >
-> > Status: em andamento (19/10) — entregas de 12 e 15/10 integradas e validadas jogando pelo Gustavo; falta só integrar os SFX autorais (C11-T5).
+> > Status: ✅ concluído (19/10) — todas as entregas do Higor da demo integradas e validadas.
 
 > > [!success]- Task C12-T4 — Travamento aleatório do runtime .NET (`gchandle.is_released`)
 > > - [x] Reduzir a chance do travamento no jogo (ver hipóteses abaixo) e medir de novo com `CombatCheck.gd -- --stress`.
@@ -595,17 +596,19 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 
 ---
 
-> [!info]- EPIC-C15 — Deserto pós-demo e chefe cobra — 🔄 Planejado · 🟢 Pós-demo
+> [!info]- EPIC-C15 — Deserto pós-demo e chefe cobra — 🔄 Em andamento (1ª área jogável) · 🟢 Pós-demo
 > *Pronto quando*: após a demo, uma área jogável do Deserto progride do sol à tarde e à noite, culmina numa luta funcional contra a cobra grande e passa nos testes espelhados do [[ROADMAP_QA_CODIGO]] e do [[ROADMAP_QA_INTEGRACAO]] A08.
 >
 > **Contrato aprovado pelo Higor (15/10):** manter a direção de `docs/art-review/desert-direction-v1.md`. Os três golpes da cobra são bote/mordida frontal, varrida de cauda e mergulho/emergência na areia. Ataques, IA, colisões, dano, fases e progressão são trabalho de código; animações adicionais de cauda/areia estão em [[ROADMAP_ARTE]] A08-T3. A cena `DesertReview.tscn` é somente uma prévia visual e `Boss_CobraDesertoVisual.tscn` não tem combate. Nenhuma dessas tarefas altera a demo já entregue por si só.
 >
-> > [!todo]- Task C15-T1 — Transformar a prévia do Deserto em área jogável
+> > [!warning]- Task C15-T1 — Transformar a prévia do Deserto em área jogável
 > > - [ ] Construir o mapa de produção com plataformas, colisões, câmera, entrada/saída e posições definitivas dos três habitantes já apresentados; usar a faixa de terreno e a progressão dia → tarde → noite aprovadas na A08-T1/T2.
 > > - [ ] Vincular o avanço de luz ao percurso real, sem mudança brusca ao morrer, recarregar ou retornar a uma seção; preservar o comportamento das quatro áreas da demo.
 > > - [ ] Definir com o grupo a posição da entrada pós-demo, checkpoints, pontos de restauração e rota até a arena antes de fechar o layout; registrar essas decisões no GDD.
+> > - [x] **Primeira área jogável (19/10):** `scenes/areas/Deserto.tscn` (3840 px, chão plano), visual montado por `scripts/art/DesertAreaDressing.gd` com o céu, a luz e o chão do Higor; vento como trilha (`AudioManager.PlayMusic` aceita caminho `res://`); Abelha, Rato e Burro com stats próprios (`resources/enemies/areas/*_Deserto.tres`, provisórios = nível do Igarapé); bandeira `cp_deserto_01` na entrada (totem da Floresta por enquanto); portal de volta ao Covil; Deserto no mapa (M); barreira em x=3200 segura o jogador antes da cobra até a luta existir (C15-T2).
+> > - [x] Luz dia → tarde → noite segue a posição real do Kairo, então morrer, recarregar ou voltar não dá salto.
 > >
-> > Status: 🟢 liberado (15/10) — base visual aprovada e cena de revisão pronta; topologia e pontos de progressão finais ainda serão definidos pelo grupo.
+> > Status: 🟡 parcial (19/10) — 1ª área jogável `scenes/areas/Deserto.tscn` ligada ao Covil; o layout final depende da C15-T4.
 >
 > > [!todo]- Task C15-T2 — Combate próprio da cobra do Deserto
 > > - [ ] Criar boss funcional, sem reaproveitar a IA/golpes do Korrag, com estados de preparação, execução, recuperação, dano e morte. Usar `windup`/`attack` da prévia como base visual do bote frontal.
@@ -621,6 +624,26 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - [ ] Fazer a passagem da demo para o Deserto e do Deserto para o próximo trecho somente quando as rotas forem aprovadas; preservar saves existentes.
 > >
 > > Status: ⛔ bloqueado (15/10) — falta decidir recompensa e destino depois da cobra; a luta C15-T2 e o mapa C15-T1 podem avançar independentemente.
+
+> > [!todo]- Task C15-T4 — Mapa do Deserto em áreas (layout)
+> > - [ ] Validar com o Higor a proposta de áreas do [[Projetos/Reflorescer/🗺️ Roadmap#Mapa do Deserto (proposta de 19/10)|Roadmap]] (quantas, nomes, o que cada uma ensina, verticalidade e o hazard do bioma).
+> > - [ ] Construir as cenas aprovadas a partir da `Deserto.tscn` (que vira a 1ª área), com transições de ida e volta, câmera, plataformas e a arena da cobra separada.
+> > - [ ] Cada área no mapa (M) e coberta por teste (`DesertLinkCheck.gd` ou um percurso do Deserto).
+> > - [ ] Hazard próprio do bioma (proposta: areia movediça que afunda/atrasa, no papel da lama do Igarapé).
+> >
+> > Status: ⛔ bloqueado (19/10) — aguarda validar a proposta de áreas com o Higor.
+>
+> > [!todo]- Task C15-T5 — Restauração no Deserto (ODS 15)
+> > - [ ] Definir o que o Kairo restaura no Deserto (ligado ao gancho ODS 15 da cobra) e quantos pontos (proposta: um por área de exploração, como na Floresta).
+> > - [ ] Reaproveitar o `RestorationPoint` com o visual seco → vivo do Deserto (arte A08-T4).
+> >
+> > Status: ⛔ bloqueado (19/10) — aguarda o gancho ODS 15 da cobra.
+>
+> > [!todo]- Task C15-T6 — Música e stats do Deserto
+> > - [ ] Faixa autoral do Deserto (Higor, mesmo método das músicas da demo); o vento continua por baixo ou some na arena.
+> > - [ ] Aprovar os stats de Abelha, Rato e Burro (hoje provisórios no nível do Igarapé; o rascunho do [[👾 Bestiário]] de 28/09 é mais fraco que a curva atual).
+> >
+> > Status: 🟢 liberado (19/10) — dá pra começar.
 
 > [!success]- EPIC-C16 — Mapa explorável da Floresta Tropical — ✅ Implementado (ajustes de 19/10 incluídos) · 🟡 Alta
 > *Pronto quando*: as quatro áreas atuais aparecem numa cartografia conectada, Kairo vê apenas células percorridas, e o progresso permanece após salvar/continuar sem quebrar as transições da demo.
@@ -658,13 +681,14 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - [ ] O mapa ganha a camada de bioma (Floresta, Deserto...) e as ligações entre biomas.
 > > - [ ] `WorldMapCheck.gd` continua passando nas 4 áreas da demo.
 > >
-> > Status: 🟢 liberado (19/10) — pode começar junto com a C15-T1.
+> > Status: 🟢 liberado (19/10) — o Deserto entrou no mapa à mão (`AREAS` do `WorldMapOverlay.gd`); falta tornar configurável antes das próximas áreas.
 >
-> > [!todo]- Task C17-T2 — Ligação entre biomas
-> > - [ ] Definir de onde sai o caminho da Floresta Tropical pro bioma seguinte e onde o Deserto encaixa no mundo (hoje: produzido primeiro, mas 3º na ordem oficial, depois da Savana).
-> > - [ ] Implementar a transição entre biomas (cena de passagem ou portal), com spawn próprio e save.
+> > [!success]- Task C17-T2 — Ligação entre biomas
+> > - [x] Definir de onde sai o caminho da Floresta Tropical pro bioma seguinte e onde o Deserto encaixa no mundo (hoje: produzido primeiro, mas 3º na ordem oficial, depois da Savana).
+> > - [x] Implementar a transição entre biomas (cena de passagem ou portal), com spawn próprio e save.
+> > - **Decisão do grupo (19/10):** o Deserto sai do **leste do Covil**. Ao derrotar o Korrag aparece a tela de fim da demo; em "Continuar explorando" o jogador volta pela mata ou segue pro Deserto (a tela avisa do caminho novo). O portal `ToDeserto` fica fechado até o Korrag cair (`LockedUntilBossDefeated`).
 > >
-> > Status: ⛔ bloqueado (19/10) — aguarda a decisão do grupo sobre a ordem do mundo.
+> > Status: ✅ concluído (19/10) — `DesertLinkCheck.gd` 24/24.
 >
 > > [!todo]- Task C17-T3 — Habilidade liberada por cada boss
 > > - [ ] Definir o que cada boss libera (Korrag → dash; cobra do Deserto → ?) e quais caminhos cada habilidade abre (o "trava e destrava" do metroidvania).

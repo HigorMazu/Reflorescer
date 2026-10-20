@@ -12,9 +12,9 @@ responsavel: Gustavo
 par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 17
-epicos_concluidos: 13
-tasks_total: 73
-tasks_prontas: 61
+epicos_concluidos: 15
+tasks_total: 76
+tasks_prontas: 65
 tasks_bloqueadas: 5
 ---
 # Roadmap de QA — Código (Reflorescer)
@@ -452,7 +452,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): tela "Você caiu"; Esc não despausa; Tentar de novo leva ao checkpoint; Menu inicial funciona.
 
-> [!warning]- EPIC-C11 — Áudio — 🟡 Parcial (SFX finais pendentes) · 🟡 Média
+> [!success]- EPIC-C11 — Áudio — ✅ Passa (19/10) · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — pastas/buses existem, os 3 sons já esperados pelo código tocam de verdade, e dá pra sobrepor música + SFX sem cortar um ao outro.
 >
 > > [!success]- Task C11-T1 — Estrutura de pastas e buses
@@ -481,23 +481,24 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa (14/10) — cinco loops autorais carregam nas cenas de produção, tocam em sequência e passam em `MusicCheck.gd` com save preservado.
 
-> > [!failure]- Task C11-T5 — Sons finais no lugar dos placeholders
-> > - [ ] `tools/qa/AudioCheck.gd` 12/12 com os sons finais.
-> > - [ ] `assets/audio/CREDITOS.md` lista origem/licença de todo som que não for do grupo.
+> > [!success]- Task C11-T5 — Sons finais no lugar dos placeholders
+> > - [x] `tools/qa/AudioCheck.gd` 12/12 com os sons finais.
+> > - [x] `assets/audio/CREDITOS.md` lista origem/licença de todo som que não for do grupo.
+> > - **Decisão do grupo (19/10):** os 12 SFX atuais e as 5 músicas autorais ficam como o áudio final da demo (já existe som pra cada ação). Se criarem algo melhor, trocam o arquivo mantendo o nome e atualizam aqui.
 > >
-> > Status: 🔴 bloqueado (19/10) — aguarda os SFX autorais do Higor ([[ROADMAP_DEV]] C11-T5).
+> > Status: ✅ passa (19/10) — áudio atual aceito como final da demo; `AudioCheck.gd` 12/12 e `MusicCheck.gd` 5/5.
 
-> [!warning]- EPIC-C12 — Regressão Final / Release da Demo — 🟡 Parcial · 🔴 Bloqueante
+> [!success]- EPIC-C12 — Regressão Final / Release da Demo — ✅ Passa (19/10; build `.exe` adiada) · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — todo o [[ROADMAP_QA_CODIGO]] acima está ✅, e a demo roda de ponta a ponta sem crash/softlock.
 >
 > Só é testável depois que todos os Épicos 🔴/🟠 acima estiverem ✅.
 >
-> > [!warning]- Task C12-T1 — Regressão completa de código
-> > - [ ] Todos os Épicos 🔴/🟠 acima com todas as Tasks ✅.
-> > - [ ] Rodar o [[ROADMAP_QA_CODIGO]] inteiro de ponta a ponta depois de qualquer mudança grande — nenhuma regressão.
+> > [!success]- Task C12-T1 — Regressão completa de código
+> > - [x] Todos os Épicos 🔴/🟠 acima com todas as Tasks ✅.
+> > - [x] Rodar o [[ROADMAP_QA_CODIGO]] inteiro de ponta a ponta depois de qualquer mudança grande — nenhuma regressão.
 > > - [x] Bateria automática atual: `CombatCheck --stress`, `DosselReachCheck`, `GcStressCheck`, `AudioCheck`, `MusicCheck`, `DemoRunCheck` e `FpsCheck` passaram; os testes que atravessam a bandeira automática preservam o `save_0.json`.
 > >
-> > Status: 🟡 parcial (19/10) — bateria `tools/qa/` e checks de arte verdes (DemoEndCheck corrigido para o painel novo). Falta repetir depois dos SFX autorais (C11-T5) e das avaliações jogadas.
+> > Status: ✅ passa (19/10) — bateria completa verde em 19/10 depois das mudanças do dia: 12 scripts de `tools/qa/` (incl. `WorldMapCheck` 16/16 e `DesertLinkCheck` 24/24) + checks de arte.
 >
 > > [!success]- Task C12-T2 — Playtest de ponta a ponta (só código)
 > > - [x] Floresta Tropical → matar exemplares dos 3 arquétipos → derrotar Korrag → dash desbloqueado → seguir até o ponto de encerramento da demo, sem crash/softlock. Arte placeholder ainda ok aqui.
@@ -506,12 +507,12 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa (11/10) — partida completa do Gustavo + percurso automatizado. O playtest final com arte/áudio completos e alguém de fora fica no [[ROADMAP_QA_INTEGRACAO]] A07.
 >
-> > [!warning]- Task C12-T3 — Integração incremental com o Higor
-> > - [ ] Rodar [[ROADMAP_QA_INTEGRACAO]] junto com o Higor assim que a arte de cada bloco chegar, sem esperar tudo pronto.
+> > [!success]- Task C12-T3 — Integração incremental com o Higor
+> > - [x] Rodar [[ROADMAP_QA_INTEGRACAO]] junto com o Higor assim que a arte de cada bloco chegar, sem esperar tudo pronto.
 > >
 > > - [x] Rodada de 11/10: entregas do Higor de 05/10 a 09/10 integradas e [[ROADMAP_QA_INTEGRACAO]] rodado (A00–A06 passam, exceto pendências cadastradas).
 > >
-> > Status: 🟡 em andamento (19/10) — entregas de 12 e 15/10 integradas e validadas jogando pelo Gustavo; falta só integrar os SFX autorais (C11-T5).
+> > Status: ✅ passa (19/10) — entregas integradas e validadas jogando pelo Gustavo.
 
 > > [!success]- Task C12-T4 — Sem travamento do runtime .NET
 > > - [x] `tools/qa/CombatCheck.gd -- --stress` roda 5 vezes seguidas sem `FATAL: gchandle.is_released()`.
@@ -528,15 +529,15 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ⏭️ adiado (19/10) — fora da demo ([[ROADMAP_DEV]] C12-T5).
 
-> [!failure]- EPIC-C15 — Deserto pós-demo e chefe cobra — 🔴 Ainda não testável · 🟢 Pós-demo
+> [!warning]- EPIC-C15 — Deserto pós-demo e chefe cobra — 🟡 1ª área testável · 🟢 Pós-demo
 > *Pronto quando*: a área completa e a luta passam nos casos abaixo, além da verificação de integração visual A08. A prévia visual isolada de 15/10 não satisfaz estes testes de mecânica.
 >
-> > [!failure]- Task C15-T1 — Área jogável do Deserto
+> > [!warning]- Task C15-T1 — Área jogável do Deserto
 > > - [ ] Percorrer entrada → trecho ensolarado → tarde → arena noturna → saída sem buracos, softlock ou colisão desalinhada; os três habitantes aparecem em posições finais e interagem com Kairo.
 > > - [ ] A iluminação acompanha o progresso com transições contínuas; morte, retorno e reload restauram o estado visual adequado ao ponto do percurso.
 > > - [ ] Entrada, câmera, checkpoints e saída respeitam as decisões aprovadas; as quatro áreas da demo e seus saves continuam funcionando.
 > >
-> > Status: 🔴 pendente (15/10) — só existe a prévia `DesertReview.tscn`; depende da [[ROADMAP_DEV]] C15-T1.
+> > Status: 🟡 parcial (19/10) — 1ª área passa no `DesertLinkCheck.gd` (spawn, chão, vento, inimigos com stats do Deserto, bandeira, mapa, barreira antes da cobra); o percurso completo depende da C15-T4.
 >
 > > [!failure]- Task C15-T2 — Bote, cauda e areia da cobra
 > > - [ ] Cada golpe tem aviso, execução e recuperação distinguíveis; a hitbox só causa dano na janela ativa e não alcança além do desenho, em ambos os lados da arena.
@@ -552,6 +553,23 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [ ] Percurso completo da entrada do Deserto até a saída, com derrota do boss, termina sem crash, softlock ou regressão na demo.
 > >
 > > Status: 🔴 pendente (15/10) — depende da decisão de recompensa/destino e da [[ROADMAP_DEV]] C15-T3.
+
+> > [!failure]- Task C15-T4 — Mapa do Deserto em áreas
+> > - [ ] Percorrer todas as áreas aprovadas nos dois sentidos, com spawn certo, câmera, mapa e save.
+> > - [ ] O hazard do bioma atrasa/afunda sem prender o Kairo e reseta ao morrer.
+> >
+> > Status: 🔴 bloqueado (19/10) — depende da proposta de áreas ([[ROADMAP_DEV]] C15-T4).
+>
+> > [!failure]- Task C15-T5 — Restauração no Deserto
+> > - [ ] Cada ponto restaura uma vez, persiste no save, cura e conta pra recompensa do bioma.
+> >
+> > Status: 🔴 bloqueado (19/10) — depende do gancho ODS 15 ([[ROADMAP_DEV]] C15-T5).
+>
+> > [!failure]- Task C15-T6 — Música e stats do Deserto
+> > - [ ] A faixa do Deserto toca na área e troca sem corte com o Covil.
+> > - [ ] Os três inimigos usam os stats aprovados e o percurso fica difícil mas justo.
+> >
+> > Status: 🔴 pendente (19/10) — depende da [[ROADMAP_DEV]] C15-T6.
 
 > [!success]- EPIC-C16 — Mapa explorável da Floresta Tropical — ✅ Passa · 🟡 Alta
 > *Pronto quando*: a cartografia revela somente posições atravessadas, persiste no save e todas as transições atuais funcionam nos dois sentidos.
@@ -590,10 +608,10 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: 🔴 pendente (19/10) — depende da [[ROADMAP_DEV]] C17-T1.
 >
-> > [!failure]- Task C17-T2 — Ligação entre biomas
-> > - [ ] Ir e voltar entre a Floresta e o bioma seguinte, com spawn certo, mapa e save.
+> > [!success]- Task C17-T2 — Ligação entre biomas
+> > - [x] Ir e voltar entre a Floresta e o bioma seguinte, com spawn certo, mapa e save.
 > >
-> > Status: 🔴 bloqueado (19/10) — depende da decisão da ordem do mundo ([[ROADMAP_DEV]] C17-T2).
+> > Status: ✅ passa (19/10) — `DesertLinkCheck.gd` 24/24: portal fechado com o Korrag vivo, tela de fim avisa do Deserto, "Continuar explorando" abre o portal, Deserto jogável e volta ao Covil.
 >
 > > [!failure]- Task C17-T3 — Habilidade por boss
 > > - [ ] Derrotar cada boss libera a habilidade certa uma vez só, persiste no save e abre os caminhos previstos.
