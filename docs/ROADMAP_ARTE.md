@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-19
+atualizado: 2026-10-21
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: arte
@@ -14,9 +14,9 @@ descricao: Backlog de sprites, animação e estilização da demo e dos biomas p
 epicos_total: 9
 epicos_concluidos: 8
 tasks_total: 33
-tasks_prontas: 27
-tasks_bloqueadas: 1
-tasks_liberadas: 2
+tasks_prontas: 30
+tasks_bloqueadas: 0
+tasks_liberadas: 3
 ---
 # Roadmap de Arte — Sprites, Animação e Estilização (Higor)
 
@@ -313,29 +313,39 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > > [!warning]- Task A08-T3 — Cobra chefe do Deserto
 > > - [x] Silhueta grande e seis estados visuais (`idle`, `slither`, `windup`, `attack`, `hurt`, `dead`).
 > > - [x] Cena visual na arena noturna, com sibilo no início do bote.
-> > - [ ] Criar poses e efeitos distintos para a varrida de cauda e para entrar/sair da areia (`tail_sweep`, `burrow_enter`, `burrow_exit`), com preparação legível e ponto de contato estável; o `windup`/`attack` atual serve como base do bote frontal.
+> > - [x] Criar poses e efeitos distintos para a varrida de cauda e para entrar/sair da areia (`tail_sweep`, `burrow_enter`, `burrow_exit`), com preparação legível e ponto de contato estável; o `windup`/`attack` atual serve como base do bote frontal.
 > > - [ ] Revisar no Godot o timing dos novos estados com o protótipo de combate do Gustavo, sem deslocamento de canvas, cabeça, corpo ou cauda.
 > > - **Entrega (15/10):** `Boss_CobraDesertoVisual.tscn` é uma apresentação animada sem IA de combate; não reutiliza indevidamente os golpes do Korrag.
 > >
-> > Status: 🟡 parcial (15/10) — visual e trio de ataques aprovados pelo Higor; faltam os quadros específicos de cauda/areia. IA, hitboxes, dano e fases pertencem à C15-T2.
-
-> > [!todo]- Task A08-T4 — Arte das áreas do Deserto
-> > - [ ] Plataformas, rochas e ruínas pra verticalidade (cânions), no padrão da faixa de chão atual.
-> > - [ ] Visual do hazard (proposta: areia movediça) e do ponto de restauração seco → vivo.
-> > - [ ] Fundos ou variações por área conforme a proposta aprovada ([[ROADMAP_DEV]] C15-T4).
+> > **Entrega (21/10):** nove quadros novos em canvas 512×320, integrados ao `SandViperSpriteFrames.tres`; a prévia percorre bote, cauda, entrada e saída da areia. Folha e GIF atualizados em `docs/art-review/desert-snake-boss-v1.*`.
 > >
-> > Status: ⛔ bloqueado (19/10) — aguarda a proposta de áreas ([[ROADMAP_DEV]] C15-T4).
+> > Status: 🟡 parcial (21/10) — os novos ciclos foram aprovados pelo Higor em 21/10; falta revisar o encaixe com hitboxes e timing quando o protótipo C15-T2 existir.
+
+> > [!success]- Task A08-T4 — Arte das áreas do Deserto
+> > - [x] Plataformas, rochas e ruínas pra verticalidade (cânions), no padrão da faixa de chão atual.
+> > - [x] Visual do hazard (areia movediça) e do ponto de restauração seco → vivo.
+> > - [x] Fundos ou variações por área conforme a proposta visual da C15-T4: Portal do Sol, Garganta das Ruínas, Oásis Soterrado e Ninho da Serpente.
+> >
+> > **Entrega (21/10):** oito módulos transparentes de arenito em `assets/environment/desert/modules/`; areia movediça com ciclo `bubble` de quatro quadros e restauração em quatro estágios em `assets/environment/desert/hazards/`. Folha e GIF em `docs/art-review/desert-area-kit-v1.*`; canvases e recursos conferidos pelo `DesertReviewCheck.gd`.
+> >
+> > **Fundos (21/10):** quatro plates 1672×941 em `assets/environment/desert/areas/`, com composições distintas para entrada diurna, cânion vertical ao entardecer, oásis ramificado no crepúsculo e arena noturna. Proposta de conexões e folha de contraste em `docs/art-review/desert-areas-v1.md` e `desert-area-backgrounds-v1.png`.
+> >
+> > **Aprovação (21/10):** Higor aprovou os quatro fundos, os nomes Portal do Sol, Garganta das Ruínas, Oásis Soterrado e Ninho da Serpente, além do loop de conexões proposto.
+> >
+> > Status: ✅ concluída (21/10) — pacote visual aprovado; a montagem jogável continua na C15-T4.
 >
 > > [!todo]- Task A08-T5 — Marco de checkpoint e portais do Deserto
-> > - [ ] Marco de checkpoint próprio do Deserto, com estado apagado/aceso (hoje a `Deserto.tscn` usa o totem da Floresta).
-> > - [ ] Visual dos portais (hoje retângulos coloridos provisórios em todas as áreas, inclusive a passagem Covil ↔ Deserto).
+> > - [x] Marco de checkpoint próprio do Deserto, com estado apagado/aceso.
+> > - [x] Visual próprio da passagem Covil ↔ Deserto, substituindo os retângulos coloridos por arcos de arenito animados e uma variante com raízes no lado da floresta.
 > >
-> > Status: 🟢 liberado (19/10) — a 1ª área já existe pra testar.
+> > **Entrega (21/10):** sprites transparentes em `assets/environment/desert/desert_checkpoint_*` e `desert_portal_*`; brilho, grãos de areia e estado bloqueado continuam animados em código. Capturas em `docs/art-review/desert-entry-checkpoint-*-v2.png`.
+> >
+> > Status: ✅ aprovado pelo Higor (21/10).
 >
 > > [!todo]- Task A08-T6 — Luz noturna não escurece chão e personagens
-> > - [ ] À noite o céu fica azul, mas o chão e o Kairo continuam com a cor de dia (visto na `Deserto.tscn` e na captura `desert-ingame-noite-v1.png`). Conferir o `DesertLighting` (CanvasModulate) no jogo.
+> > - [x] À noite céu, chão, inimigos, cobra e Kairo recebem a mesma luz azul do `DesertLighting` na cena jogável.
 > >
-> > Status: 🟢 liberado (19/10) — achado na revisão de 19/10.
+> > Status: ✅ corrigida (21/10) — validada no renderer em `docs/art-review/desert-area-night-v2.png` e pelo `DesertReviewCheck.gd`.
 
 > [!success]- EPIC-A09 — Cartografia da Floresta Tropical — ✅ Concluído (19/10) · 🟡 Alta
 > *Pronto quando*: o mapa aberto no jogo comunica as passagens entre as quatro áreas e oculta cada trecho não explorado, com leitura clara em 1280×720.

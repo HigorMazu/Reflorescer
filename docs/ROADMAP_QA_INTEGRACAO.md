@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-19
+atualizado: 2026-10-21
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: arte
@@ -14,8 +14,8 @@ descricao: Casos de teste da integração código + arte
 epicos_total: 10
 epicos_concluidos: 8
 tasks_total: 35
-tasks_prontas: 25
-tasks_bloqueadas: 1
+tasks_prontas: 27
+tasks_bloqueadas: 0
 ---
 # Roadmap de QA — Integração (Código + Arte do Higor)
 
@@ -283,26 +283,28 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > [!warning]- Task A08-T3 — Cobra chefe
 > > - [x] Seis animações têm canvas 512×320 e a cobra aparece em escala grande à noite.
 > > - [x] Sibilo dispara com o bote na prévia.
-> > - [ ] Varrida de cauda e entrada/saída da areia têm animações próprias e antecipação legível, sem saltos entre quadros.
+> > - [x] Varrida de cauda e entrada/saída da areia têm animações próprias, canvas estável e antecipação legível na prévia.
 > > - [ ] Validar hitboxes, dano, fases, morte e saída no confronto real quando a mecânica existir.
 > > - **Verificação (15/10):** `Boss_CobraDesertoVisual.tscn` apresenta a arte, sem script de combate.
 > >
-> > Status: 🟡 parcial (15/10) — direção visual e três ataques aprovados; faltam quadros específicos de cauda/areia (A08-T3) e luta funcional (C15-T2/C15-T3).
+> > Status: 🟡 parcial (21/10) — os nove quadros de cauda/areia passaram no `DesertReviewCheck.gd`; falta a luta funcional C15-T2/C15-T3 para validar contato e timing.
 
 > > [!failure]- Task A08-T4 — Arte das áreas do Deserto
-> > - [ ] Plataformas e ruínas alinhadas à colisão; hazard e restauração legíveis em 1280×720.
+> > - [x] Módulos de plataformas/ruínas usam canvas estável; hazard e restauração têm leitura clara na folha de revisão.
+> > - [x] Quatro fundos distintos preservam contraste com plataformas, hazard, restauração e cobra na composição de referência.
+> > - [ ] Conferir alinhamento às colisões e leitura em 1280×720 dentro das salas finais C15-T4.
 > >
-> > Status: 🔴 bloqueado (19/10) — depende da [[ROADMAP_ARTE]] A08-T4.
+> > Status: 🟡 parcial (21/10) — módulos, areia movediça, restauração e quatro fundos foram aprovados pelo Higor e passam no `DesertReviewCheck.gd`; a verificação dentro das salas jogáveis espera a implementação C15-T4.
 >
 > > [!failure]- Task A08-T5 — Marco de checkpoint e portais do Deserto
-> > - [ ] Marco apagado/aceso e portais legíveis no Deserto, sem esconder o Kairo.
+> > - [x] Marco apagado/aceso e passagem Covil ↔ Deserto possuem arte própria, animação discreta e centro aberto, sem esconder o Kairo.
 > >
-> > Status: 🔴 pendente (19/10) — depende da [[ROADMAP_ARTE]] A08-T5.
+> > Status: ✅ passa (21/10) — aprovado pelo Higor; capturas reais em `desert-entry-checkpoint-*-v2.png` e fluxo funcional 24/24 no `DesertLinkCheck.gd`.
 >
 > > [!failure]- Task A08-T6 — Luz noturna no primeiro plano
-> > - [ ] À noite o chão, os inimigos e o Kairo ficam azulados junto com o céu; de dia, sem mudança.
+> > - [x] À noite o chão, os inimigos, a cobra e o Kairo ficam azulados junto com o céu; de dia, sem mudança.
 > >
-> > Status: 🔴 pendente (19/10) — depende da [[ROADMAP_ARTE]] A08-T6.
+> > Status: ✅ passa (21/10) — `DesertReviewCheck.gd` verde e captura da cena de produção em `desert-area-night-v2.png`.
 
 > [!success]- EPIC-A09 — Cartografia da Floresta Tropical — ✅ Passa (19/10) · 🟡 Alta
 > *Pronto quando*: o mapa mantém leitura e contraste em partida real, sem mostrar trechos não visitados, e a arte acompanha a revelação do sistema C16.

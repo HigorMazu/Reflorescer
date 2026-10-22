@@ -105,12 +105,18 @@ func _process(delta: float) -> void:
 		if snake_sprite.animation != &"idle":
 			snake_sprite.play(&"idle")
 		return
-	snake_clock = fposmod(snake_clock + delta, 4.0)
+	snake_clock = fposmod(snake_clock + delta, 8.4)
 	var next_animation: StringName = &"idle"
 	if snake_clock >= 1.4 and snake_clock < 2.1:
 		next_animation = &"windup"
 	elif snake_clock >= 2.1 and snake_clock < 3.1:
 		next_animation = &"attack"
+	elif snake_clock >= 3.6 and snake_clock < 4.35:
+		next_animation = &"tail_sweep"
+	elif snake_clock >= 5.0 and snake_clock < 5.85:
+		next_animation = &"burrow_enter"
+	elif snake_clock >= 6.25 and snake_clock < 7.1:
+		next_animation = &"burrow_exit"
 	if snake_sprite.animation != next_animation:
 		snake_sprite.play(next_animation)
 		if next_animation == &"attack":

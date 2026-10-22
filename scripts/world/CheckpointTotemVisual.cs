@@ -5,6 +5,13 @@ namespace Joguim.World
     /// <summary>Forest checkpoint rooted on the terrain baseline (local y = 0).</summary>
     public partial class CheckpointTotemVisual : Node2D
     {
+        public enum VisualTheme { Forest, Desert }
+
+        [Export] public VisualTheme Theme = VisualTheme.Forest;
+        private static readonly Texture2D DesertOff = GD.Load<Texture2D>(
+            "res://assets/environment/desert/desert_checkpoint_off_v1.png");
+        private static readonly Texture2D DesertOn = GD.Load<Texture2D>(
+            "res://assets/environment/desert/desert_checkpoint_on_v1.png");
         public bool Activated { get; private set; }
         private float _time;
         private float _activationFlash;
@@ -20,11 +27,17 @@ namespace Joguim.World
         {
             _time += (float)delta;
             _activationFlash = Mathf.Max(0f, _activationFlash - (float)delta * 1.3f);
-            if (Activated || _activationFlash > 0f) QueueRedraw();
+            if (Activated || _activationFlash > 0f || Theme == VisualTheme.Desert) QueueRedraw();
         }
 
         public override void _Draw()
         {
+            if (Theme == VisualTheme.Desert)
+            {
+                DrawDesertTotem();
+                return;
+            }
+
             float glow = Activated ? .38f + Mathf.Sin(_time * 3.8f) * .12f : 0f;
             float burst = _activationFlash * _activationFlash;
             if (Activated)
@@ -86,6 +99,44 @@ namespace Joguim.World
                     Vector2 to = new(Mathf.Cos(angle) * (13 + burst * 12),
                         -30 + Mathf.Sin(angle) * (13 + burst * 12));
                     DrawLine(from, to, new Color(.91f, 1f, .65f, _activationFlash), 2);
+                }
+            }
+        }
+
+        private void DrawDesertTotem()
+        {
+            float pulse = Activated ? .55f + Mathf.Sin(_time * 3.2f) * .18f : .08f;
+            float burst = _activationFlash * _activationFlash;
+
+            // Painted asset shares the terrain palette; code only adds state animation.
+            Texture2D texture = Activated ? DesertOn : DesertOff;
+            DrawTextureRect(texture, new Rect2(-65, -87, 130, 87), false);
+            if (Activated)
+            {
+                DrawCircle(new Vector2(0, -47), 16 + burst * 9,
+                    new Color(.83f, .95f, .45f, .08f + pulse * .14f));
+            }
+
+            // Slow drifting grains keep the marker alive without becoming a HUD beacon.
+            for (int i = 0; i < 5; i++)
+            {
+                float phase = _time * (.65f + i * .07f) + i * 1.31f;
+                float x = Mathf.Sin(phase) * (14 + i * 2);
+                float y = -5 - Mathf.PosMod(phase * 9f, 56f);
+                float alpha = Activated ? .22f + pulse * .28f : .12f;
+                DrawCircle(new Vector2(x, y), 1.2f + (i % 2) * .5f,
+                    new Color(.94f, .69f, .31f, alpha));
+            }
+
+            if (_activationFlash > 0f)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    float angle = i * Mathf.Tau / 8f;
+                    Vector2 from = new(Mathf.Cos(angle) * 8, -47 + Mathf.Sin(angle) * 8);
+                    Vector2 to = new(Mathf.Cos(angle) * (16 + burst * 14),
+                        -47 + Mathf.Sin(angle) * (16 + burst * 14));
+                    DrawLine(from, to, new Color(.98f, .84f, .39f, _activationFlash), 2);
                 }
             }
         }

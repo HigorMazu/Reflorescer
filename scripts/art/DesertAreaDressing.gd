@@ -18,6 +18,7 @@ const GROUND: Texture2D = preload("res://assets/environment/desert/desert_ground
 
 var _snake: AnimatedSprite2D
 var _snake_clock := 0.0
+var _wind_clock := 0.0
 
 
 func _ready() -> void:
@@ -43,9 +44,12 @@ func _ready() -> void:
 	var snake_root := get_node_or_null(snake_path)
 	if snake_root != null:
 		_snake = snake_root.get_node_or_null("AnimatedSprite2D") as AnimatedSprite2D
+	queue_redraw()
 
 
 func _process(delta: float) -> void:
+	_wind_clock += delta
+	queue_redraw()
 	if _snake == null:
 		return
 	var player := get_tree().get_first_node_in_group("Player") as Node2D
@@ -53,15 +57,32 @@ func _process(delta: float) -> void:
 		if _snake.animation != &"idle":
 			_snake.play(&"idle")
 		return
-	_snake_clock = fposmod(_snake_clock + delta, 4.0)
+	_snake_clock = fposmod(_snake_clock + delta, 8.4)
 	var next: StringName = &"idle"
 	if _snake_clock >= 1.4 and _snake_clock < 2.1:
 		next = &"windup"
 	elif _snake_clock >= 2.1 and _snake_clock < 3.1:
 		next = &"attack"
+	elif _snake_clock >= 3.6 and _snake_clock < 4.35:
+		next = &"tail_sweep"
+	elif _snake_clock >= 5.0 and _snake_clock < 5.85:
+		next = &"burrow_enter"
+	elif _snake_clock >= 6.25 and _snake_clock < 7.1:
+		next = &"burrow_exit"
 	if _snake.animation != next:
 		_snake.play(next)
 		if next == &"attack":
 			var audio := get_node_or_null("/root/AudioManager")
 			if audio != null:
 				audio.call("PlaySfx", "snake_hiss.wav", -7.0, 0.82)
+
+
+func _draw() -> void:
+	# Thin sand streaks move at different speeds and remain behind gameplay sprites.
+	for index in range(14):
+		var phase := _wind_clock * (34.0 + index * 1.7) + index * 271.0
+		var x := fposmod(phase, world_width + 180.0) - 90.0
+		var y := floor_y - 8.0 - float((index * 17) % 54)
+		var length := 10.0 + float(index % 4) * 6.0
+		var alpha := .10 + float(index % 3) * .035
+		draw_line(Vector2(x, y), Vector2(x + length, y - 2), Color(0.94, 0.69, 0.32, alpha), 1.2)

@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-19
+atualizado: 2026-10-21
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
@@ -15,8 +15,8 @@ epicos_total: 17
 epicos_concluidos: 15
 tasks_total: 76
 tasks_prontas: 65
-tasks_bloqueadas: 4
-tasks_liberadas: 3
+tasks_bloqueadas: 3
+tasks_liberadas: 4
 ---
 # Roadmap de Desenvolvimento — Código (Gustavo)
 
@@ -605,7 +605,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - [ ] Construir o mapa de produção com plataformas, colisões, câmera, entrada/saída e posições definitivas dos três habitantes já apresentados; usar a faixa de terreno e a progressão dia → tarde → noite aprovadas na A08-T1/T2.
 > > - [ ] Vincular o avanço de luz ao percurso real, sem mudança brusca ao morrer, recarregar ou retornar a uma seção; preservar o comportamento das quatro áreas da demo.
 > > - [ ] Definir com o grupo a posição da entrada pós-demo, checkpoints, pontos de restauração e rota até a arena antes de fechar o layout; registrar essas decisões no GDD.
-> > - [x] **Primeira área jogável (19/10):** `scenes/areas/Deserto.tscn` (3840 px, chão plano), visual montado por `scripts/art/DesertAreaDressing.gd` com o céu, a luz e o chão do Higor; vento como trilha (`AudioManager.PlayMusic` aceita caminho `res://`); Abelha, Rato e Burro com stats próprios (`resources/enemies/areas/*_Deserto.tres`, provisórios = nível do Igarapé); bandeira `cp_deserto_01` na entrada (totem da Floresta por enquanto); portal de volta ao Covil; Deserto no mapa (M); barreira em x=3200 segura o jogador antes da cobra até a luta existir (C15-T2).
+> > - [x] **Primeira área jogável (19/10; arte revisada em 21/10):** `scenes/areas/Deserto.tscn` (3840 px, chão plano), céu, luz e chão do Higor; vento como trilha; Abelha, Rato e Burro com stats próprios (`resources/enemies/areas/*_Deserto.tres`, provisórios = nível do Igarapé); checkpoint próprio `cp_deserto_01`; passagem Covil ↔ Deserto com arcos animados; Deserto no mapa (M); barreira em x=3200 segura o jogador antes da cobra até a luta existir (C15-T2).
 > > - [x] Luz dia → tarde → noite segue a posição real do Kairo, então morrer, recarregar ou voltar não dá salto.
 > >
 > > Status: 🟡 parcial (19/10) — 1ª área jogável `scenes/areas/Deserto.tscn` ligada ao Covil; o layout final depende da C15-T4.
@@ -613,7 +613,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > [!todo]- Task C15-T2 — Combate próprio da cobra do Deserto
 > > - [ ] Criar boss funcional, sem reaproveitar a IA/golpes do Korrag, com estados de preparação, execução, recuperação, dano e morte. Usar `windup`/`attack` da prévia como base visual do bote frontal.
 > > - [ ] Implementar os três ataques aprovados: bote/mordida frontal, varrida de cauda e mergulho/emergência na areia. Cada um deve ter aviso legível, janela de dano delimitada e alcance coerente com a animação; o deslocamento subterrâneo não pode deixar hitbox fantasma.
-> > - [ ] Integrar as futuras animações e efeitos `tail_sweep`, `burrow_enter` e `burrow_exit` da A08-T3, com fallback temporário enquanto forem produzidos; ajustar vida, dano e cadência por playtest, sem fixar números neste roadmap.
+> > - [ ] Integrar as animações `tail_sweep`, `burrow_enter` e `burrow_exit` entregues pela A08-T3 em 21/10; ajustar hitboxes, vida, dano e cadência por playtest, sem fixar números neste roadmap.
 > > - [ ] Reproduzir o sibilo e demais sons de combate em momentos ligados aos golpes, mantendo os volumes compatíveis com música e vento.
 > >
 > > Status: 🟢 liberado (15/10) — trio de ataques aprovado; protótipo de mecânica pode começar com arte provisória e concluir após a A08-T3.
@@ -626,18 +626,24 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > Status: ⛔ bloqueado (15/10) — falta decidir recompensa e destino depois da cobra; a luta C15-T2 e o mapa C15-T1 podem avançar independentemente.
 
 > > [!todo]- Task C15-T4 — Mapa do Deserto em áreas (layout)
-> > - [ ] Validar com o Higor a proposta de áreas do [[Projetos/Reflorescer/🗺️ Roadmap#Mapa do Deserto (proposta de 19/10)|Roadmap]] (quantas, nomes, o que cada uma ensina, verticalidade e o hazard do bioma).
+> > - [x] Validar com o Higor a proposta de áreas: Portal do Sol, Garganta das Ruínas, Oásis Soterrado e Ninho da Serpente, com verticalidade, areia movediça e um loop de retorno.
 > > - [ ] Construir as cenas aprovadas a partir da `Deserto.tscn` (que vira a 1ª área), com transições de ida e volta, câmera, plataformas e a arena da cobra separada.
 > > - [ ] Cada área no mapa (M) e coberta por teste (`DesertLinkCheck.gd` ou um percurso do Deserto).
 > > - [ ] Hazard próprio do bioma (proposta: areia movediça que afunda/atrasa, no papel da lama do Igarapé).
 > >
-> > Status: ⛔ bloqueado (19/10) — aguarda validar a proposta de áreas com o Higor.
+> > **Arte disponível (21/10):** `assets/environment/desert/modules/` traz plataformas, paredão, pilar, ruínas, rochas e vegetação seca; `assets/environment/desert/hazards/DesertQuicksandSpriteFrames.tres` traz o ciclo visual de areia movediça. Ainda é necessário construir as colisões, lentidão/afundamento e distribuir o kit nas salas aprovadas.
+> >
+> > **Proposta visual aprovada (21/10):** `docs/art-review/desert-areas-v1.md` organiza Portal do Sol → Garganta das Ruínas → Ninho da Serpente, com Oásis Soterrado como ramificação inferior que retorna à Garganta. Os quatro fundos estão em `assets/environment/desert/areas/`; Higor aprovou nomes, fundos e conexões.
+> >
+> > Status: 🟢 liberado (21/10) — direção, kit e quatro salas aprovados; falta implementar o percurso, as transições, o mapa e a areia movediça.
 >
 > > [!todo]- Task C15-T5 — Restauração no Deserto (ODS 15)
 > > - [ ] Definir o que o Kairo restaura no Deserto (ligado ao gancho ODS 15 da cobra) e quantos pontos (proposta: um por área de exploração, como na Floresta).
 > > - [ ] Reaproveitar o `RestorationPoint` com o visual seco → vivo do Deserto (arte A08-T4).
 > >
-> > Status: ⛔ bloqueado (19/10) — aguarda o gancho ODS 15 da cobra.
+> > **Arte disponível (21/10):** quatro estágios `desert_restoration_00..03.png` mostram solo rachado, broto, água retornando e oásis restaurado.
+> >
+> > Status: ⛔ bloqueado (21/10) — o visual está pronto; ainda aguarda definir o gancho ODS 15, a quantidade e a posição dos pontos.
 >
 > > [!todo]- Task C15-T6 — Música e stats do Deserto
 > > - [ ] Faixa autoral do Deserto (Higor, mesmo método das músicas da demo); o vento continua por baixo ou some na arena.
