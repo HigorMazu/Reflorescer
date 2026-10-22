@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://bqc07gusublgs" path="res://scripts/world/Checkpoint.cs" id="checkpoint"]
 [ext_resource type="Script" path="res://scripts/world/CheckpointTotemVisual.cs" id="checkpoint_art"]
 [ext_resource type="Script" uid="uid://cpll441xskn7r" path="res://scripts/world/TransitionTrigger.cs" id="transition"]
+[ext_resource type="Script" path="res://scripts/world/DesertPortalVisual.cs" id="desert_portal_art"]
 [ext_resource type="PackedScene" uid="uid://faisca001" path="res://scenes/companion/Faisca.tscn" id="faisca"]
 [ext_resource type="PackedScene" uid="uid://hud001" path="res://scenes/ui/HUD.tscn" id="hud"]
 [ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="player"]
@@ -80,6 +81,7 @@ shape = SubResource("Shape_Checkpoint")
 [node name="TotemVisual" type="Node2D" parent="Interactables/CheckpointDeserto"]
 z_index = 2
 script = ExtResource("checkpoint_art")
+Theme = 1
 
 [node name="Transitions" type="Node2D" parent="."]
 
@@ -94,13 +96,9 @@ TargetArea = "SpawnFromDeserto"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/ToCovilDeKorrag"]
 shape = SubResource("Shape_ToCovilDeKorrag")
 
-[node name="PortalVisual" type="ColorRect" parent="Transitions/ToCovilDeKorrag"]
-offset_left = -15.0
-offset_top = -50.0
-offset_right = 15.0
-offset_bottom = 50.0
-mouse_filter = 2
-color = Color(0.4, 0.2, 0.8, 0.6)
+[node name="PortalVisual" type="Node2D" parent="Transitions/ToCovilDeKorrag"]
+z_index = 2
+script = ExtResource("desert_portal_art")
 
 [node name="Enemies" type="Node2D" parent="."]
 

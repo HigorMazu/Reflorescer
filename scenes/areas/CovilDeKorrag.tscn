@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" path="res://assets/environment/tropical/covil_ground_candidate_v1.png" id="covil_ground"]
 [ext_resource type="Script" path="res://scripts/art/ModularTerrainStrip.gd" id="modular_terrain"]
 [ext_resource type="Script" uid="uid://cpll441xskn7r" path="res://scripts/world/TransitionTrigger.cs" id="transition"]
+[ext_resource type="Script" path="res://scripts/world/DesertPortalVisual.cs" id="desert_portal_art"]
 
 [sub_resource type="RectangleShape2D" id="Shape_WallLeft"]
 size = Vector2(40, 720)
@@ -205,13 +206,10 @@ LockedUntilBossDefeated = "boss_javali"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/ToDeserto"]
 shape = SubResource("Shape_ToDeserto")
 
-[node name="PortalVisual" type="ColorRect" parent="Transitions/ToDeserto"]
-offset_left = -15.0
-offset_top = -50.0
-offset_right = 15.0
-offset_bottom = 50.0
-mouse_filter = 2
-color = Color(0.85, 0.62, 0.3, 0.7)
+[node name="PortalVisual" type="Node2D" parent="Transitions/ToDeserto"]
+z_index = 2
+script = ExtResource("desert_portal_art")
+ForestSide = true
 
 [node name="Enemies" type="Node2D" parent="." unique_id=1592147734]
 

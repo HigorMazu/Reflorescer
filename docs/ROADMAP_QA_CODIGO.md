@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-19
+atualizado: 2026-10-21
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
@@ -558,7 +558,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [ ] Percorrer todas as áreas aprovadas nos dois sentidos, com spawn certo, câmera, mapa e save.
 > > - [ ] O hazard do bioma atrasa/afunda sem prender o Kairo e reseta ao morrer.
 > >
-> > Status: 🔴 bloqueado (19/10) — depende da proposta de áreas ([[ROADMAP_DEV]] C15-T4).
+> > Status: 🔴 pendente de implementação (21/10) — quatro áreas e conexões aprovadas pelo Higor; depende agora da execução da [[ROADMAP_DEV]] C15-T4.
 >
 > > [!failure]- Task C15-T5 — Restauração no Deserto
 > > - [ ] Cada ponto restaura uma vez, persiste no save, cura e conta pra recompensa do bioma.

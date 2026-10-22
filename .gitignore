@@ -14,6 +14,8 @@ obj/
 # Build
 Build/
 build/
+__pycache__/
+*.pyc
 
 # IDE
 .vs/
