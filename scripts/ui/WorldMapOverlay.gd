@@ -22,6 +22,12 @@ const AREAS := {
 		"label": "COVIL DE KORRAG", "origin": Vector2(964, 155),
 		"bounds": Rect2(-640, -280, 1280, 720), "cols": 3, "rows": 2,
 		"fill": Color("514136"), "edge": Color("d0ac78")
+	},
+	# Pós-demo (19/10): primeiro bioma além da Floresta, a leste do Covil.
+	"Deserto": {
+		"label": "DESERTO", "origin": Vector2(1000, 300),
+		"bounds": Rect2(0, 0, 3840, 720), "cols": 4, "rows": 1,
+		"fill": Color("6a5530"), "edge": Color("e3c27e")
 	}
 }
 
@@ -69,6 +75,12 @@ func _process(_delta: float) -> void:
 		queue_redraw()
 
 
+# GameManager pergunta antes de abrir: cenas sem cartografia não podem pausar com o mapa invisível.
+func has_map() -> bool:
+	var scene := get_tree().current_scene
+	return scene != null and AREAS.has(scene.scene_file_path.get_file().get_basename())
+
+
 func _record_player_cell(area: String) -> void:
 	var player := get_tree().get_first_node_in_group("Player") as Node2D
 	if player == null:
@@ -113,7 +125,7 @@ func _draw() -> void:
 	_draw_corner_flourish(Vector2(54, 666), 1.0, -1.0)
 	_draw_corner_flourish(Vector2(1226, 666), -1.0, -1.0)
 	var font := ThemeDB.fallback_font
-	draw_string(font, Vector2(508, 83), "MAPA DE REFLORESCER", HORIZONTAL_ALIGNMENT_CENTER, 270, 25, Color("e5ddbc"))
+	draw_string(font, Vector2(340, 83), "MAPA DE REFLORESCER", HORIZONTAL_ALIGNMENT_CENTER, 600, 25, Color("e5ddbc"))
 	draw_line(Vector2(500, 97), Vector2(780, 97), Color("738e71"), 1.0)
 	draw_string(font, Vector2(80, 616), "Apenas caminhos percorridos aparecem no mapa", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("bdc7ac"))
 	draw_string(font, Vector2(958, 616), "M / ESC  ·  FECHAR", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("bdc7ac"))
@@ -122,6 +134,7 @@ func _draw() -> void:
 	_draw_connection("SopeDaMata", 5, 1, "DosselVivo", 0, 5)
 	_draw_connection("DosselVivo", 3, 1, "IgarapeSufocado", 0, 1)
 	_draw_connection("IgarapeSufocado", 6, 1, "CovilDeKorrag", 0, 1)
+	_draw_connection("CovilDeKorrag", 2, 1, "Deserto", 0, 0)
 	for area in AREAS:
 		_draw_area(area, font)
 	if _current_area != "" and _is_known(_current_area, _current_col, _current_row):

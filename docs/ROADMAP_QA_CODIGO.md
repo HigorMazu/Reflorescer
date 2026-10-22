@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-15
+atualizado: 2026-10-19
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
@@ -11,11 +11,11 @@ papel: qa
 responsavel: Gustavo
 par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
-epicos_total: 16
-epicos_concluidos: 11
-tasks_total: 68
-tasks_prontas: 58
-tasks_bloqueadas: 6
+epicos_total: 17
+epicos_concluidos: 15
+tasks_total: 76
+tasks_prontas: 65
+tasks_bloqueadas: 5
 ---
 # Roadmap de QA — Código (Reflorescer)
 
@@ -338,7 +338,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — por script no Godot em 11/10 (Claude, `tools/qa/DemoRunCheck.gd`, 89 verificações, 0 falhas): Novo jogo → Sopé → Dossel → Igarapé → Covil pelos portais reais, com as voltas Dossel→Sopé e Igarapé→Dossel; em todas as 7 transições o Kairo nasce no x do marker, em pé no chão e dentro do mundo. Korrag: fase 2 com ≤50%, enraged com ≤20%, `BossDefeated` uma vez, Dash desbloqueado uma vez, notificação "Nova habilidade: Dash". Teste dirigido: não mede dificuldade, sensação nem FPS (C12-T2/A07).
 
-> [!warning]- EPIC-C14 — Cura e Recompensas de Restauração — 🟡 Parcial · 🔴 Bloqueante
+> [!success]- EPIC-C14 — Cura e Recompensas de Restauração — ✅ Passa na demo (T4/T5 adiados pro jogo completo) · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — o Kairo recupera vida restaurando e passando na bandeira, e cada restauração dá recompensas visíveis.
 >
 > > [!success]- Task C14-T1 — Restaurar cura e dá +10 de vida máxima
@@ -358,17 +358,17 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa (11/10, Claude) — `tools/qa/DemoEndCheck.gd` 15/15 (0, 1 e 3 áreas restauradas de verdade, Korrag derrotado).
 >
-> > [!failure]- Task C14-T4 — Faísca fica mais forte ao restaurar
+> > [!todo]- Task C14-T4 — Faísca fica mais forte ao restaurar
 > > - [ ] Cada restauração muda a Faísca de um jeito perceptível, e o efeito continua depois de trocar de área e Continuar.
 > >
-> > Status: 🔴 bloqueado (11/10) — depende da definição ([[ROADMAP_DEV]] C14-T4).
+> > Status: ⏭️ adiado (19/10) — fora da demo ([[ROADMAP_DEV]] C14-T4).
 >
-> > [!failure]- Task C14-T5 — Caminho novo ao restaurar
+> > [!todo]- Task C14-T5 — Caminho novo ao restaurar
 > > - [ ] Antes de restaurar, o caminho não existe; depois, aparece e é alcançável; ao voltar pra área (ou Continuar), continua aberto.
 > >
-> > Status: 🔴 bloqueado (11/10) — depende da definição e da arte ([[ROADMAP_DEV]] C14-T5).
+> > Status: ⏭️ adiado (19/10) — fora da demo ([[ROADMAP_DEV]] C14-T5).
 
-> [!warning]- EPIC-C09 — Save, Checkpoint e Respawn — 🟡 Parcial (visual do checkpoint) · 🟡 Média
+> [!success]- EPIC-C09 — Save, Checkpoint e Respawn — ✅ Passa (19/10) · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — habilidade desbloqueada persiste em disco imediatamente, e existe uma decisão explícita sobre o fluxo de Continuar.
 >
 > > [!success]- Task C09-T0 — Regressão básica (baseline antes de mexer)
@@ -403,28 +403,28 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): menu com Continuar; Continuar volta à cena/posição salvas, inclusive na arena (sem o Korrag, com dash) e depois de fechar/reabrir o jogo. Revalidado em 11/10 (Claude, por script): save/recarga no mesmo processo nas 4 áreas sem crash.
 >
-> > [!warning]- Task C09-T3 — Visual do checkpoint apagado/ativado
+> > [!success]- Task C09-T3 — Visual do checkpoint apagado/ativado
 > > - [x] Antes de tocar: checkpoint apagado. Ao tocar: muda pra ativado na hora e salva.
 > > - [x] Fechar e Continuar: os checkpoints já ativados nascem ativados; os outros, apagados.
 > > - [x] `SaveReloadCheck.gd` e `DemoRunCheck.gd` continuam passando.
 > >
 > > - **Nota (11/10):** desde a C09-T4 é uma bandeira só (`cp_dossel_01`).
 > >
-> > Status: 🟡 parcial (12/10) — `CheckpointVisualCheck.gd` passou no ciclo completo; `SaveReloadCheck.gd` (0 falhas) e `DemoRunCheck.gd` (89/89) continuam passando. Falta só avaliação visual do Higor.
+> > Status: ✅ passa (19/10) — validado jogando pelo Gustavo em 19/10.
 >
-> > [!warning]- Task C09-T4 — Bandeira única e vida que não enche ao trocar de área
-> > - [ ] O projeto compila no editor sem erro.
-> > - [ ] Só existe uma bandeira na demo, no começo do Dossel Vivo; passar por ela ativa sozinha (som de checkpoint + save).
-> > - [ ] Tomar dano no Sopé e passar pro Dossel: a barra chega com a mesma vida (não enche). Idem Dossel → Igarapé → Covil.
-> > - [ ] Morrer no Dossel depois da bandeira → "Tentar de novo" → renasce na bandeira com a vida cheia.
-> > - [ ] Morrer no Igarapé e no Covil → "Tentar de novo" → carrega o Dossel Vivo e renasce na bandeira com a vida cheia; a bandeira aparece ativada (sem prompt de "Ativar").
-> > - [ ] Morrer no Sopé (antes da bandeira) → volta pro começo do Sopé.
-> > - [ ] Novo jogo depois de morrer começa com a vida cheia; Continuar depois de salvar no Igarapé e morrer volta pra bandeira do Dossel.
-> > - [ ] O caminho até o Korrag ficou difícil mas justo (playtest do Gustavo): dá pra chegar no Korrag com vida razoável sem perfeição.
-> > - [ ] `DemoRunCheck.gd`, `SaveReloadCheck.gd` e `CombatCheck.gd` continuam passando.
+> > [!success]- Task C09-T4 — Bandeira única e vida que não enche ao trocar de área
+> > - [x] O projeto compila no editor sem erro.
+> > - [x] Só existe uma bandeira na demo, no começo do Dossel Vivo; passar por ela ativa sozinha (som de checkpoint + save).
+> > - [x] Tomar dano no Sopé e passar pro Dossel: a barra chega com a mesma vida (não enche). Idem Dossel → Igarapé → Covil.
+> > - [x] Morrer no Dossel depois da bandeira → "Tentar de novo" → renasce na bandeira com a vida cheia.
+> > - [x] Morrer no Igarapé e no Covil → "Tentar de novo" → carrega o Dossel Vivo e renasce na bandeira com a vida cheia; a bandeira aparece ativada (sem prompt de "Ativar").
+> > - [x] Morrer no Sopé (antes da bandeira) → volta pro começo do Sopé.
+> > - [x] Novo jogo depois de morrer começa com a vida cheia; Continuar depois de salvar no Igarapé e morrer volta pra bandeira do Dossel.
+> > - [x] O caminho até o Korrag ficou difícil mas justo (playtest do Gustavo): dá pra chegar no Korrag com vida razoável sem perfeição.
+> > - [x] `DemoRunCheck.gd`, `SaveReloadCheck.gd` e `CombatCheck.gd` continuam passando.
 > > - **Origem (11/10):** decisão do grupo de deixar a demo mais difícil até o Korrag ([[ROADMAP_DEV]] C09-T4).
 > >
-> > Status: 🟡 aguarda teste (11/10) — implementado fora do Godot, ainda não compilado nem jogado.
+> > Status: ✅ passa (19/10) — compila sem erro; regra jogada e aprovada pelo Gustavo em 11/10; `DemoRunCheck`, `SaveReloadCheck` e `CombatCheck` verdes em 19/10.
 >
 > > [!success]- Task C09-T5 — Continuar volta com a vida salva
 > > - [x] Salvar ferido, sair pro menu e Continuar: volta com a mesma vida, não cheia.
@@ -452,7 +452,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): tela "Você caiu"; Esc não despausa; Tentar de novo leva ao checkpoint; Menu inicial funciona.
 
-> [!warning]- EPIC-C11 — Áudio — 🟡 Parcial (SFX finais pendentes) · 🟡 Média
+> [!success]- EPIC-C11 — Áudio — ✅ Passa (19/10) · 🟡 Média
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — pastas/buses existem, os 3 sons já esperados pelo código tocam de verdade, e dá pra sobrepor música + SFX sem cortar um ao outro.
 >
 > > [!success]- Task C11-T1 — Estrutura de pastas e buses
@@ -469,7 +469,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa (11/10, Claude) — `tools/qa/AudioCheck.gd` 12/12 com os placeholders da [[ROADMAP_DEV]] C11-T2; nenhum "SFX not found" no `DemoRunCheck`.
 >
-> > [!warning]- Task C11-T3 — Chamadas que faltam
+> > [!success]- Task C11-T3 — Chamadas que faltam
 > > - [x] 8 players de SFX simultâneos + bus de música separado → dá pra tocar música de fundo + vários SFX sem cortar um ao outro.
 > > - [x] Ataque do jogador, hit em inimigo/jogador, morte de inimigo comum têm som.
 > >
@@ -481,23 +481,24 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa (14/10) — cinco loops autorais carregam nas cenas de produção, tocam em sequência e passam em `MusicCheck.gd` com save preservado.
 
-> > [!failure]- Task C11-T5 — Sons finais no lugar dos placeholders
-> > - [ ] `tools/qa/AudioCheck.gd` 12/12 com os sons finais.
-> > - [ ] `assets/audio/CREDITOS.md` lista origem/licença de todo som que não for do grupo.
+> > [!success]- Task C11-T5 — Sons finais no lugar dos placeholders
+> > - [x] `tools/qa/AudioCheck.gd` 12/12 com os sons finais.
+> > - [x] `assets/audio/CREDITOS.md` lista origem/licença de todo som que não for do grupo.
+> > - **Decisão do grupo (19/10):** os 12 SFX atuais e as 5 músicas autorais ficam como o áudio final da demo (já existe som pra cada ação). Se criarem algo melhor, trocam o arquivo mantendo o nome e atualizam aqui.
 > >
-> > Status: 🔴 bloqueado (11/10) — depende de [[ROADMAP_DEV]] C11-T5.
+> > Status: ✅ passa (19/10) — áudio atual aceito como final da demo; `AudioCheck.gd` 12/12 e `MusicCheck.gd` 5/5.
 
-> [!warning]- EPIC-C12 — Regressão Final / Release da Demo — 🟡 Parcial · 🔴 Bloqueante
+> [!success]- EPIC-C12 — Regressão Final / Release da Demo — ✅ Passa (19/10; build `.exe` adiada) · 🔴 Bloqueante
 > *Pronto quando*: todos os casos de teste abaixo passam ✅ — todo o [[ROADMAP_QA_CODIGO]] acima está ✅, e a demo roda de ponta a ponta sem crash/softlock.
 >
 > Só é testável depois que todos os Épicos 🔴/🟠 acima estiverem ✅.
 >
-> > [!warning]- Task C12-T1 — Regressão completa de código
-> > - [ ] Todos os Épicos 🔴/🟠 acima com todas as Tasks ✅.
-> > - [ ] Rodar o [[ROADMAP_QA_CODIGO]] inteiro de ponta a ponta depois de qualquer mudança grande — nenhuma regressão.
+> > [!success]- Task C12-T1 — Regressão completa de código
+> > - [x] Todos os Épicos 🔴/🟠 acima com todas as Tasks ✅.
+> > - [x] Rodar o [[ROADMAP_QA_CODIGO]] inteiro de ponta a ponta depois de qualquer mudança grande — nenhuma regressão.
 > > - [x] Bateria automática atual: `CombatCheck --stress`, `DosselReachCheck`, `GcStressCheck`, `AudioCheck`, `MusicCheck`, `DemoRunCheck` e `FpsCheck` passaram; os testes que atravessam a bandeira automática preservam o `save_0.json`.
 > >
-> > Status: 🟡 parcial (14/10) — a regressão automatizada está verde, incluindo música e desempenho. Falta fechar os SFX finais (C11-T5) e as validações jogadas da integração antes do selo final de demo.
+> > Status: ✅ passa (19/10) — bateria completa verde em 19/10 depois das mudanças do dia: 12 scripts de `tools/qa/` (incl. `WorldMapCheck` 16/16 e `DesertLinkCheck` 24/24) + checks de arte.
 >
 > > [!success]- Task C12-T2 — Playtest de ponta a ponta (só código)
 > > - [x] Floresta Tropical → matar exemplares dos 3 arquétipos → derrotar Korrag → dash desbloqueado → seguir até o ponto de encerramento da demo, sem crash/softlock. Arte placeholder ainda ok aqui.
@@ -506,12 +507,12 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa (11/10) — partida completa do Gustavo + percurso automatizado. O playtest final com arte/áudio completos e alguém de fora fica no [[ROADMAP_QA_INTEGRACAO]] A07.
 >
-> > [!warning]- Task C12-T3 — Integração incremental com o Higor
-> > - [ ] Rodar [[ROADMAP_QA_INTEGRACAO]] junto com o Higor assim que a arte de cada bloco chegar, sem esperar tudo pronto.
+> > [!success]- Task C12-T3 — Integração incremental com o Higor
+> > - [x] Rodar [[ROADMAP_QA_INTEGRACAO]] junto com o Higor assim que a arte de cada bloco chegar, sem esperar tudo pronto.
 > >
 > > - [x] Rodada de 11/10: entregas do Higor de 05/10 a 09/10 integradas e [[ROADMAP_QA_INTEGRACAO]] rodado (A00–A06 passam, exceto pendências cadastradas).
 > >
-> > Status: 🟡 em andamento (11/10) — em dia com tudo que foi entregue; reabrir a cada nova entrega (pendentes: [[ROADMAP_ARTE]] A01-T3, A05-T5, A06-T5 e o áudio). Ver [[ROADMAP_DEV]] C12-T3.
+> > Status: ✅ passa (19/10) — entregas integradas e validadas jogando pelo Gustavo.
 
 > > [!success]- Task C12-T4 — Sem travamento do runtime .NET
 > > - [x] `tools/qa/CombatCheck.gd -- --stress` roda 5 vezes seguidas sem `FATAL: gchandle.is_released()`.
@@ -520,16 +521,23 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [ ] Repetir o `GcStressCheck` no jogo exportado quando houver build.
 > >
 > > Status: ✅ passa (11/10, Claude) — com o autoload `ResourceKeeper`: `CombatCheck --stress` 5/5 (35/35 cada), `GcStressCheck` 8/8 com 24 ciclos (antes 6/6 travavam), `DemoRunCheck` 89/89 sem erro do motor, `SaveReloadCheck` e `DosselReachCheck` sem falhas. Ver [[ROADMAP_DEV]] C12-T4.
+>
+> > [!todo]- Task C12-T5 — Build exportada da demo
+> > - [ ] O `.exe` abre num computador sem Godot e roda menu → 4 áreas → Korrag → tela de fim sem crash.
+> > - [ ] Novo jogo, Continuar e o save em `%APPDATA%` funcionam no exportado.
+> > - [ ] `GcStressCheck` (ou uma partida longa trocando de área) sem `FATAL: gchandle.is_released()` no exportado.
+> >
+> > Status: ⏭️ adiado (19/10) — fora da demo ([[ROADMAP_DEV]] C12-T5).
 
-> [!failure]- EPIC-C15 — Deserto pós-demo e chefe cobra — 🔴 Ainda não testável · 🟢 Pós-demo
+> [!warning]- EPIC-C15 — Deserto pós-demo e chefe cobra — 🟡 1ª área testável · 🟢 Pós-demo
 > *Pronto quando*: a área completa e a luta passam nos casos abaixo, além da verificação de integração visual A08. A prévia visual isolada de 15/10 não satisfaz estes testes de mecânica.
 >
-> > [!failure]- Task C15-T1 — Área jogável do Deserto
+> > [!warning]- Task C15-T1 — Área jogável do Deserto
 > > - [ ] Percorrer entrada → trecho ensolarado → tarde → arena noturna → saída sem buracos, softlock ou colisão desalinhada; os três habitantes aparecem em posições finais e interagem com Kairo.
 > > - [ ] A iluminação acompanha o progresso com transições contínuas; morte, retorno e reload restauram o estado visual adequado ao ponto do percurso.
 > > - [ ] Entrada, câmera, checkpoints e saída respeitam as decisões aprovadas; as quatro áreas da demo e seus saves continuam funcionando.
 > >
-> > Status: 🔴 pendente (15/10) — só existe a prévia `DesertReview.tscn`; depende da [[ROADMAP_DEV]] C15-T1.
+> > Status: 🟡 parcial (19/10) — 1ª área passa no `DesertLinkCheck.gd` (spawn, chão, vento, inimigos com stats do Deserto, bandeira, mapa, barreira antes da cobra); o percurso completo depende da C15-T4.
 >
 > > [!failure]- Task C15-T2 — Bote, cauda e areia da cobra
 > > - [ ] Cada golpe tem aviso, execução e recuperação distinguíveis; a hitbox só causa dano na janela ativa e não alcança além do desenho, em ambos os lados da arena.
@@ -545,6 +553,23 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [ ] Percurso completo da entrada do Deserto até a saída, com derrota do boss, termina sem crash, softlock ou regressão na demo.
 > >
 > > Status: 🔴 pendente (15/10) — depende da decisão de recompensa/destino e da [[ROADMAP_DEV]] C15-T3.
+
+> > [!failure]- Task C15-T4 — Mapa do Deserto em áreas
+> > - [ ] Percorrer todas as áreas aprovadas nos dois sentidos, com spawn certo, câmera, mapa e save.
+> > - [ ] O hazard do bioma atrasa/afunda sem prender o Kairo e reseta ao morrer.
+> >
+> > Status: 🔴 bloqueado (19/10) — depende da proposta de áreas ([[ROADMAP_DEV]] C15-T4).
+>
+> > [!failure]- Task C15-T5 — Restauração no Deserto
+> > - [ ] Cada ponto restaura uma vez, persiste no save, cura e conta pra recompensa do bioma.
+> >
+> > Status: 🔴 bloqueado (19/10) — depende do gancho ODS 15 ([[ROADMAP_DEV]] C15-T5).
+>
+> > [!failure]- Task C15-T6 — Música e stats do Deserto
+> > - [ ] A faixa do Deserto toca na área e troca sem corte com o Covil.
+> > - [ ] Os três inimigos usam os stats aprovados e o percurso fica difícil mas justo.
+> >
+> > Status: 🔴 pendente (19/10) — depende da [[ROADMAP_DEV]] C15-T6.
 
 > [!success]- EPIC-C16 — Mapa explorável da Floresta Tropical — ✅ Passa · 🟡 Alta
 > *Pronto quando*: a cartografia revela somente posições atravessadas, persiste no save e todas as transições atuais funcionam nos dois sentidos.
@@ -565,6 +590,33 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - **Verificação (15/10):** `WorldMapCheck.gd` passou 12 verificações sem falha.
 > >
 > > Status: ✅ passa (15/10) — rede atual é bidirecional e o movimento vertical já ocorre no Dossel; expansão para novas ramificações requer salas adicionais.
+>
+> > [!success]- Task C16-T3 — Ajustes da revisão do mapa
+> > - [x] O título aparece inteiro ("MAPA DE REFLORESCER") em 1280×720 e 960×540.
+> > - [x] Andar por células novas e usar **Continuar**: Kairo volta no ponto combinado na decisão da [[ROADMAP_DEV]] C16-T3, e o mapa explorado continua lá.
+> > - [x] Apertar `M` numa cena sem mapa não pausa o jogo.
+> > - [x] Portal do Covil se comporta conforme a decisão (fechado ou aberto) durante a luta com o Korrag.
+> >
+> > Status: ✅ passa (19/10) — `WorldMapCheck.gd` 16/16: título inteiro, Continuar não muda com o mapa, M sem efeito fora das áreas e portal fechado com o Korrag vivo.
+
+> [!failure]- EPIC-C17 — Fundação do jogo completo (mundo conectado) — 🔴 Ainda não testável · 🟢 Pós-demo
+> *Pronto quando*: uma área de teste nova entra no mapa, nas transições e no save só por configuração, sem regressão na demo.
+>
+> > [!failure]- Task C17-T1 — Mapa do mundo configurável
+> > - [ ] Uma área nova aparece no mapa só com a definição dela, sem editar o `WorldMapOverlay.gd`.
+> > - [ ] `WorldMapCheck.gd` 16/16 nas 4 áreas da demo.
+> >
+> > Status: 🔴 pendente (19/10) — depende da [[ROADMAP_DEV]] C17-T1.
+>
+> > [!success]- Task C17-T2 — Ligação entre biomas
+> > - [x] Ir e voltar entre a Floresta e o bioma seguinte, com spawn certo, mapa e save.
+> >
+> > Status: ✅ passa (19/10) — `DesertLinkCheck.gd` 24/24: portal fechado com o Korrag vivo, tela de fim avisa do Deserto, "Continuar explorando" abre o portal, Deserto jogável e volta ao Covil.
+>
+> > [!failure]- Task C17-T3 — Habilidade por boss
+> > - [ ] Derrotar cada boss libera a habilidade certa uma vez só, persiste no save e abre os caminhos previstos.
+> >
+> > Status: 🔴 bloqueado (19/10) — depende da definição ([[ROADMAP_DEV]] C17-T3).
 
 ---
 

@@ -47,7 +47,8 @@ namespace Joguim.Core
 
         public void PlayMusic(string fileName, float fadeDuration = 1.0f)
         {
-            string path = MusicPath + fileName;
+            // Nome solto = pasta de música; caminho "res://" completo = qualquer faixa (ex.: ambiência do Deserto)
+            string path = fileName.StartsWith("res://") ? fileName : MusicPath + fileName;
             if (!ResourceLoader.Exists(path))
             {
                 if (_missingLogged.Add(path)) GD.PrintErr($"AudioManager: Music not found at {path}");

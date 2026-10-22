@@ -50,6 +50,12 @@ namespace Joguim.Core
         {
             if (IsGameOver || IsGamePaused) return;
             if (GetTree().CurrentScene?.SceneFilePath == SaveManager.MainMenuScene) return;
+            if (!IsMapOpen)
+            {
+                // Só abre onde existe mapa; senão o jogo pausaria sem nada na tela (C16-T3)
+                var overlay = GetTree().CurrentScene?.GetNodeOrNull("HUD/WorldMapOverlay");
+                if (overlay == null || !overlay.Call("has_map").AsBool()) return;
+            }
             IsMapOpen = !IsMapOpen;
             GetTree().Paused = IsMapOpen;
         }

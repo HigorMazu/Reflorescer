@@ -401,6 +401,14 @@ namespace Joguim.UI
             message.AddThemeColorOverride("font_color", new Color("e1e7d2"));
             _demoEndBox.AddChild(message);
 
+            // Pós-demo (19/10): "Continuar explorando" deixa voltar pela mata ou seguir pro Deserto pelo leste do Covil
+            var desertHint = new Label { Name = "DesertHint", Text = "Um caminho se abriu a leste do Covil: o Deserto espera por Kairo.",
+                HorizontalAlignment = HorizontalAlignment.Center, AutowrapMode = TextServer.AutowrapMode.WordSmart,
+                CustomMinimumSize = new Vector2(520, 0), SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter };
+            desertHint.AddThemeFontSizeOverride("font_size", 15);
+            desertHint.AddThemeColorOverride("font_color", new Color("d6bb73"));
+            _demoEndBox.AddChild(desertHint);
+
             _demoEndBox.AddChild(new Control { CustomMinimumSize = new Vector2(0, 6) });
 
             StyleBoxFlat ButtonStyle(bool selected) => new()

@@ -22,6 +22,9 @@ size = Vector2(1280, 40)
 [sub_resource type="RectangleShape2D" id="Shape_ArenaFloor"]
 size = Vector2(1280, 80)
 
+[sub_resource type="RectangleShape2D" id="Shape_ToDeserto"]
+size = Vector2(60, 100)
+
 [sub_resource type="RectangleShape2D" id="Shape_ToIgarapeSufocado"]
 size = Vector2(60, 100)
 
@@ -177,6 +180,7 @@ collision_mask = 2
 script = ExtResource("transition")
 TargetScene = "res://scenes/areas/IgarapeSufocado.tscn"
 TargetArea = "SpawnFromCovilDeKorrag"
+LockedUntilBossDefeated = "boss_javali"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/ToIgarapeSufocado"]
 shape = SubResource("Shape_ToIgarapeSufocado")
@@ -189,6 +193,26 @@ offset_bottom = 50.0
 mouse_filter = 2
 color = Color(0.4, 0.2, 0.8, 0.6)
 
+[node name="ToDeserto" type="Area2D" parent="Transitions"]
+position = Vector2(580, 160)
+collision_layer = 32
+collision_mask = 2
+script = ExtResource("transition")
+TargetScene = "res://scenes/areas/Deserto.tscn"
+TargetArea = "SpawnFromCovilDeKorrag"
+LockedUntilBossDefeated = "boss_javali"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/ToDeserto"]
+shape = SubResource("Shape_ToDeserto")
+
+[node name="PortalVisual" type="ColorRect" parent="Transitions/ToDeserto"]
+offset_left = -15.0
+offset_top = -50.0
+offset_right = 15.0
+offset_bottom = 50.0
+mouse_filter = 2
+color = Color(0.85, 0.62, 0.3, 0.7)
+
 [node name="Enemies" type="Node2D" parent="." unique_id=1592147734]
 
 [node name="Boss_Javali" parent="." unique_id=617206095 instance=ExtResource("boss")]
@@ -196,6 +220,9 @@ position = Vector2(300, 120)
 
 [node name="SpawnFromIgarapeSufocado" type="Marker2D" parent="." unique_id=856218763 groups=["SpawnPoints"]]
 position = Vector2(-480, 180)
+
+[node name="SpawnFromDeserto" type="Marker2D" parent="." groups=["SpawnPoints"]]
+position = Vector2(480, 180)
 
 [node name="Player" parent="." unique_id=1291496315 instance=ExtResource("player")]
 position = Vector2(-480, 180)
