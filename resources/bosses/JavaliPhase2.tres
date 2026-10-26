@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 PhaseName = "Fase 2 - Aggressive"
-AttackCooldown = 1.2
-MoveSpeed = 120.0
-Damage = 35
+AttackCooldown = 0.9
+MoveSpeed = 160.0
+Damage = 45
 AnimationPrefix = "phase2_"

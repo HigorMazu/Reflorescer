@@ -12,8 +12,8 @@ responsavel: Gustavo e Higor
 par: "[[ROADMAP_ARTE]]"
 descricao: Casos de teste da integração código + arte
 epicos_total: 10
-epicos_concluidos: 8
-tasks_total: 35
+epicos_concluidos: 7
+tasks_total: 37
 tasks_prontas: 27
 tasks_bloqueadas: 0
 ---
@@ -191,7 +191,7 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: ⏭️ adiado (19/10) — fora da demo ([[ROADMAP_ARTE]] A05-T6).
 
-> [!success]- EPIC-A06 — UI — ✅ Passa (19/10) · 🟡 Média
+> [!warning]- EPIC-A06 — UI — 🟡 Abertura e dicas novas aguardam revisão (26/10) · 🟡 Média
 > *Pronto quando*: barra de vida, ícone de habilidade e prompt de interação têm arte final integrada e funcional em jogo.
 >
 > > [!success]- Task A06-T1 — Barra de vida
@@ -235,6 +235,11 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - [x] Higor conferir a aparição após derrotar Korrag e as três ações durante a partida.
 > >
 > > Status: ✅ passa (19/10) — validado jogando pelo Gustavo em 19/10.
+
+> > [!failure]- Task A06-T7 — Abertura e faixas de dica
+> > - [ ] Abertura e faixas legíveis em 1280×720 e 960×540, sem cobrir o Kairo nem o HUD.
+> >
+> > Status: 🔴 pendente (26/10) — depende da [[ROADMAP_ARTE]] A06-T7.
 
 > [!warning]- EPIC-A07 — Validação Final (Playtest Completo) — 🟡 Liberado: só faltam os dois playtests · 🔴 Bloqueante
 > *Pronto quando*: a demo roda de ponta a ponta com áudio, arte e código integrados, sem crash, softlock ou animação quebrada, validada por alguém de fora do grupo.
@@ -287,7 +292,7 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - [ ] Validar hitboxes, dano, fases, morte e saída no confronto real quando a mecânica existir.
 > > - **Verificação (15/10):** `Boss_CobraDesertoVisual.tscn` apresenta a arte, sem script de combate.
 > >
-> > Status: 🟡 parcial (21/10) — os nove quadros de cauda/areia passaram no `DesertReviewCheck.gd`; falta a luta funcional C15-T2/C15-T3 para validar contato e timing.
+> > Status: 🟡 parcial (26/10) — a luta existe; falta revisar jogando se o contato e o timing de bote, cauda e mergulho batem com as animações.
 
 > > [!failure]- Task A08-T4 — Arte das áreas do Deserto
 > > - [x] Módulos de plataformas/ruínas usam canvas estável; hazard e restauração têm leitura clara na folha de revisão.
@@ -305,6 +310,11 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - [x] À noite o chão, os inimigos, a cobra e o Kairo ficam azulados junto com o céu; de dia, sem mudança.
 > >
 > > Status: ✅ passa (21/10) — `DesertReviewCheck.gd` verde e captura da cena de produção em `desert-area-night-v2.png`.
+
+> > [!failure]- Task A08-T7 — Parede de areia da arena
+> > - [ ] A parede aparece ao fechar a arena, não esconde o Kairo e some quando a cobra cai.
+> >
+> > Status: 🔴 pendente (26/10) — depende da [[ROADMAP_ARTE]] A08-T7.
 
 > [!success]- EPIC-A09 — Cartografia da Floresta Tropical — ✅ Passa (19/10) · 🟡 Alta
 > *Pronto quando*: o mapa mantém leitura e contraste em partida real, sem mostrar trechos não visitados, e a arte acompanha a revelação do sistema C16.

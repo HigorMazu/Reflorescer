@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://faisca001" path="res://scenes/companion/Faisca.tscn" id="faisca"]
 [ext_resource type="PackedScene" uid="uid://hud001" path="res://scenes/ui/HUD.tscn" id="hud"]
 [ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="player"]
-[ext_resource type="PackedScene" path="res://scenes/bosses/Boss_CobraDesertoVisual.tscn" id="snake"]
+[ext_resource type="PackedScene" path="res://scenes/bosses/Boss_Serpente.tscn" id="snake"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/Enemy_AbelhaAfricanizada.tscn" id="bee"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/Enemy_RatoPreto.tscn" id="rat"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/Enemy_BurroSelvagem.tscn" id="donkey"]
@@ -41,7 +41,6 @@ Checkpoints = [NodePath("Interactables/CheckpointDeserto")]
 
 [node name="Dressing" type="Node2D" parent="."]
 script = ExtResource("dressing")
-snake_path = NodePath("../Boss_CobraDesertoVisual")
 
 [node name="Geometry" type="Node2D" parent="."]
 
@@ -57,11 +56,27 @@ position = Vector2(-20, 360)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/WallLeft"]
 shape = SubResource("Shape_Wall")
 
+[node name="WallRight" type="StaticBody2D" parent="Geometry"]
+position = Vector2(3860, 360)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/WallRight"]
+shape = SubResource("Shape_Wall")
+
 [node name="ArenaGate" type="StaticBody2D" parent="Geometry"]
-position = Vector2(3200, 360)
+position = Vector2(2900, 360)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Geometry/ArenaGate"]
 shape = SubResource("Shape_Wall")
+disabled = true
+
+[node name="SandCurtain" type="ColorRect" parent="Geometry/ArenaGate"]
+visible = false
+offset_left = -14.0
+offset_top = -360.0
+offset_right = 14.0
+offset_bottom = 115.0
+mouse_filter = 2
+color = Color(0.86, 0.62, 0.3, 0.55)
 
 [node name="Interactables" type="Node2D" parent="."]
 
@@ -114,8 +129,9 @@ StatsResource = ExtResource("stats_rapido")
 position = Vector2(2450, 450)
 StatsResource = ExtResource("stats_robusto")
 
-[node name="Boss_CobraDesertoVisual" parent="." instance=ExtResource("snake")]
-position = Vector2(3430, 475)
+[node name="Boss_Serpente" parent="." instance=ExtResource("snake")]
+position = Vector2(3500, 475)
+ArenaGatePath = NodePath("../Geometry/ArenaGate")
 
 [node name="SpawnFromCovilDeKorrag" type="Marker2D" parent="." groups=["SpawnPoints"]]
 position = Vector2(140, 453)

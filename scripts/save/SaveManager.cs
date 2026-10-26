@@ -76,8 +76,15 @@ namespace Joguim.Save
         }
 
         // Menu inicial → "Novo jogo": apaga o save e zera o estado da sessão que vive em autoloads
+        // Tela de abertura (história + controles) no começo de um Novo jogo (26/10/2026).
+        // Desligada quando o Godot roda um script de teste (--script), pra bateria de QA não travar na tela;
+        // o IntroCheck.gd liga de novo pra testar.
+        public bool IntroEnabled { get; set; } = !System.Array.Exists(OS.GetCmdlineArgs(), a => a == "--script");
+        public bool PendingIntro { get; set; }
+
         public void StartNewGame(int slot = 0)
         {
+            PendingIntro = IntroEnabled;
             DeleteSave(slot);
             _currentSave = null;
             AbilityManager.Instance?.ResetToInitial();

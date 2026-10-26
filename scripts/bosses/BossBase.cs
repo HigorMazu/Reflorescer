@@ -37,6 +37,8 @@ namespace Joguim.Bosses
         public bool IsActive => _isActive;
         // Ocupado com um ataque especial (windup/execução): não persegue e não é interrompido por dano (super armor)
         public virtual bool IsBusy => false;
+        // Encostar no corpo machuca; chefes que somem (ex.: a cobra embaixo da areia) desligam enquanto isso
+        protected virtual bool ContactDamageEnabled => true;
 
         public override void _Ready()
         {
@@ -148,7 +150,7 @@ namespace Joguim.Bosses
             }
         }
 
-        public void ChasePlayer(double delta)
+        public virtual void ChasePlayer(double delta)
         {
             if (_player == null || !_isActive) return;
 
@@ -209,7 +211,7 @@ namespace Joguim.Bosses
             if (_player == null) _player = GetTree().GetFirstNodeInGroup("Player") as Node2D;
             if (_isActive == false && _player != null && GlobalPosition.DistanceTo(_player.GlobalPosition) < 500f) ActivateBoss();
 
-            if (_player != null && Health != null && !Health.IsDead && _bossContactTimer <= 0)
+            if (ContactDamageEnabled && _player != null && Health != null && !Health.IsDead && _bossContactTimer <= 0)
             {
                 // Contato = corpo visível do Korrag encostando no Kairo (11/10/2026); antes era um raio de 55 px
                 // em volta do centro de um desenho de ~280 px, e cabeça/presas/traseiro eram "fantasmas".
@@ -263,7 +265,7 @@ namespace Joguim.Bosses
             EventBus.Instance.EmitSignal("BossPhaseChanged", BossId, phaseIndex);
         }
 
-        public void PlayAnimation(string animName)
+        public virtual void PlayAnimation(string animName)
         {
             if (Sprite != null && Sprite.SpriteFrames != null && Sprite.SpriteFrames.HasAnimation(animName))
             {

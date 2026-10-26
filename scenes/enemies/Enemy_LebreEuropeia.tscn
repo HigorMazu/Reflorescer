@@ -5,6 +5,10 @@
 
 [node name="Enemy_LebreEuropeia" instance=ExtResource("1")]
 EnemyId = "enemy_tundra_lebreeuropeia"
+HurtboxSize = Vector2(40, 38)
+HurtboxOffset = Vector2(0, -19)
+AttackHitboxSize = Vector2(26, 28)
+AttackHitboxOffset = Vector2(27, -16)
 
 [node name="AnimatedSprite2D" parent="." index="4"]
 sprite_frames = ExtResource("2")

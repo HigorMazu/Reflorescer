@@ -7,7 +7,7 @@
 
 [resource]
 script = ExtResource("1")
-MaxHealth = 200
+MaxHealth = 300
 BossName = "Korrag, o Javali"
 KnockbackResistance = 0.6
 Phases = [ExtResource("2"), ExtResource("3"), ExtResource("4")]

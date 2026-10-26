@@ -1,0 +1,49 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/bosses/SerpentBoss.cs" id="1"]
+[ext_resource type="Script" uid="uid://bjpyp25wtd7sl" path="res://scripts/bosses/BossStateMachine.cs" id="2"]
+[ext_resource type="Script" uid="uid://c8yg5h6o1ak6h" path="res://scripts/combat/Health.cs" id="3"]
+[ext_resource type="Script" uid="uid://dhdoquuekxcq8" path="res://scripts/combat/Hurtbox.cs" id="4"]
+[ext_resource type="Resource" path="res://resources/bosses/SerpenteStatsResource.tres" id="5"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/bosses/sand_viper/SandViperSpriteFrames.tres" id="6"]
+
+[sub_resource type="RectangleShape2D" id="Shape_body"]
+size = Vector2(160, 50)
+
+[sub_resource type="RectangleShape2D" id="Shape_hurtbox"]
+size = Vector2(250, 140)
+
+[node name="Boss_Serpente" type="CharacterBody2D"]
+collision_layer = 4
+script = ExtResource("1")
+StatsResource = ExtResource("5")
+SpritePath = NodePath("AnimatedSprite2D")
+BossId = "boss_serpente"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -25)
+shape = SubResource("Shape_body")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -160)
+texture_filter = 1
+sprite_frames = ExtResource("6")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("3")
+MaxHealth = 360
+InvulnerabilityDuration = 0.0
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(10, -70)
+shape = SubResource("Shape_hurtbox")
+
+[node name="BossStateMachine" type="Node" parent="."]
+script = ExtResource("2")

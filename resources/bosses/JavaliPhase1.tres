@@ -6,5 +6,6 @@
 script = ExtResource("1")
 PhaseName = "Fase 1"
 HealthThreshold = 1.0
-AttackCooldown = 2.0
-MoveSpeed = 80.0
+AttackCooldown = 1.4
+MoveSpeed = 110.0
+Damage = 28

@@ -134,6 +134,21 @@ namespace Joguim.Player
 
         public const int MaxHealthPerRestoration = 10;
 
+        // Dano de queda (26/10/2026): conta do ponto mais alto do salto até o pouso. Até FallSafeHeight não dói
+        // (~4 alturas do Kairo, cobre pulo normal e descer um galho); depois começa em FallBaseDamage e sobe
+        // FallDamagePer100 a cada 100 px, até FallMaxDamage. Agarrar na parede zera a contagem.
+        [Export] public float FallSafeHeight = 260f;
+        [Export] public int FallBaseDamage = 10;
+        [Export] public int FallDamagePer100 = 10;
+        [Export] public int FallMaxDamage = 40;
+        // Pra testes: altura e dano da última queda que machucou
+        public float LastFallHeight { get; private set; }
+        public int LastFallDamage { get; private set; }
+        private float _fallApexY;
+        private bool _fallAirborne;
+        private bool _fallTracking;
+        private Vector2 _fallLastPosition;
+
         // Restaurar uma área: +10 de vida máxima e vida cheia (recompensa + cura, decisão de 11/10/2026)
         private void OnAreaRestored(string pointId)
         {
@@ -195,6 +210,7 @@ namespace Joguim.Player
             if (_wallJumpLockTimer > 0) _wallJumpLockTimer -= (float)delta;
 
             HandlePrototypeMovement(delta);
+            TrackFall();
             UpdatePrototypeAnimation();
             UpdateInteractionPrompt();
         }
@@ -605,9 +621,42 @@ namespace Joguim.Player
 
         public void SetRespawnPoint(Vector2 position) => _lastCheckpointPosition = position;
 
+        private void TrackFall()
+        {
+            // Primeiro quadro, respawn ou teleporte (troca de área, testes): recomeça a contagem
+            if (!_fallTracking || GlobalPosition.DistanceTo(_fallLastPosition) > 200f)
+            {
+                _fallTracking = true;
+                _fallAirborne = !IsOnFloor();
+                _fallApexY = GlobalPosition.Y;
+            }
+            _fallLastPosition = GlobalPosition;
+
+            if (IsOnFloor())
+            {
+                if (_fallAirborne) ApplyFallDamage(GlobalPosition.Y - _fallApexY);
+                _fallAirborne = false;
+                _fallApexY = GlobalPosition.Y;
+                return;
+            }
+            _fallAirborne = true;
+            _fallApexY = _isWallSliding ? GlobalPosition.Y : Mathf.Min(_fallApexY, GlobalPosition.Y);
+        }
+
+        private void ApplyFallDamage(float height)
+        {
+            if (height <= FallSafeHeight || Health == null || Health.IsDead) return;
+            int damage = Mathf.Min(FallMaxDamage,
+                FallBaseDamage + Mathf.FloorToInt((height - FallSafeHeight) / 100f * FallDamagePer100));
+            LastFallHeight = height;
+            LastFallDamage = damage;
+            Health.TakeDamage(new DamageInfo(damage, Vector2.Zero, 0f, this));
+        }
+
         public void Respawn(Vector2 position)
         {
             _isDead = false; GlobalPosition = position; Health?.Reset(); Velocity = Vector2.Zero;
+            _fallTracking = false;
             SetProcess(true); SetPhysicsProcess(true);
             EventBus.Instance?.EmitSignal("PlayerRespawned", position);
         }

@@ -50,6 +50,8 @@ namespace Joguim.UI
             _swordStatus = GetNodeOrNull<SwordStatusIndicator>(SwordStatusPath);
 
             AddToGroup(GroupName);
+            // Tela de abertura e faixas de dica (26/10/2026)
+            AddChild(new TutorialOverlay { Name = "Tutorial" });
 
             if (_pauseMenu != null)
             {
@@ -90,6 +92,8 @@ namespace Joguim.UI
 
         private void InitializeHUD()
         {
+            // Chamada adiada: a cena pode ter sido trocada antes (ex.: Novo jogo seguido de outra troca)
+            if (!IsInsideTree()) return;
             _player = GetTree().GetFirstNodeInGroup("Player") as PlayerController;
 
             if (_player != null && _player.Health != null)
@@ -269,6 +273,8 @@ namespace Joguim.UI
         // Fim da demo (C14-T3, 11/10/2026): derrotar o Korrag mostra quantas áreas foram restauradas
         private void OnBossDefeated(string bossId)
         {
+            // Só o Korrag encerra a demo; chefes do jogo completo (ex.: a cobra do Deserto) não abrem esta tela
+            if (bossId != "boss_javali") return;
             GetTree().CreateTimer(DemoEndDelay, true, false, true).Timeout += () =>
             {
                 if (!IsInstanceValid(this)) return;
