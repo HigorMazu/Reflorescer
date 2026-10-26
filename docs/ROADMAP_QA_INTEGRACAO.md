@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-21
+atualizado: 2026-10-26
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: arte
@@ -296,12 +296,12 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: 🟡 parcial (21/10) — módulos, areia movediça, restauração e quatro fundos foram aprovados pelo Higor e passam no `DesertReviewCheck.gd`; a verificação dentro das salas jogáveis espera a implementação C15-T4.
 >
-> > [!failure]- Task A08-T5 — Marco de checkpoint e portais do Deserto
+> > [!success]- Task A08-T5 — Marco de checkpoint e portais do Deserto
 > > - [x] Marco apagado/aceso e passagem Covil ↔ Deserto possuem arte própria, animação discreta e centro aberto, sem esconder o Kairo.
 > >
 > > Status: ✅ passa (21/10) — aprovado pelo Higor; capturas reais em `desert-entry-checkpoint-*-v2.png` e fluxo funcional 24/24 no `DesertLinkCheck.gd`.
 >
-> > [!failure]- Task A08-T6 — Luz noturna no primeiro plano
+> > [!success]- Task A08-T6 — Luz noturna no primeiro plano
 > > - [x] À noite o chão, os inimigos, a cobra e o Kairo ficam azulados junto com o céu; de dia, sem mudança.
 > >
 > > Status: ✅ passa (21/10) — `DesertReviewCheck.gd` verde e captura da cena de produção em `desert-area-night-v2.png`.

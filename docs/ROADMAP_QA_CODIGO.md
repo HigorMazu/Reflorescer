@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-21
+atualizado: 2026-10-26
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
@@ -15,7 +15,7 @@ epicos_total: 17
 epicos_concluidos: 15
 tasks_total: 76
 tasks_prontas: 65
-tasks_bloqueadas: 5
+tasks_bloqueadas: 4
 ---
 # Roadmap de QA — Código (Reflorescer)
 

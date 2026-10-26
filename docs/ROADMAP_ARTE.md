@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-21
+atualizado: 2026-10-26
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: arte
@@ -16,7 +16,7 @@ epicos_concluidos: 8
 tasks_total: 33
 tasks_prontas: 30
 tasks_bloqueadas: 0
-tasks_liberadas: 3
+tasks_liberadas: 0
 ---
 # Roadmap de Arte — Sprites, Animação e Estilização (Higor)
 
@@ -334,7 +334,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ concluída (21/10) — pacote visual aprovado; a montagem jogável continua na C15-T4.
 >
-> > [!todo]- Task A08-T5 — Marco de checkpoint e portais do Deserto
+> > [!success]- Task A08-T5 — Marco de checkpoint e portais do Deserto
 > > - [x] Marco de checkpoint próprio do Deserto, com estado apagado/aceso.
 > > - [x] Visual próprio da passagem Covil ↔ Deserto, substituindo os retângulos coloridos por arcos de arenito animados e uma variante com raízes no lado da floresta.
 > >
@@ -342,8 +342,9 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ aprovado pelo Higor (21/10).
 >
-> > [!todo]- Task A08-T6 — Luz noturna não escurece chão e personagens
+> > [!success]- Task A08-T6 — Luz noturna não escurece chão e personagens
 > > - [x] À noite céu, chão, inimigos, cobra e Kairo recebem a mesma luz azul do `DesertLighting` na cena jogável.
+> > - **Medição (26/10):** a luz é aplicada no primeiro plano (brilho do chão cai de 0,71 de dia pra 0,31 à noite; Kairo e inimigos também escurecem). Ao lado do céu azul a areia ainda lê dourada; pra uma noite mais marcada, escurecer `NIGHT_LIGHT` no `DesertLighting.gd`.
 > >
 > > Status: ✅ corrigida (21/10) — validada no renderer em `docs/art-review/desert-area-night-v2.png` e pelo `DesertReviewCheck.gd`.
 
