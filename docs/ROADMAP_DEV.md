@@ -13,8 +13,8 @@ par: "[[ROADMAP_QA_CODIGO]]"
 descricao: Backlog de implementação da demo e do Deserto pós-demo (código)
 epicos_total: 18
 epicos_concluidos: 15
-tasks_total: 80
-tasks_prontas: 70
+tasks_total: 81
+tasks_prontas: 71
 tasks_bloqueadas: 3
 tasks_liberadas: 3
 ---
@@ -707,6 +707,14 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - [x] Nova hitbox ≈ 90% do corpo desenhado em todos: Rápido 42×28, Robusto 44×24, Voador 38×36, Rato 44×24, Burro e Ganso 46×40 (golpe 28×30), Lebre 40×38 (golpe 26×28).
 > >
 > > Status: implementado (26/10) — `EnemyIntegrationCheck` e `CombatCheck` verdes; falta conferir jogando.
+
+>
+> > [!info]- Task C18-T5 — Jogar com controle (Bluetooth ou cabo)
+> > - [x] Todas as ações no layout padrão (`project.godot`): analógico esquerdo ou D-pad anda, **A** pula, **X** ataca, **RB/RT** dash, **Y** interage/restaura, **LB** guarda/saca a espada, **B** especial, **Start** pausa, **View/Select** mapa. O teclado continua igual.
+> > - [x] **A** confirma nos menus (`ui_accept`; o padrão do Godot só tinha Enter/Espaço) e o menu de pausa abre com foco no Continuar.
+> > - [x] As dicas da tela trocam sozinhas pro dispositivo usado por último (`scripts/ui/InputHints.cs`): abertura, faixas de dica, prompt de interagir, dica do mapa, tecla da espada e menu inicial. Nomes de Xbox, PlayStation (Cruz, Quadrado, L1...) ou Switch conforme o nome do controle. Conectar um controle mostra um aviso.
+> >
+> > Status: implementado (26/10) — `GamepadCheck.gd` 27/27 com controle simulado; falta testar com os controles Bluetooth do Gustavo e do Higor.
 
 > [!todo]- EPIC-C17 — Fundação do jogo completo (mundo conectado) — 📋 Planejado · 🟢 Pós-demo
 > *Pronto quando*: um bioma novo entra no jogo sem mexer em código fixo da Floresta: o mapa, as transições entre biomas, o save e a progressão de habilidades aceitam áreas novas por configuração. Base pro [[Projetos/Reflorescer/🗺️ Roadmap#Pós-demo — jogo completo|roadmap pós-demo]].

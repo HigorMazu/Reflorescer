@@ -658,7 +658,7 @@ collision_layer = 0
 collision_mask = 2
 script = ExtResource("tutorial_zone")
 Keys = "Parede"
-Text = "no ar, segure a direção pra deslizar e aperte Espaço pra saltar. Quedas altas machucam!"
+Text = "no ar, segure a direção pra deslizar e aperte {jump} pra saltar. Quedas altas machucam!"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/TutWall"]
 shape = SubResource("Shape_TutWall")

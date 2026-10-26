@@ -13,7 +13,7 @@ par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 18
 epicos_concluidos: 15
-tasks_total: 80
+tasks_total: 81
 tasks_prontas: 66
 tasks_bloqueadas: 4
 ---
@@ -627,6 +627,15 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [ ] Playtest: golpe que encosta no desenho acerta, nos 9 inimigos.
 > >
 > > Status: 🟡 parcial (26/10) — falta conferir jogando.
+
+>
+> > [!warning]- Task C18-T5 — Jogar com controle
+> > - [x] As 10 ações têm botão no controle; analógico e D-pad andam, A pula, X ataca (simulado).
+> > - [x] Start pausa, A confirma no menu de pausa, View abre e fecha o mapa, D-pad navega no menu inicial.
+> > - [x] Dicas trocam pro controle (A, X, View, LB), usam os nomes do PlayStation e voltam pro teclado.
+> > - [ ] Com o controle Bluetooth real do Gustavo e do Higor: parear no Windows, abrir o jogo e jogar o Sopé inteiro só no controle.
+> >
+> > Status: 🟡 parcial (26/10) — `GamepadCheck.gd` 27/27; falta o teste com controle real.
 
 > [!failure]- EPIC-C17 — Fundação do jogo completo (mundo conectado) — 🔴 Ainda não testável · 🟢 Pós-demo
 > *Pronto quando*: uma área de teste nova entra no mapa, nas transições e no save só por configuração, sem regressão na demo.

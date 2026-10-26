@@ -39,6 +39,7 @@ namespace Joguim.UI
         public const string GroupName = "HUD";
 
         private PlayerController _player;
+        private string _lastPrompt = "";
 
         public override void _Ready()
         {
@@ -72,13 +73,25 @@ namespace Joguim.UI
             EventBus.Instance.AreaRestored += OnAreaRestored;
             EventBus.Instance.BossDefeated += OnBossDefeated;
 
+            InputHints.Changed += OnInputDeviceChanged;
+            OnInputDeviceChanged();
             CallDeferred(MethodName.InitializeHUD);
+        }
+
+        // Teclado ↔ controle: troca as teclas mostradas no HUD
+        private void OnInputDeviceChanged()
+        {
+            var mapHint = GetNodeOrNull<Label>("MarginContainer/VBoxContainer/TopRow/MapHint");
+            if (mapHint != null) mapHint.Text = $"{InputHints.Label("map")}  ·  MAPA";
+            if (_interactionPrompt != null && _interactionPrompt.Visible && !string.IsNullOrEmpty(_lastPrompt))
+                OnInteractionPromptChanged(_lastPrompt);
         }
 
         // O EventBus é autoload e sobrevive à troca de cena: sem desinscrever, o handler de um HUD
         // já destruído lança ObjectDisposedException e interrompe os demais inscritos (ex.: o HUD da cena nova).
         public override void _ExitTree()
         {
+            InputHints.Changed -= OnInputDeviceChanged;
             if (EventBus.Instance == null) return;
             EventBus.Instance.PlayerDied -= OnPlayerDied;
             EventBus.Instance.PlayerHealthChanged -= OnPlayerHealthChanged;
@@ -128,8 +141,9 @@ namespace Joguim.UI
 
         private void OnInteractionPromptChanged(string prompt)
         {
+            _lastPrompt = prompt;
             if (string.IsNullOrEmpty(prompt)) HideInteractionPrompt();
-            else ShowInteractionPrompt($"[E] {prompt}");
+            else ShowInteractionPrompt($"[{InputHints.Label("interact")}] {prompt}");
         }
 
         public void ShowInteractionPrompt(string prompt)
@@ -163,6 +177,8 @@ namespace Joguim.UI
             if (_pauseMenu != null)
             {
                 _pauseMenu.Visible = isPaused;
+                // Sem foco o controle não navega no menu
+                if (isPaused) _pauseMenu.GetNodeOrNull<Button>("VBoxContainer/ResumeButton")?.GrabFocus();
             }
         }
 

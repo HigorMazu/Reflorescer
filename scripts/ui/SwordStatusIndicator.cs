@@ -10,6 +10,7 @@ namespace Joguim.UI
         private bool _initialized;
         private float _pulse;
         private Tween _transition;
+        private Label _key;
 
         public override void _Ready()
         {
@@ -18,11 +19,22 @@ namespace Joguim.UI
             _state = new Label { Position = new Vector2(35, 5), MouseFilter = MouseFilterEnum.Ignore };
             _state.AddThemeFontSizeOverride("font_size", 13);
             AddChild(_state);
-            var key = new Label { Text = "Q", Position = new Vector2(133, 6), MouseFilter = MouseFilterEnum.Ignore };
-            key.AddThemeFontSizeOverride("font_size", 12);
-            key.AddThemeColorOverride("font_color", new Color("c6cbb9"));
-            AddChild(key);
+            _key = new Label { Position = new Vector2(122, 6), Size = new Vector2(30, 18), HorizontalAlignment = HorizontalAlignment.Center,
+                MouseFilter = MouseFilterEnum.Ignore };
+            _key.AddThemeFontSizeOverride("font_size", 12);
+            _key.AddThemeColorOverride("font_color", new Color("c6cbb9"));
+            AddChild(_key);
+            InputHints.Changed += RefreshKey;
+            RefreshKey();
             SetState(HasSword, false);
+        }
+
+        public override void _ExitTree() => InputHints.Changed -= RefreshKey;
+
+        // Tecla da espada no dispositivo atual (Q no teclado, LB/L1/L no controle)
+        private void RefreshKey()
+        {
+            if (_key != null) _key.Text = InputHints.Label("toggle_sword");
         }
 
         public void SetState(bool active, bool animate = true)

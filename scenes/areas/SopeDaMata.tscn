@@ -438,8 +438,8 @@ position = Vector2(250, 380)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("tutorial_zone")
-Keys = "A / D  ·  Espaço"
-Text = "andar e pular (segure Espaço pra subir mais)"
+Keys = "{move}  ·  {jump}"
+Text = "andar e pular (segure {jump} pra subir mais)"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/TutMove"]
 shape = SubResource("Shape_TutMove")
@@ -449,7 +449,7 @@ position = Vector2(660, 380)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("tutorial_zone")
-Keys = "K"
+Keys = "{attack}"
 Text = "atacar com a Espada de Grama"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/TutAttack"]
@@ -460,7 +460,7 @@ position = Vector2(1095, 370)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("tutorial_zone")
-Keys = "E"
+Keys = "{interact}"
 Text = "restaurar a terra seca: cura o Kairo e aumenta a vida máxima"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/TutRestore"]
@@ -471,8 +471,8 @@ position = Vector2(1390, 380)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("tutorial_zone")
-Keys = "Q"
-Text = "guardar a espada: corre e pula mais alto, mas não ataca (Q de novo pra sacar)"
+Keys = "{toggle_sword}"
+Text = "guardar a espada: corre e pula mais alto, mas não ataca ({toggle_sword} de novo pra sacar)"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/TutSword"]
 shape = SubResource("Shape_TutSword")
@@ -482,7 +482,7 @@ position = Vector2(2190, 380)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("tutorial_zone")
-Keys = "M  ·  Esc"
+Keys = "{map}  ·  {pause}"
 Text = "mapa  ·  pausa. A trilha continua subindo, no Dossel Vivo"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/TutMap"]

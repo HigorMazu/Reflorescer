@@ -18,11 +18,16 @@ namespace Joguim.UI
         private Label _bannerKey;
         private Label _bannerText;
         private string _bannerOwner = "";
+        private string _bannerKeysTemplate = "";
+        private string _bannerTextTemplate = "";
+        // Textos com {acao}, refeitos quando o jogador troca entre teclado e controle
+        private readonly System.Collections.Generic.List<(Label label, string template)> _dynamic = new();
         private Tween _bannerTween;
 
         public bool IsIntroOpen => _intro != null && _intro.Visible;
         public bool IsBannerVisible => _banner != null && _banner.Visible && _banner.Modulate.A > 0.01f;
         public string BannerText => _bannerText?.Text ?? "";
+        public string BannerKeys => _bannerKey?.Text ?? "";
 
         public override void _Ready()
         {
@@ -31,7 +36,38 @@ namespace Joguim.UI
             MouseFilter = MouseFilterEnum.Ignore;
             SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
             BuildBanner();
+            InputHints.Changed += RefreshHints;
+            Input.JoyConnectionChanged += OnJoyConnectionChanged;
             CallDeferred(MethodName.CheckPendingIntro);
+        }
+
+        public override void _ExitTree()
+        {
+            InputHints.Changed -= RefreshHints;
+            Input.JoyConnectionChanged -= OnJoyConnectionChanged;
+        }
+
+        private void OnJoyConnectionChanged(long device, bool connected)
+        {
+            if (connected) ShowNotice($"Controle conectado: {Input.GetJoyName((int)device)}", 3f);
+        }
+
+        private void RefreshHints()
+        {
+            foreach (var (label, template) in _dynamic)
+                if (IsInstanceValid(label)) label.Text = InputHints.Format(template);
+            if (_banner != null && _banner.Visible)
+            {
+                _bannerKey.Text = InputHints.Format(_bannerKeysTemplate);
+                _bannerText.Text = InputHints.Format(_bannerTextTemplate);
+            }
+        }
+
+        private Label Dynamic(Label label, string template)
+        {
+            _dynamic.Add((label, template));
+            label.Text = InputHints.Format(template);
+            return label;
         }
 
         private void CheckPendingIntro()
@@ -78,9 +114,11 @@ namespace Joguim.UI
         public void ShowBanner(string owner, string keys, string text)
         {
             _bannerOwner = owner;
-            _bannerKey.Text = keys;
+            _bannerKeysTemplate = keys ?? "";
+            _bannerTextTemplate = text ?? "";
+            _bannerKey.Text = InputHints.Format(_bannerKeysTemplate);
             _bannerKey.Visible = !string.IsNullOrEmpty(keys);
-            _bannerText.Text = text;
+            _bannerText.Text = InputHints.Format(_bannerTextTemplate);
             _banner.Visible = true;
             _banner.ResetSize();
             _banner.Position = new Vector2((Size.X - _banner.Size.X) / 2f, 70);
@@ -191,19 +229,19 @@ namespace Joguim.UI
             box.AddChild(grid);
             string[,] controls =
             {
-                { "A / D", "andar" },
-                { "Espaço", "pular (segure pra subir mais)" },
-                { "K", "atacar com a Espada de Grama" },
-                { "Q", "guardar a espada: corre e pula mais, mas não ataca" },
-                { "E", "interagir e restaurar a terra" },
-                { "Parede", "no ar, segure a direção pra deslizar e Espaço pra saltar" },
-                { "M", "mapa" },
-                { "Esc", "pausa" },
+                { "{move}", "andar" },
+                { "{jump}", "pular (segure pra subir mais)" },
+                { "{attack}", "atacar com a Espada de Grama" },
+                { "{toggle_sword}", "guardar a espada: corre e pula mais, mas não ataca" },
+                { "{interact}", "interagir e restaurar a terra" },
+                { "Parede", "no ar, segure a direção pra deslizar e {jump} pra saltar" },
+                { "{map}", "mapa" },
+                { "{pause}", "pausa" },
             };
             for (int i = 0; i < controls.GetLength(0); i++)
             {
-                grid.AddChild(MakeLabel(controls[i, 0], 16, "ffe9a8", HorizontalAlignment.Right));
-                var desc = MakeLabel(controls[i, 1], 15, "e8ecd8", HorizontalAlignment.Left);
+                grid.AddChild(Dynamic(MakeLabel("", 16, "ffe9a8", HorizontalAlignment.Right), controls[i, 0]));
+                var desc = Dynamic(MakeLabel("", 15, "e8ecd8", HorizontalAlignment.Left), controls[i, 1]);
                 desc.CustomMinimumSize = new Vector2(300, 0);
                 grid.AddChild(desc);
             }
@@ -211,6 +249,8 @@ namespace Joguim.UI
             var warn = MakeLabel("Cuidado: quedas altas machucam. Ao morrer, o Kairo volta pra última bandeira.",
                 14, "e0a27a", HorizontalAlignment.Center);
             box.AddChild(warn);
+            box.AddChild(MakeLabel("Dá pra jogar com controle: aperte qualquer botão dele e as teclas desta tela mudam.",
+                13, "9fb08c", HorizontalAlignment.Center));
 
             var start = new Button { Name = "StartButton", Text = "Começar a jornada", CustomMinimumSize = new Vector2(280, 42),
                 SizeFlagsHorizontal = SizeFlags.ShrinkCenter };
