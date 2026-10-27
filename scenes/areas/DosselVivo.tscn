@@ -19,6 +19,7 @@
 [ext_resource type="Script" path="res://scripts/art/TropicalGroundStrip.gd" id="art_strip"]
 [ext_resource type="Script" path="res://scripts/art/DosselBranchArt.gd" id="art_branches"]
 [ext_resource type="Texture2D" path="res://assets/environment/tropical/dossel_restoration_candidate_v1.png" id="art_restoration"]
+[ext_resource type="Script" path="res://scripts/world/TutorialZone.cs" id="tutorial_zone"]
 
 [sub_resource type="RectangleShape2D" id="Shape_WallLeft"]
 size = Vector2(40, 1500)
@@ -82,6 +83,12 @@ size = Vector2(60, 100)
 
 [sub_resource type="RectangleShape2D" id="Shape_ToIgarapeSufocado"]
 size = Vector2(60, 100)
+
+[sub_resource type="RectangleShape2D" id="Shape_TutCheckpoint"]
+size = Vector2(180, 240)
+
+[sub_resource type="RectangleShape2D" id="Shape_TutWall"]
+size = Vector2(180, 380)
 
 [node name="DosselVivo" type="Node2D" unique_id=1409715977 node_paths=PackedStringArray("SpawnPoints", "EnemySpawns", "Checkpoints")]
 script = ExtResource("area_script")
@@ -631,3 +638,27 @@ position = Vector2(110, 460)
 position = Vector2(70, 430)
 
 [node name="HUD" parent="." unique_id=1960135602 instance=ExtResource("hud")]
+
+[node name="Tutorial" type="Node2D" parent="."]
+
+[node name="TutCheckpoint" type="Area2D" parent="Tutorial"]
+position = Vector2(210, 380)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("tutorial_zone")
+Keys = "Totem"
+Text = "salva o progresso: ao morrer, o Kairo volta pra cá"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/TutCheckpoint"]
+shape = SubResource("Shape_TutCheckpoint")
+
+[node name="TutWall" type="Area2D" parent="Tutorial"]
+position = Vector2(960, 300)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("tutorial_zone")
+Keys = "Parede"
+Text = "no ar, segure a direção pra deslizar e aperte {jump} pra saltar. Quedas altas machucam!"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/TutWall"]
+shape = SubResource("Shape_TutWall")

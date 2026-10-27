@@ -7,10 +7,10 @@
 [node name="Enemy_Robusto" unique_id=1742229192 instance=ExtResource("1")]
 StatsResource = ExtResource("2")
 EnemyId = "enemy_robusto"
-HurtboxSize = Vector2(40, 22)
-HurtboxOffset = Vector2(0, -11)
 AttackHitboxSize = Vector2(26, 18)
 AttackHitboxOffset = Vector2(29, -11)
+HurtboxSize = Vector2(44, 24)
+HurtboxOffset = Vector2(0, -12)
 
 [node name="Body" parent="." index="1" unique_id=1776391430]
 visible = false

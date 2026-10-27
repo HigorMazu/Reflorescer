@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-21
+atualizado: 2026-10-26
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
@@ -11,12 +11,12 @@ papel: execucao
 responsavel: Gustavo
 par: "[[ROADMAP_QA_CODIGO]]"
 descricao: Backlog de implementação da demo e do Deserto pós-demo (código)
-epicos_total: 17
+epicos_total: 18
 epicos_concluidos: 15
-tasks_total: 76
-tasks_prontas: 65
+tasks_total: 81
+tasks_prontas: 71
 tasks_bloqueadas: 3
-tasks_liberadas: 4
+tasks_liberadas: 3
 ---
 # Roadmap de Desenvolvimento — Código (Gustavo)
 
@@ -610,13 +610,14 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: 🟡 parcial (19/10) — 1ª área jogável `scenes/areas/Deserto.tscn` ligada ao Covil; o layout final depende da C15-T4.
 >
-> > [!todo]- Task C15-T2 — Combate próprio da cobra do Deserto
-> > - [ ] Criar boss funcional, sem reaproveitar a IA/golpes do Korrag, com estados de preparação, execução, recuperação, dano e morte. Usar `windup`/`attack` da prévia como base visual do bote frontal.
-> > - [ ] Implementar os três ataques aprovados: bote/mordida frontal, varrida de cauda e mergulho/emergência na areia. Cada um deve ter aviso legível, janela de dano delimitada e alcance coerente com a animação; o deslocamento subterrâneo não pode deixar hitbox fantasma.
-> > - [ ] Integrar as animações `tail_sweep`, `burrow_enter` e `burrow_exit` entregues pela A08-T3 em 21/10; ajustar hitboxes, vida, dano e cadência por playtest, sem fixar números neste roadmap.
-> > - [ ] Reproduzir o sibilo e demais sons de combate em momentos ligados aos golpes, mantendo os volumes compatíveis com música e vento.
+> > [!info]- Task C15-T2 — Combate próprio da cobra do Deserto
+> > - [x] Criar boss funcional, sem reaproveitar a IA/golpes do Korrag, com estados de preparação, execução, recuperação, dano e morte. Usar `windup`/`attack` da prévia como base visual do bote frontal.
+> > - [x] Implementar os três ataques aprovados: bote/mordida frontal, varrida de cauda e mergulho/emergência na areia. Cada um deve ter aviso legível, janela de dano delimitada e alcance coerente com a animação; o deslocamento subterrâneo não pode deixar hitbox fantasma.
+> > - [x] Integrar as animações `tail_sweep`, `burrow_enter` e `burrow_exit` entregues pela A08-T3 em 21/10; ajustar hitboxes, vida, dano e cadência por playtest, sem fixar números neste roadmap.
+> > - [x] Reproduzir o sibilo e demais sons de combate em momentos ligados aos golpes, mantendo os volumes compatíveis com música e vento.
+> > - **Implementado (26/10):** `scripts/bosses/SerpentBoss.cs` + `scenes/bosses/Boss_Serpente.tscn` (substitui a prévia na `Deserto.tscn`). 360 de vida, 3 fases (dano 30/38/45, mais mergulhos e menos espera a cada fase). Bote: aviso vermelho 0,55 s e mordida à frente. Cauda: aviso amarelo e varrida baixa dos dois lados (se desvia pulando). Mergulho: some (invulnerável, sem dano de contato), um redemoinho segue o Kairo e ela sai embaixo dele. A parede de areia fecha a arena ao entrar e abre quando ela cai; a derrota fica salva e **não** abre a tela de fim da demo (agora só o Korrag abre). Antes o Kairo "não acertava a cobra" porque ela era só a animação de prévia, sem vida nem hitbox.
 > >
-> > Status: 🟢 liberado (15/10) — trio de ataques aprovado; protótipo de mecânica pode começar com arte provisória e concluir após a A08-T3.
+> > Status: implementado (26/10) — `SerpentBossCheck.gd` 24/24; falta jogar e o Higor revisar o timing das animações (A08-T3).
 >
 > > [!todo]- Task C15-T3 — Conclusão da luta e progressão pós-chefe
 > > - [ ] Definir com o grupo o resultado narrativo, recompensa/desbloqueio e próximo destino após a cobra; registrar a decisão no GDD antes de implementar a transição final.
@@ -678,6 +679,42 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - **Decisões (19/10):** revelar trecho grava só `ExploredMapCells` (o Continuar segue a bandeira); portal Covil → Igarapé fica fechado (apagado) até o Korrag cair (`TransitionTrigger.LockedUntilBossDefeated`).
 > >
 > > Status: ✅ concluído (19/10) — `WorldMapCheck.gd` 16/16 com as verificações novas.
+
+> [!info]- EPIC-C18 — Playtest de 26/10: tutorial, dificuldade e hitboxes — 🔄 Implementado, aguarda playtest · 🔴 Bloqueante
+> *Pronto quando*: quem nunca jogou entende o propósito e os controles sem ajuda, a demo fica bem mais difícil (pedido do Gustavo depois de jogar: "muito fácil") e todo golpe que parece acertar acerta.
+>
+> > [!info]- Task C18-T1 — Tela de abertura e dicas no cenário
+> > - [x] Novo jogo abre uma tela com a história (a última semente), o objetivo (restaurar 3 áreas e derrotar Korrag), os controles e o aviso de queda; o jogo espera o jogador apertar "Começar a jornada" (`scripts/ui/TutorialOverlay.cs`, criado pelo HUD).
+> > - [x] Faixas de dica no topo da tela quando o Kairo passa por cada trecho (`scripts/world/TutorialZone.cs`): Sopé (andar/pular, atacar, restaurar, espada, mapa/pausa) e Dossel (totem, parede + queda).
+> > - [x] A abertura não aparece em Continuar, nem quando o Godot roda um teste (`--script`); o `TutorialFallCheck.gd` liga de novo pra testar.
+> >
+> > Status: implementado (26/10) — `TutorialFallCheck.gd` 19/19; falta o playtest com alguém que nunca jogou (A07-T3).
+>
+> > [!info]- Task C18-T2 — Dano de queda
+> > - [x] Conta do ponto mais alto do salto até o pouso. Até 260 px (~4 alturas do Kairo) não dói; depois 10 + 10 a cada 100 px, até 40 (ex.: 360 px = 20, 420 px = 25, 560 px ou mais = 40). Agarrar na parede zera a contagem; respawn e troca de área não contam.
+> > - [x] Valores ajustáveis no `PlayerController` (`FallSafeHeight`, `FallBaseDamage`, `FallDamagePer100`, `FallMaxDamage`).
+> >
+> > Status: implementado (26/10) — `TutorialFallCheck.gd`: 150 px não dói, 420 px tira 25, queda do alto tira 40.
+>
+> > [!info]- Task C18-T3 — Korrag e inimigos mais difíceis
+> > - [x] Korrag: vida 200 → 300; velocidade 80/120/140 → 110/160/190 por fase; espera entre ataques 2,0/1,2/1,0 → 1,4/0,9/0,7 s; investida 300 → 400 px/s com aviso de 1,0 → 0,7 s e dano 40 → 50; pisada com aviso 0,4 → 0,3 s e dano 30 → 38; golpe 35 → 45 nas fases 2 e 3.
+> > - [x] Inimigos comuns em todas as áreas (Floresta e Deserto): dano +25%, velocidade +10%, espera entre ataques −10%.
+> >
+> > Status: implementado (26/10) — bateria `tools/qa/` verde; falta o Gustavo jogar e dizer se ficou difícil na medida.
+>
+> > [!info]- Task C18-T4 — Hitboxes dos inimigos do tamanho do desenho
+> > - [x] Medidos os pixels visíveis de cada sprite. Burro Selvagem e Ganso-das-Neves (44 px de altura) tinham a hitbox do Robusto da Floresta (22 px): metade de cima não levava dano. Lebre-Europeia idem (43 × 24).
+> > - [x] Nova hitbox ≈ 90% do corpo desenhado em todos: Rápido 42×28, Robusto 44×24, Voador 38×36, Rato 44×24, Burro e Ganso 46×40 (golpe 28×30), Lebre 40×38 (golpe 26×28).
+> >
+> > Status: implementado (26/10) — `EnemyIntegrationCheck` e `CombatCheck` verdes; falta conferir jogando.
+
+>
+> > [!info]- Task C18-T5 — Jogar com controle (Bluetooth ou cabo)
+> > - [x] Todas as ações no layout padrão (`project.godot`): analógico esquerdo ou D-pad anda, **A** pula, **X** ataca, **RB/RT** dash, **Y** interage/restaura, **LB** guarda/saca a espada, **B** especial, **Start** pausa, **View/Select** mapa. O teclado continua igual.
+> > - [x] **A** confirma nos menus (`ui_accept`; o padrão do Godot só tinha Enter/Espaço) e o menu de pausa abre com foco no Continuar.
+> > - [x] As dicas da tela trocam sozinhas pro dispositivo usado por último (`scripts/ui/InputHints.cs`): abertura, faixas de dica, prompt de interagir, dica do mapa, tecla da espada e menu inicial. Nomes de Xbox, PlayStation (Cruz, Quadrado, L1...) ou Switch conforme o nome do controle. Conectar um controle mostra um aviso.
+> >
+> > Status: implementado (26/10) — `GamepadCheck.gd` 27/27 com controle simulado; falta testar com os controles Bluetooth do Gustavo e do Higor.
 
 > [!todo]- EPIC-C17 — Fundação do jogo completo (mundo conectado) — 📋 Planejado · 🟢 Pós-demo
 > *Pronto quando*: um bioma novo entra no jogo sem mexer em código fixo da Floresta: o mapa, as transições entre biomas, o save e a progressão de habilidades aceitam áreas novas por configuração. Base pro [[Projetos/Reflorescer/🗺️ Roadmap#Pós-demo — jogo completo|roadmap pós-demo]].

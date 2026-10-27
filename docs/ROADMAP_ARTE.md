@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-21
+atualizado: 2026-10-26
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: arte
@@ -12,8 +12,8 @@ responsavel: Higor
 par: "[[ROADMAP_QA_INTEGRACAO]]"
 descricao: Backlog de sprites, animação e estilização da demo e dos biomas pós-demo
 epicos_total: 9
-epicos_concluidos: 8
-tasks_total: 33
+epicos_concluidos: 7
+tasks_total: 35
 tasks_prontas: 30
 tasks_bloqueadas: 0
 tasks_liberadas: 3
@@ -254,7 +254,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ⏭️ adiado (19/10) — fora da demo, vai pro jogo completo.
 
-> [!success]- EPIC-A06 — UI — ✅ Concluído (19/10) · 🟡 Média
+> [!warning]- EPIC-A06 — UI — 🟡 Abertura e dicas novas aguardam revisão (26/10) · 🟡 Média
 > *Pronto quando*: barra de vida, ícone de habilidade e prompt de interação têm arte final substituindo os placeholders do Godot.
 >
 > Apoio, menor prioridade — não bloqueia jogabilidade.
@@ -290,6 +290,11 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ concluída (19/10) — validado jogando pelo Gustavo em 19/10.
 
+> > [!todo]- Task A06-T7 — Revisão visual da abertura e das faixas de dica
+> > - [ ] Revisar no jogo a tela de abertura (história, objetivo, controles) e as faixas de dica do Sopé e do Dossel (`TutorialOverlay.cs`), no estilo da tela de fim.
+> >
+> > Status: 🟢 liberado (26/10) — implementado no playtest de 26/10 (C18-T1).
+
 > [!warning]- EPIC-A08 — Deserto pós-demo — 🔄 1ª área jogável no ar (19/10); áreas e cobra em produção · 🟡 Pós-demo
 > *Pronto quando*: o caminho começa com sol, passa gradualmente pela tarde e termina numa arena noturna com uma cobra grande, com a arte aprovada no jogo.
 >
@@ -319,7 +324,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > **Entrega (21/10):** nove quadros novos em canvas 512×320, integrados ao `SandViperSpriteFrames.tres`; a prévia percorre bote, cauda, entrada e saída da areia. Folha e GIF atualizados em `docs/art-review/desert-snake-boss-v1.*`.
 > >
-> > Status: 🟡 parcial (21/10) — os novos ciclos foram aprovados pelo Higor em 21/10; falta revisar o encaixe com hitboxes e timing quando o protótipo C15-T2 existir.
+> > Status: 🟢 liberado (26/10) — a luta existe (`Boss_Serpente.tscn`, C15-T2); falta o Higor revisar no jogo o timing de bote, cauda e mergulho.
 
 > > [!success]- Task A08-T4 — Arte das áreas do Deserto
 > > - [x] Plataformas, rochas e ruínas pra verticalidade (cânions), no padrão da faixa de chão atual.
@@ -334,7 +339,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ concluída (21/10) — pacote visual aprovado; a montagem jogável continua na C15-T4.
 >
-> > [!todo]- Task A08-T5 — Marco de checkpoint e portais do Deserto
+> > [!success]- Task A08-T5 — Marco de checkpoint e portais do Deserto
 > > - [x] Marco de checkpoint próprio do Deserto, com estado apagado/aceso.
 > > - [x] Visual próprio da passagem Covil ↔ Deserto, substituindo os retângulos coloridos por arcos de arenito animados e uma variante com raízes no lado da floresta.
 > >
@@ -342,10 +347,16 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ aprovado pelo Higor (21/10).
 >
-> > [!todo]- Task A08-T6 — Luz noturna não escurece chão e personagens
+> > [!success]- Task A08-T6 — Luz noturna não escurece chão e personagens
 > > - [x] À noite céu, chão, inimigos, cobra e Kairo recebem a mesma luz azul do `DesertLighting` na cena jogável.
+> > - **Medição (26/10):** a luz é aplicada no primeiro plano (brilho do chão cai de 0,71 de dia pra 0,31 à noite; Kairo e inimigos também escurecem). Ao lado do céu azul a areia ainda lê dourada; pra uma noite mais marcada, escurecer `NIGHT_LIGHT` no `DesertLighting.gd`.
 > >
 > > Status: ✅ corrigida (21/10) — validada no renderer em `docs/art-review/desert-area-night-v2.png` e pelo `DesertReviewCheck.gd`.
+
+> > [!todo]- Task A08-T7 — Parede de areia da arena da cobra
+> > - [ ] Visual da parede que fecha a arena quando a luta começa e some quando a cobra cai (hoje é um retângulo cor de areia provisório: `Geometry/ArenaGate/SandCurtain` na `Deserto.tscn`, x = 2900).
+> >
+> > Status: 🟢 liberado (26/10) — a arena já funciona.
 
 > [!success]- EPIC-A09 — Cartografia da Floresta Tropical — ✅ Concluído (19/10) · 🟡 Alta
 > *Pronto quando*: o mapa aberto no jogo comunica as passagens entre as quatro áreas e oculta cada trecho não explorado, com leitura clara em 1280×720.

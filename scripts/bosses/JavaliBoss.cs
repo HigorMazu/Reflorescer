@@ -6,15 +6,16 @@ namespace Joguim.Bosses
 {
     public partial class JavaliBoss : BossBase
     {
-        [Export] public float ChargeSpeed = 300.0f;
-        [Export] public float ChargeDamage = 40.0f;
-        [Export] public float ChargeWindup = 1.0f;
+        // Mais rápido, ágil e forte desde 26/10/2026 (playtest do Gustavo: \"muito fácil\"). Antes: 300 / 40 / 1,0 s / 0,4 s / 30
+        [Export] public float ChargeSpeed = 400.0f;
+        [Export] public float ChargeDamage = 50.0f;
+        [Export] public float ChargeWindup = 0.7f;
         [Export] public float ChargeDuration = 0.9f;
         [Export] public float ChargeMinDistance = 180.0f;
         // Do centro: o corpo tem ~120 px de cada lado, então 170 pega quem está encostado (11/10/2026; era 100)
         [Export] public float StompRadius = 170.0f;
-        [Export] public float StompWindup = 0.4f;
-        [Export] public int StompDamage = 30;
+        [Export] public float StompWindup = 0.3f;
+        [Export] public int StompDamage = 38;
         [Export] public float StompKnockback = 400.0f;
 
         private bool _isCharging;

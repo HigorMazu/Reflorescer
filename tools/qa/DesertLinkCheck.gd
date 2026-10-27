@@ -99,13 +99,15 @@ func _run() -> void:
 	await process_frame
 	_check(not paused, "M fecha o mapa no Deserto")
 
-	# A arena da cobra fica fechada até a luta existir (C15-T2)
-	p.global_position = Vector2(3100, 440)
+	# Arena da cobra (C15-T2, 26/10): entrar fecha a parede de areia atrás do Kairo
+	var gate := current_scene.get_node("Geometry/ArenaGate/CollisionShape2D") as CollisionShape2D
+	_check(gate.disabled, "arena aberta antes de entrar")
+	p.global_position = Vector2(3150, 440)
 	p.velocity = Vector2.ZERO
-	Input.action_press("move_right")
-	await _frames(60)
-	Input.action_release("move_right")
-	_check(p.global_position.x < 3200.0, "barreira segura Kairo antes da cobra (x=%d)" % p.global_position.x)
+	await _frames(30)
+	_check(not gate.disabled and current_scene.get_node("Boss_Serpente").get("IsActive"), "entrar na arena acorda a cobra e fecha a parede")
+	# Sai pela porta dos fundos do teste: a volta ao Covil usa teleporte, a luta fica pro SerpentBossCheck
+	current_scene.get_node("Boss_Serpente").process_mode = Node.PROCESS_MODE_DISABLED
 
 	# Volta ao Covil
 	p.global_position = current_scene.get_node("Transitions/ToCovilDeKorrag").global_position

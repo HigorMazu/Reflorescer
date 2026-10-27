@@ -6,8 +6,8 @@
 script = ExtResource("1")
 PhaseName = "Enraged"
 HealthThreshold = 0.2
-AttackCooldown = 1.0
-MoveSpeed = 140.0
-Damage = 35
+AttackCooldown = 0.7
+MoveSpeed = 190.0
+Damage = 45
 AnimationPrefix = "enraged_"
 IsEnraged = true

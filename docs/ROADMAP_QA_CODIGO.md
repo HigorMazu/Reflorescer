@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-21
+atualizado: 2026-10-26
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
@@ -11,11 +11,11 @@ papel: qa
 responsavel: Gustavo
 par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
-epicos_total: 17
+epicos_total: 18
 epicos_concluidos: 15
-tasks_total: 76
-tasks_prontas: 65
-tasks_bloqueadas: 5
+tasks_total: 81
+tasks_prontas: 66
+tasks_bloqueadas: 4
 ---
 # Roadmap de QA — Código (Reflorescer)
 
@@ -539,13 +539,13 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: 🟡 parcial (19/10) — 1ª área passa no `DesertLinkCheck.gd` (spawn, chão, vento, inimigos com stats do Deserto, bandeira, mapa, barreira antes da cobra); o percurso completo depende da C15-T4.
 >
-> > [!failure]- Task C15-T2 — Bote, cauda e areia da cobra
-> > - [ ] Cada golpe tem aviso, execução e recuperação distinguíveis; a hitbox só causa dano na janela ativa e não alcança além do desenho, em ambos os lados da arena.
-> > - [ ] Bote/mordida frontal, varrida de cauda e mergulho/emergência na areia podem ser provocados em teste; dano, invulnerabilidade e colisão do jogador obedecem às regras existentes.
-> > - [ ] Durante o mergulho, o corpo e a colisão seguem o estado subterrâneo sem golpe invisível; retorno à superfície não prende nem teleporta Kairo.
-> > - [ ] Hurt/death encerram os golpes com segurança; a luta termina uma vez, sem novos ataques após a morte. O sibilo não se repete por quadro.
+> > [!warning]- Task C15-T2 — Bote, cauda e areia da cobra
+> > - [x] Cada golpe tem aviso, execução e recuperação distinguíveis; a hitbox só causa dano na janela ativa e não alcança além do desenho, em ambos os lados da arena.
+> > - [x] Bote/mordida frontal, varrida de cauda e mergulho/emergência na areia podem ser provocados em teste; dano, invulnerabilidade e colisão do jogador obedecem às regras existentes.
+> > - [x] Durante o mergulho, o corpo e a colisão seguem o estado subterrâneo sem golpe invisível; retorno à superfície não prende nem teleporta Kairo.
+> > - [x] Hurt/death encerram os golpes com segurança; a luta termina uma vez, sem novos ataques após a morte. O sibilo não se repete por quadro.
 > >
-> > Status: 🔴 pendente (15/10) — `Boss_CobraDesertoVisual.tscn` só apresenta animações; depende da [[ROADMAP_DEV]] C15-T2. Revisar animações finais também na A08-T3.
+> > Status: 🟡 parcial (26/10) — `SerpentBossCheck.gd` 24/24 (arena fecha, Kairo acerta o corpo, os 3 golpes com aviso, mergulho invulnerável que sai embaixo do Kairo, fase 2, morte salva sem tela de fim). Falta jogar.
 >
 > > [!failure]- Task C15-T3 — Persistência e saída pós-chefe
 > > - [ ] Após a derrota, a recompensa/desbloqueio aprovado ocorre uma vez; reload e retorno à arena mantêm o estado correto.
@@ -598,6 +598,44 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [x] Portal do Covil se comporta conforme a decisão (fechado ou aberto) durante a luta com o Korrag.
 > >
 > > Status: ✅ passa (19/10) — `WorldMapCheck.gd` 16/16: título inteiro, Continuar não muda com o mapa, M sem efeito fora das áreas e portal fechado com o Korrag vivo.
+
+> [!warning]- EPIC-C18 — Playtest de 26/10: tutorial, dificuldade e hitboxes — 🟡 Testes automáticos passam; falta jogar · 🔴 Bloqueante
+> *Pronto quando*: os testes abaixo passam e o Gustavo joga a demo inteira com as mudanças.
+>
+> > [!warning]- Task C18-T1 — Tela de abertura e dicas
+> > - [x] Novo jogo abre a abertura com propósito, objetivo e as teclas A/D, Espaço, K, Q, E, M e Esc; o botão já vem com foco e solta o jogo.
+> > - [x] As faixas aparecem no trecho certo, trocam entre trechos e somem ao sair.
+> > - [ ] Alguém que nunca jogou entende o que fazer só com isso (A07-T3).
+> >
+> > Status: 🟡 parcial (26/10) — `TutorialFallCheck.gd` 19/19.
+>
+> > [!success]- Task C18-T2 — Dano de queda
+> > - [x] Queda curta não dói; queda alta dói; mais alta dói mais, com teto de 40.
+> > - [x] Bateria antiga (DemoRun, Dossel, Combat) continua passando com o dano de queda ligado.
+> >
+> > Status: ✅ passa (26/10) — `TutorialFallCheck.gd` + bateria completa verde.
+>
+> > [!warning]- Task C18-T3 — Korrag e inimigos mais difíceis
+> > - [x] `DemoRunCheck` 89/89, `CombatCheck` 35/35, `DemoEndCheck` 15/15 com os valores novos.
+> > - [ ] Playtest do Gustavo: o Korrag ficou rápido, ágil e forte; a demo ficou bem mais difícil, mas dá pra vencer.
+> >
+> > Status: 🟡 parcial (26/10) — falta o playtest.
+>
+> > [!warning]- Task C18-T4 — Hitboxes dos inimigos
+> > - [x] Medição automática: cada hitbox cobre ~90% do corpo visível (antes Burro, Ganso e Lebre tinham só metade).
+> > - [x] `EnemyIntegrationCheck` (9 espécies) e `CombatCheck` verdes.
+> > - [ ] Playtest: golpe que encosta no desenho acerta, nos 9 inimigos.
+> >
+> > Status: 🟡 parcial (26/10) — falta conferir jogando.
+
+>
+> > [!warning]- Task C18-T5 — Jogar com controle
+> > - [x] As 10 ações têm botão no controle; analógico e D-pad andam, A pula, X ataca (simulado).
+> > - [x] Start pausa, A confirma no menu de pausa, View abre e fecha o mapa, D-pad navega no menu inicial.
+> > - [x] Dicas trocam pro controle (A, X, View, LB), usam os nomes do PlayStation e voltam pro teclado.
+> > - [ ] Com o controle Bluetooth real do Gustavo e do Higor: parear no Windows, abrir o jogo e jogar o Sopé inteiro só no controle.
+> >
+> > Status: 🟡 parcial (26/10) — `GamepadCheck.gd` 27/27; falta o teste com controle real.
 
 > [!failure]- EPIC-C17 — Fundação do jogo completo (mundo conectado) — 🔴 Ainda não testável · 🟢 Pós-demo
 > *Pronto quando*: uma área de teste nova entra no mapa, nas transições e no save só por configuração, sem regressão na demo.

@@ -39,6 +39,7 @@ namespace Joguim.UI
         public const string GroupName = "HUD";
 
         private PlayerController _player;
+        private string _lastPrompt = "";
 
         public override void _Ready()
         {
@@ -50,6 +51,8 @@ namespace Joguim.UI
             _swordStatus = GetNodeOrNull<SwordStatusIndicator>(SwordStatusPath);
 
             AddToGroup(GroupName);
+            // Tela de abertura e faixas de dica (26/10/2026)
+            AddChild(new TutorialOverlay { Name = "Tutorial" });
 
             if (_pauseMenu != null)
             {
@@ -70,13 +73,25 @@ namespace Joguim.UI
             EventBus.Instance.AreaRestored += OnAreaRestored;
             EventBus.Instance.BossDefeated += OnBossDefeated;
 
+            InputHints.Changed += OnInputDeviceChanged;
+            OnInputDeviceChanged();
             CallDeferred(MethodName.InitializeHUD);
+        }
+
+        // Teclado ↔ controle: troca as teclas mostradas no HUD
+        private void OnInputDeviceChanged()
+        {
+            var mapHint = GetNodeOrNull<Label>("MarginContainer/VBoxContainer/TopRow/MapHint");
+            if (mapHint != null) mapHint.Text = $"{InputHints.Label("map")}  ·  MAPA";
+            if (_interactionPrompt != null && _interactionPrompt.Visible && !string.IsNullOrEmpty(_lastPrompt))
+                OnInteractionPromptChanged(_lastPrompt);
         }
 
         // O EventBus é autoload e sobrevive à troca de cena: sem desinscrever, o handler de um HUD
         // já destruído lança ObjectDisposedException e interrompe os demais inscritos (ex.: o HUD da cena nova).
         public override void _ExitTree()
         {
+            InputHints.Changed -= OnInputDeviceChanged;
             if (EventBus.Instance == null) return;
             EventBus.Instance.PlayerDied -= OnPlayerDied;
             EventBus.Instance.PlayerHealthChanged -= OnPlayerHealthChanged;
@@ -90,6 +105,8 @@ namespace Joguim.UI
 
         private void InitializeHUD()
         {
+            // Chamada adiada: a cena pode ter sido trocada antes (ex.: Novo jogo seguido de outra troca)
+            if (!IsInsideTree()) return;
             _player = GetTree().GetFirstNodeInGroup("Player") as PlayerController;
 
             if (_player != null && _player.Health != null)
@@ -124,8 +141,9 @@ namespace Joguim.UI
 
         private void OnInteractionPromptChanged(string prompt)
         {
+            _lastPrompt = prompt;
             if (string.IsNullOrEmpty(prompt)) HideInteractionPrompt();
-            else ShowInteractionPrompt($"[E] {prompt}");
+            else ShowInteractionPrompt($"[{InputHints.Label("interact")}] {prompt}");
         }
 
         public void ShowInteractionPrompt(string prompt)
@@ -159,6 +177,8 @@ namespace Joguim.UI
             if (_pauseMenu != null)
             {
                 _pauseMenu.Visible = isPaused;
+                // Sem foco o controle não navega no menu
+                if (isPaused) _pauseMenu.GetNodeOrNull<Button>("VBoxContainer/ResumeButton")?.GrabFocus();
             }
         }
 
@@ -269,6 +289,8 @@ namespace Joguim.UI
         // Fim da demo (C14-T3, 11/10/2026): derrotar o Korrag mostra quantas áreas foram restauradas
         private void OnBossDefeated(string bossId)
         {
+            // Só o Korrag encerra a demo; chefes do jogo completo (ex.: a cobra do Deserto) não abrem esta tela
+            if (bossId != "boss_javali") return;
             GetTree().CreateTimer(DemoEndDelay, true, false, true).Timeout += () =>
             {
                 if (!IsInstanceValid(this)) return;

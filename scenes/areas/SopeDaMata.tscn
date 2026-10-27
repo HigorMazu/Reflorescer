@@ -18,6 +18,7 @@
 [ext_resource type="Script" path="res://scripts/art/TropicalGroundStrip.gd" id="art_strip"]
 [ext_resource type="Texture2D" path="res://assets/environment/tropical/sope_props_candidate_v1.png" id="art_props"]
 [ext_resource type="Shader" path="res://assets/shaders/understory_sway.gdshader" id="art_prop_sway"]
+[ext_resource type="Script" path="res://scripts/world/TutorialZone.cs" id="tutorial_zone"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_grass"]
 shader = ExtResource("art_sway")
@@ -57,6 +58,21 @@ size = Vector2(32, 32)
 
 [sub_resource type="RectangleShape2D" id="Shape_ToDosselVivo"]
 size = Vector2(60, 100)
+
+[sub_resource type="RectangleShape2D" id="Shape_TutMove"]
+size = Vector2(380, 240)
+
+[sub_resource type="RectangleShape2D" id="Shape_TutAttack"]
+size = Vector2(200, 240)
+
+[sub_resource type="RectangleShape2D" id="Shape_TutRestore"]
+size = Vector2(210, 240)
+
+[sub_resource type="RectangleShape2D" id="Shape_TutSword"]
+size = Vector2(180, 240)
+
+[sub_resource type="RectangleShape2D" id="Shape_TutMap"]
+size = Vector2(280, 240)
 
 [node name="SopeDaMata" type="Node2D" unique_id=832451940 node_paths=PackedStringArray("SpawnPoints", "EnemySpawns", "Checkpoints")]
 script = ExtResource("area_script")
@@ -414,3 +430,60 @@ position = Vector2(160, 460)
 position = Vector2(120, 430)
 
 [node name="HUD" parent="." unique_id=1555559757 instance=ExtResource("hud")]
+
+[node name="Tutorial" type="Node2D" parent="."]
+
+[node name="TutMove" type="Area2D" parent="Tutorial"]
+position = Vector2(250, 380)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("tutorial_zone")
+Keys = "{move}  ·  {jump}"
+Text = "andar e pular (segure {jump} pra subir mais)"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/TutMove"]
+shape = SubResource("Shape_TutMove")
+
+[node name="TutAttack" type="Area2D" parent="Tutorial"]
+position = Vector2(660, 380)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("tutorial_zone")
+Keys = "{attack}"
+Text = "atacar com a Espada de Grama"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/TutAttack"]
+shape = SubResource("Shape_TutAttack")
+
+[node name="TutRestore" type="Area2D" parent="Tutorial"]
+position = Vector2(1095, 370)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("tutorial_zone")
+Keys = "{interact}"
+Text = "restaurar a terra seca: cura o Kairo e aumenta a vida máxima"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/TutRestore"]
+shape = SubResource("Shape_TutRestore")
+
+[node name="TutSword" type="Area2D" parent="Tutorial"]
+position = Vector2(1390, 380)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("tutorial_zone")
+Keys = "{toggle_sword}"
+Text = "guardar a espada: corre e pula mais alto, mas não ataca ({toggle_sword} de novo pra sacar)"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/TutSword"]
+shape = SubResource("Shape_TutSword")
+
+[node name="TutMap" type="Area2D" parent="Tutorial"]
+position = Vector2(2190, 380)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("tutorial_zone")
+Keys = "{map}  ·  {pause}"
+Text = "mapa  ·  pausa. A trilha continua subindo, no Dossel Vivo"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/TutMap"]
+shape = SubResource("Shape_TutMap")

@@ -28,6 +28,8 @@ namespace Joguim.Core
 
         public override void _Input(InputEvent @event)
         {
+            // Teclado ou controle: as dicas da tela seguem o último usado (26/10/2026)
+            Joguim.UI.InputHints.Observe(@event);
             if (@event.IsActionPressed("map") && !@event.IsEcho())
             {
                 ToggleMap();
@@ -45,6 +47,11 @@ namespace Joguim.Core
                 TogglePause();
             }
         }
+
+        // Pra testes em GDScript (a classe InputHints é estática)
+        public string GetInputHint(string action) => Joguim.UI.InputHints.Label(action);
+        public void SetInputHintsForTest(bool gamepad, int style) =>
+            Joguim.UI.InputHints.Set(gamepad, (Joguim.UI.InputHints.PadStyle)style);
 
         public void ToggleMap()
         {

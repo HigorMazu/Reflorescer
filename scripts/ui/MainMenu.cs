@@ -42,9 +42,20 @@ namespace Joguim.UI
 
             _navigationButtons = new[] { continueButton, newGame, quit };
 
+            InputHints.Changed += RefreshControlsHint;
+            RefreshControlsHint();
+
             // foco no teclado: Continuar quando existe save, senão Novo jogo
             if (hasSave && continueButton != null) continueButton.GrabFocus();
             else newGame?.GrabFocus();
+        }
+
+        public override void _ExitTree() => InputHints.Changed -= RefreshControlsHint;
+
+        private void RefreshControlsHint()
+        {
+            var hint = GetNodeOrNull<Label>("ControlsHint");
+            if (hint != null) hint.Text = InputHints.Format("{navigate}  Navegar     {accept}  Selecionar");
         }
 
         public override void _UnhandledKeyInput(InputEvent @event)
