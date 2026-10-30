@@ -32,6 +32,21 @@ func _ready() -> void:
 	light.set("progress_start_x", progress_start_x)
 	light.set("progress_end_x", progress_end_x)
 	add_child(light)
+	# The illustrated tile has a ragged transparent underside. Continue its opaque
+	# sandstone core down to the camera edge so the ground reads as solid earth.
+	# This is visual only: the existing floor collision and surface stay untouched.
+	for index in range(ceili(world_width / GROUND.get_width())):
+		var stratum := Sprite2D.new()
+		stratum.name = "Underground%02d" % index
+		stratum.texture = GROUND
+		stratum.centered = false
+		stratum.region_enabled = true
+		stratum.region_rect = Rect2(0, 40, GROUND.get_width(), 100)
+		stratum.position = Vector2(index * GROUND.get_width(), floor_y + 85)
+		stratum.scale = Vector2(1, 2)
+		stratum.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		stratum.z_index = -2
+		add_child(stratum)
 	for index in range(ceili(world_width / GROUND.get_width())):
 		var tile := Sprite2D.new()
 		tile.name = "Sandstone%02d" % index

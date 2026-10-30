@@ -27,3 +27,8 @@ alterar o código.
 cobra) são sons autorais sintetizados por `tools/audio/generate_desert_audio.py`,
 sem samples ou gravações de terceiros. A cena isolada `DesertReview.tscn` usa
 esses sons; o restante da demo não foi alterado.
+
+`music/deserto_autoral.wav` é a faixa instrumental autoral da área jogável do
+Deserto, gerada por `tools/audio/generate_desert_music.py`. Inclui uma camada
+discreta de vento sintetizado que permanece na arena da cobra. Não contém
+samples, loops ou gravações de terceiros.

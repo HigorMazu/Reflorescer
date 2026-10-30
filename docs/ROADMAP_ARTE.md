@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-26
+atualizado: 2026-10-30
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: arte
@@ -12,11 +12,12 @@ responsavel: Higor
 par: "[[ROADMAP_QA_INTEGRACAO]]"
 descricao: Backlog de sprites, animação e estilização da demo e dos biomas pós-demo
 epicos_total: 9
-epicos_concluidos: 7
+epicos_concluidos: 9
 tasks_total: 35
-tasks_prontas: 30
+tasks_prontas: 35
 tasks_bloqueadas: 0
-tasks_liberadas: 3
+tasks_liberadas: 0
+tasks_aguardando_aprovacao: 0
 ---
 # Roadmap de Arte — Sprites, Animação e Estilização (Higor)
 
@@ -148,7 +149,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ concluída (15/10) — arte aprovada e integrada; teste contextual na futura área da Tundra segue no QA de integração.
 
-> [!success]- EPIC-A03 — Faísca (vaga-lume companheiro) — ✅ Concluído na demo (A03-T2 adiada) · 🟠 Alta
+> [!success]- EPIC-A03 — Faísca (vaga-lume companheiro) — ✅ Concluído na demo · 🟠 Alta
 > *Pronto quando*: `fly` e `investigate` estão entregues e a troca de animação acompanha a troca de estado sem travar num frame parado.
 >
 > > [!success]- Task A03-T1 — Animações
@@ -160,12 +161,6 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ concluída (06/10) — animações entregues e integradas à máquina de estados.
 >
-> > [!todo]- Task A03-T2 — Faísca fortalecida pela restauração
-> > - [ ] Visual da Faísca em cada nível de força (1, 2 e 3 áreas restauradas), conforme o que for definido ([[ROADMAP_DEV]] C14-T4).
-> > - **Decisão do grupo (19/10):** fica fora da demo e vai pro jogo completo — a demo fecha com a cura e o +10 de vida máxima por área. Ver [[🗺️ Roadmap]] (pós-demo).
-> >
-> > Status: ⏭️ adiado (19/10) — fora da demo, vai pro jogo completo.
-
 > [!success]- EPIC-A04 — Boss KORRAG — ✅ Concluído (19/10) · 🟠 Alta
 > *Pronto quando*: `intro`, `charge_windup`, `phase2_transition` e `defeated` estão entregues — escopo já simplificado, fases 1 e 2 compartilham `idle`.
 >
@@ -201,7 +196,7 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ concluída (19/10) — validado jogando pelo Gustavo em 19/10.
 
-> [!success]- EPIC-A05 — Cenário das 4 Áreas da Demo (Floresta Tropical) — ✅ Concluído na demo (A05-T6 adiada) · 🔴 Bloqueante
+> [!success]- EPIC-A05 — Cenário das 4 Áreas da Demo (Floresta Tropical) — ✅ Arte concluída, incluindo A05-T6 pós-demo · 🔴 Bloqueante
 > *Pronto quando*: as 4 áreas têm tileset, background e props temáticos entregues, com identidade visual reconhecível sem precisar de texto, e coerentes entre si (mesmo bioma, mesma paleta-base) — ver [[🌍 Mundo e Biomas#As 4 áreas da demo (dentro da Floresta Tropical)|Mundo e Biomas]].
 >
 > Renomeado em 29/09/2026 (era "Cenário das 3 Áreas da Demo": Floresta Tropical/Deserto/Tundra) — a demo agora fica só na Floresta Tropical, em 4 áreas.
@@ -247,14 +242,37 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > > - **Entrega (12/10):** a cena do Dossel usa `CheckpointTotemVisual`, e `Checkpoint` sincroniza a aparência com `Activated` na entrada, ativação e desativação. Capturas no cenário real: `docs/art-review/roadmap-visual-2026-10-12.md`.
 > >
 > > Status: ✅ concluída (19/10) — validado jogando pelo Gustavo em 19/10.
->
-> > [!todo]- Task A05-T6 — Vinhas/plataformas que crescem ao restaurar
-> > - [ ] Arte do caminho novo que aparece em cada área restaurada (Sopé, Dossel, Igarapé), conforme o que for definido ([[ROADMAP_DEV]] C14-T5): estado "fechado" (seco/ausente) e "aberto" (crescido), na escala das plataformas atuais.
-> > - **Decisão do grupo (19/10):** fica fora da demo e vai pro jogo completo — a demo fecha com a cura e o +10 de vida máxima por área. Ver [[🗺️ Roadmap]] (pós-demo).
-> >
-> > Status: ⏭️ adiado (19/10) — fora da demo, vai pro jogo completo.
 
-> [!warning]- EPIC-A06 — UI — 🟡 Abertura e dicas novas aguardam revisão (26/10) · 🟡 Média
+> > [!success]- Task A05-T7 — Passagens integradas aos cenários
+> > - [x] Remover os marcadores retangulares provisórios das conexões entre as quatro áreas da floresta.
+> > - [x] Criar passagens laterais coerentes com a mata e com a rocha do deserto, voltadas para o lado de aproximação do Kairo.
+> > - [x] Integrar raízes e rocha às bordas do terreno, alinhando os apoios às alturas reais das plataformas e evitando halos retangulares.
+> > - **Entrega (28/10):** `ForestTransitionVisual.cs`, `DesertPortalVisual.cs` e `transition_edge.gdshader`; artes de passagem específicas para Sopé, Dossel, Igarapé e Covil, além de `desert_transition_side_v2.png`. Cada variante acompanha a paleta, a luz e o terreno da própria área, com raízes e folhagem transparentes que avançam sobre o apoio para esconder a emenda.
+> > - **Revisão v3 (28/10):** capturas no renderer em `docs/art-review/transition-*-v3.png`; a saída alta do Dossel perdeu a quina retangular e o Covil deixou de usar a peça alaranjada que se destacava do chão.
+> > - **Revisão v6 (29/10):** a ligação Dossel → Igarapé passou a contar uma única passagem: Kairo entra pela abertura de uma árvore oca no alto do Dossel e sai pelas raízes alagadas da mesma árvore no pântano. As duas peças receberam transparência orgânica real, sem painel retangular, e foram validadas no renderer em `docs/art-review/transition-dossel-to-igarape-v6.png` e `docs/art-review/transition-igarape-from-dossel-v6.png`.
+> > - **Aprovação (29/10):** o novo par Dossel ↔ Igarapé foi aprovado pelo Higor após a validação das duas extremidades na câmera do jogo.
+> > - **Correção prática v7 (29/10):** removido o galho decorativo duplicado que aparecia acima da plataforma jogável no Dossel. A árvore oca agora conserva apenas uma raiz curta encaixada no galho real, com Kairo apoiado na colisão correta. Captura: `docs/art-review/transition-dossel-to-igarape-v7.png`.
+> > - **Revisão de escala v8 (29/10):** após o teste prático apontar que a entrada ainda parecia solta no vazio, a peça compacta foi substituída por uma árvore ancestral colossal. O tronco atravessa as bordas superior, direita e inferior da câmera, as raízes incorporam o galho real e a passagem é uma cavidade escavada no próprio tronco. A área de transição e o ponto de retorno foram movidos para coincidir com a abertura. Captura validada com a física ativa: `docs/art-review/transition-dossel-to-igarape-v8.png`.
+> > - **Complemento inferior v9 (29/10):** adicionada uma continuação exclusiva de tronco e raízes abaixo da entrada para cobrir câmeras e janelas mais altas. A peça se sobrepõe organicamente à árvore principal, segue além do limite inferior do mapa e fica atrás do personagem e das plataformas. Captura vertical: `docs/art-review/transition-dossel-lower-v9.png`.
+> > - **Correção de emenda v10 (29/10):** a borda inferior reta da árvore principal recebeu uma máscara orgânica irregular que se mistura à continuação de raízes. O corte horizontal deixou de aparecer nas proporções verticais. Captura: `docs/art-review/transition-dossel-seam-v10.png`.
+> > - **Conexão Sopé ↔ Dossel v12 (29/10):** as antigas massas laterais de raízes foram substituídas por duas vistas da mesma árvore de passagem. No Sopé, o túnel baixo possui degraus de raízes indicando a subida; no Dossel, a peça espelhada forma a saída e aponta para as plataformas. A abertura foi trazida para dentro da câmera, as bordas superiores receberam transição orgânica e o inimigo final do Sopé foi afastado do ponto de retorno para impedir dano imediato. Capturas: `docs/art-review/transition-sope-to-dossel-v12.png` e `docs/art-review/transition-dossel-from-sope-v12.png`.
+> > - **Acabamento da borda v13 (29/10):** removido o véu retangular que ainda aparecia acima do túnel. A copa agora termina em uma silhueta irregular inteiramente transparente, e o tronco foi ancorado na borda direita do Sopé para eliminar a faixa vazia antes do limite do mapa. Validação em 1280×720 e na proporção vertical da captura do Higor: `docs/art-review/transition-sope-to-dossel-v13.png`, `docs/art-review/transition-dossel-from-sope-v13.png` e `docs/art-review/transition-sope-to-dossel-portrait-v13.png`.
+> > - **Árvore completa v14 (30/10):** as duas extremidades Sopé ↔ Dossel usam a mesma árvore espelhada, com copa e tronco que continuam além do topo da câmera. A cavidade permanece junto ao volume de transição e as raízes se apoiam no chão das duas cenas. Capturas jogáveis: `docs/art-review/transition-sope-to-dossel-v14.png` e `docs/art-review/transition-dossel-from-sope-v14.png`.
+> > - **Continuação superior v15 (30/10):** a câmera vertical do Dossel expunha o limite reto da copa v14 durante a subida. Um segundo trecho de tronco e galhos foi encaixado atrás da árvore principal, com as bordas de sobreposição suavizadas. Conferido na base e em duas plataformas de subida: `docs/art-review/transition-dossel-from-sope-v15.png`, `docs/art-review/transition-dossel-upper-v15.png` e `docs/art-review/transition-dossel-higher-v15.png`.
+> > - **Aprovação (30/10):** Higor aprovou a continuação superior v15 após ver as capturas das plataformas.
+> >
+> > Status: ✅ concluída e aprovada pelo Higor (30/10).
+>
+> > [!success]- Task A05-T6 — Vinhas/plataformas que crescem ao restaurar
+> > - [x] Arte do caminho novo que aparece em cada área restaurada (Sopé, Dossel, Igarapé), conforme o que for definido ([[ROADMAP_DEV]] C14-T5): estado "fechado" (seco/ausente) e "aberto" (crescido), na escala das plataformas atuais.
+> > - **Decisão do grupo (19/10):** fica fora da demo e vai pro jogo completo — a demo fecha com a cura e o +10 de vida máxima por área. Ver [[🗺️ Roadmap]] (pós-demo).
+> > - **Direção aprovada pelo Higor (30/10):** ponte de raízes no desnível do Sopé, vinha com apoios no Dossel e passarela de folhas sobre a segunda poça do Igarapé.
+> > - **Entrega visual v1 (30/10):** três sprites transparentes em `assets/environment/tropical/restoration_*_v1.png`, conferidos nas cenas de produção. Posições, capturas e contrato de integração em `docs/art-review/restoration-paths-v1.md`. A revelação após restaurar, a colisão e a persistência permanecem na C14-T5; os sprites ainda não estão no percurso jogável.
+> > - **Aprovação (30/10):** Higor aprovou os três caminhos visuais apresentados nas capturas do Sopé, Dossel e Igarapé.
+> >
+> > Status: ✅ arte concluída e aprovada pelo Higor (30/10); integração jogável aguarda C14-T5.
+
+> [!success]- EPIC-A06 — UI — ✅ Arte concluída e aprovada · 🟡 Média
 > *Pronto quando*: barra de vida, ícone de habilidade e prompt de interação têm arte final substituindo os placeholders do Godot.
 >
 > Apoio, menor prioridade — não bloqueia jogabilidade.
@@ -290,12 +308,14 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ concluída (19/10) — validado jogando pelo Gustavo em 19/10.
 
-> > [!todo]- Task A06-T7 — Revisão visual da abertura e das faixas de dica
-> > - [ ] Revisar no jogo a tela de abertura (história, objetivo, controles) e as faixas de dica do Sopé e do Dossel (`TutorialOverlay.cs`), no estilo da tela de fim.
+> > [!success]- Task A06-T7 — Revisão visual da abertura e das faixas de dica
+> > - [x] Revisar no jogo a tela de abertura (história, objetivo, controles) e as faixas de dica do Sopé e do Dossel (`TutorialOverlay.cs`), no estilo da tela de fim.
 > >
-> > Status: 🟢 liberado (26/10) — implementado no playtest de 26/10 (C18-T1).
+> > **Revisão (27/10):** controles separados em teclas/botões e descrições com quebra de linha; faixa limitada a 680 px abaixo do HUD, com recálculo ao trocar dispositivo. Capturas reais em 1280×720 e 960×540 (`tutorial-*-v2.png`).
+> > Status: ✅ aprovada pelo Higor (27/10); ver `docs/art-review/visual-pending-v2.md`.
+> > **Retorno do Higor (27/10):** revisão v3 aprovada. Moldura botânica, ramos junto ao título, brilhos discretos animados e teclas com bordas em relevo. Capturas `tutorial-*-v3.png`; `TutorialFallCheck` 19/19.
 
-> [!warning]- EPIC-A08 — Deserto pós-demo — 🔄 1ª área jogável no ar (19/10); áreas e cobra em produção · 🟡 Pós-demo
+> [!success]- EPIC-A08 — Deserto pós-demo — ✅ Pacote visual aprovado; montagem das áreas segue no código · 🟡 Pós-demo
 > *Pronto quando*: o caminho começa com sol, passa gradualmente pela tarde e termina numa arena noturna com uma cobra grande, com a arte aprovada no jogo.
 >
 > **Direção aprovada pelo Higor (15/10):** fazer o Deserto antes da Tundra; mostrar o sol inicialmente, avançar para tarde e terminar à noite; o chefe final deve ser uma cobra grande do deserto. Também foram aprovados bote/mordida frontal, varrida de cauda e mergulho/emergência na areia. Ver `docs/art-review/desert-direction-v1.md`.
@@ -315,16 +335,19 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ arte aprovada (15/10) — terreno, habitantes e vento aprovados; desenho e integração do mapa jogável completo ficam na C15-T1.
 >
-> > [!warning]- Task A08-T3 — Cobra chefe do Deserto
+> > [!success]- Task A08-T3 — Cobra chefe do Deserto
 > > - [x] Silhueta grande e seis estados visuais (`idle`, `slither`, `windup`, `attack`, `hurt`, `dead`).
 > > - [x] Cena visual na arena noturna, com sibilo no início do bote.
 > > - [x] Criar poses e efeitos distintos para a varrida de cauda e para entrar/sair da areia (`tail_sweep`, `burrow_enter`, `burrow_exit`), com preparação legível e ponto de contato estável; o `windup`/`attack` atual serve como base do bote frontal.
-> > - [ ] Revisar no Godot o timing dos novos estados com o protótipo de combate do Gustavo, sem deslocamento de canvas, cabeça, corpo ou cauda.
+> > - [x] Revisar no Godot o timing dos novos estados com o protótipo de combate do Gustavo, sem deslocamento de canvas, cabeça, corpo ou cauda.
 > > - **Entrega (15/10):** `Boss_CobraDesertoVisual.tscn` é uma apresentação animada sem IA de combate; não reutiliza indevidamente os golpes do Korrag.
 > >
 > > **Entrega (21/10):** nove quadros novos em canvas 512×320, integrados ao `SandViperSpriteFrames.tres`; a prévia percorre bote, cauda, entrada e saída da areia. Folha e GIF atualizados em `docs/art-review/desert-snake-boss-v1.*`.
 > >
-> > Status: 🟢 liberado (26/10) — a luta existe (`Boss_Serpente.tscn`, C15-T2); falta o Higor revisar no jogo o timing de bote, cauda e mergulho.
+> > **Revisão (27/10):** cada golpe reinicia no primeiro quadro; velocidade da animação acompanha a duração configurada da preparação, bote, cauda e mergulho. Rastro subterrâneo achatado sobre a areia; barra de vida em tons de arenito. Captura do confronto de produção em `desert-combat-review-v2.gif`.
+> > **Correção de exportação (27/10):** recortes próprios substituem a grade uniforme da folha especial, recuperando cabeças cortadas na emergência e a extensão da cauda. Nove quadros reexportados em 512×320; barra de vida acima da pose mais alta.
+> > Status: ✅ revisão visual aprovada pelo Higor (27/10). A precedência entre dano de contato e dano da emergência continua como pendência de mecânica do Gustavo.
+> > **Retorno do Higor (27/10):** revisão v3 aprovada. O desenho desce 8 px e recebe sombra de contato que acompanha a pose e desaparece no mergulho. Colisão e dano preservados. Ver `desert-ground-contact-v3.png` e `desert-combat-review-v3.gif`; `SerpentBossCheck` 24/24.
 
 > > [!success]- Task A08-T4 — Arte das áreas do Deserto
 > > - [x] Plataformas, rochas e ruínas pra verticalidade (cânions), no padrão da faixa de chão atual.
@@ -353,10 +376,10 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ corrigida (21/10) — validada no renderer em `docs/art-review/desert-area-night-v2.png` e pelo `DesertReviewCheck.gd`.
 
-> > [!todo]- Task A08-T7 — Parede de areia da arena da cobra
-> > - [ ] Visual da parede que fecha a arena quando a luta começa e some quando a cobra cai (hoje é um retângulo cor de areia provisório: `Geometry/ArenaGate/SandCurtain` na `Deserto.tscn`, x = 2900).
+> > [!success]- Task A08-T7 — Parede de areia da arena da cobra
+> > - [x] Aprovar a cortina de areia animada que substitui o retângulo provisório em `Geometry/ArenaGate/SandCurtain` (x = 2900): correntes onduladas, grãos ascendentes e redemoinhos na base.
 > >
-> > Status: 🟢 liberado (26/10) — a arena já funciona.
+> > Status: ✅ aprovada pelo Higor (27/10). Integrada ao fechamento/abertura existente da arena, sem mudar a colisão. Captura `desert-gate-banner-v2.png` e animação `desert-combat-review-v2.gif`.
 
 > [!success]- EPIC-A09 — Cartografia da Floresta Tropical — ✅ Concluído (19/10) · 🟡 Alta
 > *Pronto quando*: o mapa aberto no jogo comunica as passagens entre as quatro áreas e oculta cada trecho não explorado, com leitura clara em 1280×720.
@@ -370,18 +393,9 @@ Ordem recomendada: `EPIC-A00` (padrões técnicos, ler primeiro) → `EPIC-A01-T
 > >
 > > Status: ✅ concluída (19/10) — validado jogando pelo Gustavo em 19/10.
 
-## O que falta (12/10/2026)
+## Pendências de arte
 
-As 9 etapas da ordem de entrega original (Kairo, inimigos, Faísca, espada, cenário, Korrag, wall jump/dash, UI e `enraged_transition`) foram entregues e aprovadas, com os seguintes ajustes e entregas ainda em acompanhamento:
-
-```
-1. Wall slide legível (A01-T3)            ← efeito entregue em 12/10; aguarda aprovação visual
-2. Marco de checkpoint (A05-T5)           ← entregue em 12/10; falta avaliação visual e teste jogado
-3. Contraste da dica da tela de título (A06-T5) ← entregue em 12/10
-4. Korrag: orientar quadros 1 e 2 do `attack` (A04-T3) ← entregue em 12/10; falta avaliação visual
-5. Tela de fim da demo (A06-T6)           ← entregue em 12/10; falta avaliação visual e percurso jogado
-6. Dependem de decisões do grupo: Faísca fortalecida (A03-T2) e caminhos que crescem (A05-T6)
-+ Validações do Higor no ROADMAP_QA_INTEGRACAO: playtest do indicador da espada (A06-T4) e do menu pelo teclado (A06-T5)
-
-Pós-demo (jogo completo): reskins Deserto/Tundra dos 3 arquétipos (A02-T4/T5) entregues e aprovados em 15/10; teste nas futuras áreas pendente no QA de integração.
-```
+As 35 tarefas visuais listadas neste roadmap estão concluídas e aprovadas. A
+integração jogável dos caminhos de restauração permanece na [[ROADMAP_DEV]]
+C14-T5; o teste de colisão e alcance fica no [[ROADMAP_QA_INTEGRACAO]] A05-T6.
+Os playtests e as salas finais do Deserto continuam nos roadmaps de código e QA.

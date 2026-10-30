@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-26
+atualizado: 2026-10-30
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
@@ -537,7 +537,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [ ] A iluminação acompanha o progresso com transições contínuas; morte, retorno e reload restauram o estado visual adequado ao ponto do percurso.
 > > - [ ] Entrada, câmera, checkpoints e saída respeitam as decisões aprovadas; as quatro áreas da demo e seus saves continuam funcionando.
 > >
-> > Status: 🟡 parcial (19/10) — 1ª área passa no `DesertLinkCheck.gd` (spawn, chão, vento, inimigos com stats do Deserto, bandeira, mapa, barreira antes da cobra); o percurso completo depende da C15-T4.
+> > Status: 🟡 parcial (30/10) — 1ª área passa no `DesertLinkCheck.gd` (25/25: spawn, chão, música autoral, inimigos com stats do Deserto, bandeira, mapa e volta ao Covil); o percurso completo depende da C15-T4.
 >
 > > [!warning]- Task C15-T2 — Bote, cauda e areia da cobra
 > > - [x] Cada golpe tem aviso, execução e recuperação distinguíveis; a hitbox só causa dano na janela ativa e não alcança além do desenho, em ambos os lados da arena.
@@ -565,11 +565,11 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: 🔴 bloqueado (19/10) — depende do gancho ODS 15 ([[ROADMAP_DEV]] C15-T5).
 >
-> > [!failure]- Task C15-T6 — Música e stats do Deserto
-> > - [ ] A faixa do Deserto toca na área e troca sem corte com o Covil.
+> > [!warning]- Task C15-T6 — Música e stats do Deserto
+> > - [x] A faixa do Deserto toca na área e troca sem corte com o Covil.
 > > - [ ] Os três inimigos usam os stats aprovados e o percurso fica difícil mas justo.
 > >
-> > Status: 🔴 pendente (19/10) — depende da [[ROADMAP_DEV]] C15-T6.
+> > Status: 🟡 parcial (30/10) — `DesertLinkCheck.gd` 25/25 confirmou a nova faixa após a transição com fade; Higor manteve os stats provisórios até testar o percurso final.
 
 > [!success]- EPIC-C16 — Mapa explorável da Floresta Tropical — ✅ Passa · 🟡 Alta
 > *Pronto quando*: a cartografia revela somente posições atravessadas, persiste no save e todas as transições atuais funcionam nos dois sentidos.
@@ -649,7 +649,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > [!success]- Task C17-T2 — Ligação entre biomas
 > > - [x] Ir e voltar entre a Floresta e o bioma seguinte, com spawn certo, mapa e save.
 > >
-> > Status: ✅ passa (19/10) — `DesertLinkCheck.gd` 24/24: portal fechado com o Korrag vivo, tela de fim avisa do Deserto, "Continuar explorando" abre o portal, Deserto jogável e volta ao Covil.
+> > Status: ✅ passa (30/10) — `DesertLinkCheck.gd` 25/25: portal fechado com o Korrag vivo, tela de fim avisa do Deserto, "Continuar explorando" abre o portal, Deserto jogável com música autoral e volta ao Covil.
 >
 > > [!failure]- Task C17-T3 — Habilidade por boss
 > > - [ ] Derrotar cada boss libera a habilidade certa uma vez só, persiste no save e abre os caminhos previstos.
