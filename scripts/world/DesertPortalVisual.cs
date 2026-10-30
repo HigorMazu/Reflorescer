@@ -6,11 +6,17 @@ namespace Joguim.World
     public partial class DesertPortalVisual : Node2D
     {
         [Export] public bool ForestSide = false;
-        private static readonly Texture2D DesertPortal = GD.Load<Texture2D>(
-            "res://assets/environment/desert/desert_portal_v1.png");
-        private static readonly Texture2D ForestPortal = GD.Load<Texture2D>(
-            "res://assets/environment/desert/desert_portal_forest_v1.png");
+        private static readonly Texture2D Passage = GD.Load<Texture2D>(
+            "res://assets/environment/desert/desert_transition_side_v2.png");
         private float _time;
+
+        public override void _Ready()
+        {
+            Material = new ShaderMaterial
+            {
+                Shader = GD.Load<Shader>("res://assets/shaders/transition_edge.gdshader")
+            };
+        }
 
         public override void _Process(double delta)
         {
@@ -21,15 +27,16 @@ namespace Joguim.World
         public override void _Draw()
         {
             Color light = ForestSide ? new Color("9eb46a") : new Color("e1a04e");
-            DrawTextureRect(ForestSide ? ForestPortal : DesertPortal,
-                new Rect2(-72, -82, 144, 132), false);
+            if (ForestSide) DrawSetTransform(Vector2.Zero, 0f, Vector2.One);
+            else DrawSetTransform(Vector2.Zero, 0f, new Vector2(-1f, 1f));
+            DrawTextureRect(Passage, new Rect2(-88, -82, 176, 132), false,
+                ForestSide ? new Color(0.66f, 0.67f, 0.52f) : new Color(0.9f, 0.84f, 0.72f));
+            DrawSetTransform(Vector2.Zero, 0f, Vector2.One);
 
             // A narrow animated veil leaves Kairo visible while clearly marking the passage.
             float breathe = .5f + .5f * Mathf.Sin(_time * 2.1f);
-            DrawEllipse(new Vector2(0, 4), new Vector2(17, 41),
-                new Color(light, .16f + breathe * .08f), 3f);
-            DrawEllipse(new Vector2(0, 4), new Vector2(11, 36),
-                new Color(.98f, .78f, .36f, .08f + breathe * .08f), 2f);
+            DrawEllipse(new Vector2(0, 4), new Vector2(10, 32),
+                new Color(light, .06f + breathe * .04f), 2f);
 
             // Sand grains travel upward; on the forest side a few green motes soften the seam.
             for (int i = 0; i < 8; i++)

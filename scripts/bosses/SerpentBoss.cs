@@ -66,13 +66,25 @@ namespace Joguim.Bosses
             {
                 Name = "SandMarker", TopLevel = true, Visible = false, ZIndex = 1,
                 SpriteFrames = GD.Load<SpriteFrames>("res://assets/environment/desert/hazards/DesertQuicksandSpriteFrames.tres"),
-                Scale = new Vector2(.55f, .55f)
+                Scale = new Vector2(.55f, .16f)
             };
             AddChild(_sandMarker);
 
             // Barra de vida acima da cabeça (a padrão do BossBase é pensada pro Korrag, menor)
-            var bar = GetNodeOrNull<Control>("FloatingHealthBar");
-            if (bar != null) { bar.Position = new Vector2(-70, -250); bar.Size = new Vector2(140, 10); }
+            var bar = GetNodeOrNull<ProgressBar>("FloatingHealthBar");
+            if (bar != null)
+            {
+                bar.Position = new Vector2(-70, -300); bar.Size = new Vector2(140, 10);
+                bar.AddThemeStyleboxOverride("background", new StyleBoxFlat
+                {
+                    BgColor = new Color("18202a"), BorderColor = new Color("b89b64"),
+                    BorderWidthLeft = 1, BorderWidthRight = 1, BorderWidthTop = 1, BorderWidthBottom = 1
+                });
+                bar.AddThemeStyleboxOverride("fill", new StyleBoxFlat
+                {
+                    BgColor = new Color("d4ae64"), ContentMarginTop = 2, ContentMarginBottom = 2
+                });
+            }
         }
 
         private static void OpenGateOf(StaticBody2D gate, bool closed)
@@ -180,7 +192,21 @@ namespace Joguim.Bosses
             _moveTimer = 0f;
             _moveHit = false;
             StopTelegraph();
+            // Every move starts at its first pose, including repeated tail sweeps.
+            Sprite?.Stop();
             PlayOwn(animation);
+            if (Sprite != null)
+            {
+                float duration = move switch
+                {
+                    Move.StrikeWindup => StrikeWindup, Move.Strike => StrikeDuration,
+                    Move.Tail => TailDuration, Move.BurrowEnter => BurrowEnterTime,
+                    Move.BurrowExit => BurrowExitTime, _ => 0f
+                };
+                float authoredDuration = Sprite.SpriteFrames.GetFrameCount(animation)
+                    / (float)Sprite.SpriteFrames.GetAnimationSpeed(animation);
+                Sprite.SpeedScale = duration > 0 ? authoredDuration / duration : 1f;
+            }
         }
 
         private void Finish()
@@ -199,7 +225,7 @@ namespace Joguim.Bosses
             _moveTimer = 0f;
             if (Sprite != null) Sprite.Visible = false;
             SetVulnerable(false);
-            _sandMarker.GlobalPosition = new Vector2(GlobalPosition.X, GlobalPosition.Y - 6);
+            _sandMarker.GlobalPosition = new Vector2(GlobalPosition.X, GlobalPosition.Y - 2);
             _sandMarker.Visible = true;
             _sandMarker.Play("bubble");
         }
@@ -302,6 +328,7 @@ namespace Joguim.Bosses
         {
             if (Sprite?.SpriteFrames == null || !Sprite.SpriteFrames.HasAnimation(animName)) return;
             if (Sprite.Animation == animName && Sprite.IsPlaying()) return;
+            Sprite.SpeedScale = 1f;
             Sprite.Play(animName);
         }
 

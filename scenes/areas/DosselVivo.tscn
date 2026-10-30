@@ -11,6 +11,7 @@
 [ext_resource type="Resource" path="res://resources/enemies/areas/Rapido_DosselVivo.tres" id="stats_rapido_DosselVivo"]
 [ext_resource type="Resource" path="res://resources/enemies/areas/Voador_DosselVivo.tres" id="stats_voador_DosselVivo"]
 [ext_resource type="Script" uid="uid://cpll441xskn7r" path="res://scripts/world/TransitionTrigger.cs" id="transition"]
+[ext_resource type="Script" path="res://scripts/world/ForestTransitionVisual.cs" id="forest_transition_art"]
 [ext_resource type="PackedScene" uid="uid://ci4whjcr73q7y" path="res://scenes/enemies/Enemy_Voador.tscn" id="voador"]
 [ext_resource type="PackedScene" path="res://scenes/art/DosselCanopyBackdrop.tscn" id="backdrop"]
 [ext_resource type="Texture2D" uid="uid://b7pwgs2uc6jxd" path="res://assets/environment/tropical/ground_degraded.png" id="tex_ground_degraded"]
@@ -20,6 +21,13 @@
 [ext_resource type="Script" path="res://scripts/art/DosselBranchArt.gd" id="art_branches"]
 [ext_resource type="Texture2D" path="res://assets/environment/tropical/dossel_restoration_candidate_v1.png" id="art_restoration"]
 [ext_resource type="Script" path="res://scripts/world/TutorialZone.cs" id="tutorial_zone"]
+[ext_resource type="Texture2D" path="res://assets/environment/tropical/forest_transition_dossel_roots_lower_v1.png" id="dossel_lower_roots"]
+[ext_resource type="Shader" path="res://assets/shaders/transition_edge.gdshader" id="transition_edge_shader"]
+
+[sub_resource type="ShaderMaterial" id="DosselLowerRootsMaterial"]
+shader = ExtResource("transition_edge_shader")
+shader_parameter/top_edge_fade = 0.0
+shader_parameter/bottom_edge_fade = 0.0
 
 [sub_resource type="RectangleShape2D" id="Shape_WallLeft"]
 size = Vector2(40, 1500)
@@ -564,16 +572,15 @@ TargetArea = "SpawnFromDosselVivo"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/ToSopeDaMata" unique_id=725811015]
 shape = SubResource("Shape_ToSopeDaMata")
 
-[node name="PortalVisual" type="ColorRect" parent="Transitions/ToSopeDaMata" unique_id=1063332275]
-offset_left = -15.0
-offset_top = -50.0
-offset_right = 15.0
-offset_bottom = 50.0
-mouse_filter = 2
-color = Color(0.4, 0.2, 0.8, 0.6)
+[node name="PortalVisual" type="Node2D" parent="Transitions/ToSopeDaMata" unique_id=1063332275]
+position = Vector2(130, 0)
+z_index = 2
+script = ExtResource("forest_transition_art")
+FlipHorizontally = true
+Theme = 1
 
 [node name="ToIgarapeSufocado" type="Area2D" parent="Transitions" unique_id=784638644]
-position = Vector2(1570, -480)
+position = Vector2(1350, -480)
 collision_layer = 32
 collision_mask = 2
 script = ExtResource("transition")
@@ -583,13 +590,21 @@ TargetArea = "SpawnFromDosselVivo"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/ToIgarapeSufocado" unique_id=1598499461]
 shape = SubResource("Shape_ToIgarapeSufocado")
 
-[node name="PortalVisual" type="ColorRect" parent="Transitions/ToIgarapeSufocado" unique_id=1701115288]
-offset_left = -15.0
-offset_top = -50.0
-offset_right = 15.0
-offset_bottom = 50.0
-mouse_filter = 2
-color = Color(0.4, 0.2, 0.8, 0.6)
+[node name="LowerRootContinuation" type="Sprite2D" parent="Transitions/ToIgarapeSufocado"]
+texture_filter = 1
+material = SubResource("DosselLowerRootsMaterial")
+position = Vector2(-646, 250)
+scale = Vector2(0.8300781, 0.8300781)
+z_index = -1
+texture = ExtResource("dossel_lower_roots")
+centered = false
+
+[node name="PortalVisual" type="Node2D" parent="Transitions/ToIgarapeSufocado" unique_id=1701115288]
+position = Vector2(10, 0)
+z_index = 2
+script = ExtResource("forest_transition_art")
+Theme = 4
+GroundOffsetY = 0.0
 
 [node name="Enemies" type="Node2D" parent="." unique_id=1229553774]
 
@@ -629,7 +644,7 @@ StatsResource = ExtResource("stats_rapido_DosselVivo")
 position = Vector2(110, 460)
 
 [node name="SpawnFromIgarapeSufocado" type="Marker2D" parent="." unique_id=735904624 groups=["SpawnPoints"]]
-position = Vector2(1440, -450)
+position = Vector2(1270, -450)
 
 [node name="Player" parent="." unique_id=1657717252 instance=ExtResource("player")]
 position = Vector2(110, 460)

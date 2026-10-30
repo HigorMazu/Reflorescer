@@ -283,19 +283,22 @@ def build_snake() -> dict[str, list[Path]]:
     assert special.size == (1536, 1024)
     assert special.getchannel("A").getextrema()[0] == 0
     special_cells: list[Image.Image] = []
+    # This illustration is not an evenly spaced atlas: the swept tail crosses
+    # x=1024, and the emerging heads start above y=683. Slice the actual poses.
+    bounds = (
+        ((0, 0, 475, 350), (480, 0, 1140, 350), (1135, 0, 1536, 350)),
+        ((0, 350, 590, 630), (590, 350, 1070, 630), (1080, 350, 1536, 630)),
+        ((0, 630, 520, 1024), (530, 630, 1060, 1024), (1080, 630, 1536, 1024)),
+    )
     for row in range(3):
-        upper = round(row * special.height / 3)
-        lower = round((row + 1) * special.height / 3)
         for col in range(3):
-            cell = special.crop((col * 512, upper, (col + 1) * 512, lower))
-            # Generated poses can cross a cell edge. Keep the connected boss/effect
-            # silhouette and discard fragments belonging to the neighbouring pose.
+            cell = special.crop(bounds[row][col])
             cell = largest_figure(cell)
             bbox = cell.getchannel("A").point(lambda a: 255 if a > 16 else 0).getbbox()
             assert bbox is not None, ("special", row, col)
             special_cells.append(cell.crop(bbox))
 
-    special_scale = min(456 / max(c.width for c in special_cells),
+    special_scale = min(500 / max(c.width for c in special_cells),
                         275 / max(c.height for c in special_cells))
     for row, state in enumerate(("tail_sweep", "burrow_enter", "burrow_exit")):
         paths[state] = []

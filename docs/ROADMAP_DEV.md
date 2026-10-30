@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-26
+atualizado: 2026-10-30
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
@@ -403,19 +403,15 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído (11/10) — `tools/qa/DemoEndCheck.gd` 15/15 (0, 1 e 3 áreas restauradas de verdade, Korrag derrotado); regressão (`DemoRunCheck`, `RewardCheck`, `CombatCheck`, `AudioCheck`, `SaveReloadCheck`, `GcStressCheck`) passando.
 >
-> > [!todo]- Task C14-T4 — Faísca fica mais forte ao restaurar
-> > - [ ] Definir o que a Faísca ganha a cada área restaurada (proposta em [[Projetos/Reflorescer/🕹️ Sistemas de Jogo|🕹️ Sistemas de Jogo]]).
-> > - [ ] Implementar e testar.
-> > - **Decisão do grupo (19/10):** fica fora da demo e vai pro jogo completo — a demo fecha com a cura e o +10 de vida máxima por área (C14-T1). Ver [[🗺️ Roadmap]] (pós-demo).
-> >
-> > Status: ⏭️ adiado (19/10) — fora da demo, vai pro jogo completo.
 >
 > > [!todo]- Task C14-T5 — Caminho novo ao restaurar (atalho ou segredo)
-> > - [ ] Definir, em cada área com ponto de restauração (Sopé, Dossel, Igarapé), o que cresce e o que abre (proposta em [[Projetos/Reflorescer/🕹️ Sistemas de Jogo|🕹️ Sistemas de Jogo]]).
+> > - [x] Definir, em cada área com ponto de restauração (Sopé, Dossel, Igarapé), o que cresce e o que abre (proposta em [[Projetos/Reflorescer/🕹️ Sistemas de Jogo|🕹️ Sistemas de Jogo]]).
 > > - [ ] Montar na cena (plataformas/vinhas que aparecem com a restauração, usando as listas de visuais do `RestorationPoint`) e testar o alcance.
 > > - **Decisão do grupo (19/10):** fica fora da demo e vai pro jogo completo — a demo fecha com a cura e o +10 de vida máxima por área (C14-T1). Ver [[🗺️ Roadmap]] (pós-demo).
+> > - **Direção do Higor (30/10):** Sopé recebe ponte de raízes sobre o desnível, Dossel ganha vinha com três apoios até os galhos altos e Igarapé ganha passarela de folhas sobre a segunda poça. Sprites e posições de revisão em `docs/art-review/restoration-paths-v1.md`; ainda falta montar colisão condicional, persistência e alcance no percurso.
+> > - **Aprovação visual (30/10):** Higor aprovou as três artes v1; C14-T5 já pode integrá-las às cenas sem esperar outra revisão visual.
 > >
-> > Status: ⏭️ adiado (19/10) — fora da demo, vai pro jogo completo junto com a [[ROADMAP_ARTE]] A05-T6.
+> > Status: 🟡 desenho definido e arte entregue (30/10); integração jogável pendente no jogo completo, junto com a [[ROADMAP_ARTE]] A05-T6.
 
 > [!success]- EPIC-C09 — Save, Checkpoint e Respawn — ✅ Concluído (19/10) · 🟡 Média
 > *Pronto quando*: uma habilidade desbloqueada persiste em disco mesmo sem passar por um checkpoint depois, e existe uma decisão explícita (implementada ou documentada como "fora de escopo") sobre o fluxo de Continuar.
@@ -617,7 +613,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - [x] Reproduzir o sibilo e demais sons de combate em momentos ligados aos golpes, mantendo os volumes compatíveis com música e vento.
 > > - **Implementado (26/10):** `scripts/bosses/SerpentBoss.cs` + `scenes/bosses/Boss_Serpente.tscn` (substitui a prévia na `Deserto.tscn`). 360 de vida, 3 fases (dano 30/38/45, mais mergulhos e menos espera a cada fase). Bote: aviso vermelho 0,55 s e mordida à frente. Cauda: aviso amarelo e varrida baixa dos dois lados (se desvia pulando). Mergulho: some (invulnerável, sem dano de contato), um redemoinho segue o Kairo e ela sai embaixo dele. A parede de areia fecha a arena ao entrar e abre quando ela cai; a derrota fica salva e **não** abre a tela de fim da demo (agora só o Korrag abre). Antes o Kairo "não acertava a cobra" porque ela era só a animação de prévia, sem vida nem hitbox.
 > >
-> > Status: implementado (26/10) — `SerpentBossCheck.gd` 24/24; falta jogar e o Higor revisar o timing das animações (A08-T3).
+> > Status: implementado (26/10) — `SerpentBossCheck.gd` 24/24; Higor aprovou o timing e o contato visual da Serpente em 27/10 (A08-T3, revisão v3). Ainda falta playtest completo e corrigir a precedência entre dano de contato e dano da emergência; o teste atual verifica apenas se a vida diminui.
 >
 > > [!todo]- Task C15-T3 — Conclusão da luta e progressão pós-chefe
 > > - [ ] Definir com o grupo o resultado narrativo, recompensa/desbloqueio e próximo destino após a cobra; registrar a decisão no GDD antes de implementar a transição final.
@@ -633,6 +629,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - [ ] Hazard próprio do bioma (proposta: areia movediça que afunda/atrasa, no papel da lama do Igarapé).
 > >
 > > **Arte disponível (21/10):** `assets/environment/desert/modules/` traz plataformas, paredão, pilar, ruínas, rochas e vegetação seca; `assets/environment/desert/hazards/DesertQuicksandSpriteFrames.tres` traz o ciclo visual de areia movediça. Ainda é necessário construir as colisões, lentidão/afundamento e distribuir o kit nas salas aprovadas.
+> > **Passagem de arte (27/10):** A08-T3 e A08-T7 aprovadas pelo Higor. A cena atual `Deserto.tscn` ainda concentra o percurso e a arena; as quatro salas jogáveis, as transições e o hazard funcional continuam nesta C15-T4. Os fundos e módulos aprovados da A08-T4 já estão em `assets/environment/desert/areas/` e `modules/`; não há nova arte bloqueando a montagem.
 > >
 > > **Proposta visual aprovada (21/10):** `docs/art-review/desert-areas-v1.md` organiza Portal do Sol → Garganta das Ruínas → Ninho da Serpente, com Oásis Soterrado como ramificação inferior que retorna à Garganta. Os quatro fundos estão em `assets/environment/desert/areas/`; Higor aprovou nomes, fundos e conexões.
 > >
@@ -647,10 +644,12 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > Status: ⛔ bloqueado (21/10) — o visual está pronto; ainda aguarda definir o gancho ODS 15, a quantidade e a posição dos pontos.
 >
 > > [!todo]- Task C15-T6 — Música e stats do Deserto
-> > - [ ] Faixa autoral do Deserto (Higor, mesmo método das músicas da demo); o vento continua por baixo ou some na arena.
+> > - [x] Faixa autoral do Deserto (Higor, mesmo método das músicas da demo); o vento continua discretamente na composição, inclusive na arena. Gerador reproduzível em `tools/audio/generate_desert_music.py`, faixa em `assets/audio/music/deserto_autoral.wav` e crédito em `assets/audio/CREDITOS.md`.
 > > - [ ] Aprovar os stats de Abelha, Rato e Burro (hoje provisórios no nível do Igarapé; o rascunho do [[👾 Bestiário]] de 28/09 é mais fraco que a curva atual).
 > >
-> > Status: 🟢 liberado (19/10) — dá pra começar.
+> > - **Decisão do Higor (30/10):** manter os três conjuntos de stats provisórios, iguais aos do Igarapé, até jogar o Deserto final. Não contar esses valores como aprovados antes do teste de dificuldade.
+> >
+> > Status: 🟡 parcial (30/10) — música integrada; stats provisórios até o playtest do Deserto.
 
 > [!success]- EPIC-C16 — Mapa explorável da Floresta Tropical — ✅ Implementado (ajustes de 19/10 incluídos) · 🟡 Alta
 > *Pronto quando*: as quatro áreas atuais aparecem numa cartografia conectada, Kairo vê apenas células percorridas, e o progresso permanece após salvar/continuar sem quebrar as transições da demo.
@@ -708,8 +707,16 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: implementado (26/10) — `EnemyIntegrationCheck` e `CombatCheck` verdes; falta conferir jogando.
 
+> > [!todo]- Task C18-T5 — Revisão final de chefes e transições (Gustavo)
+> > - [ ] Corrigir as hitboxes de todos os chefes para coincidirem com o volume visível de cada sprite e com as janelas reais dos golpes; validar especialmente Korrag e a Cobra do Deserto em partida.
+> > - [ ] Revisar todas as transições de área, incluindo entradas, retornos e limites, para eliminar saídas quebradas de mapa, spawns incorretos e travamentos ao cruzar uma borda.
+> > - [ ] Ajustar a defesa contra repetição de ataque nos chefes: golpes sucessivos do Kairo não podem derreter a vida do boss sem que a cadência, a invulnerabilidade pós-acerto ou a reação ao dano sejam respeitadas.
+> > - [ ] Cobrir os três casos com testes automatizados e um percurso manual completo, incluindo ida e volta por todas as saídas de mapa e as duas lutas de chefe.
+> >
+> > Status: 📋 pendente — registrado para o Gustavo em 30/10 a partir do teste do Higor.
+
 >
-> > [!info]- Task C18-T5 — Jogar com controle (Bluetooth ou cabo)
+> > [!info]- Task C18-T6 — Jogar com controle (Bluetooth ou cabo)
 > > - [x] Todas as ações no layout padrão (`project.godot`): analógico esquerdo ou D-pad anda, **A** pula, **X** ataca, **RB/RT** dash, **Y** interage/restaura, **LB** guarda/saca a espada, **B** especial, **Start** pausa, **View/Select** mapa. O teclado continua igual.
 > > - [x] **A** confirma nos menus (`ui_accept`; o padrão do Godot só tinha Enter/Espaço) e o menu de pausa abre com foco no Continuar.
 > > - [x] As dicas da tela trocam sozinhas pro dispositivo usado por último (`scripts/ui/InputHints.cs`): abertura, faixas de dica, prompt de interagir, dica do mapa, tecla da espada e menu inicial. Nomes de Xbox, PlayStation (Cruz, Quadrado, L1...) ou Switch conforme o nome do controle. Conectar um controle mostra um aviso.
@@ -736,6 +743,6 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > [!todo]- Task C17-T3 — Habilidade liberada por cada boss
 > > - [ ] Definir o que cada boss libera (Korrag → dash; cobra do Deserto → ?) e quais caminhos cada habilidade abre (o "trava e destrava" do metroidvania).
 > > - [ ] Generalizar o desbloqueio (`AbilityManager` + evento de boss derrotado) pra qualquer boss.
-> > - **Relacionado:** as recompensas adiadas da demo (Faísca mais forte e caminhos que crescem, C14-T4/T5) entram aqui quando forem definidas.
+> > - **Relacionado:** o caminho que cresce após a restauração (C14-T5) entra aqui quando for definido.
 > >
 > > Status: ⛔ bloqueado (19/10) — aguarda a definição do grupo.

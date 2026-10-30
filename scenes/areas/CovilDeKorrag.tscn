@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://scripts/art/ModularTerrainStrip.gd" id="modular_terrain"]
 [ext_resource type="Script" uid="uid://cpll441xskn7r" path="res://scripts/world/TransitionTrigger.cs" id="transition"]
 [ext_resource type="Script" path="res://scripts/world/DesertPortalVisual.cs" id="desert_portal_art"]
+[ext_resource type="Script" path="res://scripts/world/ForestTransitionVisual.cs" id="forest_transition_art"]
 
 [sub_resource type="RectangleShape2D" id="Shape_WallLeft"]
 size = Vector2(40, 720)
@@ -186,13 +187,12 @@ LockedUntilBossDefeated = "boss_javali"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/ToIgarapeSufocado"]
 shape = SubResource("Shape_ToIgarapeSufocado")
 
-[node name="PortalVisual" type="ColorRect" parent="Transitions/ToIgarapeSufocado"]
-offset_left = -15.0
-offset_top = -50.0
-offset_right = 15.0
-offset_bottom = 50.0
-mouse_filter = 2
-color = Color(0.4, 0.2, 0.8, 0.6)
+[node name="PortalVisual" type="Node2D" parent="Transitions/ToIgarapeSufocado"]
+position = Vector2(28, -10)
+z_index = 2
+script = ExtResource("forest_transition_art")
+FlipHorizontally = true
+Theme = 3
 
 [node name="ToDeserto" type="Area2D" parent="Transitions"]
 position = Vector2(580, 160)
@@ -207,6 +207,7 @@ LockedUntilBossDefeated = "boss_javali"
 shape = SubResource("Shape_ToDeserto")
 
 [node name="PortalVisual" type="Node2D" parent="Transitions/ToDeserto"]
+position = Vector2(-24, -10)
 z_index = 2
 script = ExtResource("desert_portal_art")
 ForestSide = true

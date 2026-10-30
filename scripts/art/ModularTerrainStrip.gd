@@ -39,6 +39,13 @@ extends Node2D
 		cutout_ranges = value
 		queue_redraw()
 
+## How much of the top is removed in a cutout. Zero removes the whole terrain
+## segment, while a positive value keeps the original underground roots intact.
+@export var cutout_top_height := 0.0:
+	set(value):
+		cutout_top_height = maxf(value, 0.0)
+		queue_redraw()
+
 func _draw_piece(destination: Rect2, source: Rect2) -> void:
 	var cursor := destination.position.x
 	var right := destination.end.x
@@ -49,7 +56,11 @@ func _draw_piece(destination: Rect2, source: Rect2) -> void:
 			continue
 		if cut_left > cursor:
 			_draw_piece_segment(destination, source, cursor, minf(cut_left, right))
-		cursor = maxf(cursor, minf(cut_right, right))
+		var cut_segment_left := maxf(cursor, cut_left)
+		var cut_segment_right := minf(cut_right, right)
+		if cutout_top_height > 0.0 and cut_segment_right > cut_segment_left:
+			_draw_cutout_underlay(destination, source, cut_segment_left, cut_segment_right)
+		cursor = maxf(cursor, cut_segment_right)
 		if cursor >= right:
 			return
 	if cursor < right:
@@ -64,6 +75,23 @@ func _draw_piece_segment(destination: Rect2, source: Rect2, left: float, right: 
 	)
 	draw_texture_rect_region(terrain_texture,
 		Rect2(left, destination.position.y, right - left, destination.size.y), clipped_source)
+
+
+func _draw_cutout_underlay(destination: Rect2, source: Rect2, left: float, right: float) -> void:
+	var preserved_top := minf(cutout_top_height, destination.size.y)
+	if preserved_top >= destination.size.y:
+		return
+	var fraction_left := (left - destination.position.x) / destination.size.x
+	var fraction_width := (right - left) / destination.size.x
+	var source_top := source.position.y + source.size.y * preserved_top / destination.size.y
+	var source_height := source.size.y * (destination.size.y - preserved_top) / destination.size.y
+	var clipped_source := Rect2(
+		Vector2(source.position.x + source.size.x * fraction_left, source_top),
+		Vector2(source.size.x * fraction_width, source_height)
+	)
+	draw_texture_rect_region(terrain_texture,
+		Rect2(left, destination.position.y + preserved_top, right - left,
+			destination.size.y - preserved_top), clipped_source)
 
 func _draw() -> void:
 	if terrain_texture == null:
