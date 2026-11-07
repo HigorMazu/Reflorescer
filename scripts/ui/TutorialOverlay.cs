@@ -36,6 +36,7 @@ namespace Joguim.UI
             MouseFilter = MouseFilterEnum.Ignore;
             SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
             BuildBanner();
+            Resized += LayoutBanner;
             InputHints.Changed += RefreshHints;
             Input.JoyConnectionChanged += OnJoyConnectionChanged;
             CallDeferred(MethodName.CheckPendingIntro);
@@ -60,6 +61,7 @@ namespace Joguim.UI
             {
                 _bannerKey.Text = InputHints.Format(_bannerKeysTemplate);
                 _bannerText.Text = InputHints.Format(_bannerTextTemplate);
+                LayoutBanner();
             }
         }
 
@@ -92,9 +94,6 @@ namespace Joguim.UI
             _banner = new PanelContainer { Name = "Banner", Visible = false, MouseFilter = MouseFilterEnum.Ignore };
             _banner.AddThemeStyleboxOverride("panel", style);
             AddChild(_banner);
-            _banner.SetAnchorsPreset(LayoutPreset.CenterTop);
-            _banner.GrowHorizontal = GrowDirection.Both;
-            _banner.Position = new Vector2(_banner.Position.X, 70);
 
             var row = new HBoxContainer { MouseFilter = MouseFilterEnum.Ignore };
             row.AddThemeConstantOverride("separation", 14);
@@ -103,12 +102,32 @@ namespace Joguim.UI
             _bannerKey = new Label { VerticalAlignment = VerticalAlignment.Center };
             _bannerKey.AddThemeFontSizeOverride("font_size", 20);
             _bannerKey.AddThemeColorOverride("font_color", new Color("ffe9a8"));
+            _bannerKey.AddThemeStyleboxOverride("normal", new StyleBoxFlat
+            {
+                BgColor = new Color("334331"), BorderColor = new Color("88966b"),
+                BorderWidthBottom = 2, ContentMarginLeft = 12, ContentMarginRight = 12,
+                ContentMarginTop = 6, ContentMarginBottom = 6
+            });
             row.AddChild(_bannerKey);
 
             _bannerText = new Label { VerticalAlignment = VerticalAlignment.Center };
             _bannerText.AddThemeFontSizeOverride("font_size", 17);
             _bannerText.AddThemeColorOverride("font_color", new Color("e8ecd8"));
+            _bannerText.AutowrapMode = TextServer.AutowrapMode.WordSmart;
+            _bannerText.SizeFlagsHorizontal = SizeFlags.ExpandFill;
             row.AddChild(_bannerText);
+        }
+
+        private void LayoutBanner()
+        {
+            if (_banner == null) return;
+            // Below the health/sword HUD, with a bounded width even for controller names.
+            float width = Mathf.Min(680, Mathf.Max(280, Size.X - 48));
+            float keyWidth = _bannerKey.Visible ? _bannerKey.GetCombinedMinimumSize().X + 14 : 0;
+            _bannerText.CustomMinimumSize = new Vector2(width - 40 - keyWidth, 0);
+            _banner.Size = new Vector2(width, 0);
+            _banner.Position = new Vector2((Size.X - width) / 2, 110);
+            Callable.From(() => { if (IsInstanceValid(_banner)) _banner.ResetSize(); }).CallDeferred();
         }
 
         public void ShowBanner(string owner, string keys, string text)
@@ -120,8 +139,7 @@ namespace Joguim.UI
             _bannerKey.Visible = !string.IsNullOrEmpty(keys);
             _bannerText.Text = InputHints.Format(_bannerTextTemplate);
             _banner.Visible = true;
-            _banner.ResetSize();
-            _banner.Position = new Vector2((Size.X - _banner.Size.X) / 2f, 70);
+            LayoutBanner();
             _bannerTween?.Kill();
             _bannerTween = CreateTween();
             _bannerTween.TweenProperty(_banner, "modulate:a", 1f, .25f);
@@ -181,7 +199,7 @@ namespace Joguim.UI
             _intro.AddChild(center);
             center.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
 
-            var card = new PanelContainer { Name = "Card", CustomMinimumSize = new Vector2(860, 0) };
+            var card = new PanelContainer { Name = "Card", CustomMinimumSize = new Vector2(880, 0) };
             card.AddThemeStyleboxOverride("panel", new StyleBoxFlat
             {
                 BgColor = new Color(.025f, .065f, .048f, .97f),
@@ -190,14 +208,15 @@ namespace Joguim.UI
                 CornerRadiusTopLeft = 3, CornerRadiusTopRight = 3, CornerRadiusBottomLeft = 3, CornerRadiusBottomRight = 3
             });
             center.AddChild(card);
+            card.AddChild(new TutorialFrameArt { Name = "BotanicalFrame", MouseFilter = MouseFilterEnum.Ignore });
 
             var margin = new MarginContainer { Name = "Margin" };
-            foreach (var side in new[] { "left", "right" }) margin.AddThemeConstantOverride($"margin_{side}", 40);
-            foreach (var side in new[] { "top", "bottom" }) margin.AddThemeConstantOverride($"margin_{side}", 26);
+            foreach (var side in new[] { "left", "right" }) margin.AddThemeConstantOverride($"margin_{side}", 30);
+            foreach (var side in new[] { "top", "bottom" }) margin.AddThemeConstantOverride($"margin_{side}", 18);
             card.AddChild(margin);
 
             var box = new VBoxContainer { Name = "Box" };
-            box.AddThemeConstantOverride("separation", 10);
+            box.AddThemeConstantOverride("separation", 8);
             margin.AddChild(box);
 
             box.AddChild(MakeLabel("A ÚLTIMA SEMENTE", 13, "b6bf94", HorizontalAlignment.Center));
@@ -210,7 +229,7 @@ namespace Joguim.UI
                 "até onde ela possa voltar a brotar. Faísca, o vaga-lume, ilumina o caminho.",
                 16, "e1e7d2", HorizontalAlignment.Center);
             story.AutowrapMode = TextServer.AutowrapMode.WordSmart;
-            story.CustomMinimumSize = new Vector2(780, 0);
+            story.CustomMinimumSize = new Vector2(820, 0);
             box.AddChild(story);
 
             var goal = MakeLabel(
@@ -218,13 +237,13 @@ namespace Joguim.UI
                 "e derrote Korrag, o javali que revira a mata.",
                 15, "d6bb73", HorizontalAlignment.Center);
             goal.AutowrapMode = TextServer.AutowrapMode.WordSmart;
-            goal.CustomMinimumSize = new Vector2(780, 0);
+            goal.CustomMinimumSize = new Vector2(820, 0);
             box.AddChild(goal);
 
             box.AddChild(new HSeparator());
 
             var grid = new GridContainer { Name = "Controls", Columns = 4 };
-            grid.AddThemeConstantOverride("h_separation", 18);
+            grid.AddThemeConstantOverride("h_separation", 12);
             grid.AddThemeConstantOverride("v_separation", 6);
             box.AddChild(grid);
             string[,] controls =
@@ -240,9 +259,21 @@ namespace Joguim.UI
             };
             for (int i = 0; i < controls.GetLength(0); i++)
             {
-                grid.AddChild(Dynamic(MakeLabel("", 16, "ffe9a8", HorizontalAlignment.Right), controls[i, 0]));
+                var key = Dynamic(MakeLabel("", 16, "ffe9a8", HorizontalAlignment.Center), controls[i, 0]);
+                key.CustomMinimumSize = new Vector2(110, 36);
+                key.AddThemeStyleboxOverride("normal", new StyleBoxFlat
+                {
+                    BgColor = new Color("263b2d"), BorderColor = new Color("687c52"),
+                    BorderWidthBottom = 3, BorderWidthLeft = 1, BorderWidthRight = 1, BorderWidthTop = 1,
+                    CornerRadiusTopLeft = 4, CornerRadiusTopRight = 4,
+                    CornerRadiusBottomLeft = 4, CornerRadiusBottomRight = 4,
+                    ContentMarginLeft = 8, ContentMarginRight = 8
+                });
+                grid.AddChild(key);
                 var desc = Dynamic(MakeLabel("", 15, "e8ecd8", HorizontalAlignment.Left), controls[i, 1]);
-                desc.CustomMinimumSize = new Vector2(300, 0);
+                desc.CustomMinimumSize = new Vector2(278, 0);
+                desc.AutowrapMode = TextServer.AutowrapMode.WordSmart;
+                desc.SizeFlagsHorizontal = SizeFlags.ExpandFill;
                 grid.AddChild(desc);
             }
 

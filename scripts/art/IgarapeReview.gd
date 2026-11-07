@@ -32,7 +32,7 @@ func _ready() -> void:
 					"res://.godot/igarape-bubbles-%d.png" % bubble_frame
 				)
 	if stage == "before":
-		player.global_position = Vector2(700, 480)
+		player.global_position = Vector2(700, 460)
 		area.get_node("Enemies/Rapido1").global_position = Vector2(850, 480)
 		get_viewport().canvas_transform = Transform2D(0.0, Vector2.ZERO)
 		await get_tree().create_timer(0.2).timeout

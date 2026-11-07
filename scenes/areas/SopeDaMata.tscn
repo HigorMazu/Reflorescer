@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://bbfsg13luf70a" path="res://scripts/world/RestorationPoint.cs" id="restoration"]
 [ext_resource type="PackedScene" uid="uid://do5tcbtkfllki" path="res://scenes/enemies/Enemy_Robusto.tscn" id="robusto"]
 [ext_resource type="Script" uid="uid://cpll441xskn7r" path="res://scripts/world/TransitionTrigger.cs" id="transition"]
+[ext_resource type="Script" path="res://scripts/world/ForestTransitionVisual.cs" id="forest_transition_art"]
 [ext_resource type="PackedScene" uid="uid://ci4whjcr73q7y" path="res://scenes/enemies/Enemy_Voador.tscn" id="voador"]
 
 [ext_resource type="Texture2D" path="res://assets/environment/tropical/ground_restored.png" id="art_ground"]
@@ -386,13 +387,10 @@ TargetArea = "SpawnFromSopeDaMata"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/ToDosselVivo" unique_id=1038180797]
 shape = SubResource("Shape_ToDosselVivo")
 
-[node name="PortalVisual" type="ColorRect" parent="Transitions/ToDosselVivo" unique_id=595144287]
-offset_left = -15.0
-offset_top = -50.0
-offset_right = 15.0
-offset_bottom = 50.0
-mouse_filter = 2
-color = Color(0.4, 0.2, 0.8, 0.6)
+[node name="PortalVisual" type="Node2D" parent="Transitions/ToDosselVivo" unique_id=595144287]
+position = Vector2(-196, 0)
+z_index = 2
+script = ExtResource("forest_transition_art")
 
 [node name="Enemies" type="Node2D" parent="." unique_id=690855189]
 
@@ -415,13 +413,13 @@ HoverFrequency = 2.0
 HoverStiffness = 6.0
 
 [node name="Rapido2" parent="Enemies" unique_id=886523975 instance=ExtResource("rapido")]
-position = Vector2(2150, 460)
+position = Vector2(1980, 460)
 
 [node name="SpawnInicial" type="Marker2D" parent="." unique_id=1594442418 groups=["SpawnPoints"]]
 position = Vector2(160, 460)
 
 [node name="SpawnFromDosselVivo" type="Marker2D" parent="." unique_id=1396213493 groups=["SpawnPoints"]]
-position = Vector2(2260, 460)
+position = Vector2(2200, 460)
 
 [node name="Player" parent="." unique_id=1485657331 instance=ExtResource("player")]
 position = Vector2(160, 460)

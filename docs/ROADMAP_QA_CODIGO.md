@@ -13,9 +13,9 @@ par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 20
 epicos_concluidos: 15
-tasks_total: 89
+tasks_total: 90
 tasks_prontas: 67
-tasks_bloqueadas: 6
+tasks_bloqueadas: 7
 ---
 # Roadmap de QA — Código (Reflorescer)
 
@@ -537,7 +537,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [ ] A iluminação acompanha o progresso com transições contínuas; morte, retorno e reload restauram o estado visual adequado ao ponto do percurso.
 > > - [ ] Entrada, câmera, checkpoints e saída respeitam as decisões aprovadas; as quatro áreas da demo e seus saves continuam funcionando.
 > >
-> > Status: 🟡 parcial (19/10) — 1ª área passa no `DesertLinkCheck.gd` (spawn, chão, vento, inimigos com stats do Deserto, bandeira, mapa, barreira antes da cobra); o percurso completo depende da C15-T4.
+> > Status: 🟡 parcial (30/10) — 1ª área passa no `DesertLinkCheck.gd` (25/25: spawn, chão, música autoral, inimigos com stats do Deserto, bandeira, mapa e volta ao Covil); o percurso completo depende da C15-T4.
 >
 > > [!warning]- Task C15-T2 — Bote, cauda e areia da cobra
 > > - [x] Cada golpe tem aviso, execução e recuperação distinguíveis; a hitbox só causa dano na janela ativa e não alcança além do desenho, em ambos os lados da arena.
@@ -565,11 +565,11 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: 🔴 bloqueado (19/10) — depende do gancho ODS 15 ([[ROADMAP_DEV]] C15-T5).
 >
-> > [!failure]- Task C15-T6 — Música e stats do Deserto
-> > - [ ] A faixa do Deserto toca na área e troca sem corte com o Covil.
+> > [!warning]- Task C15-T6 — Música e stats do Deserto
+> > - [x] A faixa do Deserto toca na área e troca sem corte com o Covil.
 > > - [ ] Os três inimigos usam os stats aprovados e o percurso fica difícil mas justo.
 > >
-> > Status: 🔴 pendente (19/10) — depende da [[ROADMAP_DEV]] C15-T6.
+> > Status: 🟡 parcial (30/10) — `DesertLinkCheck.gd` 25/25 confirmou a nova faixa após a transição com fade; Higor manteve os stats provisórios até testar o percurso final.
 
 > [!success]- EPIC-C16 — Mapa explorável da Floresta Tropical — ✅ Passa · 🟡 Alta
 > *Pronto quando*: a cartografia revela somente posições atravessadas, persiste no save e todas as transições atuais funcionam nos dois sentidos.
@@ -629,7 +629,16 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > Status: 🟡 parcial (26/10) — falta conferir jogando.
 
 >
-> > [!warning]- Task C18-T5 — Jogar com controle
+> > [!warning]- Task C18-T5 — Revisão final de chefes e transições
+> > - [ ] Hitbox de Korrag e Cobra coincide com o desenho e com as janelas reais dos golpes (jogando).
+> > - [x] Golpes sucessivos do Kairo não travam o chefe: `BossRetryCheck` (C20-T1).
+> > - [x] Transições: chegar não dispara o portal de volta, só o corpo do Kairo troca de área: `BossRetryCheck`, `DemoRunCheck`, `DesertLinkCheck` (C20-T3).
+> > - [ ] Percurso manual: ida e volta por todas as saídas de mapa e as duas lutas de chefe.
+> >
+> > Status: 🟡 parcial (06/11) — tarefa registrada pelo Higor em 30/10; repetição e transições cobertas pela C20.
+
+>
+> > [!warning]- Task C18-T6 — Jogar com controle
 > > - [x] As 10 ações têm botão no controle; analógico e D-pad andam, A pula, X ataca (simulado).
 > > - [x] Start pausa, A confirma no menu de pausa, View abre e fecha o mapa, D-pad navega no menu inicial.
 > > - [x] Dicas trocam pro controle (A, X, View, LB), usam os nomes do PlayStation e voltam pro teclado.
@@ -704,7 +713,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > [!success]- Task C17-T2 — Ligação entre biomas
 > > - [x] Ir e voltar entre a Floresta e o bioma seguinte, com spawn certo, mapa e save.
 > >
-> > Status: ✅ passa (19/10) — `DesertLinkCheck.gd` 24/24: portal fechado com o Korrag vivo, tela de fim avisa do Deserto, "Continuar explorando" abre o portal, Deserto jogável e volta ao Covil.
+> > Status: ✅ passa (30/10) — `DesertLinkCheck.gd` 25/25: portal fechado com o Korrag vivo, tela de fim avisa do Deserto, "Continuar explorando" abre o portal, Deserto jogável com música autoral e volta ao Covil.
 >
 > > [!failure]- Task C17-T3 — Habilidade por boss
 > > - [ ] Derrotar cada boss libera a habilidade certa uma vez só, persiste no save e abre os caminhos previstos.

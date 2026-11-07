@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-26
+atualizado: 2026-10-30
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: arte
@@ -13,8 +13,8 @@ par: "[[ROADMAP_ARTE]]"
 descricao: Casos de teste da integração código + arte
 epicos_total: 10
 epicos_concluidos: 7
-tasks_total: 37
-tasks_prontas: 27
+tasks_total: 36
+tasks_prontas: 29
 tasks_bloqueadas: 0
 ---
 # Roadmap de QA — Integração (Código + Arte do Higor)
@@ -98,7 +98,7 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: 🟡 parcial (15/10) — integração isolada e visual aprovados; falta teste nas áreas quando existirem.
 
-> [!success]- EPIC-A03 — Faísca — ✅ Passa na demo (A03-T2 adiada) · 🟠 Alta
+> [!success]- EPIC-A03 — Faísca — ✅ Passa na demo · 🟠 Alta
 > *Pronto quando*: `fly`/`investigate` acompanham a troca de estado sem travar num frame parado, e a luz não "pisca" ao trocar de direção.
 >
 > > [!success]- Task A03-T1
@@ -109,11 +109,6 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: ✅ passa (06/10) — animações, estados e luz independentes verificados.
 >
-> > [!todo]- Task A03-T2 — Faísca fortalecida
-> > - [ ] Cada nível da Faísca se distingue no jogo e acompanha a troca de área e o Continuar.
-> >
-> > Status: ⏭️ adiado (19/10) — fora da demo ([[ROADMAP_ARTE]] A03-T2).
-
 > [!success]- EPIC-A04 — Boss KORRAG — ✅ Passa (19/10) · 🟠 Alta
 > *Pronto quando*: as transições de fase são claras pro jogador mesmo com `idle` compartilhado, o timing de `charge_windup` bate com o código, e o nome exibido é "Korrag, o Javali".
 >
@@ -189,7 +184,14 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > [!todo]- Task A05-T6 — Caminhos que crescem ao restaurar
 > > - [ ] O caminho fechado não parece uma plataforma usável; o aberto é legível e alcançável; colisão bate com a arte.
 > >
-> > Status: ⏭️ adiado (19/10) — fora da demo ([[ROADMAP_ARTE]] A05-T6).
+> > Status: 🟡 arte v1 aprovada por Higor nas três cenas (30/10); colisões, persistência e alcance ainda não podem ser aprovados antes da integração C14-T5.
+
+> > [!success]- Task A05-T7 — Passagens integradas aos cenários
+> > - [x] Entradas naturais substituem os marcadores retangulares e mantêm as raízes alinhadas ao terreno das cenas.
+> > - [x] A árvore Sopé ↔ Dossel mantém a entrada legível na base; a copa não termina dentro da câmera durante a subida pelas plataformas do Dossel.
+> > - **Verificação (30/10):** capturas da cena de produção na base e em duas plataformas: `docs/art-review/transition-dossel-from-sope-v15.png`, `transition-dossel-upper-v15.png` e `transition-dossel-higher-v15.png`. Compilação C# sem avisos; Higor aprovou a revisão v15 no chat.
+> >
+> > Status: ✅ passa e aprovada visualmente pelo Higor (30/10).
 
 > [!warning]- EPIC-A06 — UI — 🟡 Abertura e dicas novas aguardam revisão (26/10) · 🟡 Média
 > *Pronto quando*: barra de vida, ícone de habilidade e prompt de interação têm arte final integrada e funcional em jogo.
@@ -236,10 +238,10 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > >
 > > Status: ✅ passa (19/10) — validado jogando pelo Gustavo em 19/10.
 
-> > [!failure]- Task A06-T7 — Abertura e faixas de dica
-> > - [ ] Abertura e faixas legíveis em 1280×720 e 960×540, sem cobrir o Kairo nem o HUD.
+> > [!success]- Task A06-T7 — Abertura e faixas de dica
+> > - [x] Abertura e faixas legíveis em 1280×720 e 960×540, sem cobrir o Kairo nem o HUD.
 > >
-> > Status: 🔴 pendente (26/10) — depende da [[ROADMAP_ARTE]] A06-T7.
+> > Status: ✅ revisão v3 aprovada pelo Higor (27/10). Moldura botânica, brilhos e teclas em relevo capturados em 1280×720 e 960×540 com teclado e PlayStation. `TutorialFallCheck` 19/19 e `GamepadCheck` 27/27. Capturas em `docs/art-review/tutorial-*-v3.png`; teste com controle físico ainda cabe ao playtest final.
 
 > [!warning]- EPIC-A07 — Validação Final (Playtest Completo) — 🟡 Liberado: só faltam os dois playtests · 🔴 Bloqueante
 > *Pronto quando*: a demo roda de ponta a ponta com áudio, arte e código integrados, sem crash, softlock ou animação quebrada, validada por alguém de fora do grupo.
@@ -258,6 +260,7 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > [!todo]- Task A07-T2 — Ponta a ponta
 > > - [ ] Demo completa sem parar: Sopé da Mata → Dossel Vivo → Igarapé Sufocado → Covil de Korrag → matar 1 de cada arquétipo pelo caminho → derrotar o Korrag → dash desbloqueado (ver [[🎯 Escopo da Demo]]) — sem crash, sem softlock, sem animação quebrada.
 > > - [ ] Repetir morrendo de propósito em cada área (valida respawn/checkpoint com arte e áudio reais).
+> > - **Regressão automatizada (30/10):** `DemoRunCheck.gd` 89/89 atravessou as transições, restaurações, Korrag e desbloqueio do dash. Não substitui as duas partidas manuais acima.
 > >
 > > Status: ⬜ pode começar (19/10) — todo o código, arte e áudio da demo estão concluídos; é a partida completa de validação.
 >
@@ -282,6 +285,7 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - [x] Vento começa na cena e o arquivo de sibilo carrega.
 > > - [ ] Confirmar num mapa completo as transições, dificuldades e posições finais.
 > > - **Verificação (15/10):** cena isolada abriu sem erro; a demo existente não foi redirecionada.
+> > - **Regressão (30/10):** a área jogável usa `deserto_autoral.wav` no lugar do vento isolado; `DesertLinkCheck.gd` 25/25 confirmou a troca de música e o retorno ao Covil. As quatro salas finais ainda faltam.
 > >
 > > Status: 🟡 parcial (15/10) — arte da prévia aprovada; mapa completo e posicionamento final ainda não existem (C15-T1).
 >
@@ -289,10 +293,10 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > - [x] Seis animações têm canvas 512×320 e a cobra aparece em escala grande à noite.
 > > - [x] Sibilo dispara com o bote na prévia.
 > > - [x] Varrida de cauda e entrada/saída da areia têm animações próprias, canvas estável e antecipação legível na prévia.
-> > - [ ] Validar hitboxes, dano, fases, morte e saída no confronto real quando a mecânica existir.
+> > - [ ] Concluir validação de hitboxes/dano no confronto real; fases, morte e saída passam no teste automatizado, mas a emergência ainda pode aplicar primeiro o dano de contato.
 > > - **Verificação (15/10):** `Boss_CobraDesertoVisual.tscn` apresenta a arte, sem script de combate.
 > >
-> > Status: 🟡 parcial (26/10) — a luta existe; falta revisar jogando se o contato e o timing de bote, cauda e mergulho batem com as animações.
+> > Status: 🟡 parcial (27/10) — ajuste visual v3 aprovado pelo Higor; corpo alinhado ao chão e sombra de contato revisada na cena de produção. `SerpentBossCheck` 24/24. Gustavo ainda precisa revisar a precedência do dano da emergência.
 
 > > [!failure]- Task A08-T4 — Arte das áreas do Deserto
 > > - [x] Módulos de plataformas/ruínas usam canvas estável; hazard e restauração têm leitura clara na folha de revisão.
@@ -304,17 +308,17 @@ Legenda de status: ✅ passa · 🔴 ainda não dá pra testar (falta arte ou c�
 > > [!success]- Task A08-T5 — Marco de checkpoint e portais do Deserto
 > > - [x] Marco apagado/aceso e passagem Covil ↔ Deserto possuem arte própria, animação discreta e centro aberto, sem esconder o Kairo.
 > >
-> > Status: ✅ passa (21/10) — aprovado pelo Higor; capturas reais em `desert-entry-checkpoint-*-v2.png` e fluxo funcional 24/24 no `DesertLinkCheck.gd`.
+> > Status: ✅ passa (30/10) — aprovado pelo Higor; capturas reais em `desert-entry-checkpoint-*-v2.png` e fluxo funcional 25/25 no `DesertLinkCheck.gd`.
 >
 > > [!success]- Task A08-T6 — Luz noturna no primeiro plano
 > > - [x] À noite o chão, os inimigos, a cobra e o Kairo ficam azulados junto com o céu; de dia, sem mudança.
 > >
 > > Status: ✅ passa (21/10) — `DesertReviewCheck.gd` verde e captura da cena de produção em `desert-area-night-v2.png`.
 
-> > [!failure]- Task A08-T7 — Parede de areia da arena
-> > - [ ] A parede aparece ao fechar a arena, não esconde o Kairo e some quando a cobra cai.
+> > [!success]- Task A08-T7 — Parede de areia da arena
+> > - [x] A parede aparece ao fechar a arena, não esconde o Kairo e some quando a cobra cai.
 > >
-> > Status: 🔴 pendente (26/10) — depende da [[ROADMAP_ARTE]] A08-T7.
+> > Status: ✅ aprovada pelo Higor (27/10). Cortina procedural animada integrada à arena; `SerpentBossCheck` 24/24 e `DesertLinkCheck` 25/25 confirmam fechamento, abertura após vitória e retorno. Ver `docs/art-review/visual-pending-v2.md`.
 
 > [!success]- EPIC-A09 — Cartografia da Floresta Tropical — ✅ Passa (19/10) · 🟡 Alta
 > *Pronto quando*: o mapa mantém leitura e contraste em partida real, sem mostrar trechos não visitados, e a arte acompanha a revelação do sistema C16.

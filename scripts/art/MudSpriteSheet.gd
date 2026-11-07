@@ -5,7 +5,7 @@ extends Sprite2D
 const FRAME_COUNT := 6
 const FRAME_WIDTH := 1100.0
 const FRAME_HEIGHT := 140.0
-const FRAMES_PER_SECOND := 5.0
+const FRAMES_PER_SECOND := 3.2
 
 var frame_index := 0
 var elapsed := 0.0

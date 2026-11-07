@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://dhdoquuekxcq8" path="res://scripts/combat/Hurtbox.cs" id="4"]
 [ext_resource type="Resource" path="res://resources/bosses/SerpenteStatsResource.tres" id="5"]
 [ext_resource type="SpriteFrames" path="res://assets/sprites/bosses/sand_viper/SandViperSpriteFrames.tres" id="6"]
+[ext_resource type="Script" path="res://scripts/art/SerpentGroundContact.gd" id="ground_contact"]
 
 [sub_resource type="RectangleShape2D" id="Shape_body"]
 size = Vector2(160, 50)
@@ -24,8 +25,11 @@ BossId = "boss_serpente"
 position = Vector2(0, -25)
 shape = SubResource("Shape_body")
 
+[node name="GroundContact" type="Node2D" parent="."]
+script = ExtResource("ground_contact")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -160)
+position = Vector2(0, -152)
 texture_filter = 1
 sprite_frames = ExtResource("6")
 animation = &"idle"

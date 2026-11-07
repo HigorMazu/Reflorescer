@@ -1,7 +1,7 @@
 extends SceneTree
 ## C17-T2 / C15-T1: ligação Covil → Deserto depois do Korrag (decisão de 19/10/2026).
 ## Novo jogo → Korrag derrotado de verdade → tela de fim com a dica do Deserto → "Continuar explorando"
-## → portal do leste abre → Deserto jogável (spawn, chão, inimigos, bandeira, mapa, vento) → volta ao Covil.
+## → portal do leste abre → Deserto jogável (spawn, chão, inimigos, bandeira, mapa, música) → volta ao Covil.
 ## O save_0.json é guardado e devolvido.
 ## Rodar: <godot_console.exe> --headless --fixed-fps 60 --path . --script res://tools/qa/DesertLinkCheck.gd
 const MENU := "res://scenes/ui/MainMenu.tscn"
@@ -73,7 +73,7 @@ func _run() -> void:
 	_check(p.is_on_floor(), "Kairo pisa no chão do Deserto")
 	var music := root.get_node("AudioManager/MusicPlayer") as AudioStreamPlayer
 	await create_timer(1.2).timeout
-	_check(music.playing and music.stream != null and music.stream.resource_path.ends_with("desert_wind.wav"), "vento do Deserto toca no lugar da música do Covil")
+	_check(music.playing and music.stream != null and music.stream.resource_path.ends_with("deserto_autoral.wav"), "música autoral do Deserto toca no lugar da música do Covil")
 	var enemies := current_scene.get_node("Enemies").get_children()
 	_check(enemies.size() == 3, "três inimigos do Deserto na área")
 	for e in enemies:
