@@ -209,6 +209,18 @@ namespace Joguim.Bosses
             AudioManager.Instance?.PlaySfx("boss_stomp.wav");
         }
 
+        protected override void ResetFight()
+        {
+            if (Health == null || Health.IsDead) return;
+            StopWindupTelegraph();
+            _isCharging = false;
+            _isStomping = false;
+            _chargeTimer = 0f;
+            _chargeElapsed = 0f;
+            _stompTimer = 0f;
+            base.ResetFight();
+        }
+
         protected override void OnDied()
         {
             _isStomping = false;

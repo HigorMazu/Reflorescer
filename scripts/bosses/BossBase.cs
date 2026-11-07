@@ -28,6 +28,12 @@ namespace Joguim.Bosses
         private bool _isBossDead = false;
         private float _bossContactTimer = 0f;
         private float _bossContactCooldown = 0.9f;
+        // Poise (06/11/2026): o boss só cambaleia (estado Hurt + empurrão) uma vez a cada StaggerCooldown.
+        // Antes cada golpe reiniciava o Hurt de 0,5 s e, atacando sem parar, o boss nunca revidava.
+        [Export] public float StaggerCooldown = 3.0f;
+        private float _staggerTimer = 0f;
+        // Onde o boss começa a luta: volta pra cá quando o Kairo renasce na mesma cena (ResetFight)
+        private Vector2 _fightStartPosition;
         private const float DeathFadeDelay = 0.6f;
         private const float DeathFadeDuration = 0.6f;
         private ProgressBar _bossFloatingBar;
@@ -49,6 +55,9 @@ namespace Joguim.Bosses
                 QueueFree();
                 return;
             }
+
+            _fightStartPosition = GlobalPosition;
+            if (EventBus.Instance != null) EventBus.Instance.PlayerRespawned += OnPlayerRespawned;
 
             Sprite = GetNodeOrNull<AnimatedSprite2D>(SpritePath);
             CombatController = GetNodeOrNull<CombatController>(CombatControllerPath);
@@ -89,6 +98,38 @@ namespace Joguim.Bosses
                 Health.HealthChanged += OnBossHealthChanged;
                 UpdateBossBar(Health.CurrentHealth, Health.MaxHealth);
             }
+        }
+
+        public override void _ExitTree()
+        {
+            if (EventBus.Instance != null) EventBus.Instance.PlayerRespawned -= OnPlayerRespawned;
+        }
+
+        private void OnPlayerRespawned(Vector2 position) => ResetFight();
+
+        // Kairo morreu e renasceu na mesma cena (bandeira da própria área): a luta recomeça do zero —
+        // vida cheia, fase 1, de volta ao ponto inicial e inativo até o Kairo chegar perto de novo.
+        // Subclasses limpam o próprio estado (ataque em andamento, parede da arena) e chamam base.
+        protected virtual void ResetFight()
+        {
+            if (_isBossDead || Health == null || Health.IsDead) return;
+            _isActive = false;
+            _currentPhaseIndex = 0;
+            _staggerTimer = 0f;
+            _bossContactTimer = 0f;
+            Health.Reset();
+            GlobalPosition = _fightStartPosition;
+            Velocity = Vector2.Zero;
+            Modulate = Colors.White;
+            CombatController?.DisableHitbox();
+            if (StateMachine != null)
+            {
+                // Estados novos: as fases guardam "já comecei/já fiz a transição" e precisam esquecer a tentativa anterior
+                StateMachine.Initialize(this);
+                StateMachine.ChangeState(BossStateType.Intro);
+            }
+            if (HealthBar != null) { HealthBar.SetValue(Health.MaxHealth); HealthBar.Visible = false; }
+            UpdateBossBar(Health.CurrentHealth, Health.MaxHealth);
         }
 
         private void CreateBossFloatingBar()
@@ -207,6 +248,7 @@ namespace Joguim.Bosses
             if (_isBossDead) return;
             // contato do boss = dano contínuo (8 hits para morrer boss, mas boss encostar também machuca)
             if (_bossContactTimer > 0) _bossContactTimer -= (float)delta;
+            if (_staggerTimer > 0) _staggerTimer -= (float)delta;
             // boss sempre ativo no prototype para aula
             if (_player == null) _player = GetTree().GetFirstNodeInGroup("Player") as Node2D;
             if (_isActive == false && _player != null && GlobalPosition.DistanceTo(_player.GlobalPosition) < 500f) ActivateBoss();
@@ -281,9 +323,11 @@ namespace Joguim.Bosses
             // flash
             Modulate = new Color(1.4f, 0.6f, 0.6f);
             GetTree().CreateTimer(0.12).Timeout += () => { if (GodotObject.IsInstanceValid(this)) Modulate = Colors.White; };
-            // super armor: durante Charge/Stomp o dano entra, mas não interrompe nem empurra
-            if (!IsBusy)
+            // super armor: durante Charge/Stomp o dano entra, mas não interrompe nem empurra.
+            // Fora disso, só cambaleia de novo depois do StaggerCooldown: os golpes no meio só tiram vida.
+            if (!IsBusy && _staggerTimer <= 0)
             {
+                _staggerTimer = StaggerCooldown;
                 if (StateMachine != null && StateMachine.CurrentStateType != BossStateType.Dead)
                     StateMachine.ChangeState(BossStateType.Hurt);
                 Vector2 knockback = knockbackDirection * 150f * (1f - StatsResource.KnockbackResistance);
