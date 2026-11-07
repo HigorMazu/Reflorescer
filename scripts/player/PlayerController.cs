@@ -66,6 +66,11 @@ namespace Joguim.Player
         private Vector2? _lastCheckpointPosition;
         private Vector2 _deathPosition;
         private string _currentPrompt = "";
+        // Squash/stretch do Visual (pulo, pulo duplo, estocada): um tween por vez, senão brigam pelo Scale (C19-T1)
+        private Tween _visualTween;
+        private bool _visualTweenMovesPosition = false;
+        // Interagíveis sobrepostos ao InteractionDetector: sem nenhum, não precisa varrer as áreas todo frame (C19-T3)
+        private int _nearbyInteractables = 0;
         private readonly System.Collections.Generic.Dictionary<ulong, float> _terrainSpeedModifiers = new();
 
         public override void _Ready()
@@ -78,6 +83,11 @@ namespace Joguim.Player
             Visual = GetNodeOrNull<Node2D>(VisualNodePath);
             RightArm = GetNodeOrNull<Node2D>(RightArmPath);
             RightHand = GetNodeOrNull<Node2D>(RightHandPath);
+            if (InteractionDetector != null)
+            {
+                InteractionDetector.AreaEntered += OnInteractionAreaEntered;
+                InteractionDetector.AreaExited += OnInteractionAreaExited;
+            }
 
             Health = GetNodeOrNull<Health>("Health");
 
@@ -258,11 +268,12 @@ namespace Joguim.Player
                 _doubleJumpUsed = true;
                 _jumpBufferCounter = 0;
                 // efeito Faísca
-                if (Visual != null)
+                var t2 = StartVisualTween();
+                if (t2 != null)
                 {
-                    var t2 = CreateTween();
-                    t2.TweenProperty(Visual, "scale", new Vector2(Visual.Scale.X * 1.1f, 0.85f), 0.06);
-                    t2.TweenProperty(Visual, "scale", new Vector2(Visual.Scale.X > 0 ? 1 : -1, 1), 0.1);
+                    t2.TweenProperty(Visual, "scale", new Vector2(FacingSign * 1.1f, 0.85f), 0.06);
+                    t2.TweenProperty(Visual, "scale", new Vector2(FacingSign, 1), 0.1);
+                    t2.TweenCallback(Callable.From(RestoreVisualFacing));
                 }
             }
             // Variable jump height: cut velocity when releasing jump early
@@ -283,18 +294,16 @@ namespace Joguim.Player
                 {
                     Visual.Modulate = new Color(1.4f, 1.4f, 1.1f);
                     GetTree().CreateTimer(0.10).Timeout += () => { if (IsInstanceValid(Visual)) Visual.Modulate = Colors.White; };
-                    float direction = LastFacingDirection.X;
-                    var thrust = CreateTween().SetParallel(true);
+                    float direction = FacingSign;
+                    var thrust = StartVisualTween().SetParallel(true);
+                    _visualTweenMovesPosition = true;
                     thrust.TweenProperty(Visual, "position", new Vector2(-direction * 2f, 1f), 0.05f);
                     thrust.TweenProperty(Visual, "scale", new Vector2(direction * .94f, 1.06f), 0.05f);
                     thrust.Chain().TweenProperty(Visual, "position", new Vector2(direction * 4f, 0), 0.07f);
                     thrust.TweenProperty(Visual, "scale", new Vector2(direction * 1.12f, .90f), 0.07f);
                     thrust.Chain().TweenProperty(Visual, "position", Vector2.Zero, 0.12f);
                     thrust.TweenProperty(Visual, "scale", new Vector2(direction, 1), 0.12f);
-                }
-                if (RightArm != null)
-                {
-                    RightArm.Rotation = 0;
+                    thrust.Chain().TweenCallback(Callable.From(RestoreVisualFacing));
                 }
             }
             if (_attackTimer <= 0) FinishAttack();
@@ -413,6 +422,8 @@ namespace Joguim.Player
         // Prompt contínuo (C10-T1): avisa o HUD só quando o texto muda, sem precisar apertar E
         private void UpdateInteractionPrompt()
         {
+            // Nada sobreposto e prompt já vazio: não há o que mudar
+            if (_nearbyInteractables <= 0 && _currentPrompt == "") return;
             string prompt = _isDead ? "" : FindInteractable()?.GetInteractionPrompt() ?? "";
             if (prompt == _currentPrompt) return;
             _currentPrompt = prompt;
@@ -432,29 +443,65 @@ namespace Joguim.Player
 
         public void UpdateFacingDirection(float inputDirection)
         {
-            if (Mathf.Abs(inputDirection) > 0.1f && Visual != null)
-                Visual.Scale = new Vector2(inputDirection > 0 ? 1 : -1, 1);
+            if (Mathf.Abs(inputDirection) <= 0.1f || Visual == null) return;
+            float sign = inputDirection > 0 ? 1 : -1;
+            // Virou no meio de um squash: o tween guardou o lado antigo e desviraria o Kairo ao terminar (C19-T1)
+            if (Mathf.Sign(Visual.Scale.X) != sign) KillVisualTween();
+            Visual.Scale = new Vector2(sign, 1);
         }
+
+        private float FacingSign => LastFacingDirection.X >= 0 ? 1f : -1f;
+
+        // Cancela o squash anterior e devolve um tween novo pro Visual (null se não houver Visual)
+        private Tween StartVisualTween()
+        {
+            if (Visual == null) return null;
+            KillVisualTween();
+            _visualTween = CreateTween();
+            _visualTweenMovesPosition = false;
+            return _visualTween;
+        }
+
+        private void KillVisualTween()
+        {
+            if (_visualTween == null) return;
+            bool resetPosition = _visualTweenMovesPosition && _visualTween.IsValid() && _visualTween.IsRunning();
+            _visualTween.Kill();
+            _visualTween = null;
+            _visualTweenMovesPosition = false;
+            // Só a estocada mexe na posição: se foi interrompida no meio, volta o Visual pro lugar
+            if (resetPosition && Visual != null) Visual.Position = Vector2.Zero;
+        }
+
+        // Fim de qualquer squash: o lado sai do LastFacingDirection atual, não do que era no início do tween
+        private void RestoreVisualFacing()
+        {
+            if (Visual != null) Visual.Scale = new Vector2(FacingSign, 1);
+            _visualTween = null;
+            _visualTweenMovesPosition = false;
+        }
+
+        private void OnInteractionAreaEntered(Area2D area) => _nearbyInteractables++;
+
+        private void OnInteractionAreaExited(Area2D area) => _nearbyInteractables = Mathf.Max(0, _nearbyInteractables - 1);
 
         public void Jump()
         {
             Velocity = new Vector2(Velocity.X, CurrentJumpVelocity);
             AudioManager.Instance?.PlaySfx("player_jump.wav");
             // squash visual
-            if (Visual != null)
+            var t = StartVisualTween();
+            if (t != null)
             {
-                var t = CreateTween();
-                t.TweenProperty(Visual, "scale", new Vector2(Visual.Scale.X * 0.85f, 1.15f), 0.08);
-                t.TweenProperty(Visual, "scale", new Vector2(Visual.Scale.X > 0 ? 1 : -1, 1), 0.12);
+                t.TweenProperty(Visual, "scale", new Vector2(FacingSign * 0.85f, 1.15f), 0.08);
+                t.TweenProperty(Visual, "scale", new Vector2(FacingSign, 1), 0.12);
+                t.TweenCallback(Callable.From(RestoreVisualFacing));
             }
         }
 
         public void DoubleJump()
         {
             Velocity = new Vector2(Velocity.X, CurrentJumpVelocity * 0.90f);
-            // Faísca pulse quando faz double jump
-            var faisca = GetTree().GetFirstNodeInGroup("Companion");
-            if (faisca != null && faisca.HasMethod("Flash")) { /* fallback */ }
         }
 
         // Dash é só no chão: o dash aéreo é outra habilidade (AbilityId.AirDash)
@@ -472,6 +519,7 @@ namespace Joguim.Player
 
             if (Visual != null)
             {
+                KillVisualTween(); // o dash define o Scale direto; um squash pendente sobrescreveria
                 Visual.Modulate = Colors.White;
                 Visual.Scale = new Vector2(_dashDirection * 1.2f, 0.85f);
             }
@@ -528,6 +576,7 @@ namespace Joguim.Player
 
         public void SetFacingDirection(Vector2 direction)
         {
+            if (direction.X != 0) KillVisualTween();
             if (direction.X > 0) { LastFacingDirection = Vector2.Right; if (Visual != null) Visual.Scale = Vector2.One; }
             else if (direction.X < 0) { LastFacingDirection = Vector2.Left; if (Visual != null) Visual.Scale = new Vector2(-1, 1); }
         }

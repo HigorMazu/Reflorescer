@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-26
+atualizado: 2026-11-06
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
@@ -11,11 +11,11 @@ papel: qa
 responsavel: Gustavo
 par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
-epicos_total: 18
+epicos_total: 20
 epicos_concluidos: 15
-tasks_total: 81
-tasks_prontas: 66
-tasks_bloqueadas: 4
+tasks_total: 89
+tasks_prontas: 67
+tasks_bloqueadas: 6
 ---
 # Roadmap de QA — Código (Reflorescer)
 
@@ -636,6 +636,61 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [ ] Com o controle Bluetooth real do Gustavo e do Higor: parear no Windows, abrir o jogo e jogar o Sopé inteiro só no controle.
 > >
 > > Status: 🟡 parcial (26/10) — `GamepadCheck.gd` 27/27; falta o teste com controle real.
+
+> [!warning]- EPIC-C19 — Revisão de código de 06/11 (skills de Godot) — 🟡 Testes automáticos passam; falta jogar · 🟡 Média
+> *Pronto quando*: os testes abaixo passam e o Gustavo confirma jogando que o Kairo olha sempre pro lado em que anda.
+>
+> > [!warning]- Task C19-T1 — Kairo desvirava sozinho depois de pular ou atacar
+> > - [x] `CombatCheck` 35/35 (inclui "Visual volta à pose normal, sem tween preso"), `DemoRunCheck` 89/89, `TutorialFallCheck` 19/19, `DosselReachCheck` ok.
+> > - [ ] Jogando: pular olhando pra direita, apertar esquerda e soltar logo em seguida; o Kairo termina o pulo olhando pra esquerda. Repetir com pulo duplo e com a estocada.
+> > - [ ] Jogando: atacar e virar no meio da estocada; o Kairo não fica deslocado do corpo.
+> >
+> > Status: 🟡 parcial (06/11) — automáticos verdes; falta o teste jogando.
+>
+> > [!success]- Task C19-T2 — Código morto do protótipo no PlayerController
+> > - [x] Build sem avisos e pulo duplo/ataque iguais na bateria (`CombatCheck`, `DemoRunCheck`).
+> >
+> > Status: ✅ passa (06/11).
+>
+> > [!warning]- Task C19-T3 — Prompt de interagir sem varrer áreas todo frame
+> > - [x] `DemoRunCheck` verde (ativa bandeira e restaura áreas).
+> > - [ ] Jogando: o prompt da bandeira e da restauração aparece ao chegar perto e some ao sair, inclusive depois de morrer e renascer na bandeira.
+> >
+> > Status: 🟡 parcial (06/11) — falta conferir jogando.
+
+> [!warning]- EPIC-C20 — Playtest de 06/11 (Gustavo + Higor): chefes, arena e portais — 🟡 Testes automáticos passam; falta jogar · 🔴 Bloqueante
+> *Pronto quando*: os testes abaixo passam e o Gustavo e o Higor jogam as lutas e as transições sem repetir os problemas de 06/11.
+>
+> > [!warning]- Task C20-T1 — Poise de chefes e inimigos
+> > - [x] `BossRetryCheck`: golpe a cada 0,3 s por 4 s deixa a cobra no `Hurt` < 40% do tempo (deu 22%) e continua tirando vida.
+> > - [x] `CombatCheck` 35/35 e `DemoRunCheck` 89/89 (fases e morte do Korrag) com o poise.
+> > - [ ] Jogando: ficar parado atacando o Korrag e a cobra; eles revidam e a luta não termina sem risco.
+> >
+> > Status: 🟡 parcial (06/11).
+>
+> > [!warning]- Task C20-T2 — Luta recomeça depois de morrer na mesma cena
+> > - [x] `BossRetryCheck`: renascer na bandeira do Deserto abre a parede, a cobra volta com a vida cheia, no lugar e inativa; entrar de novo fecha a arena.
+> > - [x] `SerpentBossCheck` 24/24.
+> > - [ ] Jogando: morrer na cobra, "Tentar de novo" e voltar até a arena.
+> >
+> > Status: 🟡 parcial (06/11).
+>
+> > [!warning]- Task C20-T3 — Portais pelo corpo do Kairo
+> > - [x] `BossRetryCheck`: chegar no Dossel vindo do Igarapé não dispara o portal de volta; só a cabeça (Hurtbox antiga) dentro do portal não troca; o corpo dentro troca.
+> > - [x] `DemoRunCheck` (percurso pelos portais) e `DesertLinkCheck` 25/25.
+> > - [ ] Jogando: passar por todos os portais nos dois sentidos, inclusive o do Covil logo depois de vencer o Korrag.
+> >
+> > Status: 🟡 parcial (06/11).
+>
+> > [!failure]- Task C20-T4 — Jogo mais difícil
+> > - [ ] A definir junto da implementação.
+> >
+> > Status: 🔴 bloqueado (06/11) — ainda não implementado.
+>
+> > [!failure]- Task C20-T5 — Recompensa por matar inimigos: essência + upgrades
+> > - [ ] A definir junto da implementação.
+> >
+> > Status: 🔴 bloqueado (06/11) — ainda não implementado.
 
 > [!failure]- EPIC-C17 — Fundação do jogo completo (mundo conectado) — 🔴 Ainda não testável · 🟢 Pós-demo
 > *Pronto quando*: uma área de teste nova entra no mapa, nas transições e no save só por configuração, sem regressão na demo.

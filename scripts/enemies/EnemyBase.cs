@@ -38,6 +38,10 @@ namespace Joguim.Enemies
         private float _contactTimer = 0f;
         private float _contactCooldown = 1.0f;
         private int _contactDamage = 12;
+        // Poise (06/11/2026): cambaleia (Hurt + empurrão) no máximo uma vez a cada StaggerCooldown.
+        // Antes todo golpe reiniciava o Hurt e o Kairo travava o inimigo atacando sem parar.
+        [Export] public float StaggerCooldown = 1.2f;
+        private float _staggerTimer = 0f;
 
         private const float EdgeCheckDistance = 20f;
         private const uint WorldCollisionMask = 1; // layer 1 = World
@@ -121,6 +125,7 @@ namespace Joguim.Enemies
             if (_isDead) return;
 
             if (_contactTimer > 0) _contactTimer -= (float)delta;
+            if (_staggerTimer > 0) _staggerTimer -= (float)delta;
             if (_player == null) _player = GetTree().GetFirstNodeInGroup("Player") as Node2D;
             if (_player != null && Health != null && !Health.IsDead && _contactTimer <= 0)
             {
@@ -253,11 +258,16 @@ namespace Joguim.Enemies
             AudioManager.Instance?.PlaySfx("enemy_hit.wav");
 
             // Inimigos com InterruptOnHit = false (Robusto) tomam dano sem entrar em Hurt
-            if (StatsResource.InterruptOnHit && StateMachine != null && StateMachine.CurrentStateType != EnemyStateType.Dead)
-                StateMachine.ChangeState(EnemyStateType.Hurt);
+            // Golpes dentro do StaggerCooldown só tiram vida: o inimigo segue atacando
+            if (_staggerTimer <= 0)
+            {
+                _staggerTimer = StaggerCooldown;
+                if (StatsResource.InterruptOnHit && StateMachine != null && StateMachine.CurrentStateType != EnemyStateType.Dead)
+                    StateMachine.ChangeState(EnemyStateType.Hurt);
 
-            Vector2 knockback = knockbackDirection * 220f * (1f - StatsResource.KnockbackResistance);
-            Velocity = knockback;
+                Vector2 knockback = knockbackDirection * 220f * (1f - StatsResource.KnockbackResistance);
+                Velocity = knockback;
+            }
 
             Engine.TimeScale = 0.15f;
             GetTree().CreateTimer(0.06, true, false, true).Timeout += () => Engine.TimeScale = 1f;

@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-10-26
+atualizado: 2026-11-06
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
@@ -11,12 +11,12 @@ papel: execucao
 responsavel: Gustavo
 par: "[[ROADMAP_QA_CODIGO]]"
 descricao: Backlog de implementação da demo e do Deserto pós-demo (código)
-epicos_total: 18
+epicos_total: 20
 epicos_concluidos: 15
-tasks_total: 81
-tasks_prontas: 71
+tasks_total: 89
+tasks_prontas: 77
 tasks_bloqueadas: 3
-tasks_liberadas: 3
+tasks_liberadas: 5
 ---
 # Roadmap de Desenvolvimento — Código (Gustavo)
 
@@ -715,6 +715,70 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - [x] As dicas da tela trocam sozinhas pro dispositivo usado por último (`scripts/ui/InputHints.cs`): abertura, faixas de dica, prompt de interagir, dica do mapa, tecla da espada e menu inicial. Nomes de Xbox, PlayStation (Cruz, Quadrado, L1...) ou Switch conforme o nome do controle. Conectar um controle mostra um aviso.
 > >
 > > Status: implementado (26/10) — `GamepadCheck.gd` 27/27 com controle simulado; falta testar com os controles Bluetooth do Gustavo e do Higor.
+
+> [!info]- EPIC-C19 — Revisão de código de 06/11 (skills de Godot) — 🔄 Implementado, aguarda jogar · 🟡 Média
+> *Pronto quando*: o Kairo nunca termina um pulo, pulo duplo ou estocada virado pro lado errado, e o `PlayerController` fica sem código morto do protótipo.
+>
+> Revisão do `PlayerController` e busca de armadilhas comuns de Godot C# nos 47 `.cs`, feita com as skills `godot-csharp`, `godot-2d-movement`, `godot-physics` e `godot-animation`. O resto está de acordo: classes `partial`, movimento só no `_PhysicsProcess` sem `* delta` na velocidade, tweens de aviso dos bosses cancelados antes de recriar, todo `EventBus +=` com `-=` (exceto autoloads). Inimigos, bosses e HUD ainda não foram revisados linha a linha.
+>
+> > [!info]- Task C19-T1 — Kairo desvirava sozinho depois de pular ou atacar
+> > - [x] Os tweens de squash (pulo, pulo duplo, estocada) guardavam o lado do Kairo no início e, ao terminar (~0,2 s), voltavam o `Visual.Scale` pra esse lado. Virar e soltar a direção nesse intervalo deixava o Kairo andando pra um lado e olhando pro outro.
+> > - [x] Um tween de Visual por vez (`_visualTween`, `StartVisualTween()`/`KillVisualTween()`): virar no meio, dar dash ou `SetFacingDirection` cancela o squash; o fim de todo squash usa o `LastFacingDirection` atual (`RestoreVisualFacing()`).
+> > - [x] Estocada interrompida no meio devolve o `Visual.Position` pra zero (só ela mexe na posição; o pulo não toca, pra não estragar o deslocamento do wall slide).
+> >
+> > Status: implementado (06/11) — build sem avisos; `CombatCheck` 35/35, `DemoRunCheck` 89/89, `TutorialFallCheck` 19/19, `DosselReachCheck` ok. Falta jogar.
+>
+> > [!info]- Task C19-T2 — Código morto do protótipo no PlayerController
+> > - [x] `DoubleJump()` buscava a Faísca no grupo `Companion` e não fazia nada com ela: removido.
+> > - [x] `RightArm.Rotation = 0` a cada ataque (nada mais gira o braço): removido. A propriedade `RightArm` continua, a espada usa o caminho do nó.
+> >
+> > Status: implementado (06/11) — bateria acima verde.
+>
+> > [!info]- Task C19-T3 — Prompt de interagir sem varrer áreas todo frame
+> > - [x] `UpdateInteractionPrompt()` chamava `GetOverlappingAreas()` em todo frame de física. Agora conta as áreas sobrepostas pelos sinais `AreaEntered`/`AreaExited` do `InteractionDetector` e só varre quando há alguma (ou pra apagar um prompt que ficou).
+> > - **Achado descartado (06/11):** a `collision_mask = 5` (World + Enemies) do `Player.tscn` é da `AttackHitbox`, não do corpo do Kairo: o Kairo não colide de forma sólida com inimigos. Nada a mudar.
+> >
+> > Status: implementado (06/11) — `DemoRunCheck` (que interage com bandeira e restauração) verde; falta ver o prompt aparecer e sumir jogando.
+
+> [!info]- EPIC-C20 — Playtest de 06/11 (Gustavo + Higor): chefes, arena e portais — 🔄 Implementado, aguarda jogar · 🔴 Bloqueante
+> *Pronto quando*: atacar sem parar não trava nenhum chefe ou inimigo, morrer na luta da cobra e voltar deixa entrar na arena de novo, e os portais trocam de área só quando o corpo do Kairo entra neles.
+>
+> > [!info]- Task C20-T1 — Chefes e inimigos travados na reação de dano (poise)
+> > - [x] Cada golpe mandava o chefe pro estado `Hurt` (0,5 s) e reiniciava o tempo; atacando sem parar o Kairo matava o Korrag ou a cobra sem levar revide. Era o mesmo bug relatado como "hitbox do Kairo contra os mobs e bosses".
+> > - [x] `BossBase.StaggerCooldown` (exportado, 3,0 s): o chefe só cambaleia e é empurrado uma vez nesse intervalo; os golpes no meio tiram vida e mostram o flash, mas não interrompem.
+> > - [x] Mesma regra nos inimigos comuns: `EnemyBase.StaggerCooldown` (1,2 s).
+> >
+> > Status: implementado (06/11) — `BossRetryCheck`: sob um golpe a cada 0,3 s, a cobra fica no `Hurt` 22% do tempo (antes ~100%). Falta jogar.
+>
+> > [!info]- Task C20-T2 — Parede da cobra continuava fechada depois de morrer
+> > - [x] O Deserto tem bandeira própria: morrer na luta renasce na mesma cena, sem recarregar, e a cobra continuava ativa com a parede de areia fechada.
+> > - [x] `BossBase.ResetFight()` no `PlayerRespawned`: vida cheia, fase 1, volta ao ponto inicial, estados recriados e inativo até o Kairo voltar. A cobra também cancela o golpe em andamento, aparece se estava embaixo da areia e **abre a parede**; o Korrag cancela investida e pisada.
+> > - [x] Assinatura no `EventBus` com o `-=` no `_ExitTree()` do `BossBase`.
+> >
+> > Status: implementado (06/11) — `BossRetryCheck`: parede abre, cobra volta cheia e no lugar, entrar de novo fecha a arena.
+>
+> > [!info]- Task C20-T3 — Hitbox do Kairo nas transições de área
+> > - [x] O `TransitionTrigger` disparava pela Hurtbox (22×66, vai 26 px acima do corpo): trocava de área antes de o Kairo entrar no portal. Agora reage ao corpo (`BodyEntered`, 24×40).
+> > - [x] Carência de 0,25 s ao carregar a cena; se o Kairo nasce dentro de um portal, ele só dispara depois de o Kairo sair e entrar de novo.
+> > - [x] Portal que destrava (Korrag derrotado) com o Kairo já dentro agora troca de área (antes nada acontecia até sair e voltar). Uma troca só por vez (sem disparo duplo).
+> > - **Pendência:** o "não troca ao encostar" não foi reproduzido no código (os 7 portais alcançam o corpo junto da parede); conferir jogando em qual portal acontece.
+> >
+> > Status: implementado (06/11) — `BossRetryCheck`, `DemoRunCheck` e `DesertLinkCheck` verdes; falta jogar.
+>
+> > [!todo]- Task C20-T4 — Jogo mais difícil
+> > - [ ] Chefes mais agressivos: combo de 2 golpes, menos espera entre ataques e revide logo depois de cambalear.
+> > - [ ] Cura limitada: restauração cura menos ou só uma vez.
+> > - [ ] Padrões novos nos 3 arquétipos (Voador mergulha, Rápido avança em investida, Robusto bloqueia de frente).
+> > - **Decisão do Gustavo + Higor (06/11):** as três opções acima; Modo Difícil no menu ficou de fora. Valores a definir.
+> >
+> > Status: 🟢 liberado (06/11).
+>
+> > [!todo]- Task C20-T5 — Recompensa por matar inimigos: essência + upgrades
+> > - [ ] Inimigo morto solta essência; contador no HUD; essência entra no save.
+> > - [ ] Na bandeira, trocar essência por upgrade (vida máxima, dano). Precisa de tela de troca.
+> > - **Decisão do Gustavo + Higor (06/11):** essência + upgrades (descartadas: sementes de cura, energia de especial, mudas no mapa). Valores e preços a definir.
+> >
+> > Status: 🟢 liberado (06/11).
 
 > [!todo]- EPIC-C17 — Fundação do jogo completo (mundo conectado) — 📋 Planejado · 🟢 Pós-demo
 > *Pronto quando*: um bioma novo entra no jogo sem mexer em código fixo da Floresta: o mapa, as transições entre biomas, o save e a progressão de habilidades aceitam áreas novas por configuração. Base pro [[Projetos/Reflorescer/🗺️ Roadmap#Pós-demo — jogo completo|roadmap pós-demo]].

@@ -305,6 +305,23 @@ namespace Joguim.Bosses
             Sprite.Play(animName);
         }
 
+        protected override void ResetFight()
+        {
+            if (Health == null || Health.IsDead) return;
+            StopTelegraph();
+            _move = Move.None;
+            _moveTimer = 0f;
+            if (Sprite != null) Sprite.Visible = true;
+            if (_sandMarker != null) { _sandMarker.Visible = false; _sandMarker.Stop(); }
+            SetVulnerable(true);
+            // A parede fecha de novo sozinha quando o Kairo entra na arena (IsActive em _PhysicsProcess)
+            SetGate(false);
+            var bar = GetNodeOrNull<Control>("FloatingHealthBar");
+            if (bar != null) bar.Visible = false;
+            base.ResetFight();
+            PlayOwn("idle");
+        }
+
         protected override void OnDied()
         {
             StopTelegraph();
