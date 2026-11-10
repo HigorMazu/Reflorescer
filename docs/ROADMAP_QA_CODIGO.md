@@ -15,7 +15,7 @@ epicos_total: 20
 epicos_concluidos: 15
 tasks_total: 92
 tasks_prontas: 67
-tasks_bloqueadas: 7
+tasks_bloqueadas: 6
 ---
 # Roadmap de QA — Código (Reflorescer)
 
@@ -696,15 +696,17 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: 🔴 bloqueado (06/11) — ainda não implementado.
 >
-> > [!failure]- Task C20-T5 — Recompensa por matar inimigos: essência + upgrades
-> > - [ ] A definir junto da implementação.
+> > [!warning]- Task C20-T5 — Recompensa por matar inimigos: essência + upgrades
+> > - [x] `EssenceShopCheck` 65/65: saldo, preços, limite de 3 níveis, efeitos, Defesa fora da queda, drop por tipo de mob, totem no Igarapé, loja e save antigo.
+> > - [ ] Jogando: pegar essência, comprar os 5 upgrades com teclado e controle e enfrentar o Korrag com eles.
+> > - [ ] Jogando: a estocada a 0,21 s continua legível.
 > >
-> > Status: 🔴 bloqueado (06/11) — ainda não implementado.
+> > Status: 🟡 parcial (09/11).
 >
 > > [!warning]- Task C20-T6 — Totem e galho visíveis no Dossel Vivo
-> > - [x] `DosselPortalLayerCheck` 5/5: árvore do portal atrás do totem, dos galhos e do Kairo, e na frente do fundo.
+> > - [x] `DosselPortalLayerCheck`: árvore do portal atrás dos galhos e do Kairo, e na frente do fundo.
 > > - [x] `DosselReachCheck`, `DemoRunCheck` 89/89 e `BossRetryCheck` 14/14.
-> > - [ ] Jogando: entrar no Dossel vindo do Sopé e ver o totem e o primeiro galho.
+> > - [ ] Jogando: entrar no Dossel vindo do Sopé e ver o primeiro galho (o totem foi para o Igarapé em C20-T5).
 > >
 > > Status: 🟡 parcial (09/11).
 >

@@ -9,6 +9,8 @@ namespace Joguim.Combat
         [Export] public int MaxHealth = 100;
         [Export] public bool Invulnerable = false;
         [Export] public float InvulnerabilityDuration = 1.0f;
+        // Upgrade de Defesa: subtrai de cada golpe, sempre deixando ao menos 1 de dano
+        public int FlatDefense { get; set; }
 
         [Signal] public delegate void HealthChangedEventHandler(int currentHealth, int maxHealth);
         [Signal] public delegate void DamageReceivedEventHandler(int damage, Vector2 knockbackDirection);
@@ -40,6 +42,8 @@ namespace Joguim.Combat
             if (damageInfo == null) return;
 
             int actualDamage = Mathf.Max(0, damageInfo.Damage);
+            if (actualDamage > 0 && FlatDefense > 0 && !damageInfo.IgnoresDefense)
+                actualDamage = Mathf.Max(1, actualDamage - FlatDefense);
             _currentHealth = Mathf.Max(0, _currentHealth - actualDamage);
 
             Vector2 knockbackDir = damageInfo.KnockbackDirection.Normalized();

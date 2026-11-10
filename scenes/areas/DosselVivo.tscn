@@ -1,8 +1,6 @@
 [gd_scene format=3 uid="uid://cc70gu6eyci2h"]
 
 [ext_resource type="Script" uid="uid://kuhl1jc0cutg" path="res://scripts/world/AreaController.cs" id="area_script"]
-[ext_resource type="Script" uid="uid://bqc07gusublgs" path="res://scripts/world/Checkpoint.cs" id="checkpoint"]
-[ext_resource type="Script" path="res://scripts/world/CheckpointTotemVisual.cs" id="checkpoint_art"]
 [ext_resource type="PackedScene" uid="uid://faisca001" path="res://scenes/companion/Faisca.tscn" id="faisca"]
 [ext_resource type="PackedScene" uid="uid://hud001" path="res://scenes/ui/HUD.tscn" id="hud"]
 [ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="player"]
@@ -80,9 +78,6 @@ size = Vector2(140, 20)
 [sub_resource type="RectangleShape2D" id="Shape_TopBranch"]
 size = Vector2(300, 20)
 
-[sub_resource type="RectangleShape2D" id="Shape_Checkpoint1"]
-size = Vector2(32, 32)
-
 [sub_resource type="RectangleShape2D" id="Shape_RestorationPoint1"]
 size = Vector2(32, 32)
 
@@ -91,9 +86,6 @@ size = Vector2(60, 100)
 
 [sub_resource type="RectangleShape2D" id="Shape_ToIgarapeSufocado"]
 size = Vector2(60, 100)
-
-[sub_resource type="RectangleShape2D" id="Shape_TutCheckpoint"]
-size = Vector2(180, 240)
 
 [sub_resource type="RectangleShape2D" id="Shape_TutWall"]
 size = Vector2(180, 380)
@@ -472,23 +464,6 @@ color = Color(0.28, 0.5, 0.22, 1)
 
 [node name="Interactables" type="Node2D" parent="." unique_id=1870012969]
 
-[node name="Checkpoint1" type="Area2D" parent="Interactables" unique_id=1951190965]
-position = Vector2(200, 480)
-collision_layer = 32
-collision_mask = 2
-script = ExtResource("checkpoint")
-CheckpointId = "cp_dossel_01"
-AutoActivateOnTouch = true
-TotemVisualPath = NodePath("TotemVisual")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/Checkpoint1" unique_id=384558023]
-position = Vector2(0, -16)
-shape = SubResource("Shape_Checkpoint1")
-
-[node name="TotemVisual" type="Node2D" parent="Interactables/Checkpoint1"]
-z_index = 2
-script = ExtResource("checkpoint_art")
-
 [node name="RestorationPoint1" type="Area2D" parent="Interactables" unique_id=958426160]
 position = Vector2(720, 246)
 collision_layer = 32
@@ -655,17 +630,6 @@ position = Vector2(70, 430)
 [node name="HUD" parent="." unique_id=1960135602 instance=ExtResource("hud")]
 
 [node name="Tutorial" type="Node2D" parent="."]
-
-[node name="TutCheckpoint" type="Area2D" parent="Tutorial"]
-position = Vector2(210, 380)
-collision_layer = 0
-collision_mask = 2
-script = ExtResource("tutorial_zone")
-Keys = "Totem"
-Text = "salva o progresso: ao morrer, o Kairo volta pra cá"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/TutCheckpoint"]
-shape = SubResource("Shape_TutCheckpoint")
 
 [node name="TutWall" type="Area2D" parent="Tutorial"]
 position = Vector2(960, 300)

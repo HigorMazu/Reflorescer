@@ -1,5 +1,5 @@
 extends SceneTree
-## C20-T6 (09/11/2026): a árvore do portal de volta ao Sopé cobria o totem e o Branch1 do Dossel Vivo.
+## C20-T6 (09/11/2026): a árvore do portal de volta ao Sopé cobria o Branch1 do Dossel Vivo.
 ## Confere a camada efetiva: a árvore fica atrás do que é jogável e na frente do fundo.
 ## Rodar: <godot_console.exe> --headless --fixed-fps 60 --path . --script res://tools/qa/DosselPortalLayerCheck.gd
 const DOSSEL := "res://scenes/areas/DosselVivo.tscn"
@@ -42,12 +42,10 @@ func _run() -> void:
 
 	var portal := scene.get_node("Transitions/ToSopeDaMata/PortalVisual") as CanvasItem
 	var upper := portal.get_node("UpperCanopy") as CanvasItem
-	var totem := scene.get_node("Interactables/Checkpoint1/TotemVisual") as CanvasItem
 	var geometry := scene.get_node("Geometry") as CanvasItem
 	var backdrop := scene.get_node("Backdrop") as CanvasItem
 	var player := scene.get_node("Player")
 
-	_check(_z(portal) < _z(totem), "árvore atrás do totem (%d < %d)" % [_z(portal), _z(totem)])
 	_check(_z(portal) < _z(geometry), "árvore atrás dos galhos (%d < %d)" % [_z(portal), _z(geometry)])
 	_check(_z(portal) < _lowest_z(player), "árvore atrás de todas as camadas do Kairo (%d < %d)" % [_z(portal), _lowest_z(player)])
 	_check(_z(upper) > _z(backdrop), "copa continua na frente do fundo (%d > %d)" % [_z(upper), _z(backdrop)])

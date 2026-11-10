@@ -19,6 +19,8 @@ namespace Joguim.UI
         private Label _healthLabel;
         private Label _interactionPrompt;
         private Label _abilityDisplay;
+        private Label _essenceLabel;
+        private ShopOverlay _shop;
         private Control _pauseMenu;
         private Label _unlockNotification;
         private Tween _unlockTween;
@@ -72,6 +74,8 @@ namespace Joguim.UI
             EventBus.Instance.InteractionPromptChanged += OnInteractionPromptChanged;
             EventBus.Instance.AreaRestored += OnAreaRestored;
             EventBus.Instance.BossDefeated += OnBossDefeated;
+            EventBus.Instance.EssenceChanged += OnEssenceChanged;
+            BuildEssenceLabel();
 
             InputHints.Changed += OnInputDeviceChanged;
             OnInputDeviceChanged();
@@ -101,6 +105,34 @@ namespace Joguim.UI
             EventBus.Instance.InteractionPromptChanged -= OnInteractionPromptChanged;
             EventBus.Instance.AreaRestored -= OnAreaRestored;
             EventBus.Instance.BossDefeated -= OnBossDefeated;
+            EventBus.Instance.EssenceChanged -= OnEssenceChanged;
+        }
+
+        public void OpenShop()
+        {
+            if (GameManager.Instance?.IsGameOver == true || GameManager.Instance?.IsGamePaused == true) return;
+            if (_shop == null)
+            {
+                _shop = new ShopOverlay { Name = "ShopOverlay" };
+                AddChild(_shop);
+            }
+            _shop.Open();
+        }
+
+        // Contador de essência (C20-T5): criado por código ao lado da vida
+        private void BuildEssenceLabel()
+        {
+            var row = GetNodeOrNull<Control>("MarginContainer/VBoxContainer/TopRow");
+            if (row == null) return;
+            _essenceLabel = new Label { Name = "EssenceLabel" };
+            _essenceLabel.AddThemeColorOverride("font_color", new Color(1f, 0.91f, 0.54f));
+            row.AddChild(_essenceLabel);
+            OnEssenceChanged(SaveManager.Instance?.Essence ?? 0);
+        }
+
+        private void OnEssenceChanged(int total)
+        {
+            if (_essenceLabel != null) _essenceLabel.Text = $"✦ {total}";
         }
 
         private void InitializeHUD()

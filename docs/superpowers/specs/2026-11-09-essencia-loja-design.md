@@ -1,7 +1,7 @@
 ---
 tipo: projeto
 categoria: spec
-status: aguardando-aprovacao
+status: aprovado
 criado: 2026-11-09
 tags: [projeto, spec]
 projeto: "[[🗂️ Reflorescer]]"
@@ -66,7 +66,7 @@ Cada upgrade tem 3 níveis, com preços de **20, 40 e 70**. O custo de completar
 | Upgrade | Base | Por nível | No máximo |
 |---|---|---|---|
 | Dano | 25 | +5 | 40 |
-| Velocidade de ataque | 0,40 s | -0,04 s | 0,28 s |
+| Velocidade de ataque | 0,30 s (valor real do `PlayerStatsResource.tres`) | -0,03 s | 0,21 s (mesmos 30% de ganho combinados; a animação acelera junto) |
 | Vida | 100 | +15 | +45 |
 | Defesa | 0 | -2 de dano por golpe, mínimo 1 | -6 |
 | Velocidade de movimento | 200 com espada, 240 sem | +5% | +15% |

@@ -54,7 +54,12 @@ namespace Joguim.World
 
         public void Interact(Node2D interactor)
         {
-            if (Activated) return;
+            // Depois de ativado, o totem é a loja de upgrades (C20-T5)
+            if (Activated)
+            {
+                (GetTree().GetFirstNodeInGroup(UI.HUDController.GroupName) as UI.HUDController)?.OpenShop();
+                return;
+            }
 
             Activated = true;
             _totem?.SetActivated(true, true);
@@ -81,13 +86,12 @@ namespace Joguim.World
 
         public string GetInteractionPrompt()
         {
-            return Activated ? "Checkpoint ativado" : "Ativar checkpoint";
+            return Activated ? "Loja" : "Ativar checkpoint";
         }
 
-        // Checkpoint já ativado não oferece interação (o Interact já ignorava; agora o prompt também some)
         public bool CanInteract()
         {
-            return !Activated;
+            return true;
         }
 
         public void Deactivate()

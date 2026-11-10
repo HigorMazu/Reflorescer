@@ -307,6 +307,7 @@ namespace Joguim.Enemies
             if (StateMachine != null) StateMachine.ChangeState(EnemyStateType.Dead);
 
             EventBus.Instance?.EmitSignal("EnemyDefeated", EnemyId);
+            Joguim.Progression.EssenceOrb.Spawn(GetTree().CurrentScene, GlobalPosition, StatsResource.ExperienceReward);
             AudioManager.Instance?.PlaySfx("enemy_death.wav");
 
             // Keep the final frame on screen long enough for the death pose to be

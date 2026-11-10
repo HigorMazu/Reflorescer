@@ -3,6 +3,7 @@ using System;
 using Joguim.Abilities;
 using Joguim.Combat;
 using Joguim.Core;
+using Joguim.Progression;
 using Joguim.Resources;
 using Joguim.Save;
 
@@ -33,9 +34,11 @@ namespace Joguim.Player
 
         public Vector2 LastFacingDirection { get; private set; } = Vector2.Right;
         public bool HasSword { get; set; } = true;
-        public int CurrentAttackDamage => StatsResource?.AttackDamage ?? 25;
+        public int CurrentAttackDamage => (StatsResource?.AttackDamage ?? 25) + UpgradeCatalog.DamageBonus(UpgradeLevel(UpgradeId.Damage));
+        public float CurrentAttackCooldown => StatsResource.AttackCooldown - UpgradeCatalog.AttackCooldownReduction(UpgradeLevel(UpgradeId.AttackSpeed));
         // Stats duplos: sem a espada o Kairo é mais rápido e pula mais alto
-        public float CurrentMoveSpeed => (HasSword ? StatsResource.MoveSpeed : StatsResource.MoveSpeedNoSword) * TerrainSpeedMultiplier;
+        public float CurrentMoveSpeed => (HasSword ? StatsResource.MoveSpeed : StatsResource.MoveSpeedNoSword) * TerrainSpeedMultiplier
+            * UpgradeCatalog.MoveSpeedMultiplier(UpgradeLevel(UpgradeId.MoveSpeed));
         // Terreno (ex: MudHazard): com mais de um ativo ao mesmo tempo, vale o mais lento
         public float TerrainSpeedMultiplier { get; private set; } = 1f;
         public float CurrentJumpVelocity => HasSword ? StatsResource.JumpVelocity : StatsResource.JumpVelocityNoSword;
@@ -112,7 +115,9 @@ namespace Joguim.Player
             {
                 // Cada área restaurada dá +10 de vida máxima (decisão de 11/10/2026): o bônus sai dos pontos
                 // restaurados do save, então vale depois de trocar de área, morrer ou Continuar
-                Health.MaxHealth = StatsResource.MaxHealth + MaxHealthPerRestoration * (SaveManager.Instance?.RestoredCount ?? 0);
+                Health.MaxHealth = StatsResource.MaxHealth + MaxHealthPerRestoration * (SaveManager.Instance?.RestoredCount ?? 0)
+                    + UpgradeCatalog.HealthBonus(UpgradeLevel(UpgradeId.Health));
+                Health.FlatDefense = UpgradeCatalog.Defense(UpgradeLevel(UpgradeId.Defense));
                 Health.Reset();
                 Health.HealthChanged += OnHealthChanged;
                 Health.DamageReceived += OnDamageReceived;
@@ -128,6 +133,7 @@ namespace Joguim.Player
             {
                 EventBus.Instance.CheckpointActivated += OnCheckpointActivated;
                 EventBus.Instance.AreaRestored += OnAreaRestored;
+                EventBus.Instance.UpgradePurchased += OnUpgradePurchased;
             }
             else GD.PrintErr("PlayerController: EventBus not ready yet.");
 
@@ -140,6 +146,23 @@ namespace Joguim.Player
             if (EventBus.Instance == null) return;
             EventBus.Instance.CheckpointActivated -= OnCheckpointActivated;
             EventBus.Instance.AreaRestored -= OnAreaRestored;
+            EventBus.Instance.UpgradePurchased -= OnUpgradePurchased;
+        }
+
+        private static int UpgradeLevel(UpgradeId id) => SaveManager.Instance?.GetUpgradeLevel(id) ?? 0;
+
+        // Dano, ataque e movimento são lidos na hora; Vida e Defesa moram no nó Health
+        private void OnUpgradePurchased(int upgradeId)
+        {
+            if (Health == null) return;
+            if ((UpgradeId)upgradeId == UpgradeId.Defense)
+                Health.FlatDefense = UpgradeCatalog.Defense(UpgradeLevel(UpgradeId.Defense));
+            else if ((UpgradeId)upgradeId == UpgradeId.Health)
+            {
+                int gain = UpgradeCatalog.HealthBonus(1);
+                Health.SetMaxHealth(Health.MaxHealth + gain);
+                Health.SetCurrentHealth(Health.CurrentHealth + gain);
+            }
         }
 
         public const int MaxHealthPerRestoration = 10;
@@ -286,7 +309,7 @@ namespace Joguim.Player
             if (Input.IsActionJustPressed("attack") && CanAttack())
             {
                 PerformAttack();
-                _attackTimer = StatsResource.AttackCooldown;
+                _attackTimer = CurrentAttackCooldown;
                 AudioManager.Instance?.PlaySfx("player_attack.wav");
 
                 // Estocada curta: recuo, avanço e recuperação — inspirada no ferrão de Hollow Knight.
@@ -386,7 +409,11 @@ namespace Joguim.Player
 
             // Use AnimatedSprite if available, otherwise modulate placeholder
             if (Sprite != null && Sprite.SpriteFrames != null && Sprite.SpriteFrames.HasAnimation(anim))
+            {
+                // A estocada acompanha o intervalo menor do upgrade de velocidade de ataque
+                Sprite.SpeedScale = anim == "attack" ? StatsResource.AttackCooldown / CurrentAttackCooldown : 1f;
                 Sprite.Play(anim);
+            }
             else
             {
                 // placeholder visual feedback: scale and color hint
@@ -638,7 +665,7 @@ namespace Joguim.Player
 
         private const string DemoAreasPath = "res://scenes/areas/";
 
-        // Decisão de 11/10/2026: a demo tem uma bandeira só (Dossel Vivo). Morrer em qualquer área volta pra ela,
+        // Decisão de 11/10/2026: a demo tem um totem só (no Igarapé desde 09/11/2026). Morrer em qualquer área volta pra ela,
         // recarregando a cena dela se for preciso (a área é recarregada, então os inimigos voltam).
         // Sem bandeira ativada ainda: volta pro começo da demo. Cenas de teste fora da demo mantêm o
         // comportamento antigo (bandeira da cena, ou perto de onde morreu).
@@ -699,7 +726,7 @@ namespace Joguim.Player
                 FallBaseDamage + Mathf.FloorToInt((height - FallSafeHeight) / 100f * FallDamagePer100));
             LastFallHeight = height;
             LastFallDamage = damage;
-            Health.TakeDamage(new DamageInfo(damage, Vector2.Zero, 0f, this));
+            Health.TakeDamage(new DamageInfo(damage, Vector2.Zero, 0f, this) { IgnoresDefense = true });
         }
 
         public void Respawn(Vector2 position)

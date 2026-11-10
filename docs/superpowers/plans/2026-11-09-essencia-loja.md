@@ -1,7 +1,7 @@
 ---
 tipo: projeto
 categoria: plano
-status: aguardando-aprovacao
+status: aprovado
 criado: 2026-11-09
 tags: [projeto, plano]
 projeto: "[[🗂️ Reflorescer]]"
@@ -23,7 +23,7 @@ descricao: Plano de implementação da essência, da loja e da mudança do totem
 
 - Nenhum sprite novo.
 - Não alterar `PlayerStatsResource` nem os `.tres` de atributos.
-- Preços 20/40/70; 3 níveis; Dano +5; ataque -0,04 s (mín. 0,28 s); Vida +15; Defesa -2 (mínimo 1 de dano); movimento +5%.
+- Preços 20/40/70; 3 níveis; Dano +5; ataque -0,03 s (mín. 0,21 s; base real 0,30 s); Vida +15; Defesa -2 (mínimo 1 de dano); movimento +5%.
 - Valor da essência = `StatsResource.ExperienceReward`.
 - Morrer não perde essência; chefes não soltam essência.
 - Todo `EventBus += ` em nó de cena tem `-=` em `_ExitTree()`.

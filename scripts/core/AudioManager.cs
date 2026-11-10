@@ -40,6 +40,8 @@ namespace Joguim.Core
                 var sfxPlayer = new AudioStreamPlayer();
                 sfxPlayer.Bus = "SFX";
                 sfxPlayer.VolumeDb = SfxVolumeDb;
+                // A loja compra com o jogo pausado: o som precisa tocar mesmo assim
+                sfxPlayer.ProcessMode = ProcessModeEnum.Always;
                 AddChild(sfxPlayer);
                 _sfxPlayers.Add(sfxPlayer);
             }

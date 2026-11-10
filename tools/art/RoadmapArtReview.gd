@@ -17,14 +17,14 @@ func _run() -> void:
 	else:
 		root.size = Vector2i(1280, 720)
 
-	# Grounded checkpoint in the actual Dossel scene, with no player input.
-	var area: Node2D = load("res://scenes/areas/DosselVivo.tscn").instantiate()
+	# Grounded checkpoint in the actual Igarape scene, with no player input.
+	var area: Node2D = load("res://scenes/areas/IgarapeSufocado.tscn").instantiate()
 	area.process_mode = Node.PROCESS_MODE_DISABLED
 	root.add_child(area)
 	var checkpoint = area.get_node("Interactables/Checkpoint1")
 	var totem = checkpoint.get_node("TotemVisual")
 	checkpoint.process_mode = Node.PROCESS_MODE_ALWAYS
-	root.canvas_transform = Transform2D(0.0, Vector2(440, -170))
+	root.canvas_transform = Transform2D(0.0, Vector2(340, -170))
 	assert(checkpoint.get_node_or_null("Flag") == null, "blue placeholder removed")
 	totem.call("SetActivated", false, false)
 	await create_timer(0.15).timeout

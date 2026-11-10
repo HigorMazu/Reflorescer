@@ -13,6 +13,9 @@
 [ext_resource type="Resource" path="res://resources/enemies/areas/Voador_IgarapeSufocado.tres" id="stats_voador_IgarapeSufocado"]
 [ext_resource type="Script" uid="uid://cpll441xskn7r" path="res://scripts/world/TransitionTrigger.cs" id="transition"]
 [ext_resource type="Script" path="res://scripts/world/ForestTransitionVisual.cs" id="forest_transition_art"]
+[ext_resource type="Script" uid="uid://bqc07gusublgs" path="res://scripts/world/Checkpoint.cs" id="checkpoint"]
+[ext_resource type="Script" path="res://scripts/world/CheckpointTotemVisual.cs" id="checkpoint_art"]
+[ext_resource type="Script" path="res://scripts/world/TutorialZone.cs" id="tutorial_zone"]
 [ext_resource type="PackedScene" uid="uid://ci4whjcr73q7y" path="res://scenes/enemies/Enemy_Voador.tscn" id="voador"]
 [ext_resource type="PackedScene" path="res://scenes/art/IgarapeBackdrop.tscn" id="backdrop"]
 [ext_resource type="Texture2D" path="res://assets/environment/tropical/igarape_ground_candidate_v1.png" id="swamp_ground"]
@@ -64,6 +67,12 @@ shader = ExtResource("mud_bed_shader")
 
 [sub_resource type="RectangleShape2D" id="Shape_RestorationPoint1"]
 size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="Shape_Checkpoint1"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="Shape_TutCheckpoint"]
+size = Vector2(180, 240)
 
 [sub_resource type="RectangleShape2D" id="Shape_ToDosselVivo"]
 size = Vector2(60, 100)
@@ -382,6 +391,23 @@ centered = false
 
 [node name="Interactables" type="Node2D" parent="." unique_id=402884543]
 
+[node name="Checkpoint1" type="Area2D" parent="Interactables"]
+position = Vector2(300, 480)
+collision_layer = 32
+collision_mask = 2
+script = ExtResource("checkpoint")
+CheckpointId = "cp_igarape_01"
+AutoActivateOnTouch = true
+TotemVisualPath = NodePath("TotemVisual")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/Checkpoint1"]
+position = Vector2(0, -16)
+shape = SubResource("Shape_Checkpoint1")
+
+[node name="TotemVisual" type="Node2D" parent="Interactables/Checkpoint1"]
+z_index = 2
+script = ExtResource("checkpoint_art")
+
 [node name="RestorationPoint1" type="Area2D" parent="Interactables" unique_id=1427585006]
 position = Vector2(1180, 480)
 collision_layer = 32
@@ -611,3 +637,16 @@ position = Vector2(110, 460)
 position = Vector2(70, 430)
 
 [node name="HUD" parent="." unique_id=1220209549 instance=ExtResource("hud")]
+
+[node name="Tutorial" type="Node2D" parent="."]
+
+[node name="TutCheckpoint" type="Area2D" parent="Tutorial"]
+position = Vector2(310, 380)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("tutorial_zone")
+Keys = "Totem"
+Text = "salva o progresso e abre a loja: ao morrer, o Kairo volta pra cá"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/TutCheckpoint"]
+shape = SubResource("Shape_TutCheckpoint")

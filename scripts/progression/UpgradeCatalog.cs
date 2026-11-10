@@ -12,7 +12,7 @@ namespace Joguim.Progression
         public static int Price(int level) => level >= 0 && level < MaxLevel ? Prices[level] : -1;
 
         public static int DamageBonus(int level) => 5 * level;
-        public static float AttackCooldownReduction(int level) => 0.04f * level;
+        public static float AttackCooldownReduction(int level) => 0.03f * level;
         public static int HealthBonus(int level) => 15 * level;
         public static int Defense(int level) => 2 * level;
         public static float MoveSpeedMultiplier(int level) => 1f + 0.05f * level;
