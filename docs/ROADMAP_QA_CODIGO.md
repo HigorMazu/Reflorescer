@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-11-06
+atualizado: 2026-11-09
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
@@ -13,7 +13,7 @@ par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 20
 epicos_concluidos: 15
-tasks_total: 90
+tasks_total: 92
 tasks_prontas: 67
 tasks_bloqueadas: 7
 ---
@@ -700,6 +700,19 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [ ] A definir junto da implementação.
 > >
 > > Status: 🔴 bloqueado (06/11) — ainda não implementado.
+>
+> > [!warning]- Task C20-T6 — Totem e galho visíveis no Dossel Vivo
+> > - [x] `DosselPortalLayerCheck` 5/5: árvore do portal atrás do totem, dos galhos e do Kairo, e na frente do fundo.
+> > - [x] `DosselReachCheck`, `DemoRunCheck` 89/89 e `BossRetryCheck` 14/14.
+> > - [ ] Jogando: entrar no Dossel vindo do Sopé e ver o totem e o primeiro galho.
+> >
+> > Status: 🟡 parcial (09/11).
+>
+> > [!failure]- Task C20-T7 — Portal sem erro de monitoring no log
+> > - [ ] `DosselReachCheck` roda sem `Can't find overlapping bodies when monitoring is off`.
+> > - [ ] `BossRetryCheck` continua verde (carência dos portais).
+> >
+> > Status: 🔴 falha (09/11) — erro presente no log.
 
 > [!failure]- EPIC-C17 — Fundação do jogo completo (mundo conectado) — 🔴 Ainda não testável · 🟢 Pós-demo
 > *Pronto quando*: uma área de teste nova entra no mapa, nas transições e no save só por configuração, sem regressão na demo.

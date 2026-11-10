@@ -574,7 +574,7 @@ shape = SubResource("Shape_ToSopeDaMata")
 
 [node name="PortalVisual" type="Node2D" parent="Transitions/ToSopeDaMata" unique_id=1063332275]
 position = Vector2(130, 0)
-z_index = 2
+z_index = -5
 script = ExtResource("forest_transition_art")
 FlipHorizontally = true
 Theme = 1

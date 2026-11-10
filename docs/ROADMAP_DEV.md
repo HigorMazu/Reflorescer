@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-11-06
+atualizado: 2026-11-09
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
@@ -13,10 +13,10 @@ par: "[[ROADMAP_QA_CODIGO]]"
 descricao: Backlog de implementação da demo e do Deserto pós-demo (código)
 epicos_total: 20
 epicos_concluidos: 15
-tasks_total: 89
-tasks_prontas: 77
+tasks_total: 91
+tasks_prontas: 78
 tasks_bloqueadas: 3
-tasks_liberadas: 5
+tasks_liberadas: 6
 ---
 # Roadmap de Desenvolvimento — Código (Gustavo)
 
@@ -788,6 +788,19 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - **Decisão do Gustavo + Higor (06/11):** essência + upgrades (descartadas: sementes de cura, energia de especial, mudas no mapa). Valores e preços a definir.
 > >
 > > Status: 🟢 liberado (06/11).
+>
+> > [!info]- Task C20-T6 — Totem e galho escondidos pela árvore do portal no Dossel Vivo
+> > - [x] A árvore do portal `ToSopeDaMata` (1000×755 px, `z_index = 2`, desde o `a84bc14` de 30/10) era desenhada na frente do totem e do `Branch1`: 100% opaca sobre o totem e 92% sobre o galho, cuja colisão continuava barrando o pulo.
+> > - [x] `PortalVisual` do `ToSopeDaMata` passa para `z_index = -5`: atrás do que é jogável e na frente do fundo (-20).
+> > - **Bugfix (09/11) — relatado pelo Gustavo jogando:** a arte não mudou, só a camada desse portal.
+> >
+> > Status: implementado (09/11) — `DosselPortalLayerCheck` 5/5 (falhava antes do ajuste), `DosselReachCheck`, `DemoRunCheck` 89/89 e `BossRetryCheck` 14/14 verdes; falta ver jogando.
+>
+> > [!todo]- Task C20-T7 — Erro no log do `TransitionTrigger` com monitoring desligado
+> > - [ ] `PlayerInside()` chama `GetOverlappingBodies()` com o `Area2D` sem monitoring, o que gera `Can't find overlapping bodies when monitoring is off` (`TransitionTrigger.cs:59` e `:64`). Visto no `DosselReachCheck`.
+> > - [ ] Checar `Monitoring` antes de consultar e confirmar que a carência do portal continua igual.
+> >
+> > Status: 🟢 liberado (09/11).
 
 > [!todo]- EPIC-C17 — Fundação do jogo completo (mundo conectado) — 📋 Planejado · 🟢 Pós-demo
 > *Pronto quando*: um bioma novo entra no jogo sem mexer em código fixo da Floresta: o mapa, as transições entre biomas, o save e a progressão de habilidades aceitam áreas novas por configuração. Base pro [[Projetos/Reflorescer/🗺️ Roadmap#Pós-demo — jogo completo|roadmap pós-demo]].
