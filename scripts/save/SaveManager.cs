@@ -5,6 +5,7 @@ using System.Text.Json;
 using Joguim.Abilities;
 using Joguim.Core;
 using Joguim.Player;
+using Joguim.Progression;
 
 namespace Joguim.Save
 {
@@ -72,6 +73,44 @@ namespace Joguim.Save
             // Grava só a descoberta: posição, vida e cena continuam as do último ponto salvo, então o
             // Continuar segue a regra da bandeira (decisão de 19/10/2026). Sem save em disco, a lista
             // fica na memória e vai junto no próximo SaveGame.
+            if (HasSave(_currentSave.Slot)) SaveToFile(_currentSave.Slot, _currentSave);
+        }
+
+        public int Essence => _currentSave?.Essence ?? 0;
+
+        public void AddEssence(int amount)
+        {
+            if (amount <= 0) return;
+            _currentSave ??= CreateNewSave(0);
+            _currentSave.Essence += amount;
+            PersistProgress();
+            EventBus.Instance?.EmitSignal("EssenceChanged", _currentSave.Essence);
+        }
+
+        public int GetUpgradeLevel(UpgradeId id)
+        {
+            return _currentSave?.UpgradeLevels != null && _currentSave.UpgradeLevels.TryGetValue(id.ToString(), out int level) ? level : 0;
+        }
+
+        public int GetUpgradePrice(UpgradeId id) => UpgradeCatalog.Price(GetUpgradeLevel(id));
+
+        public bool TryBuyUpgrade(UpgradeId id)
+        {
+            int price = GetUpgradePrice(id);
+            if (price < 0 || Essence < price) return false;
+
+            _currentSave.Essence -= price;
+            _currentSave.UpgradeLevels ??= new Dictionary<string, int>();
+            _currentSave.UpgradeLevels[id.ToString()] = GetUpgradeLevel(id) + 1;
+            PersistProgress();
+            EventBus.Instance?.EmitSignal("EssenceChanged", _currentSave.Essence);
+            EventBus.Instance?.EmitSignal("UpgradePurchased", (int)id);
+            return true;
+        }
+
+        // Grava só o progresso: posição, vida e cena continuam as do último ponto salvo (mesma regra do mapa).
+        private void PersistProgress()
+        {
             if (HasSave(_currentSave.Slot)) SaveToFile(_currentSave.Slot, _currentSave);
         }
 
@@ -201,6 +240,7 @@ namespace Joguim.Save
 
             var save = SaveData.FromJson(json);
             if (save == null) GD.PrintErr("SaveManager: Failed to parse save data.");
+            save?.MigrateLegacyCheckpoint();
             return save;
         }
 
