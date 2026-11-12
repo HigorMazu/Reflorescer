@@ -784,13 +784,13 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 >
 > > [!info]- Task C20-T5 — Recompensa por matar inimigos: essência + upgrades
 > > - [x] Inimigo morto solta essência (`EssenceOrb`, valor do `ExperienceReward`); contador no HUD; saldo e níveis entram no save.
-> > - [x] No totem ativado, `[E] Loja` abre a faixa de cartas (`ShopOverlay`): Dano, Velocidade de ataque, Vida, Defesa e Velocidade de movimento, 3 níveis cada, a 20/40/70.
+> > - [x] No totem ativado, `[E] Loja` abre as cartas em arco no centro da tela (`ShopOverlay`): Dano, Velocidade de ataque, Vida, Defesa e Velocidade de movimento, 3 níveis cada, a 40/80/140 (Dano +2 por nível; ajustado no playtest de 09/11).
 > > - [x] Totem movido do Dossel Vivo para o começo do Igarapé Sufocado (`cp_igarape_01`); saves antigos têm a bandeira do Dossel limpa.
 > > - **Decisão do Gustavo (09/11):** formato da loja, upgrades, totem único no começo do Igarapé e mobs que voltam ao recarregar. Design em `docs/superpowers/specs/2026-11-09-essencia-loja-design.md`.
 > > - **Achado (09/11):** o intervalo real de ataque é 0,30 s (`PlayerStatsResource.tres`), não 0,40 s. Cada nível tira 0,03 s, até 0,21 s, mantendo os 30% de ganho combinados; a animação acelera junto.
 > > - **Decisão do Gustavo + Higor (06/11):** essência + upgrades (descartadas: sementes de cura, energia de especial, mudas no mapa). Valores e preços definidos em 09/11.
 > >
-> > Status: implementado (09/11) — `EssenceShopCheck` 65/65; falta jogar.
+> > Status: implementado (09/11) — `EssenceShopCheck` 72/72; falta jogar.
 >
 > > [!info]- Task C20-T6 — Totem e galho escondidos pela árvore do portal no Dossel Vivo
 > > - [x] A árvore do portal `ToSopeDaMata` (1000×755 px, `z_index = 2`, desde o `a84bc14` de 30/10) era desenhada na frente do totem e do `Branch1`: 100% opaca sobre o totem e 92% sobre o galho, cuja colisão continuava barrando o pulo.

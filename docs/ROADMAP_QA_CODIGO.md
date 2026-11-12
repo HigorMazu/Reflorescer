@@ -697,7 +697,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > Status: 🔴 bloqueado (06/11) — ainda não implementado.
 >
 > > [!warning]- Task C20-T5 — Recompensa por matar inimigos: essência + upgrades
-> > - [x] `EssenceShopCheck` 65/65: saldo, preços, limite de 3 níveis, efeitos, Defesa fora da queda, drop por tipo de mob, totem no Igarapé, loja e save antigo.
+> > - [x] `EssenceShopCheck` 72/72: saldo, preços, limite de 3 níveis, efeitos, Defesa fora da queda, drop por tipo de mob, totem no Igarapé, loja e save antigo.
 > > - [ ] Jogando: pegar essência, comprar os 5 upgrades com teclado e controle e enfrentar o Korrag com eles.
 > > - [ ] Jogando: a estocada a 0,21 s continua legível.
 > >

@@ -131,7 +131,7 @@ func _test_shop() -> void:
 	p.global_position = cp.global_position + Vector2(0, -20)
 	await _frames(10)
 	_check(cp.call("CanInteract") and cp.call("GetInteractionPrompt") == "Loja", "prompt da loja depois de ativar")
-	saves.call("AddEssence", 25)
+	saves.call("AddEssence", 45)
 	cp.call("Interact", p)
 	await process_frame
 	var shop := get_first_node_in_group("HUD").find_child("ShopOverlay", true, false)
@@ -139,10 +139,22 @@ func _test_shop() -> void:
 	if shop == null:
 		paused = false
 		return
+	var view_size: Vector2 = (shop as Control).get_viewport_rect().size
+	_check((shop as Control).size == view_size, "loja ocupa a tela inteira (%s)" % (shop as Control).size)
+	_check(shop.find_child("Panel", true, false) == null, "sem painel atrás das cartas")
+	var centers: Array[Vector2] = []
+	for i in 5:
+		var c := shop.find_child("Card%d" % i, true, false) as Control
+		centers.append((c.get_parent() as Control).global_position + c.position + c.size / 2.0)
+	_check(absf(centers[2].x - view_size.x / 2.0) < 1.0, "carta do meio centralizada na horizontal (%s)" % centers[2])
+	_check(absf(centers[2].y - view_size.y / 2.0) < 80.0, "cartas na altura do centro (%s)" % centers[2])
+	_check(is_equal_approx(centers[0].y, centers[4].y) and is_equal_approx(centers[1].y, centers[3].y), "arco simétrico")
+	_check(centers[2].y < centers[1].y and centers[1].y < centers[0].y, "arco em parábola: meio mais alto, pontas mais baixas")
+	_check(centers[0].x >= 0.0 and centers[4].x <= view_size.x, "cartas dentro da tela")
 	var card := _card_text(shop, 0)
-	_check("Dano" in card and "25 → 30" in card and "✦ 20" in card, "carta mostra nome, efeito e preço (%s)" % card)
+	_check("Dano" in card and "25 → 27" in card and "✦ 40" in card, "carta mostra nome, efeito e preço (%s)" % card)
 	_send_echo_e()
-	_check(saves.get("Essence") == 25, "E repetido não compra")
+	_check(saves.get("Essence") == 45, "E repetido não compra")
 	_send("ui_right")
 	_check(shop.get("SelectedIndex") == 1, "navega para o lado")
 	_send("ui_left")
@@ -151,12 +163,12 @@ func _test_shop() -> void:
 	_send("ui_right")
 	_send("interact")
 	_check(saves.get("Essence") == 5 and saves.call("GetUpgradeLevel", DAMAGE) == 1, "E compra")
-	_check("40" in _card_text(shop, 0), "carta atualiza o preço")
+	_check("✦ 80" in _card_text(shop, 0), "carta atualiza o preço")
 	var price := shop.find_child("Card0", true, false).find_child("Price", true, false) as Label
 	_check(price.get_theme_color("font_color").r > 0.7 and price.get_theme_color("font_color").g < 0.6, "preço vermelho sem saldo")
 	_send("interact")
 	_check(saves.get("Essence") == 5, "sem saldo não compra")
-	saves.call("AddEssence", 200)
+	saves.call("AddEssence", 300)
 	_send("ui_accept")
 	_check(saves.call("GetUpgradeLevel", DAMAGE) == 2, "A compra")
 	_send("ui_accept")
@@ -222,7 +234,7 @@ func _test_effects() -> void:
 	_check(base_damage == 25 and is_equal_approx(base_cooldown, 0.3), "sem upgrade, valores base (%d, %.2f)" % [base_damage, base_cooldown])
 
 	saves.call("TryBuyUpgrade", DAMAGE)
-	_check(p.get("CurrentAttackDamage") == base_damage + 5, "dano +5")
+	_check(p.get("CurrentAttackDamage") == base_damage + 2, "dano +2")
 	saves.call("TryBuyUpgrade", ATTACK_SPEED)
 	_check(is_equal_approx(p.get("CurrentAttackCooldown"), 0.27), "ataque 0,27 s")
 	saves.call("TryBuyUpgrade", ATTACK_SPEED)
@@ -268,7 +280,7 @@ func _test_effects() -> void:
 	var p2 := _player()
 	_check(p2.get("Health").get("MaxHealth") == max_before, "vida máxima igual depois do Continuar (%d)" % max_before)
 	_check(p2.get("Health").get("FlatDefense") == 2, "defesa volta depois do Continuar")
-	_check(p2.get("CurrentAttackDamage") == base_damage + 5, "dano volta depois do Continuar")
+	_check(p2.get("CurrentAttackDamage") == base_damage + 2, "dano volta depois do Continuar")
 	probe.queue_free()
 
 func _test_economy() -> void:
@@ -277,25 +289,25 @@ func _test_economy() -> void:
 	saves.call("StartNewGame", 0)
 	await scene_changed
 	_check(saves.get("Essence") == 0, "novo jogo começa sem essência")
-	_check(saves.call("GetUpgradePrice", DAMAGE) == 20, "nível 1 custa 20")
-	saves.call("AddEssence", 25)
-	_check(saves.get("Essence") == 25, "soma essência")
+	_check(saves.call("GetUpgradePrice", DAMAGE) == 40, "nível 1 custa 40")
+	saves.call("AddEssence", 45)
+	_check(saves.get("Essence") == 45, "soma essência")
 	saves.call("AddEssence", -5)
-	_check(saves.get("Essence") == 25, "valor negativo é ignorado")
+	_check(saves.get("Essence") == 45, "valor negativo é ignorado")
 	_check(saves.call("TryBuyUpgrade", DAMAGE), "compra nível 1")
-	_check(saves.get("Essence") == 5 and saves.call("GetUpgradeLevel", DAMAGE) == 1, "cobra 20")
-	_check(saves.call("GetUpgradePrice", DAMAGE) == 40, "nível 2 custa 40")
+	_check(saves.get("Essence") == 5 and saves.call("GetUpgradeLevel", DAMAGE) == 1, "cobra 40")
+	_check(saves.call("GetUpgradePrice", DAMAGE) == 80, "nível 2 custa 80")
 	_check(not saves.call("TryBuyUpgrade", DAMAGE), "sem saldo não compra")
 	_check(saves.get("Essence") == 5 and saves.call("GetUpgradeLevel", DAMAGE) == 1, "falha não altera nada")
-	saves.call("AddEssence", 200)
+	saves.call("AddEssence", 300)
 	saves.call("TryBuyUpgrade", DAMAGE)
-	_check(saves.call("GetUpgradePrice", DAMAGE) == 70, "nível 3 custa 70")
+	_check(saves.call("GetUpgradePrice", DAMAGE) == 140, "nível 3 custa 140")
 	saves.call("TryBuyUpgrade", DAMAGE)
 	_check(saves.call("GetUpgradeLevel", DAMAGE) == 3, "chega ao nível 3")
 	_check(saves.call("GetUpgradePrice", DAMAGE) == -1, "sem preço no máximo")
 	var left: int = saves.get("Essence")
 	_check(not saves.call("TryBuyUpgrade", DAMAGE) and saves.get("Essence") == left, "limite de 3 níveis")
-	_check(left == 95, "saldo final confere (%d)" % left)
+	_check(left == 85, "saldo final confere (%d)" % left)
 	saves.call("StartNewGame", 0)
 	await scene_changed
 	_check(saves.get("Essence") == 0 and saves.call("GetUpgradeLevel", DAMAGE) == 0, "novo jogo zera saldo e níveis")

@@ -6,12 +6,12 @@ using Joguim.Save;
 
 namespace Joguim.UI
 {
-    /// <summary>Loja de upgrades do totem: faixa de cartas no topo da tela, com o jogo pausado (C20-T5).</summary>
+    /// <summary>Loja de upgrades do totem: cartas em arco no centro da tela, com o jogo pausado (C20-T5).</summary>
     public partial class ShopOverlay : Control
     {
         private static readonly Color Background = new(0.06f, 0.12f, 0.1f, 0.95f);
         private static readonly Color Border = new(0.67f, 0.77f, 0.46f, 0.9f);
-        private static readonly Color CardIdle = new(0.67f, 0.77f, 0.46f, 0.3f);
+        private static readonly Color CardSelectedFill = new(0.12f, 0.22f, 0.17f, 0.98f);
         private static readonly Color CardSelected = new(0.85f, 0.91f, 0.66f, 1f);
         private static readonly Color Gold = new(1f, 0.91f, 0.54f);
         private static readonly Color Muted = new(0.73f, 0.78f, 0.63f);
@@ -27,8 +27,13 @@ namespace Joguim.UI
             (UpgradeId.MoveSpeed, "Vel. mov."),
         };
 
+        private static readonly Vector2 CardSize = new(200, 250);
+        private const float CardSpacing = 216f;
+        private const float ArcDrop = 18f;
+        private const float CardTilt = 5f;
+        private const float SelectedScale = 1.07f;
+
         private readonly PanelContainer[] _cards = new PanelContainer[Upgrades.Length];
-        private Label _balance;
 
         public bool IsOpen { get; private set; }
         public int SelectedIndex { get; private set; }
@@ -37,7 +42,7 @@ namespace Joguim.UI
         {
             ProcessMode = ProcessModeEnum.Always;
             MouseFilter = MouseFilterEnum.Ignore;
-            SetAnchorsPreset(LayoutPreset.FullRect);
+            SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
             Visible = false;
             Build();
         }
@@ -90,36 +95,26 @@ namespace Joguim.UI
 
         private void Build()
         {
-            var panel = new PanelContainer { Name = "Panel" };
-            panel.AddThemeStyleboxOverride("panel", Box(Background, Border, 2, 12));
-            panel.SetAnchor(Side.Left, 0.03f);
-            panel.SetAnchor(Side.Right, 0.97f);
-            panel.SetAnchor(Side.Top, 0.07f);
-            panel.SetAnchor(Side.Bottom, 0.65f);
-            AddChild(panel);
-
-            var column = new VBoxContainer();
-            column.AddThemeConstantOverride("separation", 12);
-            panel.AddChild(column);
-
-            var header = new HBoxContainer();
-            column.AddChild(header);
-            var title = NewLabel("Totem da Floresta", new Color(0.85f, 0.91f, 0.66f), 26);
-            title.SizeFlagsHorizontal = SizeFlags.ExpandFill;
-            title.HorizontalAlignment = HorizontalAlignment.Left;
-            header.AddChild(title);
-            _balance = NewLabel("", Gold, 26);
-            _balance.Name = "Balance";
-            header.AddChild(_balance);
-
-            var row = new HBoxContainer { SizeFlagsVertical = SizeFlags.ExpandFill };
-            row.AddThemeConstantOverride("separation", 10);
-            column.AddChild(row);
+            // Ponto central da tela: as cartas se posicionam em volta dele
+            var arc = new Control { Name = "Cards", MouseFilter = MouseFilterEnum.Ignore };
+            arc.SetAnchorsAndOffsetsPreset(LayoutPreset.Center);
+            AddChild(arc);
 
             for (int i = 0; i < Upgrades.Length; i++)
             {
-                var card = new PanelContainer { Name = $"Card{i}", SizeFlagsHorizontal = SizeFlags.ExpandFill };
-                row.AddChild(card);
+                // Parábola: quanto mais longe do meio, mais baixa e mais inclinada
+                float fromCenter = i - (Upgrades.Length - 1) / 2f;
+                var card = new PanelContainer
+                {
+                    Name = $"Card{i}",
+                    CustomMinimumSize = CardSize,
+                    Size = CardSize,
+                    PivotOffset = CardSize / 2f,
+                    Position = new Vector2(fromCenter * CardSpacing, fromCenter * fromCenter * ArcDrop) - CardSize / 2f,
+                    RotationDegrees = fromCenter * CardTilt,
+                    MouseFilter = MouseFilterEnum.Ignore,
+                };
+                arc.AddChild(card);
                 _cards[i] = card;
 
                 var content = new VBoxContainer { Alignment = BoxContainer.AlignmentMode.Center };
@@ -144,7 +139,6 @@ namespace Joguim.UI
         private void Refresh()
         {
             int essence = SaveManager.Instance?.Essence ?? 0;
-            _balance.Text = $"✦ {essence}";
 
             for (int i = 0; i < Upgrades.Length; i++)
             {
@@ -163,8 +157,10 @@ namespace Joguim.UI
 
                 bool selected = i == SelectedIndex;
                 _cards[i].AddThemeStyleboxOverride("panel", Box(
-                    selected ? new Color(0.67f, 0.77f, 0.46f, 0.2f) : new Color(0, 0, 0, 0),
-                    selected ? CardSelected : CardIdle, selected ? 2 : 1, 8));
+                    selected ? CardSelectedFill : Background,
+                    selected ? CardSelected : Border, selected ? 3 : 2, 8));
+                _cards[i].Scale = Vector2.One * (selected ? SelectedScale : 1f);
+                _cards[i].ZIndex = selected ? 1 : 0;
             }
         }
 

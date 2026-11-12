@@ -61,11 +61,11 @@ Matar os 16 mobs das áreas 1 a 3 uma vez rende 220 de essência.
 
 ### Upgrades
 
-Cada upgrade tem 3 níveis, com preços de **20, 40 e 70**. O custo de completar tudo é 650.
+Cada upgrade tem 3 níveis, com preços de **40, 80 e 140** (dobrados em 09/11, após playtest). O custo de completar tudo é 1300.
 
 | Upgrade | Base | Por nível | No máximo |
 |---|---|---|---|
-| Dano | 25 | +5 | 40 |
+| Dano | 25 | +2 (reduzido de +5 em 09/11, após playtest) | 31 |
 | Velocidade de ataque | 0,30 s (valor real do `PlayerStatsResource.tres`) | -0,03 s | 0,21 s (mesmos 30% de ganho combinados; a animação acelera junto) |
 | Vida | 100 | +15 | +45 |
 | Defesa | 0 | -2 de dano por golpe, mínimo 1 | -6 |
@@ -75,10 +75,10 @@ Cada upgrade tem 3 níveis, com preços de **20, 40 e 70**. O custo de completar
 - Defesa vale para golpe e contato; **não** reduz dano de queda.
 - Bônus de Vida soma com o bônus de restauração.
 
-### Tela da loja (formato C, faixa de cartas)
+### Tela da loja (cartas em arco, ajustado pelo Gustavo em 09/11)
 
-- Painel na parte de cima da tela, com o Kairo e o totem visíveis embaixo, nas cores da HUD (`0.06, 0.12, 0.1` e borda `0.67, 0.77, 0.46`).
-- Título "Totem da Floresta" e saldo `✦ N` no canto.
+- Só as cartas, sem painel atrás, centralizadas em arco de parábola: a do meio mais alta, as das pontas mais baixas e inclinadas. Cores da HUD (`0.06, 0.12, 0.1` e borda `0.67, 0.77, 0.46`).
+- Sem título; o saldo fica no contador `✦ N` da HUD.
 - Cinco cartas lado a lado. Cada uma mostra nome, 3 bolinhas de nível, efeito do próximo nível e preço.
 - Preço em vermelho quando falta essência; `MÁX` no nível 3.
 - Navegação para os lados; comprar com `interact`/`E` ou A no controle; sair com Esc ou B.
