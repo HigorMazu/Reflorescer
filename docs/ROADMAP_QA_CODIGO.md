@@ -716,7 +716,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: 🔴 falha (09/11) — erro presente no log.
 >
-> > [!warning]- Task C20-T7 — Executável do Windows
+> > [!warning]- Task C20-T8 — Executável do Windows
 > > - [x] Export "Windows Desktop" termina sem erro e o `Reflorescer.exe` abre e fica rodando.
 > > - [ ] Jogando pelo `.exe`: menu → novo jogo → percurso da demo até o Korrag, com loja e save (fechar e Continuar).
 > > - [ ] Copiar `build/windows/` para outra pasta (ou outro PC) e conferir que abre sem o Godot instalado.

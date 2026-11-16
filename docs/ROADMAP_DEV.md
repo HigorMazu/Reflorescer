@@ -805,7 +805,7 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: 🟢 liberado (09/11).
 >
-> > [!info]- Task C20-T7 — Executável do Windows (export) e nome Reflorescer
+> > [!info]- Task C20-T8 — Executável do Windows (export) e nome Reflorescer
 > > - [x] `config/name` passa de "Joguim - Metroidvania" para "Reflorescer" (título da janela e pasta do save em `%APPDATA%/Godot/app_userdata/Reflorescer/`; o save antigo foi copiado para a pasta nova).
 > > - [x] `export_presets.cfg` versionado (saiu do `.gitignore`): preset "Windows Desktop", x86_64, PCK embutido, sem `tools/*`, `docs/*` e `*.md`; saída em `build/windows/Reflorescer.exe` (fora do Git).
 > > - [x] Export pela linha de comando: `--headless --path . --export-release "Windows Desktop" build/windows/Reflorescer.exe`. Gera o `.exe` (~210 MB) e a pasta `data_Joguim_windows_x86_64` (runtime .NET), que tem que ir junto.
