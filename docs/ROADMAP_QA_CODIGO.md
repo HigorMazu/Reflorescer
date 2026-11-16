@@ -14,7 +14,7 @@ descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 20
 epicos_concluidos: 15
 tasks_total: 92
-tasks_prontas: 68
+tasks_prontas: 69
 tasks_bloqueadas: 6
 ---
 # Roadmap de QA — Código (Reflorescer)
@@ -703,12 +703,12 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: ✅ passa (16/11) — validado jogando pelo Gustavo.
 >
-> > [!warning]- Task C20-T6 — Totem e galho visíveis no Dossel Vivo
+> > [!success]- Task C20-T6 — Totem e galho visíveis no Dossel Vivo
 > > - [x] `DosselPortalLayerCheck`: árvore do portal atrás dos galhos e do Kairo, e na frente do fundo.
 > > - [x] `DosselReachCheck`, `DemoRunCheck` 89/89 e `BossRetryCheck` 14/14.
-> > - [ ] Jogando: entrar no Dossel vindo do Sopé e ver o primeiro galho (o totem foi para o Igarapé em C20-T5).
+> > - [x] Jogando: entrar no Dossel vindo do Sopé e ver o primeiro galho (o totem foi para o Igarapé em C20-T5).
 > >
-> > Status: 🟡 parcial (09/11).
+> > Status: ✅ passa (16/11) — validado jogando pelo Gustavo.
 >
 > > [!failure]- Task C20-T7 — Portal sem erro de monitoring no log
 > > - [ ] `DosselReachCheck` roda sem `Can't find overlapping bodies when monitoring is off`.

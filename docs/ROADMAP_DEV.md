@@ -792,12 +792,12 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: ✅ concluído (16/11) — `EssenceShopCheck` 72/72 e validado jogando pelo Gustavo.
 >
-> > [!info]- Task C20-T6 — Totem e galho escondidos pela árvore do portal no Dossel Vivo
+> > [!success]- Task C20-T6 — Totem e galho escondidos pela árvore do portal no Dossel Vivo
 > > - [x] A árvore do portal `ToSopeDaMata` (1000×755 px, `z_index = 2`, desde o `a84bc14` de 30/10) era desenhada na frente do totem e do `Branch1`: 100% opaca sobre o totem e 92% sobre o galho, cuja colisão continuava barrando o pulo.
 > > - [x] `PortalVisual` do `ToSopeDaMata` passa para `z_index = -5`: atrás do que é jogável e na frente do fundo (-20).
 > > - **Bugfix (09/11) — relatado pelo Gustavo jogando:** a arte não mudou, só a camada desse portal.
 > >
-> > Status: implementado (09/11) — `DosselPortalLayerCheck` 5/5 (falhava antes do ajuste), `DosselReachCheck`, `DemoRunCheck` 89/89 e `BossRetryCheck` 14/14 verdes; falta ver jogando.
+> > Status: implementado (09/11) — `DosselPortalLayerCheck` 5/5 (falhava antes do ajuste), `DosselReachCheck`, `DemoRunCheck` 89/89 e `BossRetryCheck` 14/14 verdes; ✅ concluído (16/11) — validado jogando pelo Gustavo.
 >
 > > [!todo]- Task C20-T7 — Erro no log do `TransitionTrigger` com monitoring desligado
 > > - [ ] `PlayerInside()` chama `GetOverlappingBodies()` com o `Area2D` sem monitoring, o que gera `Can't find overlapping bodies when monitoring is off` (`TransitionTrigger.cs:59` e `:64`). Visto no `DosselReachCheck`.
