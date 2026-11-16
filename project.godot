@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Joguim - Metroidvania"
+config/name="Reflorescer"
 config/description="Um Metroidvania 2D de ação e aventura com um leopardo-das-neves e seu companheiro vaga-lume."
 run/main_scene="res://scenes/ui/MainMenu.tscn"
 config/features=PackedStringArray("4.7", "C#")

@@ -13,7 +13,7 @@ par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 20
 epicos_concluidos: 15
-tasks_total: 92
+tasks_total: 93
 tasks_prontas: 69
 tasks_bloqueadas: 6
 ---
@@ -75,7 +75,7 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > [!success]- Task C02-T3 — Evento dedicado e persistência
 > > - [x] Emite um evento próprio no `EventBus` (não reaproveita `CheckpointActivated`).
 > > - [x] Pontos restaurados persistem no save (fechar/reabrir o jogo mantém o estado restaurado).
-> > - **Nota (28/09):** o segundo caso (fechar/reabrir) depende do fluxo de Continuar (C09-T2), que ainda não existe. Por enquanto, testar: (1) restaurar e ir pro `BossArena` e voltar → continua restaurado; (2) o `save_0.json` (em `%APPDATA%/Godot/app_userdata/Joguim - Metroidvania/`) lista o ponto em `RestoredPoints`.
+> > - **Nota (28/09):** o segundo caso (fechar/reabrir) depende do fluxo de Continuar (C09-T2), que ainda não existe. Por enquanto, testar: (1) restaurar e ir pro `BossArena` e voltar → continua restaurado; (2) o `save_0.json` (em `%APPDATA%/Godot/app_userdata/Reflorescer/`) lista o ponto em `RestoredPoints`.
 > > - **Nota (28/09):** o fluxo de Continuar (C09-T2) existe agora, então o caso "fechar/reabrir mantém o estado restaurado" é testável: restaurar, fechar o jogo, abrir e escolher Continuar.
 > >
 > > Status: ✅ passa — validado no Godot em 28/09 (Gustavo): evento, persistência na sessão e fechar/reabrir (via Continuar) mantêm o ponto restaurado.
@@ -715,6 +715,13 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > > - [ ] `BossRetryCheck` continua verde (carência dos portais).
 > >
 > > Status: 🔴 falha (09/11) — erro presente no log.
+>
+> > [!warning]- Task C20-T7 — Executável do Windows
+> > - [x] Export "Windows Desktop" termina sem erro e o `Reflorescer.exe` abre e fica rodando.
+> > - [ ] Jogando pelo `.exe`: menu → novo jogo → percurso da demo até o Korrag, com loja e save (fechar e Continuar).
+> > - [ ] Copiar `build/windows/` para outra pasta (ou outro PC) e conferir que abre sem o Godot instalado.
+> >
+> > Status: 🟡 parcial (16/11).
 
 > [!failure]- EPIC-C17 — Fundação do jogo completo (mundo conectado) — 🔴 Ainda não testável · 🟢 Pós-demo
 > *Pronto quando*: uma área de teste nova entra no mapa, nas transições e no save só por configuração, sem regressão na demo.

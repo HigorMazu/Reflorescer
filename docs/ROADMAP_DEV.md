@@ -13,8 +13,8 @@ par: "[[ROADMAP_QA_CODIGO]]"
 descricao: Backlog de implementação da demo e do Deserto pós-demo (código)
 epicos_total: 20
 epicos_concluidos: 15
-tasks_total: 91
-tasks_prontas: 79
+tasks_total: 92
+tasks_prontas: 80
 tasks_bloqueadas: 3
 tasks_liberadas: 5
 ---
@@ -804,6 +804,15 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > > - [ ] Checar `Monitoring` antes de consultar e confirmar que a carência do portal continua igual.
 > >
 > > Status: 🟢 liberado (09/11).
+>
+> > [!info]- Task C20-T7 — Executável do Windows (export) e nome Reflorescer
+> > - [x] `config/name` passa de "Joguim - Metroidvania" para "Reflorescer" (título da janela e pasta do save em `%APPDATA%/Godot/app_userdata/Reflorescer/`; o save antigo foi copiado para a pasta nova).
+> > - [x] `export_presets.cfg` versionado (saiu do `.gitignore`): preset "Windows Desktop", x86_64, PCK embutido, sem `tools/*`, `docs/*` e `*.md`; saída em `build/windows/Reflorescer.exe` (fora do Git).
+> > - [x] Export pela linha de comando: `--headless --path . --export-release "Windows Desktop" build/windows/Reflorescer.exe`. Gera o `.exe` (~210 MB) e a pasta `data_Joguim_windows_x86_64` (runtime .NET), que tem que ir junto.
+> > - [ ] Ícone do jogo (`.ico`) — depende do Higor; aplicar exige `rcedit` configurado no editor.
+> > - **Decisão do Gustavo (16/11):** o nome do jogo no projeto vira Reflorescer.
+> >
+> > Status: implementado (16/11) — export sem erro e o `.exe` abre; falta jogar pelo executável.
 
 > [!todo]- EPIC-C17 — Fundação do jogo completo (mundo conectado) — 📋 Planejado · 🟢 Pós-demo
 > *Pronto quando*: um bioma novo entra no jogo sem mexer em código fixo da Floresta: o mapa, as transições entre biomas, o save e a progressão de habilidades aceitam áreas novas por configuração. Base pro [[Projetos/Reflorescer/🗺️ Roadmap#Pós-demo — jogo completo|roadmap pós-demo]].
