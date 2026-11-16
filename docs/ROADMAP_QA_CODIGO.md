@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-11-06
+atualizado: 2026-11-16
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
@@ -13,9 +13,9 @@ par: "[[ROADMAP_DEV]]"
 descricao: Casos de teste que definem pronto pra cada Task de código
 epicos_total: 20
 epicos_concluidos: 15
-tasks_total: 90
-tasks_prontas: 67
-tasks_bloqueadas: 7
+tasks_total: 92
+tasks_prontas: 69
+tasks_bloqueadas: 6
 ---
 # Roadmap de QA — Código (Reflorescer)
 
@@ -696,10 +696,25 @@ Legenda de status dos casos de teste: ✅ já passa hoje · 🔴 vai falhar, nã
 > >
 > > Status: 🔴 bloqueado (06/11) — ainda não implementado.
 >
-> > [!failure]- Task C20-T5 — Recompensa por matar inimigos: essência + upgrades
-> > - [ ] A definir junto da implementação.
+> > [!success]- Task C20-T5 — Recompensa por matar inimigos: essência + upgrades
+> > - [x] `EssenceShopCheck` 72/72: saldo, preços, limite de 3 níveis, efeitos, Defesa fora da queda, drop por tipo de mob, totem no Igarapé, loja e save antigo.
+> > - [x] Jogando: pegar essência, comprar os 5 upgrades com teclado e controle e enfrentar o Korrag com eles.
+> > - [x] Jogando: a estocada a 0,21 s continua legível.
 > >
-> > Status: 🔴 bloqueado (06/11) — ainda não implementado.
+> > Status: ✅ passa (16/11) — validado jogando pelo Gustavo.
+>
+> > [!success]- Task C20-T6 — Totem e galho visíveis no Dossel Vivo
+> > - [x] `DosselPortalLayerCheck`: árvore do portal atrás dos galhos e do Kairo, e na frente do fundo.
+> > - [x] `DosselReachCheck`, `DemoRunCheck` 89/89 e `BossRetryCheck` 14/14.
+> > - [x] Jogando: entrar no Dossel vindo do Sopé e ver o primeiro galho (o totem foi para o Igarapé em C20-T5).
+> >
+> > Status: ✅ passa (16/11) — validado jogando pelo Gustavo.
+>
+> > [!failure]- Task C20-T7 — Portal sem erro de monitoring no log
+> > - [ ] `DosselReachCheck` roda sem `Can't find overlapping bodies when monitoring is off`.
+> > - [ ] `BossRetryCheck` continua verde (carência dos portais).
+> >
+> > Status: 🔴 falha (09/11) — erro presente no log.
 
 > [!failure]- EPIC-C17 — Fundação do jogo completo (mundo conectado) — 🔴 Ainda não testável · 🟢 Pós-demo
 > *Pronto quando*: uma área de teste nova entra no mapa, nas transições e no save só por configuração, sem regressão na demo.

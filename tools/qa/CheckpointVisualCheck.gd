@@ -3,7 +3,7 @@ extends SceneTree
 ## The user's save_0.json is restored before this script exits.
 
 const MENU := "res://scenes/ui/MainMenu.tscn"
-const DOSSEL := "res://scenes/areas/DosselVivo.tscn"
+const DOSSEL := "res://scenes/areas/IgarapeSufocado.tscn"
 const SAVE_FILE := "user://save_0.json"
 
 var _backup: String
@@ -59,7 +59,7 @@ func _run() -> void:
 	await _frames(10)
 	_check(checkpoint.get("Activated"), "touch activates checkpoint")
 	_check(totem.get("Activated"), "touch turns on totem visual")
-	_check(saves.call("IsCheckpointActivated", "cp_dossel_01"), "activation entered the save state")
+	_check(saves.call("IsCheckpointActivated", "cp_igarape_01"), "activation entered the save state")
 
 	saves.call("SaveGame", 0)
 	manager.call("LoadScene", MENU)

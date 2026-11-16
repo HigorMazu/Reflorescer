@@ -30,6 +30,8 @@ namespace Joguim.Core
         {
             // Teclado ou controle: as dicas da tela seguem o último usado (26/10/2026)
             Joguim.UI.InputHints.Observe(@event);
+            // Com a loja aberta, as teclas são dela (Esc fecha a loja, não abre a pausa)
+            if (IsShopOpen) return;
             if (@event.IsActionPressed("map") && !@event.IsEcho())
             {
                 ToggleMap();
@@ -53,9 +55,17 @@ namespace Joguim.Core
         public void SetInputHintsForTest(bool gamepad, int style) =>
             Joguim.UI.InputHints.Set(gamepad, (Joguim.UI.InputHints.PadStyle)style);
 
+        public bool IsShopOpen { get; private set; }
+
+        public void SetShopOpen(bool open)
+        {
+            IsShopOpen = open;
+            GetTree().Paused = open;
+        }
+
         public void ToggleMap()
         {
-            if (IsGameOver || IsGamePaused) return;
+            if (IsGameOver || IsGamePaused || IsShopOpen) return;
             if (GetTree().CurrentScene?.SceneFilePath == SaveManager.MainMenuScene) return;
             if (!IsMapOpen)
             {
@@ -71,7 +81,7 @@ namespace Joguim.Core
 
         public void TogglePause()
         {
-            if (IsGameOver) return;
+            if (IsGameOver || IsShopOpen) return;
             IsGamePaused = !IsGamePaused;
             GetTree().Paused = IsGamePaused;
             EventBus.Instance.EmitSignal("PauseToggled", IsGamePaused);
@@ -87,6 +97,7 @@ namespace Joguim.Core
         {
             IsMapOpen = false;
             IsGamePaused = false;
+            IsShopOpen = false;
             GetTree().Paused = false;
             CarriedPlayerHealth = -1;
             SaveManager.Instance?.StartNewGame(0);

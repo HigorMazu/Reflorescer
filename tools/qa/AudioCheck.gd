@@ -86,8 +86,8 @@ func _run() -> void:
 	await _frames(20)
 	await _tap("interact")
 	await _frames(40)
-	# a demo tem uma bandeira só, no Dossel Vivo, e ela ativa sozinha ao passar (decisão de 11/10/2026)
-	change_scene_to_file(DOSSEL)
+	# a demo tem um totem só, no Igarapé (09/11/2026), e ele ativa sozinha ao passar (decisão de 11/10/2026)
+	change_scene_to_file("res://scenes/areas/IgarapeSufocado.tscn")
 	await scene_changed
 	await _frames(10)
 	current_scene.get_node("Enemies").queue_free()

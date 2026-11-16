@@ -32,6 +32,10 @@ namespace Joguim.Save
         // Células do mapa vistas por Kairo; a lista vazia mantém saves antigos compatíveis.
         public List<string> ExploredMapCells { get; set; } = new();
 
+        // Essência e níveis de upgrade (C20-T5); saves antigos carregam com os valores padrão.
+        public int Essence { get; set; }
+        public Dictionary<string, int> UpgradeLevels { get; set; } = new();
+
         // Stats
         public int TotalDeaths { get; set; }
         public float TotalPlayTime { get; set; }
@@ -44,6 +48,16 @@ namespace Joguim.Save
             PlayerHealth = 100;
             PlayerMaxHealth = 100;
             LastCheckpointId = "";
+        }
+
+        // O totem saiu do Dossel Vivo (09/11/2026): a bandeira antiga não existe mais na cena.
+        public void MigrateLegacyCheckpoint()
+        {
+            const string legacyId = "cp_dossel_01";
+            ActivatedCheckpoints?.Remove(legacyId);
+            if (LastCheckpointId != legacyId) return;
+            LastCheckpointId = "";
+            LastCheckpointScene = "";
         }
 
         // IncludeFields: o Vector2 do Godot guarda X/Y como campos; sem isso a posição salvava como {}

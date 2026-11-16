@@ -3,7 +3,7 @@ tipo: projeto
 categoria: roadmap
 status: ativo
 criado: 2026-09-15
-atualizado: 2026-11-06
+atualizado: 2026-11-16
 tags: [projeto, roadmap]
 projeto: "[[🗂️ Reflorescer]]"
 area: codigo
@@ -13,8 +13,8 @@ par: "[[ROADMAP_QA_CODIGO]]"
 descricao: Backlog de implementação da demo e do Deserto pós-demo (código)
 epicos_total: 20
 epicos_concluidos: 15
-tasks_total: 89
-tasks_prontas: 77
+tasks_total: 91
+tasks_prontas: 79
 tasks_bloqueadas: 3
 tasks_liberadas: 5
 ---
@@ -782,12 +782,28 @@ Ordem recomendada: `EPIC-C01` → `EPIC-C02` → `EPIC-C06` → `EPIC-C04` → `
 > >
 > > Status: 🟢 liberado (06/11).
 >
-> > [!todo]- Task C20-T5 — Recompensa por matar inimigos: essência + upgrades
-> > - [ ] Inimigo morto solta essência; contador no HUD; essência entra no save.
-> > - [ ] Na bandeira, trocar essência por upgrade (vida máxima, dano). Precisa de tela de troca.
-> > - **Decisão do Gustavo + Higor (06/11):** essência + upgrades (descartadas: sementes de cura, energia de especial, mudas no mapa). Valores e preços a definir.
+> > [!success]- Task C20-T5 — Recompensa por matar inimigos: essência + upgrades
+> > - [x] Inimigo morto solta essência (`EssenceOrb`, valor do `ExperienceReward`); contador no HUD; saldo e níveis entram no save.
+> > - [x] No totem ativado, `[E] Loja` abre as cartas em arco no centro da tela (`ShopOverlay`): Dano, Velocidade de ataque, Vida, Defesa e Velocidade de movimento, 3 níveis cada, a 40/80/140 (Dano +2 por nível; ajustado no playtest de 09/11).
+> > - [x] Totem movido do Dossel Vivo para o começo do Igarapé Sufocado (`cp_igarape_01`); saves antigos têm a bandeira do Dossel limpa.
+> > - **Decisão do Gustavo (09/11):** formato da loja, upgrades, totem único no começo do Igarapé e mobs que voltam ao recarregar. Design em `docs/superpowers/specs/2026-11-09-essencia-loja-design.md`.
+> > - **Achado (09/11):** o intervalo real de ataque é 0,30 s (`PlayerStatsResource.tres`), não 0,40 s. Cada nível tira 0,03 s, até 0,21 s, mantendo os 30% de ganho combinados; a animação acelera junto.
+> > - **Decisão do Gustavo + Higor (06/11):** essência + upgrades (descartadas: sementes de cura, energia de especial, mudas no mapa). Valores e preços definidos em 09/11.
 > >
-> > Status: 🟢 liberado (06/11).
+> > Status: ✅ concluído (16/11) — `EssenceShopCheck` 72/72 e validado jogando pelo Gustavo.
+>
+> > [!success]- Task C20-T6 — Totem e galho escondidos pela árvore do portal no Dossel Vivo
+> > - [x] A árvore do portal `ToSopeDaMata` (1000×755 px, `z_index = 2`, desde o `a84bc14` de 30/10) era desenhada na frente do totem e do `Branch1`: 100% opaca sobre o totem e 92% sobre o galho, cuja colisão continuava barrando o pulo.
+> > - [x] `PortalVisual` do `ToSopeDaMata` passa para `z_index = -5`: atrás do que é jogável e na frente do fundo (-20).
+> > - **Bugfix (09/11) — relatado pelo Gustavo jogando:** a arte não mudou, só a camada desse portal.
+> >
+> > Status: implementado (09/11) — `DosselPortalLayerCheck` 5/5 (falhava antes do ajuste), `DosselReachCheck`, `DemoRunCheck` 89/89 e `BossRetryCheck` 14/14 verdes; ✅ concluído (16/11) — validado jogando pelo Gustavo.
+>
+> > [!todo]- Task C20-T7 — Erro no log do `TransitionTrigger` com monitoring desligado
+> > - [ ] `PlayerInside()` chama `GetOverlappingBodies()` com o `Area2D` sem monitoring, o que gera `Can't find overlapping bodies when monitoring is off` (`TransitionTrigger.cs:59` e `:64`). Visto no `DosselReachCheck`.
+> > - [ ] Checar `Monitoring` antes de consultar e confirmar que a carência do portal continua igual.
+> >
+> > Status: 🟢 liberado (09/11).
 
 > [!todo]- EPIC-C17 — Fundação do jogo completo (mundo conectado) — 📋 Planejado · 🟢 Pós-demo
 > *Pronto quando*: um bioma novo entra no jogo sem mexer em código fixo da Floresta: o mapa, as transições entre biomas, o save e a progressão de habilidades aceitam áreas novas por configuração. Base pro [[Projetos/Reflorescer/🗺️ Roadmap#Pós-demo — jogo completo|roadmap pós-demo]].

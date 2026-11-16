@@ -38,6 +38,10 @@ namespace Joguim.Core
         [Signal] public delegate void EnemyDefeatedEventHandler(string enemyId);
         [Signal] public delegate void DamageDealtEventHandler(Node2D target, int damage);
 
+        // Essência e upgrades (C20-T5)
+        [Signal] public delegate void EssenceChangedEventHandler(int total);
+        [Signal] public delegate void UpgradePurchasedEventHandler(int upgradeId);
+
         // World signals
         [Signal] public delegate void SecretRevealedEventHandler(string secretId);
         // Restauração ODS 15: um RestorationPoint foi restaurado (não confundir com CheckpointActivated)
